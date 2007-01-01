@@ -15,30 +15,37 @@ context "A sequence parsing expression with one element" do
   end
   
   specify "attempts to parse its single element upon a call to parse_at" do
-    input = "foo"
-    index = 0
-    parser = mock("Parser")
-    mock_element(input, index, parser)
-    @sequence.parse_at(input, index, parser)
+    element_will_parse_input_successfully
+    @sequence.parse_at(@input, @index, @parser)
   end
   
-  specify "returns a SequenceSyntaxNode with the elements parse result as a child if it is parsed successfully" do
-    input = "foo"
-    index = 0
-    parser = mock("Parser")
-    
-    mock_element(input, index, parser)
-    result = @sequence.parse_at(input, index, parser)
+  specify "returns a SequenceSyntaxNode with the element's parse result as an element if the parse is successful" do
+    element_will_parse_input_successfully
+    result = @sequence.parse_at(@input, @index, @parser)
     result.should_be_an_instance_of SequenceSyntaxNode
+    result.elements.should_eql [@elt_result]
   end
   
-  def mock_element(input, index, parser)
+  specify "returns a parse failure if the parse of an element fails" do
+    input = "foo"
+    index = 0
+    parser = mock("Parser")
   
-    elt_result = mock("First element's parse result")
-    elt_interval = 0...5
-    elt_result.should_receive(:interval).and_return(elt_interval)
+    @elt.should_receive(:parse_at).with(input, index, parser).and_return(ParseFailure.new(index))
+    
+    result = @sequence.parse_at(input, index, parser)
+  end
   
-    @elt.should_receive(:parse_at).with(input, index, parser).and_return(elt_result)
+  def element_will_parse_input_successfully
+    @input = "foo"
+    @index = 0
+    @parser = mock("Parser")
+    
+    @elt_result = mock("First element's parse result")
+    @elt_interval = 0...5
+    @elt_result.should_receive(:interval).and_return(@elt_interval)
+  
+    @elt.should_receive(:parse_at).with(@input, @index, @parser).and_return(@elt_result)
   end
   
 end
