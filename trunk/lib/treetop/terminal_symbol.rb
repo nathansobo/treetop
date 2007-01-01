@@ -10,7 +10,7 @@ module Treetop
     def parse_at(input, start_index, parser)
       match = prefix_regex.match(input[start_index...(input.length)])
       if match
-        match_interval = start_index...match.end(0)
+        match_interval = start_index...(match.end(0) + start_index)
         return TerminalSyntaxNode.new(input, match_interval)
       else
         return ParseFailure.new(start_index)

@@ -47,5 +47,18 @@ context "A sequence parsing expression with one element" do
   
     @elt.should_receive(:parse_at).with(@input, @index, @parser).and_return(@elt_result)
   end
+end
+
+context "A sequence parsing expression with multiple terminal symbols as elements" do
+  setup do
+    @elts = ["foo", "bar", "baz"]
+    @input = @elts.join
+    @sequence = SequenceParsingExpression.new(@elts.collect { |w| TerminalSymbol.new(w) })
+  end
   
+  specify "returns a SequenceSyntaxNode with correct elements when matching input is parsed" do
+    result = @sequence.parse_at(@input, 0, mock("Parser"))
+    result.should_be_an_instance_of SequenceSyntaxNode
+    (result.elements.collect {|elt| elt.text_value}).should_eql @elts
+  end
 end

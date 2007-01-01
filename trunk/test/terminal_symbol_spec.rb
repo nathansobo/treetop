@@ -12,6 +12,11 @@ context "A terminal symbol" do
   specify "is a kind of AtomicParsingExpression" do
     @terminal.should_be_a_kind_of AtomicParsingExpression
   end
+  
+  specify "returns the correct interval for a prefix starting after 0" do
+    result = @terminal.parse_at("xfoo", 1, mock("Parser"))
+    result.interval.should_eql 1...4
+  end
 end
 
 context "The result of TerminalSymbol#parse_at for a matching input prefix at a given index" do
