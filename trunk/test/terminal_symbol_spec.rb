@@ -31,4 +31,19 @@ context "The result of TerminalSymbol#parse_at for a matching input prefix at a 
   end
 end
 
-
+context "The result of TerminalSymbol#parse_at for a non-matching input prefix at a given index" do
+  setup do
+    @terminal = TerminalSymbol.new("foo")
+    parser = mock("Parser instance")
+    input = ("barfoo")
+    @result = @terminal.parse_at(input, 0, parser)
+  end
+  
+  specify "is a kind of ParseFailure" do
+    @result.should_be_a_kind_of ParseFailure
+  end
+  
+  specify "has an index equal to the site of the attempted parse" do
+    @result.index.should_equal 0
+  end
+end

@@ -12,6 +12,8 @@ module Treetop
       if match
         match_interval = start_index...match.end(0)
         return TerminalSyntaxNode.new(input, match_interval)
+      else
+        return ParseFailure.new(start_index)
       end
     end
   end

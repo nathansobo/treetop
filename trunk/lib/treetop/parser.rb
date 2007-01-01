@@ -5,5 +5,9 @@ module Treetop
     def initialize(grammar)
       self.grammar = grammar
     end
+    
+    def parse(input)
+      grammar.root.parse_at(input, 0, self)
+    end
   end
 end

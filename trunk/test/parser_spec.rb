@@ -6,11 +6,20 @@ require "#{dir}/spec_helper"
 
 context "A new parser" do
   setup do
-    @grammar = Grammar.new
-    @parser = @grammar.new_parser
+    @grammar = mock("Grammar")
+    @parser = Parser.new(@grammar)
   end
   
-  specify "retains a reference to the grammar it parses" do
-    @parser.grammar.should_equal(@grammar)
-  end  
+  specify "invokes parse_at on its grammar's root nonterminal when parse is called" do
+    input = "foo"
+    root_nonterminal = mock("Root nonterminal")
+    parse_result = mock("Parse result")
+    root_nonterminal.should_receive(:parse_at).with(input, 0, @parser).and_return(parse_result)
+    @grammar.should_receive(:root).and_return(root_nonterminal)
+
+    @parser.parse(input).should_equal parse_result
+  end
+  
+  
 end
+
