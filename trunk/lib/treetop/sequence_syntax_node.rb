@@ -6,5 +6,9 @@ module Treetop
       super(input, interval)
       @elements = elements
     end
+    
+    def empty?
+      elements.empty?
+    end
   end
 end
