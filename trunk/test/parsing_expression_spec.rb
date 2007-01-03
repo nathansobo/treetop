@@ -14,4 +14,10 @@ context "A parsing expression" do
     zero_or_more.should_be_an_instance_of ZeroOrMore
     zero_or_more.repeated_expression.should_equal @expression
   end
+  
+  specify "returns a OneOrMore parsing expression with itself as the repeated expression on call to one_or_more" do
+    zero_or_more = @expression.one_or_more
+    zero_or_more.should_be_an_instance_of OneOrMore
+    zero_or_more.repeated_expression.should_equal @expression
+  end
 end
