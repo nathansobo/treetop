@@ -22,8 +22,8 @@ context "An ordered choice parsing expression with three alternatives" do
     @choice.parse_at(@alts[2], 0, mock("Parser")).text_value.should_eql @alts[2]
   end
   
-  specify "returns a ParseFailure if no alternative succeeds" do
+  specify "fails if no alternative succeeds" do
     nonmatching_input = "bonk"
-    @choice.parse_at(nonmatching_input, 0, mock("Parser")).should_be_an_instance_of ParseFailure
+    @choice.parse_at(nonmatching_input, 0, mock("Parser")).should_be_failure
   end
 end

@@ -11,7 +11,7 @@ module Treetop
       next_index = start_index
       loop do
         result = repeated_expression.parse_at(input, next_index, parser)
-        break if result.instance_of? ParseFailure
+        break if result.failure?
         results << result
         next_index = result.interval.end
       end

@@ -10,11 +10,11 @@ context "One-or-more of a terminal symbol" do
     @one_or_more = OneOrMore.new(@terminal)
   end
   
-  specify "returns a ParseFailure when parsing epsilon" do
+  specify "fails when parsing epsilon" do
     index = 0
     epsilon = ""
     result = @one_or_more.parse_at(epsilon, index, mock("Parser"))
-    result.should_be_an_instance_of ParseFailure
+    result.should_be_failure
     result.index.should_equal index
   end
   

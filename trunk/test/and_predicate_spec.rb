@@ -18,9 +18,9 @@ context "An and predicate for a TerminalSymbol" do
     result.interval.end.should_equal index
   end
   
-  specify "returns a ParseFailure on attempt to parse non-matching input" do
+  specify "fails on attempt to parse non-matching input" do
     input = "baz"
-    @and_predicate.parse_at(input, 0, mock("Parser")).should_be_an_instance_of ParseFailure
+    @and_predicate.parse_at(input, 0, mock("Parser")).should_be_failure
   end
 end
 
