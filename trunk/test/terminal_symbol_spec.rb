@@ -30,8 +30,8 @@ context "The result of TerminalSymbol#parse_at for a matching input prefix at a 
     @result = @terminal.parse_at(input, 0, parser)
   end
   
-  specify "is a kind of SyntaxNode" do
-    @result.should_be_a_kind_of SyntaxNode
+  specify "is successful" do
+    @result.should_be_success
   end
   
   specify "has a text value matching the terminal symbol" do

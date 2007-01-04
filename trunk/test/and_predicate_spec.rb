@@ -10,7 +10,7 @@ context "An &-predicate for a TerminalSymbol" do
     @and_predicate = AndPredicate.new(@terminal)
   end
   
-  specify "returns success without updating the index on a parse of matching input" do
+  specify "succeeds without updating the index on a parse of matching input" do
     input = @terminal.prefix
     index = 0
     result = @and_predicate.parse_at(input, index, mock("Parser"))
@@ -35,7 +35,7 @@ context "A sequence with terminal symbol followed by an &-predicate on another t
     input = "---" + @terminal.prefix + @and_predicate.expression.prefix
     index = 3
     result = @sequence.parse_at(input, index, mock("Parser"))
-    result.should_be_a_kind_of SyntaxNode
+    result.should_be_success
     result.interval.end.should_equal index + @terminal.prefix.size
   end
   
