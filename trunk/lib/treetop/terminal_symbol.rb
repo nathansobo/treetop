@@ -2,6 +2,10 @@ module Treetop
   class TerminalSymbol < AtomicParsingExpression
     attr_accessor :prefix, :prefix_regex
     
+    def self.epsilon
+      @epsilon ||= self.new("")
+    end
+    
     def initialize(prefix)
       self.prefix = prefix
       self.prefix_regex = /^#{Regexp.escape(prefix)}/

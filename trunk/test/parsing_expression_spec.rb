@@ -22,9 +22,14 @@ context "A parsing expression" do
   end
   
   specify "returns an Optional parsing expression with itself as the repeated expression on call to one_or_more" do
-    zero_or_more = @expression.optional
-    zero_or_more.should_be_an_instance_of Optional
-    zero_or_more.expression.should_equal @expression
+    optional = @expression.optional
+    optional.should_be_an_instance_of Optional
+    optional.expression.should_equal @expression
   end
   
+  specify "returns an AndPredicate parsing expression with itself as the repeated expression on call to one_or_more" do
+    and_predicate = @expression.and_predicate
+    and_predicate.should_be_an_instance_of AndPredicate
+    and_predicate.expression.should_equal @expression
+  end
 end

@@ -11,6 +11,10 @@ module Treetop
     def optional
       Optional.new(self)
     end
+    
+    def and_predicate
+      AndPredicate.new(self)
+    end
   end
   
   class AtomicParsingExpression < ParsingExpression
