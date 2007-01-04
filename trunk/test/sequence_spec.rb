@@ -52,13 +52,26 @@ end
 context "A sequence parsing expression with multiple terminal symbols as elements" do
   setup do
     @elts = ["foo", "bar", "baz"]
-    @input = @elts.join
     @sequence = Sequence.new(@elts.collect { |w| TerminalSymbol.new(w) })
   end
   
   specify "returns a SequenceSyntaxNode with correct elements when matching input is parsed" do
-    result = @sequence.parse_at(@input, 0, mock("Parser"))
+    input = @elts.join
+    index = 0
+    result = @sequence.parse_at(input, index, mock("Parser"))
     result.should_be_an_instance_of SequenceSyntaxNode
     (result.elements.collect {|elt| elt.text_value}).should_eql @elts
+    result.interval.end.should_equal index + input.size
   end
+  
+  specify "returns a SequenceSyntaxNode with correct elements when matching input is parsed when starting at a non-zero index" do
+    input = "----" + @elts.join
+    index = 4
+    result = @sequence.parse_at(input, index, mock("Parser"))
+    result.should_be_an_instance_of SequenceSyntaxNode
+    (result.elements.collect {|elt| elt.text_value}).should_eql @elts
+    result.interval.end.should_equal index + @elts.join.size
+  end
+  
+  
 end

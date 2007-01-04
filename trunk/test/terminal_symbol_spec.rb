@@ -16,6 +16,9 @@ context "A terminal symbol" do
   specify "returns the correct interval for a prefix starting after 0" do
     result = @terminal.parse_at("xfoo", 1, mock("Parser"))
     result.interval.should_eql 1...4
+    
+    result = @terminal.parse_at("---foo", 3, mock("Parser"))
+    result.interval.should_eql 3...6
   end
 end
 

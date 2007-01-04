@@ -23,3 +23,26 @@ context "An and predicate for a TerminalSymbol" do
     @and_predicate.parse_at(input, 0, mock("Parser")).should_be_an_instance_of ParseFailure
   end
 end
+
+context "A sequence with terminal symbol followed by an &-predicate on another terminal symbol" do
+  setup do
+    @terminal = TerminalSymbol.new("foo")
+    @and_predicate = AndPredicate.new(TerminalSymbol.new("bar"))
+    @sequence = Sequence.new([@terminal, @and_predicate])
+  end
+  
+  specify "matches input when look-ahead matches without updating the index past the end of the first terminal" do
+    input = "---" + @terminal.prefix + @and_predicate.expression.prefix
+    index = 3
+    result = @sequence.parse_at(input, index, mock("Parser"))
+    result.should_be_a_kind_of SyntaxNode
+    result.interval.end.should_equal index + @terminal.prefix.size
+  end
+  
+  specify "does not match input when look-ahead does not match" do
+    input = "---" + @terminal.prefix + "baz"
+    index = 3
+    result = @sequence.parse_at(input, index, mock("Parser"))
+    result.should_be_a_kind_of ParseFailure
+  end
+end
