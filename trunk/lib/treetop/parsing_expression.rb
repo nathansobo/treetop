@@ -7,6 +7,10 @@ module Treetop
     def one_or_more
       OneOrMore.new(self)
     end
+    
+    def optional
+      Optional.new(self)
+    end
   end
   
   class AtomicParsingExpression < ParsingExpression
