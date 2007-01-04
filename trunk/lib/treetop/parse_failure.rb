@@ -5,5 +5,13 @@ module Treetop
     def initialize(index)
       @index = index
     end
+    
+    def success?
+      false
+    end
+    
+    def failure?
+      true
+    end
   end
 end

@@ -10,5 +10,13 @@ module Treetop
     def text_value
       input[interval]
     end
+    
+    def success?
+      true
+    end
+    
+    def failure?
+      false
+    end
   end
 end
