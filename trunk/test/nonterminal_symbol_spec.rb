@@ -7,7 +7,7 @@ require "#{dir}/spec_helper"
 context "A nonterminal symbol" do
   setup do
     @grammar = mock("Grammar")
-    @nonterminal = NonterminalSymbol.new(:Foo, @grammar)
+    @nonterminal = NonterminalSymbol.new(:foo, @grammar)
   end
   
   specify "is a kind of AtomicParsingExpression" do
