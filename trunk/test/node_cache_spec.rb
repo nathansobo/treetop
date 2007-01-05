@@ -27,18 +27,18 @@ context "A node cache with one node stored in it" do
   end
   
   specify "returns that node when queried with its associated nonterminal symbol and starting index" do
-    @node_cache.node_starting_at(@nonterminal, @interval.begin).should_equal @node
+    @node_cache.node_starting_at(@interval.begin, @nonterminal).should_equal @node
   end
   
   specify "returns nil when queried with the wrong nonterminal" do
     other_nonterminal = NonterminalSymbol.new(:bar, mock("parser"))
-    @node_cache.node_starting_at(other_nonterminal, @interval.begin).should_be_nil
+    @node_cache.node_starting_at(@interval.begin, other_nonterminal).should_be_nil
   end
   
   specify "returns nil when queried with the wrong starting index" do
     wrong_index = 2
     wrong_index.should_not_equal @interval.begin
-    @node_cache.node_starting_at(@nonterminal, wrong_index).should_be_nil
+    @node_cache.node_starting_at(wrong_index, @nonterminal).should_be_nil
   end
 end
 
@@ -55,8 +55,8 @@ context "A node cache with more than one node cached for the same nonterminal" d
   end
   
   specify "can return either node when queried with its corresponding nonterminal symbol and index" do
-    @node_cache.node_starting_at(@nonterminal, @node1.interval.begin).should_equal @node1
-    @node_cache.node_starting_at(@nonterminal, @node2.interval.begin).should_equal @node2
+    @node_cache.node_starting_at(@node1.interval.begin, @nonterminal).should_equal @node1
+    @node_cache.node_starting_at(@node2.interval.begin, @nonterminal).should_equal @node2
   end
 end
 
@@ -74,7 +74,7 @@ context "A node cache with more than one node cached for different nonterminals 
   end
   
   specify "can return either node when queried with its corresponding nonterminal symbol and index" do
-    @node_cache.node_starting_at(@nonterminal1, @interval.begin).should_equal @node1
-    @node_cache.node_starting_at(@nonterminal2, @interval.begin).should_equal @node2
+    @node_cache.node_starting_at(@interval.begin, @nonterminal1).should_equal @node1
+    @node_cache.node_starting_at(@interval.begin, @nonterminal2).should_equal @node2
   end
 end

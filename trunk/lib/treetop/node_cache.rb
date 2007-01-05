@@ -13,7 +13,7 @@ module Treetop
       hash_for_nonterm[syntax_node.interval.begin] = syntax_node
     end
   
-    def node_starting_at(nonterminal_symbol, index)
+    def node_starting_at(index, nonterminal_symbol)
       @node_hash[nonterminal_symbol][index] if @node_hash[nonterminal_symbol]
     end
   end

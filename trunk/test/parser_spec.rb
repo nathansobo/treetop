@@ -35,5 +35,8 @@ context "A new parser" do
     @parser.parse(input).should_be_failure
   end
   
+  specify "has a node cache" do
+    @parser.node_cache.should_be_an_instance_of NodeCache
+  end
 end
 

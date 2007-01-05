@@ -13,5 +13,9 @@ module Treetop
     def failure?
       true
     end
+    
+    def interval
+      index...index
+    end
   end
 end

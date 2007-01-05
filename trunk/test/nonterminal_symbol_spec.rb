@@ -19,15 +19,34 @@ context "A nonterminal symbol" do
   end
   
   specify "propagates parse_at to its associated parsing expression" do
-    input = "foobar"
-    index = 0
-    parser = mock("Parser")
-    parse_result = mock("Parse result")
+    input = mock("input")
+    interval = 0...5
+    parser = mock("parser")
+    parse_result = SyntaxNode.new(input, interval)
     parsing_expression = mock("Associated parsing expression")
+    node_cache = NodeCache.new
     
+    parser.should_receive(:node_cache).at_least(:twice).and_return(node_cache)
     @grammar.should_receive(:get_parsing_expression).with(@nonterminal).and_return(parsing_expression)
-    parsing_expression.should_receive(:parse_at).with(input, index, parser).and_return(parse_result)
+    parsing_expression.should_receive(:parse_at).with(input, interval.begin, parser).and_return(parse_result)
 
-    @nonterminal.parse_at(input, index, parser).should_equal parse_result
+    @nonterminal.parse_at(input, interval.begin, parser).should_equal parse_result
+  end
+  
+  specify "returns a cached syntax node for repeated calls to parse_at at the same start index" do
+    input = mock("input")
+    parsing_expression = mock("parsing expression")
+    node_cache = NodeCache.new
+    parser = mock("parser")
+    interval = 0...5
+    parse_result = SyntaxNode.new(input, interval)
+    
+    
+    parser.should_receive(:node_cache).at_least(:twice).and_return(node_cache)
+    @grammar.should_receive(:get_parsing_expression).once.with(@nonterminal).and_return(parsing_expression)
+    parsing_expression.should_receive(:parse_at).with(input, interval.begin, parser).and_return(parse_result)
+    
+    @nonterminal.parse_at(input, interval.begin, parser).should_equal parse_result
+    @nonterminal.parse_at(input, interval.begin, parser).should_equal parse_result
   end
 end
