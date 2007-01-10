@@ -37,6 +37,10 @@ context "The result of TerminalSymbol#parse_at for a matching input prefix at a 
   specify "has a text value matching the terminal symbol" do
     @result.text_value.should_eql @terminal.prefix
   end
+  
+  specify "is a kind of TerminalSyntaxNode" do
+    @result.should_be_a_kind_of TerminalSyntaxNode
+  end
 end
 
 context "The result of TerminalSymbol#parse_at for a non-matching input prefix at a given index" do
@@ -53,5 +57,25 @@ context "The result of TerminalSymbol#parse_at for a non-matching input prefix a
   
   specify "has an index equal to the site of the attempted parse" do
     @result.index.should_equal 0
+  end
+end
+
+context "A terminal symbol with a method defined in its node class" do
+  setup do
+    @terminal = TerminalSymbol.new("foo")
+    @terminal.node_class_eval do
+      def method
+      end
+    end
+  end
+  
+  specify "returns kinds of that method on a successful parse" do
+    input = @terminal.prefix
+    index = 0
+    parser = mock("parser")
+    
+    result = @terminal.parse_at(input, index, parser)
+    result.should_be_success
+    result.should_respond_to :method
   end
 end
