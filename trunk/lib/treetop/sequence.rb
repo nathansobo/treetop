@@ -1,9 +1,14 @@
 module Treetop
   class Sequence < CompositeParsingExpression
-    attr_reader :elements
+    attr_reader :elements, :node_class
     
     def initialize(elements)
+      @node_class = Class.new(SequenceSyntaxNode)
       @elements = elements
+    end
+    
+    def node_class_eval(&block)
+      node_class.class_eval &block
     end
     
     def parse_at(input, start_index, parser)
@@ -21,7 +26,7 @@ module Treetop
       end
       
       interval = start_index...next_index
-      return SequenceSyntaxNode.new(input, interval, results)
+      return node_class.new(input, interval, results)
     end
   end
 end
