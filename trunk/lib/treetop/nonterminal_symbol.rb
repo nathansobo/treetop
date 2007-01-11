@@ -1,5 +1,5 @@
 module Treetop
-  class NonterminalSymbol < AtomicParsingExpression
+  class NonterminalSymbol < NodePropagatingParsingExpression
     attr_reader :name, :grammar
     
     def initialize(name, grammar)

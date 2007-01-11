@@ -17,9 +17,9 @@ module Treetop
     end
   end
   
-  class AtomicParsingExpression < ParsingExpression
+  class NodeInstantiatingParsingExpression < ParsingExpression
   end
   
-  class CompositeParsingExpression < ParsingExpression
+  class NodePropagatingParsingExpression < ParsingExpression
   end
 end

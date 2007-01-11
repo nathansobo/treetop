@@ -10,10 +10,6 @@ context "A nonterminal symbol" do
     @nonterminal = NonterminalSymbol.new(:foo, @grammar)
   end
   
-  specify "is a kind of AtomicParsingExpression" do
-    @nonterminal.should_be_a_kind_of AtomicParsingExpression
-  end
-  
   specify "retains a reference to the grammar of which it's a member" do
     @nonterminal.grammar.should_equal(@grammar)
   end

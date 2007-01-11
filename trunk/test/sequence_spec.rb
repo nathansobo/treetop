@@ -9,11 +9,7 @@ context "A sequence parsing expression with one element" do
     @elt = mock("Parsing expression in sequence")
     @sequence = Sequence.new([@elt])
   end
-  
-  specify "is a kind of CompositeParsingExpression" do
-    @sequence.should_be_a_kind_of CompositeParsingExpression
-  end
-  
+    
   specify "attempts to parse its single element upon a call to parse_at" do
     setup_sequence_element_to_successfully_parse
     @sequence.parse_at(@input, @index, @parser)

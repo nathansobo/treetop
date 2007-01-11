@@ -1,5 +1,5 @@
 module Treetop
-  class Sequence < CompositeParsingExpression
+  class Sequence < NodeInstantiatingParsingExpression
     attr_reader :elements, :node_class
     
     def initialize(elements)

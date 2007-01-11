@@ -1,5 +1,5 @@
 module Treetop
-  class Predicate < CompositeParsingExpression
+  class Predicate < NodePropagatingParsingExpression
     attr_reader :expression
     
     def initialize(expression)

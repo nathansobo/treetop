@@ -1,5 +1,5 @@
 module Treetop
-  class TerminalSymbol < AtomicParsingExpression
+  class TerminalSymbol < NodeInstantiatingParsingExpression
     attr_accessor :prefix, :prefix_regex
     attr_reader :node_class
     

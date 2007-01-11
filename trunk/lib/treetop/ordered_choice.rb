@@ -1,5 +1,5 @@
 module Treetop
-  class OrderedChoice < CompositeParsingExpression
+  class OrderedChoice < NodePropagatingParsingExpression
     attr_reader :alternatives
     
     def initialize(alternatives)
