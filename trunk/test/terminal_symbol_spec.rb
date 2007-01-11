@@ -69,7 +69,7 @@ context "A terminal symbol with a method defined in its node class" do
     end
   end
   
-  specify "returns kinds of that method on a successful parse" do
+  specify "returns nodes that have that method on a successful parse" do
     input = @terminal.prefix
     index = 0
     parser = mock("parser")
