@@ -1,8 +1,9 @@
 module Treetop
-  class RepeatingParsingExpression < CompositeParsingExpression
+  class RepeatingParsingExpression < Sequence
     attr_reader :repeated_expression
     
     def initialize(repeated_expression)
+      super
       @repeated_expression = repeated_expression
     end
     
@@ -16,7 +17,7 @@ module Treetop
         next_index = result.interval.end
       end
       interval = start_index...next_index
-      return SequenceSyntaxNode.new(input, interval, results)
+      return node_class.new(input, interval, results)
     end
   end
 end
