@@ -3,12 +3,12 @@ module Treetop
     attr_reader :elements, :node_class
     
     def initialize(elements)
-      @node_class = Class.new(SequenceSyntaxNode)
+      super()
       @elements = elements
     end
     
-    def node_class_eval(&block)
-      node_class.class_eval &block
+    def node_superclass
+      SequenceSyntaxNode
     end
     
     def parse_at(input, start_index, parser)

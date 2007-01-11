@@ -8,9 +8,13 @@ module Treetop
     end
     
     def initialize(prefix)
-      @node_class = Class.new(TerminalSyntaxNode)
+      super()
       self.prefix = prefix
       self.prefix_regex = /^#{Regexp.escape(prefix)}/
+    end
+    
+    def node_superclass
+      TerminalSyntaxNode
     end
     
     def parse_at(input, start_index, parser)
@@ -21,10 +25,6 @@ module Treetop
       else
         return ParseFailure.new(start_index)
       end
-    end
-    
-    def node_class_eval(&block)
-      node_class.class_eval &block
-    end
+    end    
   end
 end
