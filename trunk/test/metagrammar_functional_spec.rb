@@ -4,28 +4,28 @@ require 'spec/runner'
 dir = File.dirname(__FILE__)
 require "#{dir}/spec_helper"
 
-context "A parsing rule for terminal symbols" do
+context "A grammar for .treetop protogrammars" do
   setup do
-    metagrammar = Grammar.new do
-      root :terminal_symbol
+    metagrammar = 
+      Grammar.new do
+        root :terminal_symbol
       
-      parsing_rule :terminal_symbol do
-        double_quoted_string_char =
-          seq(not('"'),
-              choice(seq('\\', '"'), anything))
-        double_quoted_string =
-          seq('"', zero_or_more(double_quoted_string_char), '"')
+        parsing_rule :terminal_symbol do
+          double_quoted_string_char =
+            seq(not('"'),
+                choice(seq('\\', '"'), anything))
+          double_quoted_string =
+            seq('"', zero_or_more(double_quoted_string_char), '"')
           
-        single_quoted_string_char =
-            seq(not("'"),
-                choice(seq("\\", "'"), anything))
-        single_quoted_string =
-            seq("'", zero_or_more(single_quoted_string_char), "'")
+          single_quoted_string_char =
+              seq(not("'"),
+                  choice(seq("\\", "'"), anything))
+          single_quoted_string =
+              seq("'", zero_or_more(single_quoted_string_char), "'")
         
-        choice(single_quoted_string, double_quoted_string)
+          choice(single_quoted_string, double_quoted_string)
       end
     end
-    
     @parser = metagrammar.new_parser
   end
   

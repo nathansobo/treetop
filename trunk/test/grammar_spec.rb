@@ -4,6 +4,16 @@ require 'spec/runner'
 dir = File.dirname(__FILE__)
 require "#{dir}/spec_helper"
 
+
+context "The Grammar class" do
+  specify "exposes a root method to be called by blocks passed to new that sets its root" do
+    Grammar.should_receive(:root=).with(:foo)
+    Grammar.new do
+      root :foo
+    end
+  end
+end
+
 context "A new grammar" do
   setup do
     @grammar = Grammar.new

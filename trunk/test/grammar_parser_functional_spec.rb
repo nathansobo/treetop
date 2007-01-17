@@ -4,19 +4,19 @@ require 'spec/runner'
 dir = File.dirname(__FILE__)
 require "#{dir}/spec_helper"
 
-context "The requirement of an arithmetic grammar file" do
+context "An arithmetic grammar defined via the parsing of arithmetic.treetop" do
   setup do
-    require_grammar "#{dir}/arithmetic"
+    Arithmetic = parse_grammar("#{dir}/arithmetic")
   end
   
-  specify "defines a constant to the constructed grammar based on the name of the grammar in the file" do
+  specify "is an instance of Grammar" do
     Arithmetic.should_be_an_instance_of Grammar
   end
 end
 
 context "A parser for an arithmetic grammar defined via a file" do
   setup do
-    require_grammar 'arithmetic'
+    Arithmetic = parse_grammar("#{dir}/arithmetic")
     @parser = Arithmetic.new_parser
   end
   
