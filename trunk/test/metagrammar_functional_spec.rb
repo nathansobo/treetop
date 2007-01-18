@@ -4,27 +4,38 @@ require 'spec/runner'
 dir = File.dirname(__FILE__)
 require "#{dir}/spec_helper"
 
-context "A grammar for .treetop protogrammars" do
+context "A grammar for treetop protogrammars" do
   setup do
     metagrammar = 
       Grammar.new do
         root :terminal_symbol
       
-        parsing_rule :terminal_symbol do
-          double_quoted_string_char =
-            seq(not('"'),
-                choice(seq('\\', '"'), anything))
-          double_quoted_string =
-            seq('"', zero_or_more(double_quoted_string_char), '"')
+        module TerminalSymbolExpressions
+          def terminal_symbol
+            choice(single_quoted_string, double_quoted_string)
+          end
           
-          single_quoted_string_char =
-              seq(not("'"),
-                  choice(seq("\\", "'"), anything))
-          single_quoted_string =
-              seq("'", zero_or_more(single_quoted_string_char), "'")
+          def double_quoted_string
+            seq('"', zero_or_more(double_quoted_string_char), '"')
+          end
+          
+          def double_quoted_string_char
+            seq(not('"'), choice(seq('\\', '"'), anything))
+          end
+          
+          def single_quoted_string
+            seq("'", zero_or_more(single_quoted_string_char), "'")
+          end
+          
+          def single_quoted_string_char
+            seq(not("'"), choice(seq("\\", "'"), anything))
+          end
+        end
         
-          choice(single_quoted_string, double_quoted_string)
-      end
+        parsing_rule :terminal_symbol do
+          extend TerminalSymbolExpressions
+          terminal_symbol
+        end
     end
     @parser = metagrammar.new_parser
   end
