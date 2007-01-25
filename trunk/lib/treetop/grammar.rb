@@ -1,10 +1,12 @@
 module Treetop
   class Grammar
-    attr_accessor :root
+    attr_accessor :root, :builder
     
-    def initialize
+    def initialize(&block)
       @parsing_rules = Hash.new
       @nonterminal_symbols = Hash.new
+      self.builder = GrammarBuilder.new(self)
+      build &block if block
     end
 
     def new_parser
@@ -23,6 +25,10 @@ module Treetop
     
     def get_parsing_expression(nonterminal_symbol)
       @parsing_rules[nonterminal_symbol.name].parsing_expression if @parsing_rules[nonterminal_symbol.name]
+    end
+    
+    def build(&block)
+      builder.build &block
     end
     
     private

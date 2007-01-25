@@ -10,8 +10,8 @@ context "A grammar for treetop protogrammars" do
       Grammar.new do
         root :terminal_symbol
       
-        module TerminalSymbolExpressions
-          def terminal_symbol
+        class TerminalSymbolBuilder
+          def build
             choice(single_quoted_string, double_quoted_string)
           end
           
@@ -32,11 +32,9 @@ context "A grammar for treetop protogrammars" do
           end
         end
         
-        parsing_rule :terminal_symbol do
-          extend TerminalSymbolExpressions
-          terminal_symbol
-        end
-    end
+        rule :terminal_symbol, TerminalSymbolBuilder
+        
+      end
     @parser = metagrammar.new_parser
   end
   

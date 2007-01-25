@@ -1,5 +1,5 @@
 grammar Arithmetic
-	module BinaryOperation
+  module BinaryOperation
 	  def left_arg
       elements[0]
     end
@@ -16,7 +16,7 @@ grammar Arithmetic
   rule additive
 		multitive "+" additive
 		{
-			include BinaryOperation
+		  include BinaryOperation
  		  def operator
          lambda { |x, y| x + y  }
 			end

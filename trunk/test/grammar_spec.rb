@@ -4,16 +4,6 @@ require 'spec/runner'
 dir = File.dirname(__FILE__)
 require "#{dir}/spec_helper"
 
-
-context "The Grammar class" do
-  specify "exposes a root method to be called by blocks passed to new that sets its root" do
-    Grammar.should_receive(:root=).with(:foo)
-    Grammar.new do
-      root :foo
-    end
-  end
-end
-
 context "A new grammar" do
   setup do
     @grammar = Grammar.new
@@ -56,6 +46,33 @@ context "A new grammar" do
     @grammar.add_parsing_rule(nonterminal, expression)
     @grammar.get_parsing_expression(nonterminal).should_equal expression
   end
+  
+  specify "has a builder" do
+    @grammar.builder.should_not_be_nil
+  end
+  
+  specify "proxies calls to #build to its associated builder" do
+    @grammar.builder.should_receive(:foo)
+    @grammar.build do
+      foo
+    end
+  end
+end
+
+context "A Grammar class" do
+  specify "calls build on a new instance with a block if it is provided to #new" do
+    builder_mock = mock("builder")
+    GrammarBuilder.should_receive(:new).and_return(builder_mock)
+    builder_mock.should_receive(:build)
+    Grammar.new { }
+  end
+  
+  specify "does not call build on a new instance if no block is provided to #new" do
+    builder_mock = mock("builder")
+    GrammarBuilder.should_receive(:new).and_return(builder_mock)
+    builder_mock.should_not_receive(:build)
+    Grammar.new
+  end
 end
 
 context "A grammar with a parsing rule" do
@@ -80,6 +97,15 @@ context "A grammar with a parsing rule" do
     @grammar.root = alt_root
     @grammar.root.should_equal alt_root
   end
+end
+
+context "The Grammar class" do
+    specify "provides access to its root method from within blocks passed to its constructor" do
+      Grammar.should_receive(:root).with(:foo)
+      Grammar.new do
+        root :foo
+      end
+    end
 end
 
 def make_parsing_rule
