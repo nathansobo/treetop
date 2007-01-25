@@ -1,3 +1,5 @@
+#require file
+
 dir = File.dirname(__FILE__)
 require "#{dir}/treetop/grammar"
 require "#{dir}/treetop/parser"
