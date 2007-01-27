@@ -59,7 +59,7 @@ context "A new grammar" do
   end
 end
 
-context "A Grammar class" do
+context "The Grammar class" do
   specify "calls build on a new instance with a block if it is provided to #new" do
     builder_mock = mock("builder")
     GrammarBuilder.should_receive(:new).and_return(builder_mock)
@@ -97,15 +97,6 @@ context "A grammar with a parsing rule" do
     @grammar.root = alt_root
     @grammar.root.should_equal alt_root
   end
-end
-
-context "The Grammar class" do
-    specify "provides access to its root method from within blocks passed to its constructor" do
-      Grammar.should_receive(:root).with(:foo)
-      Grammar.new do
-        root :foo
-      end
-    end
 end
 
 def make_parsing_rule

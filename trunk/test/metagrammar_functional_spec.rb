@@ -20,7 +20,7 @@ context "A grammar for treetop protogrammars" do
           end
           
           def double_quoted_string_char
-            seq(not('"'), choice(seq('\\', '"'), anything))
+            seq(notp('"'), choice(seq('\\', '"'), anything))
           end
           
           def single_quoted_string
@@ -28,11 +28,11 @@ context "A grammar for treetop protogrammars" do
           end
           
           def single_quoted_string_char
-            seq(not("'"), choice(seq("\\", "'"), anything))
+            seq(notp("'"), choice(seq("\\", "'"), anything))
           end
         end
         
-        rule :terminal_symbol, TerminalSymbolBuilder
+        rule :terminal_symbol, TerminalSymbolBuilder.new
         
       end
     @parser = metagrammar.new_parser

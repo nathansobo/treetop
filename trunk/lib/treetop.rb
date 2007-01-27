@@ -1,6 +1,7 @@
 dir = File.dirname(__FILE__)
 require "#{dir}/treetop/grammar"
 require "#{dir}/treetop/grammar_builder"
+require "#{dir}/treetop/parsing_expression_builder_helper"
 require "#{dir}/treetop/parser"
 require "#{dir}/treetop/parsing_rule"
 require "#{dir}/treetop/parsing_expression"
