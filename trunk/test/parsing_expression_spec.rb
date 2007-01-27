@@ -27,9 +27,16 @@ context "A parsing expression" do
     optional.expression.should_equal @expression
   end
   
-  specify "returns an AndPredicate parsing expression with itself as the repeated expression on call to one_or_more" do
+  specify "returns an AndPredicate parsing expression with itself as the predicated expression on call to and_predicate" do
     and_predicate = @expression.and_predicate
     and_predicate.should_be_an_instance_of AndPredicate
     and_predicate.expression.should_equal @expression
   end
+  
+  specify "returns a NotPredicate parsing expression with itself as the predicated expression on call to not_predicate" do
+    and_predicate = @expression.not_predicate
+    and_predicate.should_be_an_instance_of NotPredicate
+    and_predicate.expression.should_equal @expression
+  end
+  
 end

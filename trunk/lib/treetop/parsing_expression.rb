@@ -15,6 +15,10 @@ module Treetop
     def and_predicate
       AndPredicate.new(self)
     end
+    
+    def not_predicate
+      NotPredicate.new(self)
+    end
   end
   
   class NodeInstantiatingParsingExpression < ParsingExpression

@@ -15,6 +15,7 @@ class GrammarBuilder
   
   def rule(name, builder)
     nonterminal_symbol = grammar.nonterminal_symbol(name)
+    builder.extend ParsingExpressionBuilderHelper
     parsing_expression = builder.build
     grammar.add_parsing_rule(nonterminal_symbol, parsing_expression)
   end
