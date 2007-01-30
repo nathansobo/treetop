@@ -27,6 +27,10 @@ module ParsingExpressionBuilderHelper
     AnythingSymbol.new
   end
   
+  def char_class(char_class_string)
+    CharacterClass.new(char_class_string)
+  end
+  
   def notp(expression)
     exp(expression).not_predicate
   end

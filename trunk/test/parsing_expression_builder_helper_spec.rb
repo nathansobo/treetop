@@ -49,6 +49,12 @@ context "A builder object extended with the ParsingExpressionBuilderHelper modul
     @builder.any.should_be_an_instance_of AnythingSymbol
   end
   
+  specify "implements a #char_class method that returns a CharacterClass based on its argument" do
+    char_class = @builder.char_class('A-Z')
+    char_class.should_be_an_instance_of CharacterClass
+    char_class.prefix_regex.should_eql(/[A-Z]/)
+  end
+  
   specify "implements a #notp method that creates a NotPredicate with the value of #exp for its argument" do
     expression = mock("parsing expression")
     not_predicate = mock("not predicate")
@@ -83,5 +89,5 @@ context "A builder object extended with the ParsingExpressionBuilderHelper modul
     zero_or_more = @builder.zero_or_more(:foo)
     zero_or_more.should_be_an_instance_of ZeroOrMore
     zero_or_more.repeated_expression.should_eql(@builder.exp(:foo))
-  end
+  end  
 end
