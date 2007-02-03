@@ -6,6 +6,7 @@ module Treetop
         rule :nonterminal_symbol, NonterminalSymbolBuilder.new  
         rule :terminal_symbol, TerminalSymbolBuilder.new
         rule :character_class, CharacterClassBuilder.new
+        rule :anything_symbol, AnythingSymbolBuilder.new
       end
     end
     
@@ -40,7 +41,7 @@ module Treetop
     end
     
     class TerminalSymbolBuilder
-      module TerminalSymbolSyntaxNode
+      module TerminalStringSyntaxNode
         def prefix
           elements[1].text_value
         end
@@ -51,12 +52,12 @@ module Treetop
       end
       
       def build
-        choice(single_quoted_string, double_quoted_string)
+        choice(single_quoted_string, double_quoted_string, :character_class, :anything_symbol)
       end
       
       def double_quoted_string
         seq('"', zero_or_more(double_quoted_string_char), '"') do
-          include TerminalSymbolSyntaxNode
+          include TerminalStringSyntaxNode
         end
       end
       
@@ -66,7 +67,7 @@ module Treetop
       
       def single_quoted_string
         seq("'", zero_or_more(single_quoted_string_char), "'") do
-          include TerminalSymbolSyntaxNode
+          include TerminalStringSyntaxNode
         end
       end
       
@@ -94,6 +95,16 @@ module Treetop
       
       def char_class_char
         seq(notp(']'), choice(escaped(']'), any))
+      end
+    end
+
+    class AnythingSymbolBuilder
+      def build
+        exp(".") do
+          def value
+            AnythingSymbol.new
+          end
+        end
       end
     end
   end

@@ -50,7 +50,11 @@ context "A new grammar" do
   specify "has a builder" do
     @grammar.builder.should_not_be_nil
   end
-  
+
+  specify "assigns the builders grammar to itself" do
+    @grammar.builder.grammar.should_equal @grammar
+  end
+
   specify "proxies calls to #build to its associated builder" do
     @grammar.builder.should_receive(:foo)
     @grammar.build do

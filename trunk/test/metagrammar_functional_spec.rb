@@ -39,6 +39,12 @@ context "A grammar for treetop grammars" do
     char_class.parse_at(']', 0, parser).should_be_success    
   end
   
+  specify "parses . as an AnythingSymbol" do
+    @grammar.root = @grammar.nonterminal_symbol(:anything_symbol)
+    char_class = @parser.parse('.').value
+    char_class.should_be_an_instance_of AnythingSymbol
+  end
+  
   specify "parses an unquoted string as a NonterminalSymbol and installs it in the grammar passed to value on the resulting syntax node" do
     @grammar.root = @grammar.nonterminal_symbol(:nonterminal_symbol)
     syntax_node = @parser.parse('foo')    

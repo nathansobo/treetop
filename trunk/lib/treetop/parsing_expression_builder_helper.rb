@@ -9,18 +9,20 @@ module ParsingExpressionBuilderHelper
     TerminalSymbol.new(string)
   end
 
-  def exp(object)
-    case object
-    when String
-      term(object)
-    when Symbol
-      nonterm(object)
-    when ParsingExpression
-      object
-    when Array
-      object.map { |elt| exp(elt) }
-    else raise "Argument must be an instance of String, Symbol, or ParsingExpression"
-    end
+  def exp(object, &block)
+    exp = case object
+          when String
+            term(object)
+          when Symbol
+            nonterm(object)
+          when ParsingExpression
+            object
+          when Array
+            object.map { |elt| exp(elt) }
+          else raise "Argument must be an instance of String, Symbol, or ParsingExpression"
+          end
+    exp.node_class_eval &block if block
+    exp
   end
   
   def any

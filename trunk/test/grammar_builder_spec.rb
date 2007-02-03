@@ -29,12 +29,13 @@ context "A Grammar builder" do
   
   specify "on a call to #rule, creates a parsing rule that pairs a nonterminal symbol named after " +
           "the first argument with the parsing expression returned by a call to #build on the builder " +
-          "passed as its second argument" do
+          "passed as its second argument, after setting the builder's grammar" do
     
     nonterminal = @grammar.nonterminal_symbol(:foo)
 
-    expression_builder = mock("expression builder")  
-    parsing_expression = mock("parsing expression")  
+    expression_builder = mock("expression builder")
+    parsing_expression = mock("parsing expression")
+    expression_builder.should_receive(:grammar=).with(@grammar)
     expression_builder.should_receive(:build).and_return(parsing_expression)
     
     @grammar.should_receive(:add_parsing_rule).with(nonterminal, parsing_expression)
