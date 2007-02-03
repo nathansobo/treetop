@@ -24,6 +24,21 @@ context "A grammar for treetop grammars" do
     terminal.prefix.should_eql 'foo'
   end
   
+  specify "parses a bracketed string as a CharacterClass" do
+    @grammar.root = @grammar.nonterminal_symbol(:character_class)
+    char_class = @parser.parse('[A-C123\\]]').value
+    char_class.should_be_an_instance_of CharacterClass
+    
+    parser = mock("parser")
+    char_class.parse_at('A', 0, parser).should_be_success
+    char_class.parse_at('B', 0, parser).should_be_success
+    char_class.parse_at('C', 0, parser).should_be_success
+    char_class.parse_at('1', 0, parser).should_be_success
+    char_class.parse_at('2', 0, parser).should_be_success
+    char_class.parse_at('3', 0, parser).should_be_success
+    char_class.parse_at(']', 0, parser).should_be_success    
+  end
+  
   specify "parses an unquoted string as a NonterminalSymbol and installs it in the grammar passed to value on the resulting syntax node" do
     @grammar.root = @grammar.nonterminal_symbol(:nonterminal_symbol)
     syntax_node = @parser.parse('foo')    

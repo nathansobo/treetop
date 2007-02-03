@@ -5,12 +5,13 @@ module Treetop
       build do
         rule :nonterminal_symbol, NonterminalSymbolBuilder.new  
         rule :terminal_symbol, TerminalSymbolBuilder.new
+        rule :character_class, CharacterClassBuilder.new
       end
     end
     
-    class NonterminalSymbolBuilder  
+    class NonterminalSymbolBuilder
       def build
-        nonterminal_symbol
+        nonterminal_symbol 
       end
 
       def nonterminal_symbol
@@ -71,6 +72,28 @@ module Treetop
       
       def single_quoted_string_char
         seq(notp("'"), choice(seq("\\", "'"), any))
+      end
+    end
+
+    class CharacterClassBuilder
+      def build
+        character_class
+      end
+      
+      def character_class
+        seq('[', zero_or_more(char_class_char), ']')  do
+          def value
+            CharacterClass.new(characters)
+          end
+          
+          def characters
+            elements[1].text_value
+          end
+        end
+      end
+      
+      def char_class_char
+        seq(notp(']'), choice(seq('\\', ']'), any))
       end
     end
   end
