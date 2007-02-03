@@ -61,7 +61,7 @@ module Treetop
       end
       
       def double_quoted_string_char
-        seq(notp('"'), choice(seq('\\', '"'), any))
+        seq(notp('"'), choice(escaped('"'), any))
       end
       
       def single_quoted_string
@@ -71,7 +71,7 @@ module Treetop
       end
       
       def single_quoted_string_char
-        seq(notp("'"), choice(seq("\\", "'"), any))
+        seq(notp("'"), choice(escaped("'"), any))
       end
     end
 
@@ -93,7 +93,7 @@ module Treetop
       end
       
       def char_class_char
-        seq(notp(']'), choice(seq('\\', ']'), any))
+        seq(notp(']'), choice(escaped(']'), any))
       end
     end
   end

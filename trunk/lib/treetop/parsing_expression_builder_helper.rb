@@ -48,4 +48,8 @@ module ParsingExpressionBuilderHelper
   def zero_or_more(expression)
     exp(expression).zero_or_more
   end
+  
+  def escaped(character)
+    seq('\\', character)
+  end
 end
