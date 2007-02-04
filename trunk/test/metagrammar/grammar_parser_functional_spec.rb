@@ -2,7 +2,7 @@ require 'rubygems'
 require 'spec/runner'
 
 dir = File.dirname(__FILE__)
-require "#{dir}/spec_helper"
+require "#{dir}/../spec_helper"
 
 context "An arithmetic grammar defined via the parsing of arithmetic.treetop" do
   setup do

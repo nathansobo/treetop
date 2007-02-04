@@ -2,7 +2,7 @@ require 'rubygems'
 require 'spec/runner'
 
 dir = File.dirname(__FILE__)
-require "#{dir}/spec_helper"
+require "#{dir}/../spec_helper"
 
 context "An ordered choice parsing expression with three alternatives" do
   setup do

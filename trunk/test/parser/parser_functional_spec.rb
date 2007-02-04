@@ -2,7 +2,7 @@ require 'rubygems'
 require 'spec/runner'
 
 dir = File.dirname(__FILE__)
-require "#{dir}/spec_helper"
+require "#{dir}/../spec_helper"
 
 context "A parser for a grammar that contains only atomic symbols" do
   setup do

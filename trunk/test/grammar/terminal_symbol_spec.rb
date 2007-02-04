@@ -2,7 +2,7 @@ require 'rubygems'
 require 'spec/runner'
 
 dir = File.dirname(__FILE__)
-require "#{dir}/spec_helper"
+require "#{dir}/../spec_helper"
 
 context "A terminal symbol" do
   setup do

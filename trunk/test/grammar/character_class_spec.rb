@@ -2,7 +2,7 @@ require 'rubygems'
 require 'spec/runner'
 
 dir = File.dirname(__FILE__)
-require "#{dir}/spec_helper"
+require "#{dir}/../spec_helper"
 
 context "A character class with the range A-Z" do
   setup do
