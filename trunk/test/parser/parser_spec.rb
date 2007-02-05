@@ -35,7 +35,17 @@ context "A new parser" do
     @parser.parse(input).should_be_failure
   end
   
-  specify "has a node cache" do
+  specify "creates a new node cache on call to parse" do
+    input = "foo"
+    root_nonterminal = mock("Root nonterminal")
+    parse_result = mock("Parse result")
+    parse_result.should_receive(:success?).and_return(true)
+    parse_result.should_receive(:interval).and_return(0...3)
+    
+    root_nonterminal.should_receive(:parse_at).with(input, 0, @parser).and_return(parse_result)
+    @grammar.should_receive(:root).and_return(root_nonterminal)
+
+    @parser.parse(input)
     @parser.node_cache.should_be_an_instance_of NodeCache
   end
 end

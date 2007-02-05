@@ -52,7 +52,7 @@ context "A builder object extended with the ParsingExpressionBuilderHelper modul
   specify "implements a #char_class method that returns a CharacterClass based on its argument" do
     char_class = @builder.char_class('A-Z')
     char_class.should_be_an_instance_of CharacterClass
-    char_class.prefix_regex.should_eql(/[A-Z]/)
+    char_class.prefix_regex.should_eql(/^[A-Z]/)
   end
   
   specify "implements a #notp method that creates a NotPredicate with the value of #exp for its argument" do
@@ -89,5 +89,12 @@ context "A builder object extended with the ParsingExpressionBuilderHelper modul
     zero_or_more = @builder.zero_or_more(:foo)
     zero_or_more.should_be_an_instance_of ZeroOrMore
     zero_or_more.repeated_expression.should_eql(@builder.exp(:foo))
+  end
+  
+  specify "implements a #one_or_more method that returns one_or_more of exp(argument)" do
+    one_or_more = @builder.one_or_more(:foo)
+    one_or_more.should_be_an_instance_of OneOrMore
+    one_or_more.repeated_expression.should_eql(@builder.exp(:foo))
   end  
+  
 end

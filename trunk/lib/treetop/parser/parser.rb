@@ -4,11 +4,11 @@ module Treetop
     
     def initialize(grammar)
       @grammar = grammar
-      @node_cache = NodeCache.new
     end
 
     
     def parse(input)
+      @node_cache = NodeCache.new
       result = grammar.root.parse_at(input, 0, self)
       if result.success? and result.interval.end != input.size
         return ParseFailure.new(result.interval.end)

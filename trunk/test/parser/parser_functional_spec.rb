@@ -251,3 +251,17 @@ context "A parser for a simple arithmetic grammar with method definitions" do
     @parser.parse("(34+(44*(6*(67+(5)))))").value.should_equal 19042
   end
 end
+
+context "A parser for grammar with a single terminal symbol" do
+  setup do
+    grammar = Grammar.new do
+      rule :foo, exp("foo")
+    end
+    @parser = grammar.new_parser
+  end
+  
+  specify "parses a matching input successfully after failing to parse nonmatching input" do
+    @parser.parse("bar").should_be_failure
+    @parser.parse("foo").should_be_success
+  end
+end

@@ -1,7 +1,7 @@
 module Treetop
   class AnythingSymbol < TerminalSymbol
     def initialize
-      super('.')
+      super('^.')
       self.prefix_regex = /./
     end
   end

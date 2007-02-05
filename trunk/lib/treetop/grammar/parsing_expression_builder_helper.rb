@@ -50,6 +50,11 @@ module ParsingExpressionBuilderHelper
   def zero_or_more(expression)
     exp(expression).zero_or_more
   end
+
+  def one_or_more(expression)
+    exp(expression).one_or_more
+  end
+
   
   def escaped(character)
     seq('\\', character)

@@ -16,6 +16,10 @@ context "A terminal symbol" do
     result = @terminal.parse_at("---foo", 3, mock("Parser"))
     result.interval.should_eql 3...6
   end
+  
+  specify "shouldn't parse nonmatching input at the index even if a match occurs later in the input" do
+    @terminal.parse_at(" foo", 0, mock("parser")).should_be_failure
+  end
 end
 
 context "The result of TerminalSymbol#parse_at for a matching input prefix at a given index" do

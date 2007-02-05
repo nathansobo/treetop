@@ -1,9 +1,10 @@
 require 'rubygems'
 require 'spec/runner'
 
+
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
-
+=begin
 context "An arithmetic grammar defined via the parsing of arithmetic.treetop" do
   setup do
     Arithmetic = parse_grammar("#{dir}/arithmetic")
@@ -44,3 +45,4 @@ context "A parser for an arithmetic grammar defined via a file" do
     @parser.parse("(34+(44*(6*(67+(5)))))").value.should_equal 19042
   end
 end
+=end
