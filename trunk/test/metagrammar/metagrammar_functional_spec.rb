@@ -97,4 +97,19 @@ context "A grammar for treetop grammars" do
     sequence.elements[2].should_be_an_instance_of NonterminalSymbol
     sequence.elements[2].name.should_equal :nonterminal2
   end
+  
+  specify "parses a series of / separated terminals and nonterminals as an ordered choice" do
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:ordered_choice)
+    syntax_node = @parser.parse('"terminal" / nonterminal1 / nonterminal2')
+
+    grammar = Grammar.new
+    choice = syntax_node.value(grammar)
+    choice.should_be_an_instance_of OrderedChoice
+    choice.alternatives[0].should_be_an_instance_of TerminalSymbol
+    choice.alternatives[0].prefix.should_eql "terminal"
+    choice.alternatives[1].should_be_an_instance_of NonterminalSymbol
+    choice.alternatives[1].name.should_equal :nonterminal1
+    choice.alternatives[2].should_be_an_instance_of NonterminalSymbol
+    choice.alternatives[2].name.should_equal :nonterminal2
+  end
 end
