@@ -95,6 +95,5 @@ context "A builder object extended with the ParsingExpressionBuilderHelper modul
     one_or_more = @builder.one_or_more(:foo)
     one_or_more.should_be_an_instance_of OneOrMore
     one_or_more.repeated_expression.should_eql(@builder.exp(:foo))
-  end  
-  
+  end
 end

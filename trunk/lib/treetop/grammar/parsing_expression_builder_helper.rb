@@ -59,4 +59,32 @@ module ParsingExpressionBuilderHelper
   def escaped(character)
     seq('\\', character)
   end
+  
+  def delimited_sequence(expression, delimiter, &block)
+    expression = exp(expression)
+    delimiter = exp(delimiter)
+    
+    leading_element = seq(expression, delimiter) do
+      def value(grammar)
+        elements[0].value(grammar)
+      end
+    end
+    
+    delimited_sequence = seq(one_or_more(leading_element), expression) do
+      def element_values(grammar)
+        leading_element_values(grammar) + [trailing_element_value(grammar)]
+      end
+      
+      def leading_element_values(grammar)
+        elements[0].elements.map { |elt| elt.value(grammar) }
+      end
+      
+      def trailing_element_value(grammar)
+        elements[1].value(grammar)
+      end
+    end
+    
+    delimited_sequence.node_class_eval &block if block
+    return delimited_sequence
+  end
 end
