@@ -112,4 +112,21 @@ context "A grammar for treetop grammars" do
     choice.alternatives[2].should_be_an_instance_of NonterminalSymbol
     choice.alternatives[2].name.should_equal :nonterminal2
   end
+  
+  specify "parses any kind of parsing expression with the parsing_expression rule" do
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:parsing_expression)
+    
+    assert_parses_as '"terminal" / nonterminal1 / nonterminal2', OrderedChoice
+    assert_parses_as '"terminal" nonterminal1 nonterminal2', Sequence
+    assert_parses_as "'foo'", TerminalSymbol
+    assert_parses_as '"foo"', TerminalSymbol
+    assert_parses_as 'foo', NonterminalSymbol
+    assert_parses_as '.', AnythingSymbol
+    assert_parses_as '[abc]', CharacterClass    
+  end
+  
+  def assert_parses_as(input, syntax_node_subclass)
+    grammar = Grammar.new
+    @parser.parse(input).value(grammar).should_be_an_instance_of syntax_node_subclass
+  end
 end

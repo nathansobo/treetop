@@ -61,6 +61,10 @@ context "A new grammar" do
       foo
     end
   end
+  
+  specify "raises an exception if a nonexistent rule is accessed" do
+    lambda { @grammar.get_parsing_expression(@grammar.nonterminal_symbol(:nonexistent)) }.should_raise
+  end
 end
 
 context "The Grammar class" do

@@ -14,7 +14,7 @@ module Treetop
         result = parsing_expression.parse_at(input, start_index, parser)
         parser.node_cache.store_node(self, result)
         return result
-      end 
+      end
     end
     
     def parsing_expression
