@@ -7,5 +7,9 @@ module Treetop
         return failure_at(start_index)
       end
     end
+    
+    def to_s
+      "&(#{expression.to_s})"
+    end
   end
 end

@@ -22,4 +22,8 @@ context "An optional terminal symbol" do
     result.should_be_a_kind_of TerminalSyntaxNode
     result.text_value.should_eql @terminal.prefix
   end
+  
+  specify "has a string representation" do
+    @optional.to_s.should == '("foo")?'
+  end
 end

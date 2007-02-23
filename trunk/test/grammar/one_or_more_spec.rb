@@ -44,6 +44,10 @@ context "One-or-more of a terminal symbol" do
     result.elements.size.should_equal 5
     result.interval.end.should_equal (index + (@terminal.prefix.size * 5))
   end
+  
+  specify "has a string representation" do
+    @one_or_more.to_s.should == '("foo")+'
+  end
 end
 
 

@@ -1,5 +1,9 @@
 module Treetop
   class ParsingExpression
+    def failure_at(index)
+      ParseFailure.new(index, self)
+    end
+    
     def zero_or_more
       ZeroOrMore.new(self)
     end
@@ -18,6 +22,10 @@ module Treetop
     
     def not_predicate
       NotPredicate.new(self)
+    end
+    
+    def parenthesize(string)
+      "(#{string})"
     end
   end
   

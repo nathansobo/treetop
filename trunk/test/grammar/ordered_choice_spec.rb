@@ -26,4 +26,8 @@ context "An ordered choice parsing expression with three alternatives" do
     nonmatching_input = "bonk"
     @choice.parse_at(nonmatching_input, 0, mock("Parser")).should_be_failure
   end
+  
+  specify "has a string representation" do
+    @choice.to_s.should == '("foo" / "bar" / "baz")'
+  end
 end

@@ -8,4 +8,8 @@ module Treetop
       end
     end
   end
+  
+  def to_s
+    "!(#{expression.to_s})"
+  end
 end

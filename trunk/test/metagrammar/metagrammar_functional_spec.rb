@@ -1,6 +1,9 @@
 require 'rubygems'
 require 'spec/runner'
 
+require 'ruby-debug'
+Debugger.start
+
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
@@ -9,7 +12,7 @@ context "A grammar for treetop grammars" do
     @metagrammar = Metagrammar.new
     @parser = @metagrammar.new_parser
   end
-  
+
   specify "parses a single-quoted string as a TerminalSymbol with the correct prefix value" do
     @metagrammar.root = @metagrammar.nonterminal_symbol(:terminal_symbol)
     terminal = @parser.parse("'foo'").value
@@ -56,7 +59,7 @@ context "A grammar for treetop grammars" do
     grammar.nonterminal_symbol(:foo).should_equal(nonterminal)
   end
   
-  specify "parses a nonterminal, string terminal, anything character, or character class with they primary parsing rule" do
+  specify "parses a nonterminal, string terminal, anything character, or character class with the primary parsing rule" do
     @metagrammar.root = @metagrammar.nonterminal_symbol(:primary)
     grammar = Grammar.new
 
@@ -113,18 +116,27 @@ context "A grammar for treetop grammars" do
     choice.alternatives[2].name.should_equal :nonterminal2
   end
   
-  specify "parses any kind of parsing expression with the parsing_expression rule" do
-    @metagrammar.root = @metagrammar.nonterminal_symbol(:parsing_expression)
+  specify "parses any kind of parsing expression with the ordered choice rule" do
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:ordered_choice)
     
     assert_parses_as '"terminal" / nonterminal1 / nonterminal2', OrderedChoice
     assert_parses_as '"terminal" nonterminal1 nonterminal2', Sequence
     assert_parses_as "'foo'", TerminalSymbol
+  
     assert_parses_as '"foo"', TerminalSymbol
     assert_parses_as 'foo', NonterminalSymbol
     assert_parses_as '.', AnythingSymbol
-    assert_parses_as '[abc]', CharacterClass    
+    assert_parses_as '[abc]', CharacterClass
   end
-  
+
+  specify "parses sequences with higher precedence than ordered choices" do
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:ordered_choice)
+    grammar = Grammar.new
+        
+    value = @parser.parse(input).value(grammar)
+    value.should_be_an_instance_of OrderedChoice
+  end
+
   def assert_parses_as(input, syntax_node_subclass)
     grammar = Grammar.new
     @parser.parse(input).value(grammar).should_be_an_instance_of syntax_node_subclass

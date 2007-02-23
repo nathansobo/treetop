@@ -45,4 +45,8 @@ context "A nonterminal symbol" do
     @nonterminal.parse_at(input, interval.begin, parser).should_equal parse_result
     @nonterminal.parse_at(input, interval.begin, parser).should_equal parse_result
   end
+  
+  specify "has a string representation" do
+    @nonterminal.to_s.should == 'foo'
+  end
 end

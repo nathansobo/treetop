@@ -20,5 +20,9 @@ module Treetop
     def parsing_expression
       grammar.get_parsing_expression(self)
     end
+    
+    def to_s
+      name.to_s
+    end
   end
 end

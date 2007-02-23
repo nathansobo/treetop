@@ -23,9 +23,13 @@ context "A !-predicate for a TerminalSymbol" do
     result.should_be_success
     result.interval.end.should_equal index
   end
+  
+  specify "has a string representation" do
+    @not_predicate.to_s.should == '!("foo")'
+  end
 end
 
-context "A sequence with terminal symbol followed by an &-predicate on another terminal symbol" do
+context "A sequence with terminal symbol followed by a !-predicate on another terminal symbol" do
   setup do
     @terminal = TerminalSymbol.new("foo")
     @not_predicate = NotPredicate.new(TerminalSymbol.new("bar"))

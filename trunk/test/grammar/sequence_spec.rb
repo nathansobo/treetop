@@ -68,6 +68,10 @@ context "A sequence parsing expression with multiple terminal symbols as element
     (result.elements.collect {|elt| elt.text_value}).should_eql @elts
     result.interval.end.should_equal index + @elts.join.size
   end
+  
+  specify "has a string representation" do
+    @sequence.to_s.should == '("foo" "bar" "baz")'
+  end
 end
 
 context "A sequence parsing expression with one element and a method defined in its node class" do

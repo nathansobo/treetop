@@ -11,10 +11,6 @@ module Treetop
       expression.parse_at(input, start_index, parser).success?
     end
     
-    def failure_at(index)
-      ParseFailure.new(index)
-    end
-    
     def success_at(index, input)      
       return SyntaxNode.new(input, index...index)
     end

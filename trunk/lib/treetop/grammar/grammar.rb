@@ -24,7 +24,11 @@ module Treetop
     end
     
     def get_parsing_expression(nonterminal_symbol)
-      @parsing_rules[nonterminal_symbol.name].parsing_expression if @parsing_rules[nonterminal_symbol.name]
+      if @parsing_rules[nonterminal_symbol.name]
+        @parsing_rules[nonterminal_symbol.name].parsing_expression
+      else
+        raise "No parsing rule found named #{nonterminal_symbol}."
+      end
     end
     
     def build(&block)

@@ -22,6 +22,10 @@ context "An &-predication on a terminal symbol" do
     input = "baz"
     @and_predicate.parse_at(input, 0, mock("Parser")).should_be_failure
   end
+  
+  specify "has a string representation" do
+    @and_predicate.to_s.should == '&("foo")'
+  end
 end
 
 context "A sequence with terminal symbol followed by an &-predicate on another terminal symbol" do

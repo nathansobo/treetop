@@ -16,4 +16,8 @@ context "An anything symbol (.)" do
       @anything.parse_at(char, 0, mock("parser")).should_be_success
     end
   end
+  
+  specify "has a string representation" do
+    @anything.to_s.should == '.'
+  end
 end

@@ -18,7 +18,7 @@ module Treetop
       for elt in elements
         result = elt.parse_at(input, next_index, parser)
         if result.is_a? ParseFailure
-          return ParseFailure.new(start_index)
+          return failure_at(start_index)
         else
           results << result
           next_index = result.interval.end
@@ -27,6 +27,10 @@ module Treetop
       
       interval = start_index...next_index
       return node_class.new(input, interval, results)
+    end
+    
+    def to_s
+      parenthesize((@elements.collect {|elt| elt.to_s}).join(" "))
     end
   end
 end

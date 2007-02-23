@@ -34,7 +34,7 @@ context "Zero-or-more of a terminal symbol" do
     result = @zero_or_more.parse_at(input, index, mock("Parser"))
     result.should_be_a_kind_of SequenceSyntaxNode
     result.elements.size.should_equal 5
-    result.interval.end.should_equal (index + (@terminal.prefix.size * 5))
+    result.interval.end.should_equal(index + (@terminal.prefix.size * 5))
   end
   
   specify "correctly matches multiples not starting at index 0" do
@@ -43,7 +43,11 @@ context "Zero-or-more of a terminal symbol" do
     result = @zero_or_more.parse_at(input, index, mock("Parser"))
     result.should_be_a_kind_of SequenceSyntaxNode
     result.elements.size.should_equal 5
-    result.interval.end.should_equal (index + (@terminal.prefix.size * 5))
+    result.interval.end.should_equal(index + (@terminal.prefix.size * 5))
+  end
+  
+  specify "has a string representation" do
+    @zero_or_more.to_s.should == '("foo")*'
   end
 end
 

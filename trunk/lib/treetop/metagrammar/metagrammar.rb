@@ -3,7 +3,7 @@ module Treetop
     def initialize
       super
       build do
-        rule :primary, PrimaryBuilder.new        
+        rule :primary, PrimaryBuilder.new
         rule :nonterminal_symbol, NonterminalSymbolBuilder.new  
         rule :terminal_symbol, TerminalSymbolBuilder.new
         rule :character_class, CharacterClassBuilder.new

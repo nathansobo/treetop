@@ -7,7 +7,8 @@ require "#{dir}/../spec_helper"
 context "An instance of ParseFailure" do
   setup do
     @index = 0
-    @parse_failure = ParseFailure.new(@index)
+    @expression = mock("expression")
+    @parse_failure = ParseFailure.new(@index, @expression)
   end
   
   specify "should be failure" do
@@ -20,5 +21,10 @@ context "An instance of ParseFailure" do
   
   specify "has a zero length interval at its index" do
     @parse_failure.interval.should_eql @index...@index
+  end
+  
+  specify "returns the expression that failed if it was supplied as the " +
+          "second argument to initialize" do
+    @parse_failure.expression.should == @expression
   end
 end

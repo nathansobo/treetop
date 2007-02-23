@@ -23,8 +23,12 @@ module Treetop
         match_interval = start_index...(match.end(0) + start_index)
         return node_class.new(input, match_interval)
       else
-        return ParseFailure.new(start_index)
+        return failure_at(start_index)
       end
-    end    
+    end
+    
+    def to_s
+      "\"#{prefix}\""
+    end
   end
 end

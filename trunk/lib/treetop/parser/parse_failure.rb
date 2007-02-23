@@ -1,9 +1,10 @@
 module Treetop
   class ParseFailure
-    attr_reader :index
+    attr_reader :index, :expression
     
-    def initialize(index)
+    def initialize(index, expression = nil)
       @index = index
+      @expression = expression
     end
     
     def success?

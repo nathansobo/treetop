@@ -39,4 +39,8 @@ context "A parsing expression" do
     and_predicate.expression.should_equal @expression
   end
   
+  specify "returns a parse failure at a given index with a reference to itself as the failing expression on call to failure_at" do
+    @expression.failure_at(0).expression.should_equal @expression
+  end
+  
 end
