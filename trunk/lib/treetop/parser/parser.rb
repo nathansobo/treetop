@@ -6,7 +6,6 @@ module Treetop
       @grammar = grammar
     end
 
-    
     def parse(input)
       @node_cache = NodeCache.new
       result = grammar.root.parse_at(input, 0, self)
