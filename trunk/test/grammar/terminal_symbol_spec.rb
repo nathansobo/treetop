@@ -62,6 +62,10 @@ context "The result of TerminalSymbol#parse_at for a non-matching input prefix a
   specify "has an index equal to the site of the attempted parse" do
     @result.index.should_equal 0
   end
+  
+  specify "should have an expectation descriptor referencing the terminal symbol" do
+    @result.descriptors[0].expression.should == @terminal
+  end
 end
 
 context "A terminal symbol with a method defined in its node class" do
