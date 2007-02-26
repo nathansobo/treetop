@@ -38,5 +38,9 @@ context "A parsing expression" do
     and_predicate.should_be_an_instance_of NotPredicate
     and_predicate.expression.should_equal @expression
   end
-    
+  
+  specify "adds itself as an expected expression in the creation parse failures" do
+    failure = @expression.failure_at(0)
+    failure.descriptors[0].expression.should == @expression
+  end  
 end

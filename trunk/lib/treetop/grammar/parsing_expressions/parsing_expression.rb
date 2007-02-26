@@ -1,7 +1,7 @@
 module Treetop
   class ParsingExpression
     def failure_at(index)
-      ParseFailure.new(index)
+      ParseFailure.new(index, ExpectationDescriptor.new(self))
     end
     
     def zero_or_more
