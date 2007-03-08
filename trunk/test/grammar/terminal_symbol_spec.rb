@@ -55,16 +55,12 @@ context "The result of TerminalSymbol#parse_at for a non-matching input prefix a
     @result = @terminal.parse_at(input, 0, parser)
   end
   
-  specify "is a kind of ParseFailure" do
-    @result.should_be_a_kind_of ParseFailure
+  specify "is an instance of of TerminalParseFailure" do
+    @result.should_be_a_kind_of TerminalParseFailure
   end
   
   specify "has an index equal to the site of the attempted parse" do
     @result.index.should_equal 0
-  end
-  
-  specify "should have an expectation descriptor referencing the terminal symbol" do
-    @result.descriptors[0].expression.should == @terminal
   end
 end
 

@@ -132,7 +132,7 @@ context "A grammar for treetop grammars" do
   specify "parses sequences with higher precedence than ordered choices" do
     @metagrammar.root = @metagrammar.nonterminal_symbol(:ordered_choice)
     grammar = Grammar.new
-        
+    
     value = @parser.parse(input).value(grammar)
     value.should_be_an_instance_of OrderedChoice
   end

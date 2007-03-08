@@ -27,6 +27,10 @@ module Treetop
       end
     end
     
+    def failure_at(index)
+      TerminalParseFailure.new(index, self)
+    end
+    
     def to_s
       "\"#{prefix}\""
     end

@@ -1,10 +1,10 @@
 module Treetop
   class ParseFailure
-    attr_reader :index, :descriptors
+    attr_reader :index, :parsing_expression
     
-    def initialize(index, *descriptors)
+    def initialize(index, parsing_expression)
       @index = index
-      @descriptors = descriptors
+      @parsing_expression = parsing_expression
     end
     
     def success?
@@ -17,11 +17,6 @@ module Treetop
     
     def interval
       index...index
-    end
-    
-    def to_s
-      expected_expressions = (descriptors.map {|desc| desc.expression.to_s}).join(" or ")
-      return "Expected a prefix matching #{expected_expressions} at index #{index}."
     end
   end
 end
