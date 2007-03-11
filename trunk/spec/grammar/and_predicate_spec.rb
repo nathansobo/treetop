@@ -14,13 +14,13 @@ context "An &-predication on a terminal symbol" do
     input = @terminal.prefix
     index = 0
     result = @and_predicate.parse_at(input, index, mock("Parser"))
-    result.should_be_success
-    result.interval.end.should_equal index
+    result.should be_success
+    result.interval.end.should == index
   end
   
   specify "fails upon parsing non-matching input" do
     input = "baz"
-    @and_predicate.parse_at(input, 0, mock("Parser")).should_be_failure
+    @and_predicate.parse_at(input, 0, mock("Parser")).should be_a_failure
   end
   
   specify "has a string representation" do
@@ -39,14 +39,14 @@ context "A sequence with terminal symbol followed by an &-predicate on another t
     input = "---" + @terminal.prefix + @and_predicate.expression.prefix
     index = 3
     result = @sequence.parse_at(input, index, mock("Parser"))
-    result.should_be_success
-    result.interval.end.should_equal index + @terminal.prefix.size
+    result.should be_a_success
+    result.interval.end.should == index + @terminal.prefix.size
   end
   
   specify "fails when look-ahead predicate does not match" do
     input = "---" + @terminal.prefix + "baz"
     index = 3
-    @sequence.parse_at(input, index, mock("Parser")).should_be_failure
+    @sequence.parse_at(input, index, mock("Parser")).should be_a_failure
   end
 end
 
@@ -62,7 +62,7 @@ context "An &-predicate" do
     @embedded_expression.stub!(:parse_at).and_return(failure)
     
     result = @and_predicate.parse_at(mock('input'), 0, mock('parser'))
-    result.should_be_failure
+    result.should be_a_failure
     result.nested_failures.should == [failure]
   end
   
