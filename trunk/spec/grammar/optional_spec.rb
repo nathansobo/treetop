@@ -27,3 +27,21 @@ context "An optional terminal symbol" do
     @optional.to_s.should == '("foo")?'
   end
 end
+
+context "An optional parsing expression" do
+  setup do
+    @embedded_expression = mock('embedded parsing expression')
+    @optional = Optional.new(@embedded_expression)
+  end
+  
+  specify "returns the failure of the embedded expression as a nested failure on the successful result" do
+    failure = mock('parse failure')
+    failure.stub!(:failure?).and_return(true)
+    
+    @embedded_expression.stub!(:parse_at).and_return(failure)
+    
+    result = @optional.parse_at('input', 0, mock('parser'))
+    result.should_be_success    
+    result.nested_failures.should == [failure]
+  end
+end

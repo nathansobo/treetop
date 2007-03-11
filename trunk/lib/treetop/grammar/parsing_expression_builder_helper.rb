@@ -33,6 +33,10 @@ module ParsingExpressionBuilderHelper
     CharacterClass.new(char_class_string)
   end
   
+  def andp(expression)
+    exp(expression).and_predicate
+  end
+  
   def notp(expression)
     exp(expression).not_predicate
   end
@@ -64,7 +68,7 @@ module ParsingExpressionBuilderHelper
     expression = exp(expression)
     delimiter = exp(delimiter)
     
-    leading_element = seq(expression, delimiter) do
+    leading_element = seq(expression, delimiter, andp(expression)) do
       def value(grammar)
         elements[0].value(grammar)
       end

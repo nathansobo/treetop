@@ -1,11 +1,14 @@
 module Treetop
   class TerminalSyntaxNode < SyntaxNode
-    def epsilon?
-      text_value.eql? ""
+    attr_accessor :nested_failures
+    
+    def initialize(*args)
+      super
+      self.nested_failures = []
     end
     
-    def nested_failures
-      []
+    def epsilon?
+      text_value.eql? ""
     end
   end
 end

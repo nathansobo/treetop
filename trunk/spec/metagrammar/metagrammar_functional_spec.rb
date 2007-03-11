@@ -98,6 +98,15 @@ context "A grammar for treetop grammars" do
     sequence.elements[2].name.should_equal :nonterminal2
   end
   
+  specify "parses a series of space-separated non-terminals as a sequence" do
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:sequence)
+    syntax_node = @parser.parse('a b c')
+
+    grammar = Grammar.new
+    sequence = syntax_node.value(grammar)
+    sequence.should_be_an_instance_of Sequence
+  end
+  
   specify "parses a series of / separated terminals and nonterminals as an ordered choice" do
     @metagrammar.root = @metagrammar.nonterminal_symbol(:ordered_choice)
     syntax_node = @parser.parse('"terminal" / nonterminal1 / nonterminal2')
@@ -129,9 +138,11 @@ context "A grammar for treetop grammars" do
   specify "parses sequences with higher precedence than ordered choices" do
     @metagrammar.root = @metagrammar.nonterminal_symbol(:ordered_choice)
     grammar = Grammar.new
+
+    input = 'a b / c d'
     
-    value = @parser.parse(input).value(grammar)
-    value.should_be_an_instance_of OrderedChoice
+    result = @parser.parse(input)    
+    result.value(grammar).should_be_an_instance_of OrderedChoice
   end
 
   def assert_parses_as(input, syntax_node_subclass)

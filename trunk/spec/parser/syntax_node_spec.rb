@@ -6,8 +6,8 @@ require "#{dir}/../spec_helper"
 
 context "An instance of SyntaxNode" do
   setup do
-    @failure = mock("parse failure")
-    @node = SyntaxNode.new(mock("input"), mock("interval"), @failure)
+    @nested_failures = [mock("nested failure")]
+    @node = SyntaxNode.new(mock("input"), mock("interval"), @nested_failures)
   end
   
   specify "should be success" do
@@ -18,8 +18,8 @@ context "An instance of SyntaxNode" do
     @node.should_not_be_failure
   end
   
-  specify "can propagate an embedded parse failure" do
-    @node.embedded_failure.should == @failure
+  specify "can propagate a nested parse failures" do
+    @node.nested_failures.should == @nested_failures
   end
 
 end

@@ -30,4 +30,5 @@ context "An instance of ParseFailure" do
   specify "records the parsing expression whose attempted parsing produced it" do
     @parse_failure.parsing_expression.should == @expression
   end
+
 end
