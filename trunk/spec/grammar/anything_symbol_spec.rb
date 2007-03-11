@@ -20,4 +20,8 @@ context "An anything symbol (.)" do
   specify "has a string representation" do
     @anything.to_s.should == '.'
   end
+  
+  specify "fails with a TerminalParseFailure upon trying to parse epsilon" do
+    @anything.parse_at('', 0, mock('parser')).should_be_an_instance_of TerminalParseFailure
+  end
 end

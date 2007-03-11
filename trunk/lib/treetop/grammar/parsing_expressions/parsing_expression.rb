@@ -1,7 +1,7 @@
 module Treetop
   class ParsingExpression
-    def failure_at(index, *nested_failures)
-      NonterminalParseFailure.new(index, self, *nested_failures)
+    def failure_at(index, nested_failures)
+      NonterminalParseFailure.new(index, self, nested_failures)
     end
     
     def zero_or_more

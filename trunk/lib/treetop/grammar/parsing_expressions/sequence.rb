@@ -17,10 +17,10 @@ module Treetop
       
       for elt in elements
         result = elt.parse_at(input, next_index, parser)
-        if result.is_a? ParseFailure
-          return failure_at(start_index, collect_nested_failures(results, result))
+        results << result
+        if result.failure?
+          return failure_at(start_index, collect_nested_failures(results))
         else
-          results << result
           next_index = result.interval.end
         end
       end
@@ -34,8 +34,10 @@ module Treetop
     end
     
     private
-    def collect_nested_failures(*results)
-      (results.flatten.collect &:nested_failures).flatten
+    def collect_nested_failures(results)
+      results.collect do |result|
+        result.nested_failures + (result.failure? ? [result] : [])
+      end.flatten
     end
   end
 end

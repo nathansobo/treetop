@@ -6,7 +6,7 @@ require 'rake/gempackagetask'
 
 task :default => :spec
 
-@spec_files = FileList['test/**/*_spec.rb']
+@spec_files = FileList['spec/**/*_spec.rb']
 Spec::Rake::SpecTask.new(:spec) do |t|
   t.spec_files = @spec_files
   t.spec_opts = ["--format", "specdoc"]

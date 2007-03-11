@@ -6,12 +6,19 @@ module Treetop
       @alternatives = alternatives
     end
     
-    def parse_at(input, start_index, parser)      
+    def parse_at(input, start_index, parser)
+      failures = []
+      
       for alt in alternatives
         result = alt.parse_at(input, start_index, parser)
-        return result unless result.is_a?(ParseFailure)
+        if result.failure?
+          failures << result
+        else
+          result.nested_failures.push(*failures)
+          return result
+        end
       end
-      return failure_at(start_index)
+      return failure_at(start_index, failures)
     end
     
     def to_s

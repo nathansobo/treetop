@@ -1,10 +1,12 @@
 module Treetop
   class AndPredicate < Predicate
     def parse_at(input, start_index, parser)
-      if super(input, start_index, parser)
-        return success_at(start_index, input)
+      result = expression.parse_at(input, start_index, parser)
+      
+      if result.success?        
+        return success_at(start_index, input, result.nested_failures)
       else
-        return failure_at(start_index)
+        return failure_at(start_index, [result])
       end
     end
     

@@ -1,9 +1,6 @@
 require 'rubygems'
 require 'spec/runner'
 
-require 'ruby-debug'
-Debugger.start
-
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 

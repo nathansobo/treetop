@@ -49,3 +49,32 @@ context "A sequence with terminal symbol followed by an &-predicate on another t
     @sequence.parse_at(input, index, mock("Parser")).should_be_failure
   end
 end
+
+
+context "An &-predicate" do
+  setup do
+    @embedded_expression = mock('embedded parsing expression')
+    @and_predicate = AndPredicate.new(@embedded_expression)
+  end
+
+  specify "propagates the failure of its embedded parsing expression as a nested failure on a failure result" do
+    failure = NonterminalParseFailure.new(0, @embedded_expression, [])
+    @embedded_expression.stub!(:parse_at).and_return(failure)
+    
+    result = @and_predicate.parse_at(mock('input'), 0, mock('parser'))
+    result.should_be_failure
+    result.nested_failures.should == [failure]
+  end
+  
+  specify "propagates the nested failures on the successful result of the embedded expression to its own result" do
+    success = mock('success')
+    success.stub!(:success?).and_return(true)
+    nested_failures = [mock('first nested failure'), mock('second nested failure')]
+    success.stub!(:nested_failures).and_return(nested_failures)
+    @embedded_expression.stub!(:parse_at).and_return(success)
+    
+    result = @and_predicate.parse_at(mock('input'), 0, mock('parser'))
+    result.nested_failures.should == nested_failures
+  end
+end
+

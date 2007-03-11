@@ -7,12 +7,9 @@ module Treetop
     end
     
     protected
-    def parse_at(input, start_index, parser)
-      expression.parse_at(input, start_index, parser).success?
-    end
     
-    def success_at(index, input)      
-      return SyntaxNode.new(input, index...index)
+    def success_at(index, input, nested_failures)
+      return SyntaxNode.new(input, index...index, nested_failures)
     end
   end
 end
