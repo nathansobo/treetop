@@ -62,6 +62,15 @@ context "A builder object extended with the ParsingExpressionBuilderHelper modul
     expression.should_receive(:not_predicate).and_return(not_predicate)
     @builder.notp(expression).should_equal not_predicate
   end
+
+  specify "implements an #andp method that creates an AndPredicate with the value of #exp for its argument" do
+    expression = mock("parsing expression")
+    and_predicate = mock("not predicate")
+    @builder.should_receive(:exp).with(expression).and_return(expression)
+    expression.should_receive(:and_predicate).and_return(and_predicate)
+    @builder.andp(expression).should_equal and_predicate
+  end
+
   
   specify "implements a #seq method that creates a Sequence from the value of #exp for its arguments" do
     expressions = [:foo, :bar, :baz]
