@@ -63,7 +63,6 @@ module ParsingExpressionBuilderHelper
     exp(expression).one_or_more
   end
 
-  
   def escaped(character)
     seq('\\', character)
   end
@@ -71,24 +70,34 @@ module ParsingExpressionBuilderHelper
   def delimited_sequence(expression, delimiter, &block)
     expression = exp(expression)
     delimiter = exp(delimiter)
-    
-    leading_element = seq(expression, delimiter, andp(expression)) do
+
+    trailing_element = seq(delimiter, expression) do
       def value(grammar)
-        elements[0].value(grammar)
+        elements[1].value(grammar)
       end
     end
     
-    delimited_sequence = seq(one_or_more(leading_element), expression) do
+    delimited_sequence = seq(expression, one_or_more(trailing_element)) do
       def element_values(grammar)
-        leading_element_values(grammar) + [trailing_element_value(grammar)]
+        [leading_element_value(grammar)] + trailing_element_values(grammar)
       end
       
-      def leading_element_values(grammar)
-        elements[0].elements.map { |elt| elt.value(grammar) }
+      def leading_element_value(grammar)
+        leading_element.value(grammar)
       end
       
-      def trailing_element_value(grammar)
-        elements[1].value(grammar)
+      def trailing_element_values(grammar)
+        trailing_elements.collect do |element|
+          element.value(grammar)
+        end
+      end
+      
+      def leading_element
+        elements[0]
+      end
+      
+      def trailing_elements
+        elements[1].elements
       end
     end
     
