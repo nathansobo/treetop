@@ -65,12 +65,17 @@ context "A builder object extended with the ParsingExpressionBuilderHelper modul
 
   specify "implements an #andp method that creates an AndPredicate with the value of #exp for its argument" do
     expression = mock("parsing expression")
-    and_predicate = mock("not predicate")
+    and_predicate = mock("and predicate")
     @builder.should_receive(:exp).with(expression).and_return(expression)
     expression.should_receive(:and_predicate).and_return(and_predicate)
     @builder.andp(expression).should_equal and_predicate
   end
 
+  specify "implements an #optional method that creates an Optional expression out of its argument" do
+    result = @builder.optional("foo")
+    result.should be_an_instance_of(Optional)
+    result.expression.should be_an_instance_of(TerminalSymbol)
+  end
   
   specify "implements a #seq method that creates a Sequence from the value of #exp for its arguments" do
     expressions = [:foo, :bar, :baz]

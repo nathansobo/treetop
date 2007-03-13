@@ -5,7 +5,7 @@ module Treetop
     end
     
     def sequence
-      delimited_sequence(:primary, :whitespace) do
+      delimited_sequence(:primary, :space) do
         def value(grammar)
           Sequence.new(element_values(grammar))
         end

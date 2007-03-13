@@ -1,4 +1,4 @@
-require 'rubygems'
+  require 'rubygems'
 require 'spec/runner'
 
 dir = File.dirname(__FILE__)
@@ -67,7 +67,7 @@ context "A grammar for treetop grammars" do
   end
   
   specify "parses different types of whitespace with the whitespace rule" do
-    @metagrammar.root = @metagrammar.nonterminal_symbol(:whitespace)
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:space)
     grammar = Grammar.new
 
     @parser.parse(' ').should_be_success
@@ -77,7 +77,7 @@ context "A grammar for treetop grammars" do
   end
   
   specify "does not parse nonwhitespace characters with the whitespace rule" do
-    @metagrammar.root = @metagrammar.nonterminal_symbol(:whitespace)
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:space)
     grammar = Grammar.new
     @parser.parse('g').should_be_failure
     @parser.parse('g ').should_be_failure  
@@ -125,24 +125,94 @@ context "A grammar for treetop grammars" do
   specify "parses any kind of parsing expression with the ordered choice rule" do
     @metagrammar.root = @metagrammar.nonterminal_symbol(:ordered_choice)
     
-    assert_parses_as '"terminal" / nonterminal1 / nonterminal2', OrderedChoice
-    assert_parses_as '"terminal" nonterminal1 nonterminal2', Sequence
-    assert_parses_as "'foo'", TerminalSymbol
-  
-    assert_parses_as '"foo"', TerminalSymbol
-    assert_parses_as 'foo', NonterminalSymbol
-    assert_parses_as '.', AnythingSymbol
-    assert_parses_as '[abc]', CharacterClass
+    parse_result_for('"terminal" / nonterminal1 / nonterminal2').should be_an_instance_of(OrderedChoice)
+    parse_result_for('a b / c d').should be_an_instance_of(OrderedChoice)
+    parse_result_for('"terminal" nonterminal1 nonterminal2').should be_an_instance_of(Sequence)
+    parse_result_for("'foo'").should be_an_instance_of(TerminalSymbol)
+    parse_result_for('"foo"').should be_an_instance_of(TerminalSymbol)
+    parse_result_for('foo').should be_an_instance_of(NonterminalSymbol)
+    parse_result_for('.').should be_an_instance_of(AnythingSymbol)
+    parse_result_for('[abc]').should be_an_instance_of(CharacterClass)
   end
 
   specify "parses sequences with higher precedence than ordered choices" do
     @metagrammar.root = @metagrammar.nonterminal_symbol(:ordered_choice)
-    grammar = Grammar.new
 
-    input = 'a b / c d'
+    result = parse_result_for('a b / c d')
+    result.should be_an_instance_of(OrderedChoice)
+    result.alternatives[0].should be_an_instance_of(Sequence)
+    result.alternatives[1].should be_an_instance_of(Sequence)    
+  end
+  
+  specify "parses expressions in parentheses as themselves" do
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:ordered_choice)
+        
+    parse_result_for("('foo')").should be_an_instance_of(TerminalSymbol)
+    parse_result_for('("foo")').should be_an_instance_of(TerminalSymbol)
+    parse_result_for('(foo)').should be_an_instance_of(NonterminalSymbol)
+    parse_result_for('(.)').should be_an_instance_of(AnythingSymbol)
+    parse_result_for('([abc])').should be_an_instance_of(CharacterClass)
+    parse_result_for('("terminal" / nonterminal1 / nonterminal2)').should be_an_instance_of(OrderedChoice)
+    parse_result_for('(a b / c d)').should be_an_instance_of(OrderedChoice)
+    parse_result_for('("terminal" nonterminal1 nonterminal2)').should be_an_instance_of(Sequence)
+  end
+
+  specify "parses expressions in parentheses with extra spaces as themselves" do    
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:ordered_choice)
     
-    result = @parser.parse(input)    
-    result.value(grammar).should_be_an_instance_of OrderedChoice
+    parse_result_for("( 'foo' )").should be_an_instance_of(TerminalSymbol)
+    parse_result_for('( "foo" )').should be_an_instance_of(TerminalSymbol)
+    parse_result_for('( foo  )').should be_an_instance_of(NonterminalSymbol)
+    parse_result_for('(  .  )').should be_an_instance_of(AnythingSymbol)
+    parse_result_for('( [abc] )').should be_an_instance_of(CharacterClass)
+    parse_result_for('(   "terminal" / nonterminal1 / nonterminal2  )').should be_an_instance_of(OrderedChoice)
+    parse_result_for('( a b / c d  )').should be_an_instance_of(OrderedChoice)
+    parse_result_for('(  "terminal" nonterminal1 nonterminal2  )').should be_an_instance_of(Sequence)
+  end
+
+  specify "allows parentheses to override default precedence rules" do
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:ordered_choice)
+
+    result = parse_result_for('(a / b) (c / d)')
+    result.should be_an_instance_of(Sequence)
+    
+    result.elements[0].should be_an_instance_of(OrderedChoice)
+    result.elements[1].should be_an_instance_of(OrderedChoice)    
+  end
+
+  specify "allows nested parentheses to control precedence" do
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:ordered_choice)
+
+    result = parse_result_for('(a / ((ba / bb) (bc / bd))) (c / d)')
+    result.should be_an_instance_of(Sequence)
+    
+    first_element = result.elements[0]
+    first_element.should be_an_instance_of(OrderedChoice)
+    first_element.alternatives[0].should be_an_instance_of(NonterminalSymbol)
+    
+    nested_sequence = first_element.alternatives[1]
+    nested_sequence.should be_an_instance_of(Sequence)
+    
+    nested_sequence.elements[0].should be_an_instance_of(OrderedChoice)
+    nested_sequence.elements[1].should be_an_instance_of(OrderedChoice)
+  end
+  
+  specify "parses an expression followed immediately by a * as zero or more of that expression" do
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:ordered_choice)
+    
+    result = parse_result_for('"b"*')
+    result.should be_an_instance_of(ZeroOrMore)    
+  end
+
+  def parse_result_for(input)
+    grammar = Grammar.new
+    result = @parser.parse(input)
+
+    if result.failure?
+      return result
+    else
+      result.value(grammar)
+    end
   end
 
   def assert_parses_as(input, syntax_node_subclass)

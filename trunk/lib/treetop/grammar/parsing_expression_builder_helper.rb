@@ -41,6 +41,10 @@ module ParsingExpressionBuilderHelper
     exp(expression).not_predicate
   end
   
+  def optional(expression)
+    exp(expression).optional
+  end
+  
   def seq(*expressions, &block)
     sequence = Sequence.new(exp(expressions))
     sequence.node_class_eval &block if block

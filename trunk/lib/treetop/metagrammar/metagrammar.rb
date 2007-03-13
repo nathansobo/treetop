@@ -9,8 +9,8 @@ module Treetop
         rule :character_class, CharacterClassBuilder.new
         rule :anything_symbol, AnythingSymbolBuilder.new
         rule :sequence, SequenceBuilder.new
-        rule :ordered_choice, OrderedChoiceBuilder.new        
-        rule :whitespace, one_or_more(char_class(" \t\n\r"))
+        rule :ordered_choice, OrderedChoiceBuilder.new
+        rule :space, one_or_more(char_class(" \t\n\r"))
       end
     end
   end
