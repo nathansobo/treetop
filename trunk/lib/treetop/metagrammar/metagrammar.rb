@@ -10,6 +10,7 @@ module Treetop
         rule :anything_symbol, AnythingSymbolBuilder.new
         rule :sequence, SequenceBuilder.new
         rule :ordered_choice, OrderedChoiceBuilder.new
+        rule :suffix, SuffixBuilder.new
         rule :space, one_or_more(char_class(" \t\n\r"))
       end
     end

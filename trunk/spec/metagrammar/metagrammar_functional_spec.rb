@@ -1,4 +1,4 @@
-  require 'rubygems'
+require 'rubygems'
 require 'spec/runner'
 
 dir = File.dirname(__FILE__)
@@ -60,9 +60,9 @@ context "A grammar for treetop grammars" do
     @metagrammar.root = @metagrammar.nonterminal_symbol(:primary)
     grammar = Grammar.new
 
-    @parser.parse("'foo'").value.should_be_an_instance_of TerminalSymbol
+    @parser.parse("'foo'").value(grammar).should_be_an_instance_of TerminalSymbol
     @parser.parse('foo').value(grammar).should_be_an_instance_of NonterminalSymbol
-    @parser.parse('.').value.should_be_an_instance_of AnythingSymbol
+    @parser.parse('.').value(grammar).should_be_an_instance_of AnythingSymbol
     @parser.parse('[abc]').value(grammar).should_be_an_instance_of CharacterClass
   end
   
@@ -201,7 +201,24 @@ context "A grammar for treetop grammars" do
     @metagrammar.root = @metagrammar.nonterminal_symbol(:ordered_choice)
     
     result = parse_result_for('"b"*')
-    result.should be_an_instance_of(ZeroOrMore)    
+    result.should be_an_instance_of(ZeroOrMore)
+  end
+
+  specify "parses an expression followed immediately by a + as one or more of that expression" do
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:ordered_choice)
+    
+    result = parse_result_for('"b"+')
+    result.should be_an_instance_of(OneOrMore)
+  end
+
+  specify "parses a * as a suffix" do
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:suffix)
+    @parser.parse('*').should be_success
+  end
+
+  specify "parses a + as a suffix" do
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:suffix)
+    @parser.parse('+').should be_success
   end
 
   def parse_result_for(input)
