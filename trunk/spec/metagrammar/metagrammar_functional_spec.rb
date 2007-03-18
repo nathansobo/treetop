@@ -203,6 +203,17 @@ context "A grammar for treetop grammars" do
     result = parse_result_for('"b"*')
     result.should be_an_instance_of(ZeroOrMore)
   end
+  
+  specify "parses a * to a node that can modify the semantics of an expression it follows appropriately" do
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:suffix)
+    result = @parser.parse('*')
+    
+    parsing_expression = mock('expression preceding the suffix')
+    zero_or_more = mock('zero or more of the parsing expression')
+    parsing_expression.should_receive(:zero_or_more).and_return(zero_or_more)
+    
+    result.value(parsing_expression).should == zero_or_more
+  end
 
   specify "parses an expression followed immediately by a + as one or more of that expression" do
     @metagrammar.root = @metagrammar.nonterminal_symbol(:ordered_choice)
@@ -211,14 +222,33 @@ context "A grammar for treetop grammars" do
     result.should be_an_instance_of(OneOrMore)
   end
 
-  specify "parses a * as a suffix" do
+  specify "parses a + node that can modify the semantics of an expression it follows appropriately" do
     @metagrammar.root = @metagrammar.nonterminal_symbol(:suffix)
-    @parser.parse('*').should be_success
+    result = @parser.parse('+')
+    
+    parsing_expression = mock('expression preceding the suffix')
+    one_or_more = mock('one or more of the parsing expression')
+    parsing_expression.should_receive(:one_or_more).and_return(one_or_more)
+    
+    result.value(parsing_expression).should == one_or_more
   end
 
-  specify "parses a + as a suffix" do
+  specify "parses an expression followed immediately by a ? as an optional expression" do
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:ordered_choice)
+    
+    result = parse_result_for('"b"?')
+    result.should be_an_instance_of(Optional)
+  end
+
+  specify "parses a ? node that can modify the semantics of an expression it follows appropriately" do
     @metagrammar.root = @metagrammar.nonterminal_symbol(:suffix)
-    @parser.parse('+').should be_success
+    result = @parser.parse('?')
+    
+    parsing_expression = mock('expression preceding the suffix')
+    optional = mock('optional parsing expression')
+    parsing_expression.should_receive(:optional).and_return(optional)
+    
+    result.value(parsing_expression).should == optional
   end
 
   def parse_result_for(input)
