@@ -10,7 +10,7 @@ module Treetop
     def initialize(prefix)
       super()
       self.prefix = prefix
-      self.prefix_regex = /^#{Regexp.escape(prefix)}/
+      self.prefix_regex = /\A#{Regexp.escape(prefix)}/
     end
     
     def node_superclass

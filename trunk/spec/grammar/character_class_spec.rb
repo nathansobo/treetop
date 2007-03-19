@@ -16,8 +16,8 @@ context "A character class with the range A-Z" do
   end
   
   specify "does not match single characters outside of that range" do
-    @char_class.parse_at('8', 0, mock("parser")).should be_an_instance_of TerminalParseFailure
-    @char_class.parse_at('a', 0, mock("parser")).should be_an_instance_of TerminalParseFailure
+    @char_class.parse_at('8', 0, mock("parser")).should be_an_instance_of(TerminalParseFailure)
+    @char_class.parse_at('a', 0, mock("parser")).should be_an_instance_of(TerminalParseFailure)
   end
   
   specify "has a string representation" do

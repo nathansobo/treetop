@@ -1,5 +1,6 @@
 dir = File.dirname(__FILE__)
 require "#{dir}/metagrammar/metagrammar"
+require "#{dir}/metagrammar/metagrammar_builder"
 require "#{dir}/metagrammar/parsing_rule_builder"
 require "#{dir}/metagrammar/primary_builder"
 require "#{dir}/metagrammar/nonterminal_symbol_builder"

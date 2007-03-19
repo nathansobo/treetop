@@ -83,3 +83,13 @@ context "A terminal symbol with a method defined in its node class" do
     result.should_respond_to :method
   end
 end
+
+context "A terminal symbol matching 'end'" do
+  setup do
+    @terminal = TerminalSymbol.new('end')
+  end
+  specify "shold not match anything other than end" do
+    input = "crack\nend"
+    @terminal.parse_at(input, 0, mock("parser")).should be_failure
+  end
+end
