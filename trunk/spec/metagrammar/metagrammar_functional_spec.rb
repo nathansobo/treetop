@@ -251,6 +251,50 @@ context "A grammar for treetop grammars" do
     result.value(parsing_expression).should == optional
   end
 
+  specify "parses an &-predication as a primary expression" do
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:primary)
+    result = parse_result_for('&"foo"')
+    
+    result.should be_instance_of(AndPredicate)
+  end
+
+  specify "parses a !-predication as a primary expression" do
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:primary)
+    result = parse_result_for('!"foo"')
+    
+    result.should be_instance_of(NotPredicate)
+  end
+  
+  specify "parses a the parses suffixes with higher precedence than prefixes" do
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:primary)
+    result = parse_result_for('!"foo"+')
+    
+    result.should be_instance_of(NotPredicate)
+    result.expression.should be_instance_of(OneOrMore)
+  end
+
+  specify "parses an & as a node that can modify the semantics of an expression it precedes appropriately" do
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:prefix)
+    result = @parser.parse('&')
+    
+    parsing_expression = mock('expression following the prefix')
+    and_predicate = mock('&-predicated parsing expression')
+    parsing_expression.should_receive(:and_predicate).and_return(and_predicate)
+    
+    result.value(parsing_expression).should == and_predicate
+  end
+
+  specify "parses an ! as a node that can modify the semantics of an expression it precedes appropriately" do
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:prefix)
+    result = @parser.parse('!')
+    
+    parsing_expression = mock('expression following the prefix')
+    not_predicate = mock('!-predicated parsing expression')
+    parsing_expression.should_receive(:not_predicate).and_return(not_predicate)
+    
+    result.value(parsing_expression).should == not_predicate
+  end
+
   def parse_result_for(input)
     grammar = Grammar.new
     result = @parser.parse(input)
