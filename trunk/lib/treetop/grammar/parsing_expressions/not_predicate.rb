@@ -1,6 +1,11 @@
 module Treetop
   class NotPredicate < Predicate
-    def parse_at(input, start_index, parser)
+    def to_s
+      "!(#{expression.to_s})"
+    end
+    
+    protected
+    def parse_at_without_caching(input, start_index, parser)
       result = expression.parse_at(input, start_index, parser)
       
       if result.success?
@@ -8,10 +13,6 @@ module Treetop
       else
         return success_at(start_index, input, [result])
       end
-    end
-
-    def to_s
-      "!(#{expression.to_s})"
     end
   end
 end

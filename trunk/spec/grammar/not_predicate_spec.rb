@@ -13,13 +13,13 @@ context "A !-predicate for a TerminalSymbol" do
   specify "fails upon parsing matching input" do
     input = @terminal.prefix
     index = 0
-    @not_predicate.parse_at(input, index, mock("Parser")).should_be_failure
+    @not_predicate.parse_at(input, index, parser_with_empty_cache_mock).should_be_failure
   end
   
   specify "succeeds upon parsing non-matching input, without updating the index" do
     input = "baz"
     index = 0
-    result = @not_predicate.parse_at(input, index, mock("Parser"))
+    result = @not_predicate.parse_at(input, index, parser_with_empty_cache_mock)
     result.should_be_success
     result.interval.end.should_equal index
   end
@@ -64,7 +64,7 @@ context "A !-predicate" do
     success.stub!(:nested_failures).and_return(nested_failures)
     @embedded_expression.stub!(:parse_at).and_return(success)
     
-    result = @not_predicate.parse_at(mock('input'), 0, mock('parser'))
+    result = @not_predicate.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
     result.should_be_failure
     result.nested_failures.should == nested_failures
   end
@@ -74,7 +74,7 @@ context "A !-predicate" do
     failure.stub!(:success?).and_return(false)
     @embedded_expression.stub!(:parse_at).and_return(failure)
     
-    result = @not_predicate.parse_at(mock('input'), 0, mock('parser'))
+    result = @not_predicate.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
     result.should_be_success
     result.nested_failures.should == [failure]
   end
