@@ -103,7 +103,7 @@ context "The subset of the metagrammar rooted at the character_class rule" do
   end
 end
 
-context "The subset of the metagrammar rooted at the noterminal_symbol rule" do
+context "The subset of the metagrammar rooted at the nonterminal_symbol rule" do
   include MetagrammarSpecContextHelper
   
   setup do
@@ -120,6 +120,11 @@ context "The subset of the metagrammar rooted at the noterminal_symbol rule" do
     nonterminal.should_be_an_instance_of NonterminalSymbol
     nonterminal.name.should_equal :foo
     grammar.nonterminal_symbol(:foo).should_equal(nonterminal)
+  end
+  
+  specify "does not parse 'rule' or 'end' as nonterminals" do
+    @parser.parse('rule').should be_a_failure
+    @parser.parse('end').should be_a_failure
   end
 end
 
@@ -266,4 +271,42 @@ context "The subset of the metagrammar rooted at the sequence rule" do
     sequence.should_be_an_instance_of Sequence
   end
 end
+
+context "The subset of the metagrammar rooted at the parsing_rule rule" do
+  include MetagrammarSpecContextHelper
+  
+  setup do
+    @metagrammar = Metagrammar.new
+    @parser = @metagrammar.new_parser
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:parsing_rule)
+  end
+  
+  specify "parses a parse rule with a terminal symbol as its expression" do
+    result = parse_result_for("rule foo 'bar' end")
+   
+    result.should be_an_instance_of(ParsingRule)
+    result.nonterminal_symbol.name.should == :foo
+    result.parsing_expression.should be_an_instance_of(TerminalSymbol)
+  end
+
+end
+  
+context "The subset of the metagrammar rooted at the keyword rule" do
+  include MetagrammarSpecContextHelper
+  
+  setup do
+    @metagrammar = Metagrammar.new
+    @parser = @metagrammar.new_parser
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:keyword)
+  end
+  
+  specify "parses end successfully" do
+    @parser.parse('end').should be_a_success
+  end
+
+  specify "parses end successfully" do
+    @parser.parse('rule').should be_a_success
+  end
+end
+
 

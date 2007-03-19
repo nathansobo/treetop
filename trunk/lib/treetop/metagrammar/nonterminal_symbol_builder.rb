@@ -1,7 +1,15 @@
 module Treetop
   class NonterminalSymbolBuilder < ParsingExpressionBuilder
     def build
-      nonterminal_symbol 
+      seq(notp(:keyword), nonterminal_symbol) do
+        def value(grammar)
+          nonterminal_symbol.value(grammar)
+        end
+        
+        def nonterminal_symbol
+          elements[1]
+        end
+      end
     end
 
     def nonterminal_symbol
