@@ -289,6 +289,12 @@ context "The subset of the metagrammar rooted at the parsing_rule rule" do
     result.parsing_expression.should be_an_instance_of(TerminalSymbol)
   end
 
+  specify "parses a parse rule with a nasty fucking expression" do
+    result = parse_result_for("rule foo 'bar' baz+ (xyzzy / plugh*) !bar end")
+   
+    result.should be_an_instance_of(ParsingRule)
+  end
+
 end
   
 context "The subset of the metagrammar rooted at the keyword rule" do
