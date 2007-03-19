@@ -2,7 +2,7 @@ module Treetop
   class SyntaxNode
     attr_reader :input, :interval, :nested_failures
     
-    def initialize(input, interval, nested_failures = nil)
+    def initialize(input, interval, nested_failures = [])
       @input = input
       @interval = interval
       @nested_failures = nested_failures

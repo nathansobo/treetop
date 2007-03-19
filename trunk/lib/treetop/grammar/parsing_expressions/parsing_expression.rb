@@ -1,5 +1,9 @@
 module Treetop
   class ParsingExpression
+    def node_cache(parser)
+      parser.node_cache_for(self)
+    end
+
     def failure_at(index, nested_failures)
       NonterminalParseFailure.new(index, self, nested_failures)
     end

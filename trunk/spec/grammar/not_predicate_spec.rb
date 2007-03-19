@@ -39,13 +39,13 @@ context "A sequence with terminal symbol followed by a !-predicate on another te
   specify "fails when look-ahead predicate matches" do
     input = "---" + @terminal.prefix + @not_predicate.expression.prefix
     index = 3
-    @sequence.parse_at(input, index, mock("Parser")).should_be_failure
+    @sequence.parse_at(input, index, parser_with_empty_cache_mock).should_be_failure
   end
   
   specify "succeeds when look-ahead does not match, without advancing index beyond end of first terminal" do
     input = "---" + @terminal.prefix + "baz"
     index = 3
-    result = @sequence.parse_at(input, index, mock("Parser"))
+    result = @sequence.parse_at(input, index, parser_with_empty_cache_mock)
     result.should_be_success
     result.interval.end.should_equal index + @terminal.prefix.size
   end

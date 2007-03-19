@@ -12,6 +12,14 @@ module Treetop
     end
     
     def parse_at(input, start_index, parser)
+      node_cache = node_cache(parser)
+      if stored_node = node_cache[start_index]
+        return stored_node
+      end
+      node_cache.store(parse_at_without_caching(input, start_index, parser))
+    end
+    
+    def parse_at_without_caching(input, start_index, parser)
       results = []
       next_index = start_index
       
@@ -26,7 +34,10 @@ module Treetop
       end
     
       interval = start_index...next_index      
-      return node_class.new(input, interval, results, collect_nested_failures(results))
+      node_class.new(input,
+                     interval,
+                     results,
+                     collect_nested_failures(results))
     end
     
     def to_s

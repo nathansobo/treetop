@@ -40,7 +40,7 @@ context "A new parser" do
     result.nested_failures.should == nested_failures
   end
   
-  specify "creates a new node cache on call to parse" do
+  specify "creates a new parse cache on call to parse" do
     input = "foo"
     root_nonterminal = mock("Root nonterminal")
     parse_result = mock("Parse result")
@@ -51,7 +51,14 @@ context "A new parser" do
     @grammar.should_receive(:root).and_return(root_nonterminal)
 
     @parser.parse(input)
-    @parser.node_cache.should_be_an_instance_of NodeCache
+    @parser.parse_cache.should_be_an_instance_of ParseCache
+  end
+  
+  specify "can return a node cache for a specific parsing expression" do
+    sequence_expression = mock("sequence expression")
+    cache_for_sequence = mock("cache for sequence")
+    @parser.parse_cache.should_receive(:[]).with(sequence_expression).and_return(cache_for_sequence)
+    @parser.node_cache_for(sequence_expression).should == cache_for_sequence
   end
 end
 

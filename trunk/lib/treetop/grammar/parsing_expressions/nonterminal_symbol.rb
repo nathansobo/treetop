@@ -8,13 +8,12 @@ module Treetop
     end
     
     def parse_at(input, start_index, parser)
-      if cached_result = parser.node_cache.node_starting_at(start_index, self)
-        return cached_result
-      else
-        result = parsing_expression.parse_at(input, start_index, parser)
-        parser.node_cache.store_node(self, result)
-        return result
-      end
+      node_cache = node_cache(parser)
+      node_cache[start_index] || node_cache.store(parse_at_without_caching(input, start_index, parser))
+    end
+    
+    def parse_at_without_caching(input, start_index, parser)
+      parsing_expression.parse_at(input, start_index, parser)
     end
     
     def parsing_expression

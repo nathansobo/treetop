@@ -25,7 +25,7 @@ context "A sequence parsing expression with one element" do
   specify "returns a parse failure if the parse of an element fails with that element's failure as a nested failure" do
     input = "foo"
     index = 0
-    parser = mock("Parser")
+    parser = parser_with_empty_cache_mock
   
     first_failure = NonterminalParseFailure.new(index, @elt, [])
     @elt.should_receive(:parse_at).with(input, index, parser).and_return(first_failure)
@@ -57,7 +57,7 @@ context "A sequence parsing expression with multiple terminal symbols as element
   specify "returns a successful result with correct elements when matching input is parsed" do
     input = @elts.join
     index = 0
-    result = @sequence.parse_at(input, index, mock("Parser"))
+    result = @sequence.parse_at(input, index, parser_with_empty_cache_mock)
     result.should_be_success
     (result.elements.collect {|elt| elt.text_value}).should_eql @elts
     result.interval.end.should_equal index + input.size
@@ -66,7 +66,7 @@ context "A sequence parsing expression with multiple terminal symbols as element
   specify "returns a successful result with correct elements when matching input is parsed when starting at a non-zero index" do
     input = "----" + @elts.join
     index = 4
-    result = @sequence.parse_at(input, index, mock("Parser"))
+    result = @sequence.parse_at(input, index, parser_with_empty_cache_mock)
     result.should_be_success
     (result.elements.collect {|elt| elt.text_value}).should_eql @elts
     result.interval.end.should_equal index + @elts.join.size
@@ -80,7 +80,7 @@ end
 context "A sequence parsing expression with multiple elements with nested errors and a final element that fails to parse" do
   setup do
     @input = "foo"
-    @parser = mock("Parser")
+    @parser = parser_with_empty_cache_mock
     elts = [mock("first element"), mock("second element"), mock("third element")]
     @sequence = Sequence.new(elts)
     
@@ -137,7 +137,7 @@ end
 def setup_sequence_element_to_successfully_parse  
   @input = "foo"
   @index = 0
-  @parser = mock("Parser")
+  @parser = parser_with_empty_cache_mock
   
   @elt_result = mock("First element's parse result")
   @elt_interval = 0...5

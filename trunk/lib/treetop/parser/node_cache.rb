@@ -1,20 +1,21 @@
 module Treetop
   class NodeCache
+    attr_reader :nodes
+    
     def initialize
-      @node_hash = Hash.new {|hash, key| hash[key] = Hash.new }
+      @nodes = {}
     end
   
     def empty?
-      @node_hash.empty?
+      nodes.empty?
     end
   
-    def store_node(nonterminal_symbol, syntax_node)      
-      hash_for_nonterm = (@node_hash[nonterminal_symbol] ||= Hash.new)
-      hash_for_nonterm[syntax_node.interval.begin] = syntax_node
+    def store(syntax_node)
+      nodes[syntax_node.interval.begin] = syntax_node
     end
   
-    def node_starting_at(index, nonterminal_symbol)
-      @node_hash[nonterminal_symbol][index] if @node_hash[nonterminal_symbol]
+    def [](start_index)
+      nodes[start_index]
     end
   end
 end
