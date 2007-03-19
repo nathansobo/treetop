@@ -10,12 +10,12 @@ module Treetop
     def node_superclass
       SequenceSyntaxNode
     end
-    
-    def parse_at(input, start_index, parser)
-      node_cache = node_cache(parser)
-      node_cache[start_index] || node_cache.store(parse_at_without_caching(input, start_index, parser))
+        
+    def to_s
+      parenthesize((@elements.collect {|elt| elt.to_s}).join(" "))
     end
-    
+
+    protected
     def parse_at_without_caching(input, start_index, parser)
       results = []
       next_index = start_index
@@ -32,10 +32,6 @@ module Treetop
                      interval,
                      results,
                      collect_nested_failures(results))
-    end
-    
-    def to_s
-      parenthesize((@elements.collect {|elt| elt.to_s}).join(" "))
     end
     
     private

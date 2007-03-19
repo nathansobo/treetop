@@ -3,6 +3,11 @@ module Treetop
     def node_cache(parser)
       parser.node_cache_for(self)
     end
+    
+    def parse_at(input, start_index, parser)
+      node_cache = node_cache(parser)
+      node_cache[start_index] || node_cache.store(parse_at_without_caching(input, start_index, parser))
+    end
 
     def failure_at(index, nested_failures)
       NonterminalParseFailure.new(index, self, nested_failures)
