@@ -13,14 +13,14 @@ context "An &-predication on a terminal symbol" do
   specify "succeeds without updating the index upon parsing matching input" do
     input = @terminal.prefix
     index = 0
-    result = @and_predicate.parse_at(input, index, mock("Parser"))
+    result = @and_predicate.parse_at(input, index, parser_with_empty_cache_mock)
     result.should be_success
     result.interval.end.should == index
   end
   
   specify "fails upon parsing non-matching input" do
     input = "baz"
-    @and_predicate.parse_at(input, 0, mock("Parser")).should be_a_failure
+    @and_predicate.parse_at(input, 0, parser_with_empty_cache_mock).should be_a_failure
   end
   
   specify "has a string representation" do
@@ -61,7 +61,7 @@ context "An &-predicate" do
     failure = NonterminalParseFailure.new(0, @embedded_expression, [])
     @embedded_expression.stub!(:parse_at).and_return(failure)
     
-    result = @and_predicate.parse_at(mock('input'), 0, mock('parser'))
+    result = @and_predicate.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
     result.should be_a_failure
     result.nested_failures.should == [failure]
   end
@@ -73,7 +73,7 @@ context "An &-predicate" do
     success.stub!(:nested_failures).and_return(nested_failures)
     @embedded_expression.stub!(:parse_at).and_return(success)
     
-    result = @and_predicate.parse_at(mock('input'), 0, mock('parser'))
+    result = @and_predicate.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
     result.nested_failures.should == nested_failures
   end
 end
