@@ -13,7 +13,7 @@ context "An anything symbol (.)" do
   specify "matches any single character" do
     (33..127).each do |digit|
       char = digit.chr
-      @anything.parse_at(char, 0, mock("parser")).should be_a_success
+      @anything.parse_at(char, 0, parser_with_empty_cache_mock).should be_a_success
     end
   end
   
@@ -22,6 +22,6 @@ context "An anything symbol (.)" do
   end
   
   specify "fails with a TerminalParseFailure upon trying to parse epsilon" do
-    @anything.parse_at('', 0, mock('parser')).should be_an_instance_of TerminalParseFailure
+    @anything.parse_at('', 0, parser_with_empty_cache_mock).should be_an_instance_of TerminalParseFailure
   end
 end

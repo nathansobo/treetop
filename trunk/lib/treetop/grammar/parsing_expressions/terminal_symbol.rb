@@ -17,7 +17,16 @@ module Treetop
       TerminalSyntaxNode
     end
     
-    def parse_at(input, start_index, parser)
+    def failure_at(index)
+      TerminalParseFailure.new(index, self)
+    end
+    
+    def to_s
+      "\"#{prefix}\""
+    end
+    
+    protected
+    def parse_at_without_caching(input, start_index, parser)
       match = prefix_regex.match(input[start_index...(input.length)])
       if match
         match_interval = start_index...(match.end(0) + start_index)
@@ -25,14 +34,6 @@ module Treetop
       else
         return failure_at(start_index)
       end
-    end
-    
-    def failure_at(index)
-      TerminalParseFailure.new(index, self)
-    end
-    
-    def to_s
-      "\"#{prefix}\""
     end
   end
 end

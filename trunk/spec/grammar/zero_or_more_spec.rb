@@ -13,7 +13,7 @@ context "Zero-or-more of a terminal symbol" do
   specify "returns an empty kind of SequenceSyntaxNode when parsing epsilon without advancing the index" do
     index = 0
     epsilon = ""
-    result = @zero_or_more.parse_at(epsilon, index, mock("Parser"))
+    result = @zero_or_more.parse_at(epsilon, index, parser_with_empty_cache_mock)
     result.should_be_a_kind_of SequenceSyntaxNode
     result.should_be_empty
     result.interval.end.should_equal index
@@ -22,7 +22,7 @@ context "Zero-or-more of a terminal symbol" do
   specify "returns a sequence with one element when parsing input matching one of that terminal symbol" do
     index = 0
     input = @terminal.prefix + "barbaz"
-    result = @zero_or_more.parse_at(input, index, mock("Parser"))
+    result = @zero_or_more.parse_at(input, index, parser_with_empty_cache_mock)
     result.should_be_a_kind_of SequenceSyntaxNode
     (result.elements.collect {|e| e.text_value }).should_eql [@terminal.prefix]
     result.interval.end.should_equal index + @terminal.prefix.size
@@ -31,7 +31,7 @@ context "Zero-or-more of a terminal symbol" do
   specify "returns a sequence of size 5 when parsing input with 5 consecutive matches of that terminal symbol" do
     index = 0
     input = @terminal.prefix * 5
-    result = @zero_or_more.parse_at(input, index, mock("Parser"))
+    result = @zero_or_more.parse_at(input, index, parser_with_empty_cache_mock)
     result.should_be_a_kind_of SequenceSyntaxNode
     result.elements.size.should_equal 5
     result.interval.end.should_equal(index + (@terminal.prefix.size * 5))
@@ -40,7 +40,7 @@ context "Zero-or-more of a terminal symbol" do
   specify "correctly matches multiples not starting at index 0" do
     index = 30
     input = ("x" * 30) + (@terminal.prefix * 5)
-    result = @zero_or_more.parse_at(input, index, mock("Parser"))
+    result = @zero_or_more.parse_at(input, index, parser_with_empty_cache_mock)
     result.should_be_a_kind_of SequenceSyntaxNode
     result.elements.size.should_equal 5
     result.interval.end.should_equal(index + (@terminal.prefix.size * 5))
@@ -64,21 +64,21 @@ context "Zero-or-more of a terminal symbol with a method defined in its node cla
   specify "returns a node that has that method upon a successful parse of epsilon" do
     index = 0
     epsilon = ""
-    result = @zero_or_more.parse_at(epsilon, index, mock("Parser"))
+    result = @zero_or_more.parse_at(epsilon, index, parser_with_empty_cache_mock)
     result.should_respond_to :method
   end
   
   specify "returns a node that has that method upon a successful parse of one of the repeated symbol" do
     index = 0
     input = @terminal.prefix + "barbaz"
-    result = @zero_or_more.parse_at(input, index, mock("Parser"))
+    result = @zero_or_more.parse_at(input, index, parser_with_empty_cache_mock)
     result.should_respond_to :method
   end
   
   specify "returns a node that has that method upon a successful parse of multiple of the repeated symbols" do
     index = 0
     input = @terminal.prefix * 5
-    result = @zero_or_more.parse_at(input, index, mock("Parser"))
+    result = @zero_or_more.parse_at(input, index, parser_with_empty_cache_mock)
     result.should_respond_to :method
   end
 end
@@ -100,7 +100,7 @@ context "Zero-or-more of a parsing expression" do
     
     @embedded_expression.stub!(:parse_at).and_return(success, success, failure)
     
-    result = @zero_or_more.parse_at(mock('input'), 0, mock('parser'))
+    result = @zero_or_more.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
     result.nested_failures.should == [failure]
   end
   
@@ -119,7 +119,7 @@ context "Zero-or-more of a parsing expression" do
     
     @embedded_expression.stub!(:parse_at).and_return(success, success, failure)
     
-    result = @zero_or_more.parse_at(mock('input'), 0, mock('parser'))
+    result = @zero_or_more.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
 
     (first_nested_failures + second_nested_failures).each do |nested_failure|
       result.nested_failures.should_include nested_failure

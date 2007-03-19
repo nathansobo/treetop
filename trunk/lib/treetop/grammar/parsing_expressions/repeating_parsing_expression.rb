@@ -6,8 +6,9 @@ module Treetop
       super
       @repeated_expression = repeated_expression
     end
-    
-    def parse_at(input, start_index, parser)
+
+    protected
+    def parse_at_without_caching(input, start_index, parser)
       results = []
       next_index = start_index
 

@@ -10,15 +10,15 @@ context "A terminal symbol" do
   end
     
   specify "returns the correct interval for a prefix starting after 0" do
-    result = @terminal.parse_at("xfoo", 1, mock("Parser"))
+    result = @terminal.parse_at("xfoo", 1, parser_with_empty_cache_mock)
     result.interval.should_eql 1...4
     
-    result = @terminal.parse_at("---foo", 3, mock("Parser"))
+    result = @terminal.parse_at("---foo", 3, parser_with_empty_cache_mock)
     result.interval.should_eql 3...6
   end
   
   specify "shouldn't parse nonmatching input at the index even if a match occurs later in the input" do
-    @terminal.parse_at(" foo", 0, mock("parser")).should_be_failure
+    @terminal.parse_at(" foo", 0, parser_with_empty_cache_mock).should_be_failure
   end
   
   specify "has a string representation" do
@@ -29,9 +29,9 @@ end
 context "The result of TerminalSymbol#parse_at for a matching input prefix at a given index" do
   setup do
     @terminal = TerminalSymbol.new("foo")
-    parser = mock("Parser instance")
+    @parser = parser_with_empty_cache_mock
     input = ("foobar")
-    @result = @terminal.parse_at(input, 0, parser)
+    @result = @terminal.parse_at(input, 0, @parser)
   end
   
   specify "is successful" do
@@ -50,9 +50,9 @@ end
 context "The result of TerminalSymbol#parse_at for a non-matching input prefix at a given index" do
   setup do
     @terminal = TerminalSymbol.new("foo")
-    parser = mock("Parser instance")
+    @parser = parser_with_empty_cache_mock
     input = ("barfoo")
-    @result = @terminal.parse_at(input, 0, parser)
+    @result = @terminal.parse_at(input, 0, @parser)
   end
   
   specify "is an instance of of TerminalParseFailure" do
@@ -76,7 +76,7 @@ context "A terminal symbol with a method defined in its node class" do
   specify "returns nodes that have that method on a successful parse" do
     input = @terminal.prefix
     index = 0
-    parser = mock("parser")
+    parser = parser_with_empty_cache_mock
     
     result = @terminal.parse_at(input, index, parser)
     result.should_be_success
@@ -90,6 +90,6 @@ context "A terminal symbol matching 'end'" do
   end
   specify "shold not match anything other than end" do
     input = "crack\nend"
-    @terminal.parse_at(input, 0, mock("parser")).should be_failure
+    @terminal.parse_at(input, 0, parser_with_empty_cache_mock).should be_failure
   end
 end
