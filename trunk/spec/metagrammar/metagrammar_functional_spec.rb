@@ -333,14 +333,14 @@ context "The subset of the metagrammar rooted at the grammar rule" do
     result.value.should be_instance_of(Grammar)
   end
 
-  specify "parses a grammar with one rule" do
-    input = 
-    %{grammar
-        rule foo
-          bar
-        end
-      end}
-    result = @parser.parse(input)
-    result.value.should be_instance_of(Grammar)
-  end
+#  specify "parses a grammar with one rule" do
+#    input = 
+#    %{grammar
+#        rule foo
+#          bar
+#        end
+#      end}
+#    result = @parser.parse(input)
+#    result.value.should be_instance_of(Grammar)
+#  end
 end
