@@ -6,7 +6,12 @@ module Treetop
       @alternatives = alternatives
     end
     
-    def parse_at(input, start_index, parser)
+    def to_s
+      parenthesize((alternatives.collect {|alt| alt.to_s}).join(" / "))
+    end
+    
+    protected
+    def parse_at_without_caching(input, start_index, parser)
       failures = []
       
       for alt in alternatives
@@ -19,10 +24,6 @@ module Treetop
         end
       end
       return failure_at(start_index, failures)
-    end
-    
-    def to_s
-      parenthesize((alternatives.collect {|alt| alt.to_s}).join(" / "))
     end
   end
 end
