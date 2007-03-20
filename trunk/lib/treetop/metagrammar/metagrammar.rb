@@ -4,6 +4,7 @@ module Treetop
       super
       build do
         rule :grammar, MetagrammarBuilder.new
+        rule :parsing_rule_sequence, ParsingRuleSequenceBuilder.new        
         rule :parsing_rule, ParsingRuleBuilder.new
         rule :ordered_choice, OrderedChoiceBuilder.new
         rule :sequence, SequenceBuilder.new

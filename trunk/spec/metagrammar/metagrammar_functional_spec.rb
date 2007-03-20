@@ -333,14 +333,56 @@ context "The subset of the metagrammar rooted at the grammar rule" do
     result.value.should be_instance_of(Grammar)
   end
 
-#  specify "parses a grammar with one rule" do
-#    input = 
-#    %{grammar
-#        rule foo
-#          bar
-#        end
-#      end}
-#    result = @parser.parse(input)
-#    result.value.should be_instance_of(Grammar)
-#  end
+  specify "parses a grammar with one rule" do
+    input = 
+    %{grammar
+        rule foo
+          bar
+        end
+      end}
+    result = @parser.parse(input)
+    result.should be_success
+    result.value.should be_instance_of(Grammar)
+  end
+  
+  specify "parses a grammar with two rules" do
+    input = 
+    %{grammar
+        rule foo
+          bar
+        end
+        
+        rule baz
+          bop
+        end
+      end}
+    result = @parser.parse(input)
+    result.should be_success
+    result.value.should be_instance_of(Grammar)
+  end
+  
+end
+
+context "The subset of the metagrammar rooted at the parsing_rule_sequence rule" do
+  include MetagrammarSpecContextHelper
+
+  setup do
+    @metagrammar = Metagrammar.new
+    @parser = @metagrammar.new_parser
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:parsing_rule_sequence)
+  end
+  
+  specify "parses a single rule" do
+    input = "rule foo bar end"
+    
+    result = @parser.parse(input)
+    result.should be_success
+  end
+  
+  specify "parses two rules" do
+    input = "rule foo bar end rule baz bop end"
+    
+    result = @parser.parse(input)
+    result.should be_success
+  end
 end

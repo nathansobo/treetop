@@ -16,10 +16,6 @@ module Treetop
         end
       end
     end
-    
-    def nonnewline_space
-      zero_or_more()
-    end
   end
 end
 

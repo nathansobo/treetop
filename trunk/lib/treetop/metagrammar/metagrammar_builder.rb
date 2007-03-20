@@ -1,7 +1,7 @@
 module Treetop
   class MetagrammarBuilder < ParsingExpressionBuilder
     def build
-      seq('grammar', :space, grammar_name, 'end') do
+      seq('grammar', :space, grammar_name, :parsing_rule_sequence, optional(:space), 'end') do
         def value
           Grammar.new
         end
