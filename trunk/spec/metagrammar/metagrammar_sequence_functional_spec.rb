@@ -1,0 +1,39 @@
+require 'rubygems'
+require 'spec/runner'
+
+dir = File.dirname(__FILE__)
+require "#{dir}/../spec_helper"
+require "#{dir}/metagrammar_spec_context_helper"
+
+context "The subset of the metagrammar rooted at the sequence rule" do
+  include MetagrammarSpecContextHelper
+  
+  setup do
+    @metagrammar = Metagrammar.new
+    @parser = @metagrammar.new_parser
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:sequence)
+  end
+
+  specify "parses a series of space-separated terminals and nonterminals as a sequence" do
+    syntax_node = @parser.parse('"terminal" nonterminal1 nonterminal2')
+    syntax_node.should be_success  
+
+    grammar = Grammar.new
+    sequence = syntax_node.value(grammar)
+    sequence.should_be_an_instance_of Sequence
+    sequence.elements[0].should_be_an_instance_of TerminalSymbol
+    sequence.elements[0].prefix.should_eql "terminal"
+    sequence.elements[1].should_be_an_instance_of NonterminalSymbol
+    sequence.elements[1].name.should_equal :nonterminal1
+    sequence.elements[2].should_be_an_instance_of NonterminalSymbol
+    sequence.elements[2].name.should_equal :nonterminal2
+  end
+  
+  specify "parses a series of space-separated non-terminals as a sequence" do
+    syntax_node = @parser.parse('a b c')
+
+    grammar = Grammar.new
+    sequence = syntax_node.value(grammar)
+    sequence.should_be_an_instance_of Sequence
+  end
+end
