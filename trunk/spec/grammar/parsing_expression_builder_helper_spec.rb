@@ -110,4 +110,13 @@ context "A builder object extended with the ParsingExpressionBuilderHelper modul
     one_or_more.should_be_an_instance_of OneOrMore
     one_or_more.repeated_expression.should_eql(@builder.exp(:foo))
   end
+  
+  specify "can build a delimited sequence parsing expression" do 
+    zero_or_more_delimited = @builder.zero_or_more_delimited('a', ' ')
+    parser = @grammar.new_parser
+    zero_or_more_delimited.parse_at('', 0, parser).should be_success    
+    zero_or_more_delimited.parse_at('a', 0, parser).should be_success
+    zero_or_more_delimited.parse_at('a a', 0, parser).should be_success
+    zero_or_more_delimited.parse_at('a a a', 0, parser).should be_success
+  end
 end

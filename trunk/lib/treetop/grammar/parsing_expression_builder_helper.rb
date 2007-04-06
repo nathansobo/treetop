@@ -67,6 +67,53 @@ module ParsingExpressionBuilderHelper
     seq('\\', character)
   end
 
+  def n_or_more_delimited(n, expression, delimiter, &block)
+    expression = exp(expression)
+    delimiter = exp(delimiter)
+    
+    if n == 0
+      head_element = optional(expression)
+    else
+      head_element = expression
+    end
+    
+    tail_element = seq(delimiter, expression) do
+      def element
+        elements[1]
+      end
+    end
+    
+    if n > 1
+      tail_elements = one_or_more(tail_element)
+    else
+      tail_elements = zero_or_more(tail_element)
+    end
+    
+    tail_elements.node_class_eval do
+      def elements
+        super.map(&:element)
+      end
+    end
+    
+    delimited_sequence = seq(head_element, tail_elements) do
+      def elements
+        return [] if super[0].empty?
+        [super[0]] + super[1].elements
+      end
+    end
+    
+    delimited_sequence.node_class_eval(&block) if block
+    return delimited_sequence
+  end
+
+  def zero_or_more_delimited(expression, delimiter, &block)
+    n_or_more_delimited(0, expression, delimiter, &block)
+  end
+  
+  def two_or_more_delimited(expression, delimiter, &block)
+    n_or_more_delimited(2, expression, delimiter, &block)    
+  end
+
   def delimited_sequence_of_zero_or_more(expression, delimiter, &block)
     expression = exp(expression)
     delimiter = exp(delimiter)

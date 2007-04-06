@@ -4,6 +4,7 @@ module Treetop
     
     def initialize(grammar)
       @grammar = grammar
+      @parse_cache = ParseCache.new      
     end
 
     def parse(input)
