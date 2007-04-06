@@ -71,17 +71,8 @@ module ParsingExpressionBuilderHelper
     expression = exp(expression)
     delimiter = exp(delimiter)
     
-    if n == 0
-      head_element = optional(expression)
-    else
-      head_element = expression
-    end
-    
-    tail_element = seq(delimiter, expression) do
-      def element
-        elements[1]
-      end
-    end
+    head_element = delimited_sequence_head_element(n, expression)
+    tail_element = delimited_sequence_tail_element(n, expression, delimiter)
     
     if n > 1
       tail_elements = one_or_more(tail_element)
@@ -105,7 +96,19 @@ module ParsingExpressionBuilderHelper
     delimited_sequence.node_class_eval(&block) if block
     return delimited_sequence
   end
-
+  
+  def delimited_sequence_head_element(n, expression)
+    n == 0 ? optional(expression) : expression
+  end
+  
+  def delimited_sequence_tail_element(n, expression, delimiter)
+    seq(delimiter, expression) do
+      def element
+        elements[1]
+      end
+    end
+  end
+  
   def zero_or_more_delimited(expression, delimiter, &block)
     n_or_more_delimited(0, expression, delimiter, &block)
   end
