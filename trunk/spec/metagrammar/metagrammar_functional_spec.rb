@@ -343,7 +343,10 @@ context "The subset of the metagrammar rooted at the grammar rule" do
       end}
     result = @parser.parse(input)
     result.should be_success
-    result.value.should be_instance_of(Grammar)
+    grammar = result.value
+    grammar.should be_instance_of(Grammar)
+    
+    grammar.get_parsing_expression(grammar.nonterminal_symbol(:foo)).should be_an_instance_of(NonterminalSymbol)
   end
   
   specify "parses a grammar with two rules" do
@@ -359,9 +362,13 @@ context "The subset of the metagrammar rooted at the grammar rule" do
       end}
     result = @parser.parse(input)
     result.should be_success
-    result.value.should be_instance_of(Grammar)
+    
+    grammar = result.value
+    grammar.should be_instance_of(Grammar)
+    
+    grammar.get_parsing_expression(grammar.nonterminal_symbol(:foo)).should be_an_instance_of(NonterminalSymbol)
+    grammar.get_parsing_expression(grammar.nonterminal_symbol(:baz)).should be_an_instance_of(NonterminalSymbol)
   end
-  
 end
 
 context "The subset of the metagrammar rooted at the parsing_rule_sequence rule" do

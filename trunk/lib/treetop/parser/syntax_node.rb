@@ -19,5 +19,9 @@ module Treetop
     def failure?
       false
     end
+    
+    def epsilon?
+      false
+    end
   end
 end

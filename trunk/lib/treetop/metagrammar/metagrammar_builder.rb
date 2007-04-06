@@ -3,7 +3,15 @@ module Treetop
     def build
       seq('grammar', :space, grammar_name, :parsing_rule_sequence, optional(:space), 'end') do
         def value
-          Grammar.new
+          grammar = Grammar.new
+          parsing_rules(grammar).each do |parsing_rule|
+            grammar.add_parsing_rule(parsing_rule)
+          end
+          return grammar
+        end
+        
+        def parsing_rules(grammar)
+          elements[3].value(grammar)
         end
       end
     end

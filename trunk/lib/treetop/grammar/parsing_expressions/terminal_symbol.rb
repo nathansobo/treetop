@@ -13,6 +13,10 @@ module Treetop
       self.prefix_regex = /\A#{Regexp.escape(prefix)}/
     end
     
+    def epsilon?
+      prefix.blank?
+    end
+    
     def node_superclass
       TerminalSyntaxNode
     end

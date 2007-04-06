@@ -82,7 +82,7 @@ module ParsingExpressionBuilderHelper
     delimited_sequence = seq(delimited_sequence_head(n, expression), 
                              delimited_sequence_tail(n, expression, delimiter)) do
       def elements
-        return [] if super[0].empty?
+        return [] if super[0].epsilon?
         [super[0]] + super[1].elements
       end
     end  

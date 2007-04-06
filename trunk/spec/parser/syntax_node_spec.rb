@@ -21,5 +21,8 @@ context "An instance of SyntaxNode" do
   specify "can propagate a nested parse failures" do
     @node.nested_failures.should == @nested_failures
   end
-
+  
+  specify "should not be epsilon" do
+    @node.should_not be_epsilon
+  end
 end
