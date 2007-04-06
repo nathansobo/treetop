@@ -253,6 +253,7 @@ context "The subset of the metagrammar rooted at the sequence rule" do
 
   specify "parses a series of space-separated terminals and nonterminals as a sequence" do
     syntax_node = @parser.parse('"terminal" nonterminal1 nonterminal2')
+    syntax_node.should be_success  
 
     grammar = Grammar.new
     sequence = syntax_node.value(grammar)
