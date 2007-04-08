@@ -46,4 +46,16 @@ context "The subset of the metagrammar rooted at the sequence rule" do
     sequence.should_be_an_instance_of Sequence
     sequence.node_class.instance_methods.should include('a_method')
   end
+  
+  specify "binds trailing blocks more tightly to terminal symbols than sequences" do
+    result = @parser.parse("a b 'c' {\n  def a_method\n  end\n}")
+    result.should be_success
+    
+    grammar = Grammar.new
+    sequence = result.value(grammar)
+    sequence.should_be_an_instance_of Sequence
+    sequence.node_class.instance_methods.should_not include('a_method')
+    sequence.elements[2].node_class.instance_methods.should include('a_method')
+  end
+  
 end
