@@ -1,5 +1,7 @@
 dir = File.dirname(__FILE__)
 require "#{dir}/parsing_expressions/parsing_expression"
+require "#{dir}/parsing_expressions/node_instantiating_parsing_expression"
+require "#{dir}/parsing_expressions/node_propagating_parsing_expression"
 require "#{dir}/parsing_expressions/terminal_symbol"
 require "#{dir}/parsing_expressions/anything_symbol"
 require "#{dir}/parsing_expressions/character_class"

@@ -37,19 +37,4 @@ module Treetop
       "(#{string})"
     end
   end
-  
-  class NodeInstantiatingParsingExpression < ParsingExpression
-    attr_reader :node_class
-    
-    def initialize
-      @node_class = Class.new(node_superclass)
-    end
-    
-    def node_class_eval(&block)
-      node_class.class_eval &block
-    end
-  end
-  
-  class NodePropagatingParsingExpression < ParsingExpression
-  end
 end

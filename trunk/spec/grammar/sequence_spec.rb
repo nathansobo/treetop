@@ -115,8 +115,6 @@ context "A sequence parsing expression with multiple elements with nested errors
   
 end
 
-
-
 context "A sequence parsing expression with one element and a method defined in its node class" do
   setup do
     @elt = mock("Parsing expression in sequence")
@@ -133,6 +131,21 @@ context "A sequence parsing expression with one element and a method defined in 
     result.should_respond_to :method
   end  
 end
+
+context "A sequence parsing expression with one element and a method defined in its node class via a string evaluation" do
+  setup do
+    @elt = mock("Parsing expression in sequence")
+    @sequence = Sequence.new([@elt])
+    @sequence.node_class_eval("def a_method\n\nend")
+  end
+  
+  specify "returns a SequenceSyntaxNode with the element's parse result as an element if the parse is successful" do
+    setup_sequence_element_to_successfully_parse
+    result = @sequence.parse_at(@input, @index, @parser)
+    result.should_respond_to :method
+  end  
+end
+
 
 def setup_sequence_element_to_successfully_parse  
   @input = "foo"
