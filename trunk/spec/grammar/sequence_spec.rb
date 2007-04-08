@@ -146,7 +146,6 @@ context "A sequence parsing expression with one element and a method defined in 
   end  
 end
 
-
 def setup_sequence_element_to_successfully_parse  
   @input = "foo"
   @index = 0

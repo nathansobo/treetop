@@ -1,7 +1,23 @@
 module Treetop
   class SequenceBuilder < ParsingExpressionBuilder
     def build
-      choice(sequence, :primary)
+      choice(sequence_with_block, :primary)
+    end
+    
+    def sequence_with_block
+      seq(sequence, :trailing_block) do
+        def value(grammar)
+          trailing_block.value(sequence.value(grammar))
+        end
+        
+        def sequence
+          elements[0]
+        end
+        
+        def trailing_block
+          elements[1]
+        end
+      end
     end
     
     def sequence
@@ -15,6 +31,5 @@ module Treetop
         end
       end
     end
-        
   end
 end
