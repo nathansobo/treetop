@@ -41,4 +41,9 @@ context "The subset of the metagrammar rooted at the node_class_eval_block rule"
     result.value.should == ruby_code
   end
   
+  specify "parses a block with newlines in it" do
+    result = @parser.parse("{\ndef a_method\n\nend\n}")
+    result.should be_success
+  end
+  
 end

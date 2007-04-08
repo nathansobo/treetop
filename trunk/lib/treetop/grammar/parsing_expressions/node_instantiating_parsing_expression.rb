@@ -6,7 +6,7 @@ module Treetop
       @node_class = Class.new(node_superclass)
     end
     
-    def node_class_eval(string = nil, &block)
+    def node_class_eval(string = nil, &block)      
       node_class.class_eval(string) if string
       node_class.class_eval(&block) if block
     end

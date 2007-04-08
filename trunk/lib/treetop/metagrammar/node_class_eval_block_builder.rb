@@ -7,7 +7,7 @@ module Treetop
         end
       end
     end
-          
+    
     def anything_but_a_brace
       seq(notp(choice('{', '}')), any)
     end

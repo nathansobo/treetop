@@ -24,4 +24,8 @@ context "An anything symbol (.)" do
   specify "fails with a TerminalParseFailure upon trying to parse epsilon" do
     @anything.parse_at('', 0, parser_with_empty_cache_mock).should be_an_instance_of TerminalParseFailure
   end
+  
+  specify "parses a newline" do
+    @anything.parse_at("\n", 0, parser_with_empty_cache_mock).should be_success
+  end
 end

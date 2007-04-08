@@ -1,8 +1,8 @@
 module Treetop
   class AnythingSymbol < TerminalSymbol
     def initialize
-      super('^.')
-      self.prefix_regex = /./
+      super('\A(.|\n)')
+      self.prefix_regex = /\A(.|\n)/
     end
     
     def to_s

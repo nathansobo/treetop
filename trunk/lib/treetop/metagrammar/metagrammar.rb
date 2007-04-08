@@ -16,6 +16,7 @@ module Treetop
         rule :character_class, CharacterClassBuilder.new
         rule :anything_symbol, AnythingSymbolBuilder.new
         rule :node_class_eval_block, NodeClassEvalBlockBuilder.new
+        rule :trailing_block, TrailingBlockBuilder.new
         rule :space, one_or_more(char_class(" \t\n\r"))
         rule :keyword, choice('rule', 'end')
       end
