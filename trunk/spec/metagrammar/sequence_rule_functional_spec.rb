@@ -57,5 +57,4 @@ context "The subset of the metagrammar rooted at the sequence rule" do
     sequence.node_class.instance_methods.should_not include('a_method')
     sequence.elements[2].node_class.instance_methods.should include('a_method')
   end
-  
 end

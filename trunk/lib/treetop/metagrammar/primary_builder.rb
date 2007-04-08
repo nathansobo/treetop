@@ -47,13 +47,21 @@ module Treetop
     end
         
     def parenthesized_ordered_choice
-      seq('(', optional(:space), :ordered_choice, optional(:space), ')') do
+      seq('(', optional(:space), :ordered_choice, optional(:space), ')', :trailing_block) do
         def value(grammar)
-          nested_expression.value(grammar)
+          nested_value = nested_expression.value(grammar)
+          unless trailing_block.epsilon? || nested_value.kind_of?(NodeInstantiatingParsingExpression)
+            raise "Blocks can only follow node-instantiating parsing expressions such as sequences and terminal symbols."
+          end
+          return trailing_block.value(nested_expression.value(grammar))
         end
 
         def nested_expression
           elements[2]
+        end
+        
+        def trailing_block
+          elements[5]
         end
       end
     end
