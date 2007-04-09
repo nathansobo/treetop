@@ -6,7 +6,7 @@ module Treetop
       end
   
       def character_class
-        seq('[', zero_or_more(char_class_char), ']')  do
+        seq('[', one_or_more(char_class_char), ']')  do
           def value(grammar = nil)
             CharacterClass.new(characters)
           end

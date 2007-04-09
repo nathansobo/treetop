@@ -115,7 +115,7 @@ context "The subset of the metagrammar rooted at the ordered_choice rule" do
     choice.alternatives[2].name.should_equal :nonterminal2
   end
   
-  specify "parses any kind of parsing expression with the ordered choice rule" do    
+  specify "parses any kind of parsing expression" do    
     parse_result_for('"terminal" / nonterminal1 / nonterminal2').should be_an_instance_of(OrderedChoice)
     parse_result_for('a b / c d').should be_an_instance_of(OrderedChoice)
     parse_result_for('"terminal" nonterminal1 nonterminal2').should be_an_instance_of(Sequence)
@@ -126,7 +126,13 @@ context "The subset of the metagrammar rooted at the ordered_choice rule" do
     parse_result_for('[abc]').should be_an_instance_of(CharacterClass)
   end
 
-  specify "can parse a complex parsing expression with the ordered choice rule" do
+  specify "can parse a complex parsing expression" do
     @parser.parse("'foo' bar !(a / b &x+)+").should be_a_success
-  end  
+  end
+  
+  specify "parses expressions separated by / and no space as an ordered choice" do
+    result = @parser.parse('a/b/(c/d)')
+    result.should be_success
+    result.value(Grammar.new).should be_an_instance_of(OrderedChoice)
+  end
 end

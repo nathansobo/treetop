@@ -1,5 +1,17 @@
 grammar Metagrammar
 
+  rule character_class
+    ('[' (!']' ('\]'/.))+ ']') {      
+      def value(grammar = nil)
+        CharacterClass.new(characters)
+      end
+
+      def characters
+        elements[1].text_value
+      end    
+    }
+  end
+
   rule anything_symbol
     '.' {
       def value(grammar = nil)
@@ -11,5 +23,4 @@ grammar Metagrammar
   rule space
     [ \t\n\r]+
   end
-
 end

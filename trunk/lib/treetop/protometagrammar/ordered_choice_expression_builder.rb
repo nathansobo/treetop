@@ -6,7 +6,7 @@ module Treetop
       end
     
       def ordered_choice
-        two_or_more_delimited(:sequence, seq(:space, "/", :space)) do
+        two_or_more_delimited(:sequence, seq(optional(:space), "/", optional(:space))) do
           def value(grammar)
             OrderedChoice.new(element_values(grammar))
           end
