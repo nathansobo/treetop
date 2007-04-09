@@ -1,0 +1,5 @@
+grammar Metagrammar
+  rule space
+    [ \t\n\r]+
+  end
+end
