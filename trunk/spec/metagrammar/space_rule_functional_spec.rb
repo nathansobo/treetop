@@ -9,25 +9,27 @@ context "The subset of the metagrammar rooted at the space rule" do
   include MetagrammarSpecContextHelper
   
   setup do
-    @metagrammar = Protometagrammar.new
-    @parser = @metagrammar.new_parser
-    @metagrammar.root = @metagrammar.nonterminal_symbol(:space)
+    @root = :space
   end
 
   specify "parses different types of whitespace" do
-    grammar = Grammar.new
+    with_both_protometagrammar_and_metagrammar do
+      grammar = Grammar.new
 
-    @parser.parse(' ').should be_success
-    @parser.parse('    ').should be_success
-    @parser.parse("\t\t").should be_success
-    @parser.parse("\n").should be_success
+      @parser.parse(' ').should be_success
+      @parser.parse('    ').should be_success
+      @parser.parse("\t\t").should be_success
+      @parser.parse("\n").should be_success
+    end
   end
   
   specify "does not parse nonwhitespace characters" do
-    grammar = Grammar.new
-    @parser.parse('g').should be_failure
-    @parser.parse('g ').should be_failure  
-    @parser.parse(" crack\n").should be_failure  
-    @parser.parse("\n rule foo\n bar\n end\n").should be_failure  
+    with_both_protometagrammar_and_metagrammar do
+      grammar = Grammar.new
+      @parser.parse('g').should be_failure
+      @parser.parse('g ').should be_failure
+      @parser.parse(" crack\n").should be_failure  
+      @parser.parse("\n rule foo\n bar\n end\n").should be_failure
+    end
   end
 end

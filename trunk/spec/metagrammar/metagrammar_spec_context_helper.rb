@@ -10,15 +10,15 @@ module MetagrammarSpecContextHelper
     end
   end
   
-  def with_both_protometagrammar_and_metagrammar_rooted_at(nonterminal_symbol)
+  def with_both_protometagrammar_and_metagrammar(nonterminal_symbol = nil)
     @metagrammar = Protometagrammar.new
     @parser = @metagrammar.new_parser
-    @metagrammar.root = @metagrammar.nonterminal_symbol(nonterminal_symbol)
+    @metagrammar.root = @metagrammar.nonterminal_symbol(nonterminal_symbol || @root) if nonterminal_symbol || @root
     yield
     
     @metagrammar = Metagrammar
     @parser = @metagrammar.new_parser
-    @metagrammar.root = @metagrammar.nonterminal_symbol(nonterminal_symbol)
+    @metagrammar.root = @metagrammar.nonterminal_symbol(nonterminal_symbol || @root) if nonterminal_symbol || @root    
     yield
   end
 end
