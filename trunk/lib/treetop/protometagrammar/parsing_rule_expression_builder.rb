@@ -1,5 +1,5 @@
 module Treetop
-  class ParsingRuleBuilder < ParsingExpressionBuilder
+  class ParsingRuleExpressionBuilder < ParsingExpressionBuilder
     def build
       seq('rule', :space, :nonterminal_symbol, :space, :ordered_choice, :space, 'end') do
         def value(grammar)

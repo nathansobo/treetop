@@ -1,5 +1,5 @@
 module Treetop
-  class CharacterClassBuilder < ParsingExpressionBuilder
+  class CharacterClassExpressionBuilder < ParsingExpressionBuilder
     def build
       character_class
     end

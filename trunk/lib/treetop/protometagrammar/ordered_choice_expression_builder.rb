@@ -1,5 +1,5 @@
 module Treetop
-  class OrderedChoiceBuilder < ParsingExpressionBuilder
+  class OrderedChoiceExpressionBuilder < ParsingExpressionBuilder
     def build
       choice(ordered_choice, :sequence)
     end

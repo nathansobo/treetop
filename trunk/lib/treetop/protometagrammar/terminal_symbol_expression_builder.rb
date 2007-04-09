@@ -1,5 +1,5 @@
 module Treetop
- class TerminalSymbolBuilder < ParsingExpressionBuilder
+ class TerminalSymbolExpressionBuilder < ParsingExpressionBuilder
     module TerminalStringSyntaxNode
       def prefix
         elements[1].text_value

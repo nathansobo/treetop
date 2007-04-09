@@ -1,6 +1,6 @@
 dir = File.dirname(__FILE__)
-require "#{dir}/protometagrammar/metagrammar"
-require "#{dir}/protometagrammar/metagrammar_expression_builder"
+require "#{dir}/protometagrammar/protometagrammar"
+require "#{dir}/protometagrammar/grammar_expression_builder"
 require "#{dir}/protometagrammar/parsing_rule_sequence_expression_builder"
 require "#{dir}/protometagrammar/parsing_rule_expression_builder"
 require "#{dir}/protometagrammar/primary_expression_builder"

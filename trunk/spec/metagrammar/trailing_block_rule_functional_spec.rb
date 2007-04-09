@@ -10,7 +10,7 @@ context "The subset of the metagrammar rooted at the trailing_block rule" do
   include MetagrammarSpecContextHelper
   
   setup do
-    @metagrammar = Metagrammar.new
+    @metagrammar = Protometagrammar.new
     @parser = @metagrammar.new_parser
     @metagrammar.root = @metagrammar.nonterminal_symbol(:trailing_block)
   end

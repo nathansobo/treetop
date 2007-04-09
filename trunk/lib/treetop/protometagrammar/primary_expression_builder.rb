@@ -1,5 +1,5 @@
 module Treetop
-  class PrimaryBuilder < ParsingExpressionBuilder
+  class PrimaryExpressionBuilder < ParsingExpressionBuilder
     def build
       seq(optional(:prefix), rest) do        
         def value(grammar)

@@ -1,5 +1,5 @@
 module Treetop
-  class ParsingRuleSequenceBuilder < ParsingExpressionBuilder
+  class ParsingRuleSequenceExpressionBuilder < ParsingExpressionBuilder
     def build
       zero_or_more_delimited(:parsing_rule, :space) do
         def value(grammar)

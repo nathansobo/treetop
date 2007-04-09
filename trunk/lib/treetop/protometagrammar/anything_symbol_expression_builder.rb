@@ -1,5 +1,5 @@
 module Treetop
-  class AnythingSymbolBuilder < ParsingExpressionBuilder
+  class AnythingSymbolExpressionBuilder < ParsingExpressionBuilder
     def build
       exp(".") do
         def value(grammar = nil)

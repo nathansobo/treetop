@@ -1,5 +1,5 @@
 module Treetop
-  class SequenceBuilder < ParsingExpressionBuilder
+  class SequenceExpressionBuilder < ParsingExpressionBuilder
     def build
       choice(sequence_with_block, :primary)
     end

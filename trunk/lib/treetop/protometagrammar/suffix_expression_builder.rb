@@ -1,5 +1,5 @@
 module Treetop
-  class SuffixBuilder < ParsingExpressionBuilder
+  class SuffixExpressionBuilder < ParsingExpressionBuilder
     def build
       choice(zero_or_more_terminal, one_or_more_terminal, optional)
     end

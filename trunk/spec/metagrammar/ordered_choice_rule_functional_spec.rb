@@ -9,7 +9,7 @@ context "The subset of the metagrammar rooted at the ordered_choice rule" do
   include MetagrammarSpecContextHelper
   
   setup do
-    @metagrammar = Metagrammar.new
+    @metagrammar = Protometagrammar.new
     @parser = @metagrammar.new_parser
     @metagrammar.root = @metagrammar.nonterminal_symbol(:ordered_choice)
   end

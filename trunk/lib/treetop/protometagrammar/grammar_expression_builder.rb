@@ -1,5 +1,5 @@
 module Treetop
-  class MetagrammarBuilder < ParsingExpressionBuilder
+  class GrammarExpressionBuilder < ParsingExpressionBuilder
     def build
       seq('grammar', :space, grammar_name, :parsing_rule_sequence, optional(:space), 'end') do
         def value

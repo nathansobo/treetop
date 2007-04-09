@@ -1,5 +1,5 @@
 module Treetop
-  class TrailingBlockBuilder < ParsingExpressionBuilder
+  class TrailingBlockExpressionBuilder < ParsingExpressionBuilder
     def build
       choice(trailing_block, nothing)
     end

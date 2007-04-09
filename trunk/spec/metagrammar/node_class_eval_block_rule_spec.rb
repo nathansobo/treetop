@@ -9,7 +9,7 @@ context "The subset of the metagrammar rooted at the node_class_eval_block rule"
   include MetagrammarSpecContextHelper
   
   setup do
-    @metagrammar = Metagrammar.new
+    @metagrammar = Protometagrammar.new
     @parser = @metagrammar.new_parser
     @metagrammar.root = @metagrammar.nonterminal_symbol(:node_class_eval_block)
   end

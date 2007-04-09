@@ -1,5 +1,5 @@
 module Treetop
-  class PrefixBuilder < ParsingExpressionBuilder    
+  class PrefixExpressionBuilder < ParsingExpressionBuilder    
     def build
       choice(and_predicate, not_predicate)
     end
