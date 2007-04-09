@@ -1,4 +1,27 @@
 grammar Metagrammar
+
+
+
+  rule trailing_block
+    space block {
+      def value(parsing_expression)
+        parsing_expression.node_class_eval(block.value)
+        return parsing_expression
+      end
+
+      def block
+        elements[1]
+      end
+    }
+    /
+    '' {
+      def value(parsing_expression)
+        parsing_expression
+      end
+    }
+  end
+  
+
   rule block
     ('{' (block / ![{}] .)* '}') {
       def value
