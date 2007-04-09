@@ -1,5 +1,5 @@
 module Treetop
-  class NodeClassEvalBlockExpressionBuilder < ParsingExpressionBuilder
+  class BlockExpressionBuilder < ParsingExpressionBuilder
     def build
       seq('{', zero_or_more(choice(:node_class_eval_block, anything_but_a_brace)), '}') do
         def value
