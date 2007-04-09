@@ -2,7 +2,7 @@ module Treetop
   class Protometagrammar
     class BlockExpressionBuilder < ParsingExpressionBuilder
       def build
-        seq('{', zero_or_more(choice(:node_class_eval_block, anything_but_a_brace)), '}') do
+        seq('{', zero_or_more(choice(:block, anything_but_a_brace)), '}') do
           def value
             elements[1].text_value
           end

@@ -15,7 +15,7 @@ module Treetop
         rule :terminal_symbol, TerminalSymbolExpressionBuilder.new
         rule :character_class, CharacterClassExpressionBuilder.new
         rule :anything_symbol, AnythingSymbolExpressionBuilder.new
-        rule :node_class_eval_block, BlockExpressionBuilder.new
+        rule :block, BlockExpressionBuilder.new
         rule :trailing_block, TrailingBlockExpressionBuilder.new
         rule :space, one_or_more(char_class(" \t\n\r"))
         rule :keyword, choice('rule', 'end')

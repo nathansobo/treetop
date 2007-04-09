@@ -1,4 +1,11 @@
 grammar Metagrammar
+  rule block
+    ('{' (block / ![{}] .)* '}') {
+      def value
+        elements[1].text_value
+      end
+    }
+  end
 
   rule character_class
     ('[' (!']' ('\]'/.))+ ']') {      

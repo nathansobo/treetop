@@ -6,13 +6,13 @@ module Treetop
       end
     
       def trailing_block
-        seq(:space, :node_class_eval_block) do
+        seq(:space, :block) do
           def value(parsing_expression)
-            parsing_expression.node_class_eval(node_class_eval_block.value)
+            parsing_expression.node_class_eval(block.value)
             return parsing_expression
           end
 
-          def node_class_eval_block
+          def block
             elements[1]
           end
         end
