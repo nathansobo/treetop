@@ -1,7 +1,5 @@
 grammar Metagrammar
-
-
-
+  
   rule trailing_block
     space block {
       def value(parsing_expression)
@@ -21,7 +19,6 @@ grammar Metagrammar
     }
   end
   
-
   rule block
     ('{' (block / ![{}] .)* '}') {
       def value
