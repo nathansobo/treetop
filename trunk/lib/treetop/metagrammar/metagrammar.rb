@@ -6,10 +6,6 @@ module Treetop
     result = metagrammar_parser.parse(metagrammar_text)
     
     unless result.success?
-      puts "BOOM"
-      
-      puts result.nested_terminal_failures
-      
       # result.failure_chains.each do |fc|
       #         puts fc.to_html
       #         

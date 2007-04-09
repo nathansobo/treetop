@@ -11,6 +11,10 @@ grammar Metagrammar
       end    
     }
   end
+  
+  rule keyword
+    'rule' / 'end'
+  end
 
   rule anything_symbol
     '.' {

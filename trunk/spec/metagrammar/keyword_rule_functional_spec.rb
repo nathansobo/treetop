@@ -9,13 +9,13 @@ context "The subset of the metagrammar rooted at the keyword rule" do
   include MetagrammarSpecContextHelper
   
   setup do
-    @metagrammar = Protometagrammar.new
-    @parser = @metagrammar.new_parser
-    @metagrammar.root = @metagrammar.nonterminal_symbol(:keyword)
+    @root = :keyword
   end
   
   specify "parses 'rule' and 'end' successfully" do
-    @parser.parse('end').should be_a_success
-    @parser.parse('rule').should be_a_success
+    with_both_protometagrammar_and_metagrammar do
+      @parser.parse('end').should be_a_success
+      @parser.parse('rule').should be_a_success
+    end
   end
 end
