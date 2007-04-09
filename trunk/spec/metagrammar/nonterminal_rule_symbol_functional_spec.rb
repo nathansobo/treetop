@@ -24,6 +24,15 @@ context "The subset of the metagrammar rooted at the nonterminal_symbol rule" do
     grammar.nonterminal_symbol(:foo).should_equal(nonterminal)
   end
   
+  specify "parses unquoted strings with underscores successfully" do
+    @parser.parse('underscore_rule_name').should be_success
+  end
+
+  specify "parses nonterminal names that begin with reserved words successfully" do
+    @parser.parse('rule_name').should be_success
+    @parser.parse('end_of_the_world').should be_success
+  end
+  
   specify "does not parse 'rule' or 'end' as nonterminals" do
     @parser.parse('rule').should be_a_failure
     @parser.parse('end').should be_a_failure

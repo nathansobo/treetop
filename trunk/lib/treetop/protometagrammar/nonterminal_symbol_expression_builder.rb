@@ -2,7 +2,7 @@ module Treetop
   class Protometagrammar
     class NonterminalSymbolExpressionBuilder < ParsingExpressionBuilder
       def build
-        seq(notp(:keyword), nonterminal_symbol) do
+        seq(notp(naked_keyword), nonterminal_symbol) do
           def value(grammar)
             nonterminal_symbol.value(grammar)
           end
@@ -11,6 +11,10 @@ module Treetop
             elements[1]
           end
         end
+      end
+
+      def naked_keyword
+        seq(:keyword, notp(alphanumeric_char))
       end
 
       def nonterminal_symbol
@@ -26,7 +30,7 @@ module Treetop
       end
 
       def alpha_char
-        char_class('A-Za-z')
+        char_class('A-Za-z_')
       end
 
       def numeric_char

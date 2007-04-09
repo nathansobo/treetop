@@ -1,5 +1,15 @@
 grammar Metagrammar
+
+  rule anything_symbol
+    '.' {
+      def value(grammar = nil)
+        AnythingSymbol.new
+      end
+    }
+  end
+  
   rule space
     [ \t\n\r]+
   end
+
 end
