@@ -1,4 +1,79 @@
 grammar Metagrammar
+	rule sequence
+		(primary (space primary)+ trailing_block)	{
+			def value(grammar)
+				trailing_block.value(Sequence.new(sequence_elements(grammar)))
+			end
+			
+			def trailing_block
+				elements[2]
+			end
+		
+			def sequence_elements(grammar)
+				[head.value(grammar)] + tail_values(grammar)
+			end
+		
+			def head
+				elements[0]
+			end
+		
+			def tail_elements
+				elements[1].elements
+			end
+		
+			def tail_values(grammar)
+				tail_elements.map {|tail_element| tail_element.elements[1].value(grammar)}
+			end
+		}
+	end
+
+	rule ordered_choice
+		(sequence (space? '/' space? sequence)+) {
+			def value(grammar)
+				OrderedChoice.new()
+			end
+			
+			def alternatives(grammar)
+				[head.value(grammar)] + tail_values(grammar)
+			end
+			
+			def head
+				elements[0]
+			end
+			
+			def tail
+				elements[1].elements
+			end
+			
+			def tail_values(grammar)
+				tail.map {|element| element.elements[4].value(grammar)}
+			end
+		}
+	end
+
+	rule primary
+		(prefix? ((terminal_symbol / nonterminal_symbol) suffix?)) {
+			def value(grammar)
+				value = primary_expression.value(grammar)
+				value = suffix.value(value) unless suffix.epsilon?
+				value = prefix.value(value) unless prefix.epsilon?
+				value
+			end
+		
+			def prefix
+				elements[0]
+			end
+			
+			def primary_expression
+				elements[1].elements[0]
+			end
+			
+			def suffix
+				elements[1].elements[1]
+			end
+		}
+	end	
+		
 	rule prefix
 		'&' {
 			def value(parsing_expression)
@@ -33,23 +108,7 @@ grammar Metagrammar
 		}
 	end
 
-  rule nonterminal_symbol
-		nonterminal_symbol_prefix trailing_block {
-			def value(grammar)
-	    	trailing_block.value(nonterminal_symbol.value(grammar))
-	    end
-    
-	    def nonterminal_symbol
-	      elements[0]
-	    end
-    
-	    def trailing_block
-	      elements[1]
-	  	end
-		}
-	end
-
-	rule nonterminal_symbol_prefix
+	rule nonterminal_symbol
 		(!(keyword !alphanumeric_char) (alpha_char alphanumeric_char*)) {
 			def value(grammar)
 				grammar.nonterminal_symbol(name)

@@ -9,27 +9,32 @@ context "The subset of the metagrammar rooted at the ordered_choice rule" do
   include MetagrammarSpecContextHelper
   
   setup do
+    @root = :ordered_choice
     @metagrammar = Protometagrammar.new
     @parser = @metagrammar.new_parser
     @metagrammar.root = @metagrammar.nonterminal_symbol(:ordered_choice)
   end
   
   specify "parses sequences with higher precedence than ordered choices" do
-    result = parse_result_for('a b / c d')
-    result.should be_an_instance_of(OrderedChoice)
-    result.alternatives[0].should be_an_instance_of(Sequence)
-    result.alternatives[1].should be_an_instance_of(Sequence)    
+    with_both_protometagrammar_and_metagrammar do
+      result = parse_result_for('a b / c d')
+      result.should be_an_instance_of(OrderedChoice)
+      result.alternatives[0].should be_an_instance_of(Sequence)
+      result.alternatives[1].should be_an_instance_of(Sequence)          
+    end
   end
   
   specify "parses expressions in parentheses as themselves" do        
-    parse_result_for("('foo')").should be_an_instance_of(TerminalSymbol)
-    parse_result_for('("foo")').should be_an_instance_of(TerminalSymbol)
-    parse_result_for('(foo)').should be_an_instance_of(NonterminalSymbol)
-    parse_result_for('(.)').should be_an_instance_of(AnythingSymbol)
-    parse_result_for('([abc])').should be_an_instance_of(CharacterClass)
-    parse_result_for('("terminal" / nonterminal1 / nonterminal2)').should be_an_instance_of(OrderedChoice)
-    parse_result_for('(a b / c d)').should be_an_instance_of(OrderedChoice)
-    parse_result_for('("terminal" nonterminal1 nonterminal2)').should be_an_instance_of(Sequence)
+    with_both_protometagrammar_and_metagrammar do      
+      parse_result_for("('foo')").should be_an_instance_of(TerminalSymbol)
+      parse_result_for('("foo")').should be_an_instance_of(TerminalSymbol)
+      parse_result_for('(foo)').should be_an_instance_of(NonterminalSymbol)
+      parse_result_for('(.)').should be_an_instance_of(AnythingSymbol)
+      parse_result_for('([abc])').should be_an_instance_of(CharacterClass)
+      parse_result_for('("terminal" / nonterminal1 / nonterminal2)').should be_an_instance_of(OrderedChoice)
+      parse_result_for('(a b / c d)').should be_an_instance_of(OrderedChoice)
+      parse_result_for('("terminal" nonterminal1 nonterminal2)').should be_an_instance_of(Sequence)
+    end
   end
 
   specify "parses expressions in parentheses with extra spaces as themselves" do        
