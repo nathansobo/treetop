@@ -25,12 +25,14 @@ grammar Metagrammar
 				tail_elements.map {|tail_element| tail_element.elements[1].value(grammar)}
 			end
 		}
+		/
+		primary
 	end
 
 	rule ordered_choice
 		(sequence (space? '/' space? sequence)+) {
 			def value(grammar)
-				OrderedChoice.new()
+				OrderedChoice.new(alternatives(grammar))
 			end
 			
 			def alternatives(grammar)
@@ -41,18 +43,40 @@ grammar Metagrammar
 				elements[0]
 			end
 			
-			def tail
+			def tail_elements
 				elements[1].elements
 			end
 			
 			def tail_values(grammar)
-				tail.map {|element| element.elements[4].value(grammar)}
+				tail_elements.map {|tail_element| tail_element.elements[3].value(grammar)}
 			end
+		}
+		/
+		sequence
+	end
+	
+	rule parenthesized_ordered_choice
+		'(' space? ordered_choice space? ')' trailing_block {
+			def value(grammar)
+        nested_value = nested_expression.value(grammar)
+        unless trailing_block.epsilon? || nested_value.kind_of?(NodeInstantiatingParsingExpression)
+          raise "Blocks can only follow node-instantiating parsing expressions such as sequences and terminal symbols."
+        end
+        return trailing_block.value(nested_expression.value(grammar))
+      end
+      
+			def nested_expression
+	      elements[2]
+	    end
+  
+	    def trailing_block
+	      elements[5]
+	    end
 		}
 	end
 
 	rule primary
-		(prefix? ((terminal_symbol / nonterminal_symbol) suffix?)) {
+		(prefix? ((parenthesized_ordered_choice / terminal_symbol / nonterminal_symbol) suffix?)) {
 			def value(grammar)
 				value = primary_expression.value(grammar)
 				value = suffix.value(value) unless suffix.epsilon?
