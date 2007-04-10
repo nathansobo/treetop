@@ -1,4 +1,47 @@
 grammar Metagrammar
+	rule parsing_rule
+		('rule' space nonterminal_symbol space ordered_choice space 'end') {
+			def value(grammar)
+        ParsingRule.new(nonterminal_symbol.value(grammar),
+                        parsing_expression.value(grammar))
+      end
+    
+      def nonterminal_symbol
+        elements[2]
+      end
+    
+      def parsing_expression
+        elements[4]
+      end
+		}
+	end
+
+	rule ordered_choice
+		(sequence (space? '/' space? sequence)+) {
+			def value(grammar)
+				OrderedChoice.new(alternatives(grammar))
+			end
+			
+			def alternatives(grammar)
+				[head.value(grammar)] + tail_values(grammar)
+			end
+			
+			def head
+				elements[0]
+			end
+			
+			def tail_elements
+				elements[1].elements
+			end
+			
+			def tail_values(grammar)
+				tail_elements.map {|tail_element| tail_element.elements[3].value(grammar)}
+			end
+		}
+		/
+		sequence
+	end
+	
 	rule sequence
 		(primary (space primary)+ trailing_block)	{
 			def value(grammar)
@@ -29,32 +72,6 @@ grammar Metagrammar
 		primary
 	end
 
-	rule ordered_choice
-		(sequence (space? '/' space? sequence)+) {
-			def value(grammar)
-				OrderedChoice.new(alternatives(grammar))
-			end
-			
-			def alternatives(grammar)
-				[head.value(grammar)] + tail_values(grammar)
-			end
-			
-			def head
-				elements[0]
-			end
-			
-			def tail_elements
-				elements[1].elements
-			end
-			
-			def tail_values(grammar)
-				tail_elements.map {|tail_element| tail_element.elements[3].value(grammar)}
-			end
-		}
-		/
-		sequence
-	end
-	
 	rule parenthesized_ordered_choice
 		'(' space? ordered_choice space? ')' trailing_block {
 			def value(grammar)

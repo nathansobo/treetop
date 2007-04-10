@@ -10,9 +10,6 @@ context "The subset of the metagrammar rooted at the ordered_choice rule" do
   
   setup do
     @root = :ordered_choice
-    @metagrammar = Protometagrammar.new
-    @parser = @metagrammar.new_parser
-    @metagrammar.root = @metagrammar.nonterminal_symbol(:ordered_choice)
   end
   
   specify "parses sequences with higher precedence than ordered choices" do

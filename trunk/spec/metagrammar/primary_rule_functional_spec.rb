@@ -10,9 +10,6 @@ context "The subset of the metagrammar rooted at the primary rule" do
 
   setup do
     @root = :primary
-    @metagrammar = Protometagrammar.new
-    @parser = @metagrammar.new_parser
-    @metagrammar.root = @metagrammar.nonterminal_symbol(:primary)
   end
 
   specify "parses an expression followed immediately by a + as one or more of that expression" do
