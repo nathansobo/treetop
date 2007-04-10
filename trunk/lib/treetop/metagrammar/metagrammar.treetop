@@ -1,8 +1,20 @@
 grammar Metagrammar
 	rule parsing_rule_sequence
-		((parsing_rule space)* parsing_rule) {
+		(parsing_rule? (space parsing_rule)*) {
 			def value(grammar)
-				elements.collect {|element| element.value(grammar)}
+				(head.epsilon? ? [] : [head.value(grammar)]) + tail_values(grammar)
+			end
+			
+			def head
+				elements[0]
+			end
+						
+			def tail_elements
+				elements[1].elements
+			end
+			
+			def tail_values(grammar)
+				tail_elements.collect {|tail_element| tail_element.elements[1].value(grammar)}
 			end
 		}
 	end

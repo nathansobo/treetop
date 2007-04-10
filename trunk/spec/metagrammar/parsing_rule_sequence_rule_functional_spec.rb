@@ -21,6 +21,11 @@ context "The subset of the metagrammar rooted at the parsing_rule_sequence rule"
     
       result = @parser.parse(input)
       result.should be_success      
+      
+      grammar = Grammar.new
+      rules = result.value(grammar)
+      
+      rules[0].should be_an_instance_of(ParsingRule)
     end
   end
   
@@ -29,7 +34,14 @@ context "The subset of the metagrammar rooted at the parsing_rule_sequence rule"
       input = "rule foo bar end rule baz bop end"
     
       result = @parser.parse(input)
-      result.should be_success      
+      result.should be_success
+      
+      grammar = Grammar.new
+      rules = result.value(grammar)
+      
+      rules.each do |rule|
+        rule.should be_an_instance_of(ParsingRule)
+      end
     end
   end
 end
