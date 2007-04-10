@@ -28,9 +28,6 @@ module Treetop
           end
         end
       end
-    
-      def value(parsing_expression)
-      end
     end
   end
 end

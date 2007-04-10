@@ -1,4 +1,38 @@
-grammar Metagrammar  
+grammar Metagrammar
+	rule prefix
+		'&' {
+			def value(parsing_expression)
+				parsing_expression.and_predicate
+			end
+		}
+		/
+		'!' {
+			def value(parsing_expression)
+				parsing_expression.not_predicate
+			end
+		}
+	end
+	
+	rule suffix
+		'*' {
+			def value(parsing_expression)
+				parsing_expression.zero_or_more
+			end
+		}
+		/
+		'+' {
+			def value(parsing_expression)
+				parsing_expression.one_or_more
+			end
+		}
+		/
+		'?' {
+			def value(parsing_expression)
+				parsing_expression.optional
+			end
+		}
+	end
+
   rule nonterminal_symbol
 		nonterminal_symbol_prefix trailing_block {
 			def value(grammar)
