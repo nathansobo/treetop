@@ -1,5 +1,40 @@
-grammar Metagrammar
-  
+grammar Metagrammar  
+	rule terminal_symbol
+		terminal_symbol_prefix trailing_block {
+			def value(grammar = nil)
+      	trailing_block.value(terminal_symbol.value)
+      end
+      
+      def terminal_symbol
+        elements[0]
+      end
+      
+      def trailing_block
+        elements[1]
+    	end
+		}
+	end
+
+	rule terminal_symbol_prefix
+		single_quoted_string / double_quoted_string / character_class / anything_symbol
+	end
+
+	rule double_quoted_string
+		('"' (!'"' ('\"' / .))* '"') {
+			def value
+				TerminalSymbol.new(elements[1].text_value)
+			end
+		}
+	end
+
+	rule single_quoted_string
+		("'" (!"'" ("\'" / .))* "'") {
+			def value
+				TerminalSymbol.new(elements[1].text_value)
+			end
+		}
+	end
+
   rule trailing_block
     space block {
       def value(parsing_expression)

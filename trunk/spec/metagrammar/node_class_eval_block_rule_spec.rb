@@ -11,7 +11,7 @@ context "The subset of the metagrammar rooted at the node_class_eval_block rule"
   setup do
     @metagrammar = Protometagrammar.new
     @parser = @metagrammar.new_parser
-    @metagrammar.root = @metagrammar.nonterminal_symbol(:node_class_eval_block)
+    @metagrammar.root = @metagrammar.nonterminal_symbol(:block)
   end
 
   specify "parses an empty block" do
