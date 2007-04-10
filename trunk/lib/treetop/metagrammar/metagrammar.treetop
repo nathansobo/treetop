@@ -1,4 +1,40 @@
 grammar Metagrammar  
+  rule nonterminal_symbol
+		nonterminal_symbol_prefix trailing_block {
+			def value(grammar)
+	    	trailing_block.value(nonterminal_symbol.value(grammar))
+	    end
+    
+	    def nonterminal_symbol
+	      elements[0]
+	    end
+    
+	    def trailing_block
+	      elements[1]
+	  	end
+		}
+	end
+
+	rule nonterminal_symbol_prefix
+		(!(keyword !alphanumeric_char) (alpha_char alphanumeric_char*)) {
+			def value(grammar)
+				grammar.nonterminal_symbol(name)
+			end
+			
+			def name
+				elements[1].text_value.to_sym
+			end
+		}
+	end
+	
+	rule alpha_char
+		[A-Za-z_]
+	end
+	
+	rule alphanumeric_char
+		alpha_char / [0-9]
+	end
+
 	rule terminal_symbol
 		terminal_symbol_prefix trailing_block {
 			def value(grammar = nil)

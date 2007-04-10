@@ -11,9 +11,6 @@ context "The subset of the metagrammar rooted at the terminal_symbol rule" do
   
   setup do
     @root = :terminal_symbol
-    @metagrammar = Protometagrammar.new
-    @parser = @metagrammar.new_parser
-    @metagrammar.root = @metagrammar.nonterminal_symbol(:terminal_symbol)
   end
   
   specify "parses a single-quoted string as a TerminalSymbol with the correct prefix value" do
@@ -33,10 +30,12 @@ context "The subset of the metagrammar rooted at the terminal_symbol rule" do
   end
   
   specify "parses a terminal symbol followed by a node class eval block" do
-    result = @parser.parse("'foo' {\ndef a_method\n\nend\n}")
-    result.should be_success
-    terminal = result.value
-    terminal.should_be_an_instance_of TerminalSymbol
-    terminal.node_class.instance_methods.should include('a_method')
+    with_both_protometagrammar_and_metagrammar do
+      result = @parser.parse("'foo' {\ndef a_method\n\nend\n}")
+      result.should be_success
+      terminal = result.value
+      terminal.should_be_an_instance_of TerminalSymbol
+      terminal.node_class.instance_methods.should include('a_method')      
+    end
   end
 end
