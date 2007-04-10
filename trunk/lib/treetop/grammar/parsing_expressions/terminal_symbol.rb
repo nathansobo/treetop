@@ -1,7 +1,6 @@
 module Treetop
   class TerminalSymbol < NodeInstantiatingParsingExpression
     attr_accessor :prefix, :prefix_regex
-    attr_reader :node_class
     
     def self.epsilon
       @epsilon ||= self.new("")
