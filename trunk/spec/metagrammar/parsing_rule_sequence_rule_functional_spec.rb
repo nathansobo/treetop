@@ -9,22 +9,27 @@ context "The subset of the metagrammar rooted at the parsing_rule_sequence rule"
   include MetagrammarSpecContextHelper
 
   setup do
+    @root = :parsing_rule_sequence
     @metagrammar = Protometagrammar.new
     @parser = @metagrammar.new_parser
     @metagrammar.root = @metagrammar.nonterminal_symbol(:parsing_rule_sequence)
   end
   
   specify "parses a single rule" do
-    input = "rule foo bar end"
+    with_both_protometagrammar_and_metagrammar do
+      input = "rule foo bar end"
     
-    result = @parser.parse(input)
-    result.should be_success
+      result = @parser.parse(input)
+      result.should be_success      
+    end
   end
   
   specify "parses two rules" do
-    input = "rule foo bar end rule baz bop end"
+    with_both_protometagrammar_and_metagrammar do
+      input = "rule foo bar end rule baz bop end"
     
-    result = @parser.parse(input)
-    result.should be_success
+      result = @parser.parse(input)
+      result.should be_success      
+    end
   end
 end

@@ -1,4 +1,12 @@
 grammar Metagrammar
+	rule parsing_rule_sequence
+		((parsing_rule space)* parsing_rule) {
+			def value(grammar)
+				elements.collect {|element| element.value(grammar)}
+			end
+		}
+	end
+
 	rule parsing_rule
 		('rule' space nonterminal_symbol space ordered_choice space 'end') {
 			def value(grammar)
