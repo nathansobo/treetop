@@ -29,7 +29,7 @@ context "The subset of the metagrammar rooted at the parsing_rule rule" do
       result.parsing_expression.should be_an_instance_of(TerminalSymbol)      
     end
   end
-
+  
   specify "parses a parse rule with a complex expression" do
     with_both_protometagrammar_and_metagrammar do
       result = parse_result_for("rule foo 'bar' baz+ (xyzzy / plugh*) !bar end")

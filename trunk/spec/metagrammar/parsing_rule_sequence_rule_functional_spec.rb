@@ -44,4 +44,16 @@ context "The subset of the metagrammar rooted at the parsing_rule_sequence rule"
       end
     end
   end
+  
+  specify "parses a parse rule with newlines in it" do
+    with_both_protometagrammar_and_metagrammar do
+      input = 
+      %{rule foo
+          bar
+        end}
+
+      result = @parser.parse(input)
+      result.should be_success
+    end
+  end
 end

@@ -1,4 +1,28 @@
 grammar Metagrammar
+  rule grammar
+    ('grammar' space grammar_name? parsing_rule_sequence space? 'end') {
+      def value
+        grammar = Grammar.new
+        parsing_rules(grammar).each do |parsing_rule|
+          grammar.add_parsing_rule(parsing_rule)
+        end
+        return grammar
+      end
+
+      def parsing_rules(grammar)
+        elements[3].value(grammar)
+      end
+    }
+  end
+
+  rule grammar_name
+    ([A-Z] alphanumeric_char*) space {    
+      def value
+        elements[0].text_value.to_sym
+      end
+    }
+  end
+
 	rule parsing_rule_sequence
 		(parsing_rule (space parsing_rule)*) {
 			def value(grammar)
