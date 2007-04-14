@@ -21,7 +21,7 @@ context "A !-predicate for a TerminalSymbol" do
     index = 0
     result = @not_predicate.parse_at(input, index, parser_with_empty_cache_mock)
     result.should_be_success
-    result.interval.end.should_equal index
+    result.consumed_interval.end.should_equal index
   end
   
   specify "has a string representation" do
@@ -47,6 +47,6 @@ context "A sequence with terminal symbol followed by a !-predicate on another te
     index = 3
     result = @sequence.parse_at(input, index, parser_with_empty_cache_mock)
     result.should_be_success
-    result.interval.end.should_equal index + @terminal.prefix.size
+    result.consumed_interval.end.should_equal index + @terminal.prefix.size
   end
 end

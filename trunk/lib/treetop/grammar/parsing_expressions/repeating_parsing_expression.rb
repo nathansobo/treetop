@@ -16,12 +16,12 @@ module Treetop
         result = repeated_expression.parse_at(input, next_index, parser)
         break if result.failure?
         results << result
-        next_index = result.interval.end
+        next_index = result.consumed_interval.end
       end
       
       if enough? results
-        interval = start_index...next_index
-        return node_class.new(input, interval, results)        
+        consumed_interval = start_index...next_index
+        return node_class.new(input, consumed_interval, results)        
       else
         return failure_at(start_index)
       end

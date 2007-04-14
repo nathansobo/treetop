@@ -15,7 +15,7 @@ context "A new parser" do
     root_nonterminal = mock("Root nonterminal")
     parse_result = mock("Parse result")
     parse_result.should_receive(:success?).and_return(true)
-    parse_result.should_receive(:interval).and_return(0...3)
+    parse_result.should_receive(:consumed_interval).and_return(0...3)
     
     root_nonterminal.should_receive(:parse_at).with(input, 0, @parser).and_return(parse_result)
     @grammar.should_receive(:root).and_return(root_nonterminal)
@@ -33,8 +33,8 @@ context "A new parser" do
     @grammar.stub!(:root).and_return(root_nonterminal)
     
     parse_result.should_receive(:success?).and_return(true)
-    parse_result.should_receive(:interval).twice.and_return(0...2)
-    result = @parser.parse("input longer than parse result's interval")
+    parse_result.should_receive(:consumed_interval).twice.and_return(0...2)
+    result = @parser.parse("input longer than parse result's consumed_interval")
     result.should_be_failure
   end
   
@@ -43,7 +43,7 @@ context "A new parser" do
     root_nonterminal = mock("Root nonterminal")
     parse_result = mock("Parse result")
     parse_result.should_receive(:success?).and_return(true)
-    parse_result.should_receive(:interval).and_return(0...3)
+    parse_result.should_receive(:consumed_interval).and_return(0...3)
     
     root_nonterminal.should_receive(:parse_at).with(input, 0, @parser).and_return(parse_result)
     @grammar.should_receive(:root).and_return(root_nonterminal)

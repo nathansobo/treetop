@@ -10,8 +10,8 @@ module Treetop
     def parse(input)
       @parse_cache = ParseCache.new
       result = grammar.root.parse_at(input, 0, self)
-      if result.success? and result.interval.end != input.size
-        return NonterminalParseFailure.new(result.interval.end, nil)
+      if result.success? and result.consumed_interval.end != input.size
+        return NonterminalParseFailure.new(result.consumed_interval.end, nil)
       else
         return result
       end

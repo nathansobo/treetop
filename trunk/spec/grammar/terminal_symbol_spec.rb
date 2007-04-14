@@ -9,12 +9,12 @@ context "A terminal symbol" do
     @terminal = TerminalSymbol.new("foo")
   end
     
-  specify "returns the correct interval for a prefix starting after 0" do
+  specify "returns the correct consumed_interval for a prefix starting after 0" do
     result = @terminal.parse_at("xfoo", 1, parser_with_empty_cache_mock)
-    result.interval.should_eql 1...4
+    result.consumed_interval.should_eql 1...4
     
     result = @terminal.parse_at("---foo", 3, parser_with_empty_cache_mock)
-    result.interval.should_eql 3...6
+    result.consumed_interval.should_eql 3...6
   end
   
   specify "shouldn't parse nonmatching input at the index even if a match occurs later in the input" do
@@ -52,15 +52,17 @@ context "The result of TerminalSymbol#parse_at for a non-matching input prefix a
     @terminal = TerminalSymbol.new("foo")
     @parser = parser_with_empty_cache_mock
     input = ("barfoo")
-    @result = @terminal.parse_at(input, 0, @parser)
+    @start_index = 0
+    @result = @terminal.parse_at(input, @start_index, @parser)
   end
   
   specify "is an instance of of TerminalParseFailure" do
     @result.should_be_a_kind_of TerminalParseFailure
   end
   
-  specify "has an index equal to the site of the attempted parse" do
-    @result.index.should_equal 0
+  specify "has a matched interval and a consumed interval that start and end at the start index of the parse" do
+    @result.matched_interval.should == (@start_index...@start_index)
+    @result.consumed_interval.should == (@start_index...@start_index)    
   end
 end
 
