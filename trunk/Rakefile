@@ -9,7 +9,7 @@ task :default => :spec
 @spec_files = FileList['spec/**/*_spec.rb']
 Spec::Rake::SpecTask.new(:spec) do |t|
   t.spec_files = @spec_files
-  t.spec_opts = ["--format", "specdoc"]
+  #t.spec_opts = ["--format", "specdoc"]
 end
 
 gemspec = Gem::Specification.new do |s|
