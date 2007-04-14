@@ -13,11 +13,7 @@ context "A terminal syntax node" do
   
   specify "has the text value of the input over its interval " do
     @node.text_value.should_eql "foo"
-  end
-  
-  specify "has no nested failures" do
-    @node.nested_failures.should == []
-  end
+  end  
 end
 
 context "An empty terminal syntax node" do

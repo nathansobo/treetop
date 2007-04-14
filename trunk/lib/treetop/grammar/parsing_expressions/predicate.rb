@@ -8,8 +8,8 @@ module Treetop
     
     protected
     
-    def success_at(index, input, nested_failures)
-      return SyntaxNode.new(input, index...index, nested_failures)
+    def success_at(index, input)
+      return SyntaxNode.new(input, index...index)
     end
   end
 end

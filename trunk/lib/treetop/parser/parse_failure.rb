@@ -18,9 +18,5 @@ module Treetop
     def interval
       index...index
     end
-    
-    def nested_terminal_failures
-      nested_failures.collect(&:nested_terminal_failures).flatten.sort_by(&:index).reverse
-    end
   end
 end

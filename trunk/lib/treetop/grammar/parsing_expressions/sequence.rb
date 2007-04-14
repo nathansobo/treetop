@@ -23,22 +23,14 @@ module Treetop
       for elt in elements
         result = elt.parse_at(input, next_index, parser)
         results << result
-        return failure_at(start_index, collect_nested_failures(results)) if result.failure?
+        return failure_at(start_index) if result.failure?
         next_index = result.interval.end
       end
     
       interval = start_index...next_index      
       node_class.new(input,
                      interval,
-                     results,
-                     collect_nested_failures(results))
-    end
-    
-    private
-    def collect_nested_failures(results)
-      results.collect do |result|
-        result.nested_failures + (result.failure? ? [result] : [])
-      end.flatten
-    end
+                     results)
+    end    
   end
 end

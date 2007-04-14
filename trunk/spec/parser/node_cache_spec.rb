@@ -17,7 +17,7 @@ context "A node cache with one stored syntax node" do
   setup do
     @node_cache = NodeCache.new
     @interval = 7...29
-    @syntax_node = SyntaxNode.new(mock('input'), @interval, [])
+    @syntax_node = SyntaxNode.new(mock('input'), @interval)
     @node_cache.store(@syntax_node)
   end
   

@@ -1,11 +1,10 @@
 module Treetop
   class SyntaxNode
-    attr_reader :input, :interval, :nested_failures
+    attr_reader :input, :interval
     
-    def initialize(input, interval, nested_failures = [])
+    def initialize(input, interval)
       @input = input
       @interval = interval
-      @nested_failures = nested_failures
     end
     
     def text_value

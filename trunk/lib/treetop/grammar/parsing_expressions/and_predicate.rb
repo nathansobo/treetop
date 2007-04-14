@@ -9,9 +9,9 @@ module Treetop
       result = expression.parse_at(input, start_index, parser)
       
       if result.success?        
-        return success_at(start_index, input, result.nested_failures)
+        return success_at(start_index, input)
       else
-        return failure_at(start_index, [result])
+        return failure_at(start_index)
       end
     end
   end

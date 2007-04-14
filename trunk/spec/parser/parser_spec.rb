@@ -28,7 +28,6 @@ context "A new parser" do
     root_nonterminal = mock("Root nonterminal")
     parse_result = mock("Parse result")
     nested_failures = [mock('a nested failure')]
-    parse_result.stub!(:nested_failures).and_return(nested_failures)
 
     root_nonterminal.stub!(:parse_at).and_return(parse_result)
     @grammar.stub!(:root).and_return(root_nonterminal)
@@ -37,7 +36,6 @@ context "A new parser" do
     parse_result.should_receive(:interval).twice.and_return(0...2)
     result = @parser.parse("input longer than parse result's interval")
     result.should_be_failure
-    result.nested_failures.should == nested_failures
   end
   
   specify "creates a new parse cache on call to parse" do
