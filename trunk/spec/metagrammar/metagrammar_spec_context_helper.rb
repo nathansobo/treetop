@@ -1,24 +1,26 @@
 module MetagrammarSpecContextHelper
-  def parse_result_for(input)
+  def parse_result_for(parser, input)
     grammar = Grammar.new
-    result = @parser.parse(input)
+    result = parser.parse(input)
 
-    if result.failure?
-      return result
-    else
-      result.value(grammar)
-    end
+    result.should_not be_failure
+    result.value(grammar)
   end
   
-  def with_both_protometagrammar_and_metagrammar(nonterminal_symbol = nil)
-    @metagrammar = Protometagrammar.new
-    @parser = @metagrammar.new_parser
-    @metagrammar.root = @metagrammar.nonterminal_symbol(nonterminal_symbol || @root) if nonterminal_symbol || @root
-    yield
+  def with_both_protometagrammar_and_metagrammar(root_sym)
+    metagrammar = Protometagrammar.new
+    root = metagrammar.nonterminal_symbol(root_sym)
+    previous_root = metagrammar.root    
+    metagrammar.root = root
+    parser = metagrammar.new_parser
+    yield(parser)
+    metagrammar
     
-    @metagrammar = Metagrammar
-    @parser = @metagrammar.new_parser
-    @metagrammar.root = @metagrammar.nonterminal_symbol(nonterminal_symbol || @root) if nonterminal_symbol || @root    
-    yield
+    root = Metagrammar.nonterminal_symbol(root_sym)
+    previous_root = Metagrammar.root
+    Metagrammar.root = root
+    parser = Metagrammar.new_parser
+    yield(parser)
+    Metagrammar.root = previous_root
   end
 end

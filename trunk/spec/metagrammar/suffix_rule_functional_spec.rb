@@ -13,8 +13,8 @@ context "The subset of the metagrammar rooted at the suffix rule" do
   end
 
   specify "parses a * to a node that can modify the semantics of an expression it follows appropriately" do
-    with_both_protometagrammar_and_metagrammar do
-      result = @parser.parse('*')
+    with_both_protometagrammar_and_metagrammar(@root) do |parser|
+      result = parser.parse('*')
     
       parsing_expression = mock('expression preceding the suffix')
       zero_or_more = mock('zero or more of the parsing expression')
@@ -25,8 +25,8 @@ context "The subset of the metagrammar rooted at the suffix rule" do
   end
 
   specify "parses a + node that can modify the semantics of an expression it follows appropriately" do
-    with_both_protometagrammar_and_metagrammar do
-      result = @parser.parse('+')
+    with_both_protometagrammar_and_metagrammar(@root) do |parser|
+      result = parser.parse('+')
     
       parsing_expression = mock('expression preceding the suffix')
       one_or_more = mock('one or more of the parsing expression')
@@ -37,8 +37,8 @@ context "The subset of the metagrammar rooted at the suffix rule" do
   end
 
   specify "parses a ? node that can modify the semantics of an expression it follows appropriately" do
-    with_both_protometagrammar_and_metagrammar do
-      result = @parser.parse('?')
+    with_both_protometagrammar_and_metagrammar(@root) do |parser|
+      result = parser.parse('?')
     
       parsing_expression = mock('expression preceding the suffix')
       optional = mock('optional parsing expression')

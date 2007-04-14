@@ -1,5 +1,5 @@
 dir = File.dirname(__FILE__)
-require "#{dir}/../lib/treetop"
+require File.expand_path('treetop', "#{dir}/../lib/")
 
 include Treetop
 

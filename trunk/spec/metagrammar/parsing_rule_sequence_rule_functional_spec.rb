@@ -11,15 +11,15 @@ context "The subset of the metagrammar rooted at the parsing_rule_sequence rule"
   setup do
     @root = :parsing_rule_sequence
     @metagrammar = Protometagrammar.new
-    @parser = @metagrammar.new_parser
+    parser = @metagrammar.new_parser
     @metagrammar.root = @metagrammar.nonterminal_symbol(:parsing_rule_sequence)
   end
   
   specify "parses a single rule" do
-    with_both_protometagrammar_and_metagrammar do
+    with_both_protometagrammar_and_metagrammar(@root) do |parser|
       input = "rule foo bar end"
     
-      result = @parser.parse(input)
+      result = parser.parse(input)
       result.should be_success      
       
       grammar = Grammar.new
@@ -30,10 +30,10 @@ context "The subset of the metagrammar rooted at the parsing_rule_sequence rule"
   end
   
   specify "parses two rules" do
-    with_both_protometagrammar_and_metagrammar do
+    with_both_protometagrammar_and_metagrammar(@root) do |parser|
       input = "rule foo bar end rule baz bop end"
     
-      result = @parser.parse(input)
+      result = parser.parse(input)
       result.should be_success
       
       grammar = Grammar.new
@@ -46,13 +46,13 @@ context "The subset of the metagrammar rooted at the parsing_rule_sequence rule"
   end
   
   specify "parses a parse rule with newlines in it" do
-    with_both_protometagrammar_and_metagrammar do
+    with_both_protometagrammar_and_metagrammar(@root) do |parser|
       input = 
       %{rule foo
           bar
         end}
 
-      result = @parser.parse(input)
+      result = parser.parse(input)
       result.should be_success
     end
   end

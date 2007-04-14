@@ -41,8 +41,8 @@ context "One-or-more of a terminal symbol" do
     input = ("x" * 30) + (@terminal.prefix * 5)
     result = @one_or_more.parse_at(input, index, parser_with_empty_cache_mock)
     result.should_be_a_kind_of SequenceSyntaxNode
-    result.elements.size.should_equal 5
-    result.interval.end.should_equal (index + (@terminal.prefix.size * 5))
+    result.elements.size.should == 5
+    result.interval.end.should == (index + (@terminal.prefix.size * 5))
   end
   
   specify "has a string representation" do

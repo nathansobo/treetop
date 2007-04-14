@@ -13,9 +13,9 @@ context "The subset of the metagrammar rooted at the keyword rule" do
   end
   
   specify "parses 'rule' and 'end' successfully" do
-    with_both_protometagrammar_and_metagrammar do
-      @parser.parse('end').should be_a_success
-      @parser.parse('rule').should be_a_success
+    with_both_protometagrammar_and_metagrammar(@root) do |parser|
+      parser.parse('end').should be_a_success
+      parser.parse('rule').should be_a_success
     end
   end
 end

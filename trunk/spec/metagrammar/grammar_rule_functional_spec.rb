@@ -11,33 +11,33 @@ context "The subset of the metagrammar rooted at the grammar rule" do
   setup do
     @root = :grammar
     @metagrammar = Protometagrammar.new
-    @parser = @metagrammar.new_parser
+    parser = @metagrammar.new_parser
     @metagrammar.root = @metagrammar.nonterminal_symbol(:grammar)
   end
   
   specify "parses a named empty grammar" do
-    with_both_protometagrammar_and_metagrammar do
-      result = @parser.parse("grammar Foo end")
+    with_both_protometagrammar_and_metagrammar(@root) do |parser|
+      result = parser.parse("grammar Foo end")
       result.value.should be_instance_of(Grammar)
     end
   end
 
   specify "parses an anonymous empty grammar" do
-    with_both_protometagrammar_and_metagrammar do
-      result = @parser.parse("grammar end")
+    with_both_protometagrammar_and_metagrammar(@root) do |parser|
+      result = parser.parse("grammar end")
       result.value.should be_instance_of(Grammar)
     end
   end
 
   specify "parses a grammar with one rule" do
-    with_both_protometagrammar_and_metagrammar do
+    with_both_protometagrammar_and_metagrammar(@root) do |parser|
       input = 
       %{grammar
           rule foo
             bar
           end
         end}
-      result = @parser.parse(input)
+      result = parser.parse(input)
       result.should be_success
       grammar = result.value
       grammar.should be_instance_of(Grammar)
@@ -47,7 +47,7 @@ context "The subset of the metagrammar rooted at the grammar rule" do
   end
   
   specify "parses a grammar with two rules" do
-    with_both_protometagrammar_and_metagrammar do
+    with_both_protometagrammar_and_metagrammar(@root) do |parser|
       input = 
       %{grammar
           rule foo
@@ -58,7 +58,7 @@ context "The subset of the metagrammar rooted at the grammar rule" do
             bop
           end
         end}
-      result = @parser.parse(input)
+      result = parser.parse(input)
       result.should be_success
     
       grammar = result.value

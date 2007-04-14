@@ -13,8 +13,8 @@ context "The subset of the metagrammar rooted at the sequence rule" do
   end
 
   specify "parses a series of space-separated terminals and nonterminals as a sequence" do
-    with_both_protometagrammar_and_metagrammar do
-      syntax_node = @parser.parse('"terminal" nonterminal1 nonterminal2')
+    with_both_protometagrammar_and_metagrammar(@root) do |parser|
+      syntax_node = parser.parse('"terminal" nonterminal1 nonterminal2')
       syntax_node.should be_success  
 
       grammar = Grammar.new
@@ -30,8 +30,8 @@ context "The subset of the metagrammar rooted at the sequence rule" do
   end
   
   specify "parses a series of space-separated non-terminals as a sequence" do
-    with_both_protometagrammar_and_metagrammar do
-      syntax_node = @parser.parse('a b c')
+    with_both_protometagrammar_and_metagrammar(@root) do |parser|
+      syntax_node = parser.parse('a b c')
 
       grammar = Grammar.new
       sequence = syntax_node.value(grammar)
@@ -40,8 +40,8 @@ context "The subset of the metagrammar rooted at the sequence rule" do
   end
   
   specify "node class evaluates a block following a sequence in the parsing expression for that sequence" do
-    with_both_protometagrammar_and_metagrammar do
-      result = @parser.parse("a b c {\n  def a_method\n  end\n}")
+    with_both_protometagrammar_and_metagrammar(@root) do |parser|
+      result = parser.parse("a b c {\n  def a_method\n  end\n}")
       result.should be_success
     
       grammar = Grammar.new
@@ -52,8 +52,8 @@ context "The subset of the metagrammar rooted at the sequence rule" do
   end
   
   specify "binds trailing blocks more tightly to terminal symbols than sequences" do
-    with_both_protometagrammar_and_metagrammar do
-      result = @parser.parse("a b 'c' {\n  def a_method\n  end\n}")
+    with_both_protometagrammar_and_metagrammar(@root) do |parser|
+      result = parser.parse("a b 'c' {\n  def a_method\n  end\n}")
       result.should be_success
     
       grammar = Grammar.new

@@ -13,8 +13,8 @@ context "The subset of the metagrammar rooted at the character_class rule" do
   end
 
   specify "parses a bracketed string as a CharacterClass" do
-    with_both_protometagrammar_and_metagrammar do
-      result = @parser.parse('[A-C123\]]')
+    with_both_protometagrammar_and_metagrammar(@root) do |parser|
+      result = parser.parse('[A-C123\]]')
       result.should be_success
       
       char_class = result.value

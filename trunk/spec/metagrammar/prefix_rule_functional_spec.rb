@@ -13,8 +13,8 @@ context "The subset of the metagrammar rooted at the prefix rule" do
   end
 
   specify "parses an & as a node that can modify the semantics of an expression it precedes appropriately" do
-    with_both_protometagrammar_and_metagrammar do
-      result = @parser.parse('&')
+    with_both_protometagrammar_and_metagrammar(@root) do |parser|
+      result = parser.parse('&')
     
       parsing_expression = mock('expression following the prefix')
       and_predicate = mock('&-predicated parsing expression')
@@ -25,8 +25,8 @@ context "The subset of the metagrammar rooted at the prefix rule" do
   end
 
   specify "parses an ! as a node that can modify the semantics of an expression it precedes appropriately" do
-    with_both_protometagrammar_and_metagrammar do
-      result = @parser.parse('!')
+    with_both_protometagrammar_and_metagrammar(@root) do |parser|
+      result = parser.parse('!')
     
       parsing_expression = mock('expression following the prefix')
       not_predicate = mock('!-predicated parsing expression')

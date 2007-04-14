@@ -14,24 +14,24 @@ context "The subset of the metagrammar rooted at the terminal_symbol rule" do
   end
   
   specify "parses a single-quoted string as a TerminalSymbol with the correct prefix value" do
-    with_both_protometagrammar_and_metagrammar do
-      terminal = @parser.parse("'foo'").value
+    with_both_protometagrammar_and_metagrammar(@root) do |parser|
+      terminal = parser.parse("'foo'").value
       terminal.should_be_an_instance_of TerminalSymbol
       terminal.prefix.should_eql 'foo'
     end
   end
   
   specify "parses a double-quoted string as a TerminalSymbol with the correct prefix value" do
-    with_both_protometagrammar_and_metagrammar do
-      terminal = @parser.parse('"foo"').value
+    with_both_protometagrammar_and_metagrammar(@root) do |parser|
+      terminal = parser.parse('"foo"').value
       terminal.should_be_an_instance_of TerminalSymbol
       terminal.prefix.should_eql 'foo'      
     end
   end
   
   specify "parses a terminal symbol followed by a node class eval block" do
-    with_both_protometagrammar_and_metagrammar do
-      result = @parser.parse("'foo' {\ndef a_method\n\nend\n}")
+    with_both_protometagrammar_and_metagrammar(@root) do |parser|
+      result = parser.parse("'foo' {\ndef a_method\n\nend\n}")
       result.should be_success
       terminal = result.value
       terminal.should_be_an_instance_of TerminalSymbol
