@@ -20,13 +20,9 @@ context "An instance of ParseFailure instantiated with no failure paths" do
   end 
   
   specify "has a zero length consumed_interval at the beginning of its match interval" do
-    @parse_failure.consumed_interval.should_eql (@matched_interval_begin...@matched_interval_begin)
+    @parse_failure.consumed_interval.should == (@matched_interval_begin...@matched_interval_begin)
   end
-    
-  specify "can indicate the index where the failure occurred" do
-    @parse_failure.matched_interval.begin.should == @matched_interval_begin
-  end
-  
+      
   specify "records the parsing expression whose attempted parsing produced it" do
     @parse_failure.parsing_expression.should == @expression
   end

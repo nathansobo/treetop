@@ -15,7 +15,8 @@ context "One-or-more of a terminal symbol" do
     epsilon = ""
     result = @one_or_more.parse_at(epsilon, index, parser_with_empty_cache_mock)
     result.should_be_failure
-    result.matched_interval.begin.should_equal index
+    # xxx - matched_interval.begin
+    result.matched_interval_begin.should == index
   end
   
   specify "returns a sequence with one element when parsing input matching one of that terminal symbol" do
