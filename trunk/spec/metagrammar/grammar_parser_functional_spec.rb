@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'spec/runner'
+require 'spec'
 
 
 dir = File.dirname(__FILE__)
