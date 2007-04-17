@@ -16,12 +16,12 @@ end
 context "A node cache with one stored syntax node" do
   setup do
     @node_cache = NodeCache.new
-    @consumed_interval = 7...29
-    @syntax_node = SyntaxNode.new(mock('input'), @consumed_interval)
+    @interval = 7...29
+    @syntax_node = SyntaxNode.new(mock('input'), @interval)
     @node_cache.store(@syntax_node)
   end
   
-  specify "returns that syntax node when queried at the start of its consumed_interval" do
-    @node_cache[@consumed_interval.begin].should == @syntax_node
+  specify "returns that syntax node when queried at the start of its interval" do
+    @node_cache[@interval.begin].should == @syntax_node
   end
 end

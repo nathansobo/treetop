@@ -24,12 +24,12 @@ module Treetop
         result = elt.parse_at(input, next_index, parser)
         results << result
         return failure_at(start_index) if result.failure?
-        next_index = result.consumed_interval.end
+        next_index = result.interval.end
       end
     
-      consumed_interval = start_index...next_index      
+      interval = start_index...next_index      
       node_class.new(input,
-                     consumed_interval,
+                     interval,
                      results)
     end    
   end

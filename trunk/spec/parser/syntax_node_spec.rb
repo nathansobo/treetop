@@ -6,7 +6,7 @@ require "#{dir}/../spec_helper"
 
 context "An instance of SyntaxNode" do
   setup do
-    @node = SyntaxNode.new(mock("input"), mock("consumed_interval"))
+    @node = SyntaxNode.new(mock("input"), mock("interval"))
   end
   
   specify "should be success" do

@@ -5,7 +5,7 @@ module Treetop
     end
     
     def matched_interval
-      consumed_interval
+      interval
     end
     
   end

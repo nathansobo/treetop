@@ -16,10 +16,10 @@ context "A sequence" do
     @sequence.node_cache(@parser).should == @node_cache
   end
   
-  specify "checks its cache for a node stored at an consumed_interval beginning at the start index" do
+  specify "checks its cache for a node stored at an interval beginning at the start index" do
     start_index = 0
     @sequence.stub!(:node_cache).and_return(@node_cache)    
-    stored_node = mock("node previously stored in the cache at consumed_interval starting at start_index")
+    stored_node = mock("node previously stored in the cache at interval starting at start_index")
     @node_cache.should_receive(:[]).with(start_index).and_return(stored_node)
 
     @sequence.parse_at(mock('input'), start_index, @parser).should equal(stored_node)
@@ -38,6 +38,6 @@ context "A sequence" do
     @sequence.parse_at(input, start_index, @parser).should == parse_result
   end
   
-#  specify "caches a node stored at the consumed_interval beginning at the start index" do
+#  specify "caches a node stored at the interval beginning at the start index" do
 #  end
 end

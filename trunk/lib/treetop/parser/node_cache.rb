@@ -11,7 +11,7 @@ module Treetop
     end
   
     def store(syntax_node)
-      nodes[syntax_node.consumed_interval.begin] = syntax_node
+      nodes[syntax_node.interval.begin] = syntax_node
     end
   
     def [](start_index)

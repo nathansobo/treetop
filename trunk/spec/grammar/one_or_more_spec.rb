@@ -25,7 +25,7 @@ context "One-or-more of a terminal symbol" do
     result = @one_or_more.parse_at(input, index, parser_with_empty_cache_mock)
     result.should_be_a_kind_of SequenceSyntaxNode
     (result.elements.collect {|e| e.text_value }).should_eql [@terminal.prefix]
-    result.consumed_interval.end.should_equal index + @terminal.prefix.size
+    result.interval.end.should_equal index + @terminal.prefix.size
   end
   
   specify "returns a sequence of size 5 when parsing input with 5 consecutive matches of that terminal symbol" do
@@ -34,7 +34,7 @@ context "One-or-more of a terminal symbol" do
     result = @one_or_more.parse_at(input, index, parser_with_empty_cache_mock)
     result.should_be_a_kind_of SequenceSyntaxNode
     result.elements.size.should_equal 5
-    result.consumed_interval.end.should_equal(index + (@terminal.prefix.size * 5))
+    result.interval.end.should_equal(index + (@terminal.prefix.size * 5))
   end
   
   specify "correctly matches multiples not starting at index 0" do
@@ -43,7 +43,7 @@ context "One-or-more of a terminal symbol" do
     result = @one_or_more.parse_at(input, index, parser_with_empty_cache_mock)
     result.should_be_a_kind_of SequenceSyntaxNode
     result.elements.size.should == 5
-    result.consumed_interval.end.should == (index + (@terminal.prefix.size * 5))
+    result.interval.end.should == (index + (@terminal.prefix.size * 5))
   end
   
   specify "has a string representation" do

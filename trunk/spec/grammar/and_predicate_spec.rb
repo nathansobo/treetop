@@ -15,7 +15,7 @@ context "An &-predication on a terminal symbol" do
     index = 0
     result = @and_predicate.parse_at(input, index, parser_with_empty_cache_mock)
     result.should be_success
-    result.consumed_interval.end.should == index
+    result.interval.end.should == index
   end
   
   specify "fails upon parsing non-matching input" do
@@ -40,7 +40,7 @@ context "A sequence with terminal symbol followed by an &-predicate on another t
     index = 3
     result = @sequence.parse_at(input, index, parser_with_empty_cache_mock)
     result.should be_a_success
-    result.consumed_interval.end.should == index + @terminal.prefix.size
+    result.interval.end.should == index + @terminal.prefix.size
   end
   
   specify "fails when look-ahead predicate does not match" do

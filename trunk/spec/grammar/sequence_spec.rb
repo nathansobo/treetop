@@ -35,7 +35,7 @@ context "A sequence parsing expression with multiple terminal symbols as element
     result = @sequence.parse_at(input, index, parser_with_empty_cache_mock)
     result.should_be_success
     (result.elements.collect {|elt| elt.text_value}).should_eql @elts
-    result.consumed_interval.end.should_equal index + input.size
+    result.interval.end.should_equal index + input.size
   end
   
   specify "returns a successful result with correct elements when matching input is parsed when starting at a non-zero index" do
@@ -44,7 +44,7 @@ context "A sequence parsing expression with multiple terminal symbols as element
     result = @sequence.parse_at(input, index, parser_with_empty_cache_mock)
     result.should_be_success
     (result.elements.collect {|elt| elt.text_value}).should_eql @elts
-    result.consumed_interval.end.should_equal index + @elts.join.size
+    result.interval.end.should_equal index + @elts.join.size
   end
   
   specify "has a string representation" do
@@ -109,9 +109,9 @@ def setup_sequence_element_to_successfully_parse
   @parser = parser_with_empty_cache_mock
   
   @elt_result = mock("First element's parse result")
-  @elt_consumed_interval = 0...5
+  @elt_interval = 0...5
   @elt_result.stub!(:failure?).and_return(false)
-  @elt_result.stub!(:consumed_interval).and_return(@elt_consumed_interval)
+  @elt_result.stub!(:interval).and_return(@elt_interval)
 
   @elt.should_receive(:parse_at).with(@input, @index, @parser).and_return(@elt_result)
 end

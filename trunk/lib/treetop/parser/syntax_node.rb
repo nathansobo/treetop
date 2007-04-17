@@ -1,14 +1,14 @@
 module Treetop
   class SyntaxNode
-    attr_reader :input, :consumed_interval
+    attr_reader :input, :interval
     
-    def initialize(input, consumed_interval)
+    def initialize(input, interval)
       @input = input
-      @consumed_interval = consumed_interval
+      @interval = interval
     end
     
     def text_value
-      input[consumed_interval]
+      input[interval]
     end
     
     def success?
