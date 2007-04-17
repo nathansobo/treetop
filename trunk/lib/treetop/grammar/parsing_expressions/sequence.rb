@@ -30,10 +30,6 @@ module Treetop
       interval = start_index...next_index
       syntax_node = node_class.new(input, interval, results.collect(&:value))
       SuccessfulParseResult.new(self, syntax_node, collect_failure_subtrees(results))
-    end
-    
-    def collect_failure_subtrees(results)
-      results.collect(&:failure_tree).compact
-    end
+    end    
   end
 end

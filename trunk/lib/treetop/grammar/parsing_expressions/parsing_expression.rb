@@ -9,10 +9,6 @@ module Treetop
       node_cache[start_index] || node_cache.store(parse_at_without_caching(input, start_index, parser))
     end
 
-    def failure_at(index, subexpression_results = [])
-      failure_subtrees = subexpression_results.collect(&:failure_tree).compact
-      FailedParseResult.new(self, index, failure_subtrees)
-    end
     
     def zero_or_more
       ZeroOrMore.new(self)
@@ -37,5 +33,14 @@ module Treetop
     def parenthesize(string)
       "(#{string})"
     end
+    
+    protected
+    def failure_at(index, subexpression_results = [])
+      FailedParseResult.new(self, index, collect_failure_subtrees(subexpression_results))
+    end
+    
+    def collect_failure_subtrees(subexpression_results)
+      subexpression_results.collect(&:failure_tree).compact
+    end 
   end
 end
