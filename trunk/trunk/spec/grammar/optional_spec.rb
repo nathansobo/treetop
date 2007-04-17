@@ -1,0 +1,47 @@
+require 'rubygems'
+require 'spec/runner'
+
+dir = File.dirname(__FILE__)
+require "#{dir}/../spec_helper"
+
+context "An optional terminal symbol" do
+  setup do
+    @terminal = TerminalSymbol.new("foo")
+    @optional = Optional.new(@terminal)
+  end
+  
+  specify "returns an empty terminal node on parsing epsilon" do
+    epsilon = ""
+    result = @optional.parse_at(epsilon, 0, parser_with_empty_cache_mock)
+    result.should_be_a_kind_of TerminalSyntaxNode
+    result.should_be_epsilon
+  end
+  
+  specify "returns a terminal node matching the terminal symbol on parsing matching input" do
+    result = @optional.parse_at(@terminal.prefix, 0, parser_with_empty_cache_mock)
+    result.should_be_a_kind_of TerminalSyntaxNode
+    result.text_value.should_eql @terminal.prefix
+  end
+  
+  specify "has a string representation" do
+    @optional.to_s.should == '("foo")?'
+  end
+end
+
+context "An optional parsing expression" do
+  setup do
+    @embedded_expression = mock('embedded parsing expression')
+    @optional = Optional.new(@embedded_expression)
+  end
+  
+  specify "returns the failure of the embedded expression as a nested failure on the successful result" do
+    failure = mock('parse failure')
+    failure.stub!(:failure?).and_return(true)
+    
+    @embedded_expression.stub!(:parse_at).and_return(failure)
+    
+    result = @optional.parse_at('input', 0, parser_with_empty_cache_mock)
+    result.should_be_success    
+    result.nested_failures.should == [failure]
+  end
+end
