@@ -9,8 +9,9 @@ module Treetop
       node_cache[start_index] || node_cache.store(parse_at_without_caching(input, start_index, parser))
     end
 
-    def failure_at(index)
-      NonterminalParseFailure.new(index, self)
+    def failure_at(index, subexpression_results = [])
+      failure_subtrees = subexpression_results.collect(&:failure_tree).compact
+      FailedParseResult.new(self, index, failure_subtrees)
     end
     
     def zero_or_more

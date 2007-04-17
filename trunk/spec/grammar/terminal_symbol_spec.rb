@@ -11,10 +11,10 @@ context "A terminal symbol" do
     
   specify "returns the correct interval for a prefix starting after 0" do
     result = @terminal.parse_at("xfoo", 1, parser_with_empty_cache_mock)
-    result.interval.should_eql 1...4
+    result.consumed_interval.should_eql 1...4
     
     result = @terminal.parse_at("---foo", 3, parser_with_empty_cache_mock)
-    result.interval.should_eql 3...6
+    result.consumed_interval.should_eql 3...6
   end
   
   specify "shouldn't parse nonmatching input at the index even if a match occurs later in the input" do
@@ -34,16 +34,20 @@ context "The result of TerminalSymbol#parse_at for a matching input prefix at a 
     @result = @terminal.parse_at(input, 0, @parser)
   end
   
+  specify "is an instance of SuccessfulParseResult" do
+    @result.should be_an_instance_of(SuccessfulParseResult)
+  end
+  
   specify "is successful" do
     @result.should_be_success
   end
   
   specify "has a text value matching the terminal symbol" do
-    @result.text_value.should_eql @terminal.prefix
+    @result.value.text_value.should_eql @terminal.prefix
   end
   
   specify "is a kind of TerminalSyntaxNode" do
-    @result.should_be_a_kind_of TerminalSyntaxNode
+    @result.value.should_be_a_kind_of TerminalSyntaxNode
   end
 end
 
@@ -56,13 +60,19 @@ context "The result of TerminalSymbol#parse_at for a non-matching input prefix a
     @result = @terminal.parse_at(input, @start_index, @parser)
   end
   
-  specify "is an instance of of TerminalParseFailure" do
-    @result.should_be_a_kind_of TerminalParseFailure
+  specify "is an instance of of FailedParseResult" do
+    @result.should be_an_instance_of FailedParseResult
   end
   
-  specify "has a matched interval and a consumed interval that start and end at the start index of the parse" do
-    @result.matched_interval.should == (@start_index...@start_index)
-    @result.interval.should == (@start_index...@start_index)    
+  specify "has a consumed interval that start and end at the start index of the parse" do
+    @result.consumed_interval.should == (@start_index...@start_index)    
+  end
+  
+  specify "has one failure tree that is also a failure leaf that has a reference back to the failing terminal" do
+    failure_leaf = @result.failure_tree
+    failure_leaf.should be_a_kind_of(FailureTree)    
+    failure_leaf.should be_an_instance_of(FailureLeaf)
+    failure_leaf.expression.should == @terminal
   end
 end
 
