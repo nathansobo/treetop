@@ -12,13 +12,16 @@ module Treetop
     
     protected
     def parse_at_without_caching(input, start_index, parser)      
+      failed_results = []
       for alt in alternatives
         result = alt.parse_at(input, start_index, parser)
-        unless result.failure?
-          return result
+        if result.success?
+          return SuccessfulParseResult.new(self, result.value, collect_failure_subtrees(failed_results))
+        else
+          failed_results << result
         end
       end
-      return failure_at(start_index)
+      return failure_at(start_index, failed_results)
     end
   end
 end
