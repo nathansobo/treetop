@@ -11,7 +11,7 @@ module Treetop
     end
     
     protected
-    def parse_at_without_caching(input, start_index, parser)      
+    def parse_at_without_caching(input, start_index, parser)
       failed_results = []
       for alt in alternatives
         result = alt.parse_at(input, start_index, parser)
