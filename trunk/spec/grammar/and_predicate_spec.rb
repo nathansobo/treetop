@@ -61,28 +61,18 @@ end
 context "The result of an and predicate when the predicated expression parses successfully with a failure tree" do
   setup do
     @predicated_expression = mock('predicated expression')
-    
-    @failure_subtrees = [mock('failure subtree')]
-    @value_of_predicated_expression = mock('value of predicated expression')
-    @value_of_predicated_expression.stub!(:interval).and_return(0...5)
-    @predicated_expression_result = SuccessfulParseResult.new(@predicated_expression,
-                                                              @value_of_predicated_expression,
-                                                              @failure_subtrees)
-    @predicated_expression_result.stub!(:consumed_interval).and_return(0...5)
-    
-    @predicated_expression.stub!(:parse_at).and_return(@predicated_expression_result)
     @and_predicate = AndPredicate.new(@predicated_expression)
+
+    @predicated_expression_result = successful_parse_result_with_failure_tree_for(@predicated_expression)    
+    @predicated_expression.stub!(:parse_at).and_return(@predicated_expression_result)
     
     @result = @and_predicate.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
   end
   
-  specify "should have a failure tree with the failure subtrees in the result yielded by the predicated expression as subtrees" do
-    
-    puts "LEFT OFF HERE!"
-    
+  specify "should have a failure tree with the failure tree of the successful subexpression parse as its subtree" do    
     failure_tree = @result.failure_tree
     failure_tree.should_not be_nil
     
-    failure_tree.subtrees.should == @failure_subtrees
+    failure_tree.subtrees.should include(@predicated_expression_result.failure_tree)
   end
 end
