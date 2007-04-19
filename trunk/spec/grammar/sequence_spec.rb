@@ -4,23 +4,19 @@ require 'spec'
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
-context "A sequence parsing expression with one element" do
+context "The result of a sequence parsing expression with one element, when that element parses successfully" do
   setup do
-    @elt = mock("Parsing expression in sequence")
+    @element = mock("Parsing expression in sequence")
+    @elt_result = successful_parse_result_for(@elt)
+    @elt.stub!(:parse_at).and_return(@elt_result)
     @sequence = Sequence.new([@elt])
+    @result = @sequence.parse_at(mock('input'), 0, parser_with_empty_cache_mock)    
   end
-    
-  specify "attempts to parse its single element upon a call to parse_at" do
-    setup_sequence_element_to_successfully_parse
-    @sequence.parse_at(@input, @index, @parser)
-  end
-  
-  specify "returns a SuccessfulParseResult with a SequenceSyntaxNode value with the element's parse result as an element if the parse is successful" do
-    setup_sequence_element_to_successfully_parse
-    result = @sequence.parse_at(@input, @index, @parser)
-    result.should be_an_instance_of(SuccessfulParseResult)
-    result.value.should_be_a_kind_of SequenceSyntaxNode
-    result.value.elements.should_eql [@elt_result_value]
+      
+  specify "returns a SuccessfulParseResult with a SequenceSyntaxNode value with the element's parse result as an element if the parse is successful" do    
+    @result.should be_an_instance_of(SuccessfulParseResult)
+    @result.value.should_be_a_kind_of SequenceSyntaxNode
+    @result.value.elements.should_eql [@elt_result.value]
   end  
 end
 
@@ -53,35 +49,52 @@ context "A sequence parsing expression with multiple terminal symbols as element
   end
 end
 
-context "A sequence parsing expression with one element and a method defined in its node class" do
+context "The result of a sequence parsing expression with one element and a method defined in its node class" do
   setup do
     @elt = mock("Parsing expression in sequence")
+    @elt_result = successful_parse_result_for(@elt)
+    @elt.stub!(:parse_at).and_return(@elt_result)
+
     @sequence = Sequence.new([@elt])
     @sequence.node_class_eval do
       def method
       end
     end
+    
+    @result = @sequence.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
   end
   
-  specify "returns a SequenceSyntaxNode with the element's parse result as an element if the parse is successful" do
-    setup_sequence_element_to_successfully_parse
-    result = @sequence.parse_at(@input, @index, @parser)
-    result.should_respond_to :method
-  end  
+  specify "has a value that is a kind of of SequenceSyntaxNode" do
+    @result.value.should be_a_kind_of SequenceSyntaxNode
+  end
+  
+  specify "responds to the method defined in the node class" do
+    @result.should_respond_to :method    
+  end
 end
 
-context "A sequence parsing expression with one element and a method defined in its node class via a string evaluation" do
+context "The result of a sequence parsing expression with one element and a method defined in its node class via the evaluation of a string" do
   setup do
     @elt = mock("Parsing expression in sequence")
+    @elt_result = successful_parse_result_for(@elt)
+    @elt.stub!(:parse_at).and_return(@elt_result)
+
     @sequence = Sequence.new([@elt])
-    @sequence.node_class_eval("def a_method\n\nend")
+    @sequence.node_class_eval %{
+      def method
+      end
+    }
+    
+    @result = @sequence.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
   end
   
-  specify "returns a SequenceSyntaxNode with the element's parse result as an element if the parse is successful" do
-    setup_sequence_element_to_successfully_parse
-    result = @sequence.parse_at(@input, @index, @parser)
-    result.should_respond_to :method
-  end  
+  specify "has a value that is a kind of of SequenceSyntaxNode" do
+    @result.value.should be_a_kind_of SequenceSyntaxNode
+  end
+  
+  specify "responds to the method defined in the node class" do
+    @result.should_respond_to :method    
+  end
 end
 
 context "The parse result of a sequence of two terminals when the second fails to parse" do
@@ -121,21 +134,12 @@ context "The parse result of a sequence whose first element's result is successf
   setup do
     @elt_1 = mock('first element')
     @elt_2 = mock('second element')
-    
-    @elt_1_value = mock('value of first element')
-    @elt_1_value_interval = 1...5
-    @elt_1_value.stub!(:interval).and_return(@elt_1_value_interval)
-    @elt_1_failure_subtree_index = 8
-    @elt_1_failure_subtree = FailureLeaf.new(mock('failing terminal expression'), @elt_1_failure_subtree_index)
-    @elt_1_result = SuccessfulParseResult.new(@elt_1, @elt_1_value, [@elt_1_failure_subtree])
-    @elt_1.stub!(:parse_at).and_return(@elt_1_result)
-    
-    @elt_2_failure_index = 5
-    @elt_2_result = FailedParseResult.new(@elt_2, @elt_2_failure_index, [])
-    @elt_2.stub!(:parse_at).and_return(@elt_2_result)
-    
     @sequence = Sequence.new([@elt_1, @elt_2])
     
+    @elt_1_result = successful_parse_result_with_failure_tree_for(@elt_1)
+    @elt_1.stub!(:parse_at).and_return(@elt_1_result)
+    @elt_2.stub!(:parse_at).and_return(failed_parse_result_for(@elt_2))
+
     @result = @sequence.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
   end
   
@@ -143,7 +147,7 @@ context "The parse result of a sequence whose first element's result is successf
     @result.should be_failure
   end
   
-  specify "has a failure tree with two subtrees, one with an additional subtree referring to the first element and one referring to the second element" do
+  specify "has a failure tree with two subtrees representing the failures that occurred during the parse" do
     failure_tree = @result.failure_tree
     failure_tree.should be_an_instance_of(FailureTree)
     failure_tree.subtrees.size.should == 2
@@ -153,30 +157,21 @@ context "The parse result of a sequence whose first element's result is successf
     elt_2_subtree = subtrees.find {|failure_tree| failure_tree.expression == @elt_2 }
     
     elt_1_subtree.should_not be_nil
-    elt_1_subtree.subtrees.should include(@elt_1_failure_subtree)  
+    elt_1_subtree.should == @elt_1_result.failure_tree
     elt_2_subtree.should be_an_instance_of(FailureLeaf)
   end
+  
 end
 
-context "The parse result of a sequence whose first and second elements parse successfully failure trees" do
+context "The parse result of a sequence whose first and second elements parse successfully with failure trees" do
   setup do
     @elt_1 = mock('first element')
     @elt_2 = mock('second element')
     
-    @elt_1_value = mock('value of first element')
-    @elt_1_value_interval = 1...5
-    @elt_1_value.stub!(:interval).and_return(@elt_1_value_interval)
-    @elt_1_failure_subtree_index = 8
-    @elt_1_failure_subtree = FailureLeaf.new(mock('failing terminal expression'), @elt_1_failure_subtree_index)
-    @elt_1_result = SuccessfulParseResult.new(@elt_1, @elt_1_value, [@elt_1_failure_subtree])
+    @elt_1_result = successful_parse_result_with_failure_tree_for(@elt_1, 0...5)
     @elt_1.stub!(:parse_at).and_return(@elt_1_result)
     
-    @elt_2_value = mock('value of first element')
-    @elt_2_value_interval = 5...10
-    @elt_2_value.stub!(:interval).and_return(@elt_2_value_interval)
-    @elt_2_failure_subtree_index = 20
-    @elt_2_failure_subtree = FailureLeaf.new(mock('failing terminal expression'), @elt_2_failure_subtree_index)
-    @elt_2_result = SuccessfulParseResult.new(@elt_2, @elt_2_value, [@elt_2_failure_subtree])
+    @elt_2_result = successful_parse_result_with_failure_tree_for(@elt_1, 5...10)
     @elt_2.stub!(:parse_at).and_return(@elt_2_result)
     
     @sequence = Sequence.new([@elt_1, @elt_2])    
@@ -187,37 +182,14 @@ context "The parse result of a sequence whose first and second elements parse su
     @result.should be_success
   end
   
-  specify "has a failure tree with two subtrees, both with an additional failure leaf attached as a subtree" do
+  specify "has a failure tree with the failure trees encountered during the parse as subtrees" do
     failure_tree = @result.failure_tree
     failure_tree.should_not be_nil
     failure_tree.should be_an_instance_of(FailureTree)
     failure_tree.subtrees.size.should == 2
     
-    subtrees = failure_tree.subtrees    
-    elt_1_subtree = subtrees.find {|failure_tree| failure_tree.expression == @elt_1 }
-    elt_2_subtree = subtrees.find {|failure_tree| failure_tree.expression == @elt_2 }
-    
-    elt_1_subtree.should_not be_nil
-    elt_1_subtree.subtrees.should include(@elt_1_failure_subtree)  
-
-    elt_2_subtree.should_not be_nil
-    elt_2_subtree.subtrees.should include(@elt_2_failure_subtree)  
+    subtrees = failure_tree.subtrees
+    failure_tree.subtrees.should include(@elt_1_result.failure_tree)
+    failure_tree.subtrees.should include(@elt_2_result.failure_tree)
   end
-end
-
-def setup_sequence_element_to_successfully_parse  
-  @input = "foo"
-  @index = 0
-  @parser = parser_with_empty_cache_mock
-  
-  @elt_result = mock("First element's parse result")
-  @elt_interval = 0...5
-  @elt_result.stub!(:failure?).and_return(false)
-  @elt_result.stub!(:failure_tree).and_return(nil)  
-  @elt_result.stub!(:consumed_interval).and_return(@elt_interval)
-  
-  @elt_result_value = mock("Value of first element's parse result")
-  @elt_result.stub!(:value).and_return(@elt_result_value)
-
-  @elt.should_receive(:parse_at).with(@input, @index, @parser).and_return(@elt_result)
 end
