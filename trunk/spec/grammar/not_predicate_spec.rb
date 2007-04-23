@@ -16,12 +16,15 @@ context "A !-predicate for a TerminalSymbol" do
     @not_predicate.parse_at(input, index, parser_with_empty_cache_mock).should_be_failure
   end
   
-  specify "succeeds upon parsing non-matching input, without updating the index" do
+  specify "upon parsing non-matching input, returns a SuccessfulParseResult with a zero-length consumed interval and the failed result of the predicated expression as a subtree of its failure tree" do
     input = "baz"
     index = 0
     result = @not_predicate.parse_at(input, index, parser_with_empty_cache_mock)
-    result.should_be_success
-    result.interval.end.should_equal index
+    result.should be_an_instance_of(SuccessfulParseResult)
+    result.consumed_interval.should == (index...index)
+    failure_subtrees = result.failure_tree.subtrees
+    failure_subtrees.size.should == 1
+    failure_subtrees.first.should be_an_instance_of(FailureLeaf)
   end
   
   specify "has a string representation" do
@@ -47,6 +50,6 @@ context "A sequence with terminal symbol followed by a !-predicate on another te
     index = 3
     result = @sequence.parse_at(input, index, parser_with_empty_cache_mock)
     result.should_be_success
-    result.interval.end.should_equal index + @terminal.prefix.size
+    result.consumed_interval.end.should_equal index + @terminal.prefix.size
   end
 end
