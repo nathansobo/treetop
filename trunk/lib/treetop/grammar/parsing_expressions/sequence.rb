@@ -29,7 +29,7 @@ module Treetop
     
       interval = start_index...next_index
       syntax_node = node_class.new(input, interval, results.collect(&:value))
-      SuccessfulParseResult.new(self, syntax_node, collect_failure_subtrees(results))
+      return success(syntax_node, results)
     end    
   end
 end

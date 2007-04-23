@@ -18,11 +18,10 @@ module Treetop
     protected
     def parse_at_without_caching(input, start_index, parser)
       result = parsing_expression.parse_at(input, start_index, parser)
-      
       if result.success?
-        SuccessfulParseResult.new(self, result.value, collect_failure_subtrees([result]))
+        return success(result.value, [result])
       else
-        failure_at(start_index, [result])
+        return failure_at(start_index, [result])
       end
     end    
   end

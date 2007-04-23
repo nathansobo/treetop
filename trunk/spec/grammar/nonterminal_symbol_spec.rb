@@ -25,7 +25,7 @@ context "A nonterminal symbol" do
     referrent_expression.stub!(:parse_at).and_return(parse_result_of_referrent)
 
     result = @nonterminal.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
-    result.should be_an_instance_of SuccessfulParseResult
+    result.should be_an_instance_of(SuccessfulParseResult)
     result.value.should == parse_result_of_referrent.value
   end
     
@@ -36,7 +36,7 @@ context "A nonterminal symbol" do
     referrent_expression.stub!(:parse_at).and_return(parse_result_of_referrent)
 
     result = @nonterminal.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
-    result.should be_an_instance_of SuccessfulParseResult
+    result.should be_an_instance_of(SuccessfulParseResult)
     result.value.should == parse_result_of_referrent.value
     result.failure_tree.subtrees.should == [parse_result_of_referrent.failure_tree]
   end
@@ -48,7 +48,7 @@ context "A nonterminal symbol" do
     referrent_expression.stub!(:parse_at).and_return(parse_result_of_referrent)
 
     result = @nonterminal.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
-    result.should be_an_instance_of FailedParseResult
+    result.should be_an_instance_of(FailedParseResult)
     result.failure_tree.subtrees.should == [parse_result_of_referrent.failure_tree]
   end
 end

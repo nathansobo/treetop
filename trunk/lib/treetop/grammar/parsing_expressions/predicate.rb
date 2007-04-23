@@ -9,8 +9,8 @@ module Treetop
     protected
     
     def success_at(index, input, result_of_expression)
-      failure_subtrees = [result_of_expression.failure_tree].compact
-      return SuccessfulParseResult.new(self, SyntaxNode.new(input, index...index), failure_subtrees)
+      syntax_node = SyntaxNode.new(input, index...index)
+      success(syntax_node, [result_of_expression])
     end
   end
 end

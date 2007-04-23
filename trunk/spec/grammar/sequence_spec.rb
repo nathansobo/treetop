@@ -65,7 +65,7 @@ context "The result of a sequence parsing expression with one element and a meth
   end
   
   specify "has a value that is a kind of of SequenceSyntaxNode" do
-    @result.value.should be_a_kind_of SequenceSyntaxNode
+    @result.value.should be_a_kind_of(SequenceSyntaxNode)
   end
   
   specify "responds to the method defined in the node class" do
@@ -89,7 +89,7 @@ context "The result of a sequence parsing expression with one element and a meth
   end
   
   specify "has a value that is a kind of of SequenceSyntaxNode" do
-    @result.value.should be_a_kind_of SequenceSyntaxNode
+    @result.value.should be_a_kind_of(SequenceSyntaxNode)
   end
   
   specify "responds to the method defined in the node class" do

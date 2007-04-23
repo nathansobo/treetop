@@ -61,7 +61,7 @@ context "The result of TerminalSymbol#parse_at for a non-matching input prefix a
   end
   
   specify "is an instance of of FailedParseResult" do
-    @result.should be_an_instance_of FailedParseResult
+    @result.should be_an_instance_of(FailedParseResult)
   end
   
   specify "has a consumed interval that start and end at the start index of the parse" do

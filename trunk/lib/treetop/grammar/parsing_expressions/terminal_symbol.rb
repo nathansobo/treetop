@@ -29,9 +29,9 @@ module Treetop
       match = prefix_regex.match(input[start_index...(input.length)])
       if match
         match_interval = start_index...(match.end(0) + start_index)
-        return SuccessfulParseResult.new(self, node_class.new(input, match_interval), [])
+        success(node_class.new(input, match_interval))
       else
-        return FailedParseResult.new(self, start_index, [])
+        failure_at(start_index)
       end
     end
   end
