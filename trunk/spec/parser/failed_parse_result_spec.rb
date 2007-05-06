@@ -31,11 +31,11 @@ context "A new failed parse result, instantiated with one failure subtree that c
   setup do
     @expression = mock('expression that failed to parse')
     @failure_index = 3
-    @failure_subtrees = [mock('cause of the failure')]
+    @failure_subtrees = [FailureTree.new(mock('expression'), 7, [])]
     @result = FailedParseResult.new(@expression, @failure_index, @failure_subtrees)
   end
   
   specify "propagates the failure subtree as a subtree of its failure tree" do
-    @result.failure_tree.subtrees.should eql @failure_subtrees
+    @result.failure_tree.subtrees.should == @failure_subtrees
   end
 end

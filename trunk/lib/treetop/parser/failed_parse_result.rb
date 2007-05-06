@@ -19,11 +19,11 @@ module Treetop
     end
     
     def consumed_interval
-      index...index
+      @consumed_interval ||= (index...index)
     end
     
     def index
-      failure_tree.index
+      @index ||= failure_tree.index
     end
   end
 end

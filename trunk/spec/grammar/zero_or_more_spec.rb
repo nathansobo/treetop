@@ -117,15 +117,10 @@ context "The result of parsing zero or more of an expression, when some results 
     @result = @zero_or_more.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
   end
   
-  specify "has a failure tree with the failures trees attached to the successful results as subtrees" do
-    failure_tree = @result.failure_tree
-    failure_tree.subtrees.should include(@parse_result_1.failure_tree)
-    failure_tree.subtrees.should include(@parse_result_2.failure_tree)
-  end
-  
-  specify "has a failure tree with the failure that ended the repetition as one of its subtrees" do
-    failure_tree = @result.failure_tree
-    failure_tree.subtrees.should include(@parse_result_3.failure_tree)
+  specify "has a failure tree with the maximal failure that occured during the parse as its subtree" do    
+    subtrees = @result.failure_tree.subtrees
+    subtrees.size.should == 1
+    subtrees.should include(@parse_result_2.failure_tree)
   end
 end
 

@@ -36,15 +36,17 @@ module Treetop
     
     protected
     def success(syntax_node, subexpression_results = [])
+      #SuccessfulParseResult.new(self, syntax_node, [])      
       SuccessfulParseResult.new(self, syntax_node, collect_failure_subtrees(subexpression_results))
     end
     
     def failure_at(index, subexpression_results = [])
+      #FailedParseResult.new(self, index, [])
       FailedParseResult.new(self, index, collect_failure_subtrees(subexpression_results))
     end
     
     def collect_failure_subtrees(subexpression_results)
-      subexpression_results.collect(&:failure_tree).compact
+      (subexpression_results.collect {|result| result.failure_tree}).compact
     end 
   end
 end

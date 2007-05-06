@@ -106,8 +106,9 @@ context "The result of parsing a one-or-more of an expression, when the repeated
     
     @subresult_1 = successful_parse_result_with_failure_tree_for(@expression)
     @subresult_2 = failed_parse_result_for(@expression)
-    @expression.stub!(:parse_at).and_return(@subresult_1, @subresult_2)
     
+    @expression.stub!(:parse_at).and_return(@subresult_1, @subresult_2)
+        
     @one_or_more = OneOrMore.new(@expression)
     
     @result = @one_or_more.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
@@ -117,13 +118,12 @@ context "The result of parsing a one-or-more of an expression, when the repeated
     @result.should be_an_instance_of(SuccessfulParseResult)
   end
   
-  specify "has a failure tree with both failures encountered during the parse as subtrees" do
+  specify "has a failure tree with the highest-indexed failures encountered during the parse as subtrees" do
     failure_tree = @result.failure_tree
     failure_tree.should_not be_nil
     subtrees = failure_tree.subtrees
-    
-    subtrees.size.should == 2
-    subtrees[0].should == @subresult_1.failure_tree
-    subtrees[1].should == @subresult_2.failure_tree
+        
+    subtrees.size.should == 1
+    subtrees.should include(@subresult_1.failure_tree)
   end
 end

@@ -28,7 +28,7 @@ module Treetop
       end
     
       interval = start_index...next_index
-      syntax_node = node_class.new(input, interval, results.collect(&:value))
+      syntax_node = node_class.new(input, interval, results.collect { |result| result.value })
       return success(syntax_node, results)
     end    
   end

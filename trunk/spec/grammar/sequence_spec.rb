@@ -147,18 +147,17 @@ context "The parse result of a sequence whose first element's result is successf
     @result.should be_failure
   end
   
-  specify "has a failure tree with two subtrees representing the failures that occurred during the parse" do
+  specify "has a failure tree with the highest-indexed failure tree that occurred during the parse as a subtree" do
     failure_tree = @result.failure_tree
     failure_tree.should be_an_instance_of(FailureTree)
-    failure_tree.subtrees.size.should == 2
-    
+
     subtrees = failure_tree.subtrees    
-    elt_1_subtree = subtrees.find {|failure_tree| failure_tree.expression == @elt_1 }
-    elt_2_subtree = subtrees.find {|failure_tree| failure_tree.expression == @elt_2 }
+    subtrees.size.should == 1
+    
+    elt_1_subtree = subtrees.first
     
     elt_1_subtree.should_not be_nil
     elt_1_subtree.should == @elt_1_result.failure_tree
-    elt_2_subtree.should be_an_instance_of(FailureLeaf)
   end
   
 end
@@ -186,10 +185,9 @@ context "The parse result of a sequence whose first and second elements parse su
     failure_tree = @result.failure_tree
     failure_tree.should_not be_nil
     failure_tree.should be_an_instance_of(FailureTree)
-    failure_tree.subtrees.size.should == 2
-    
+
     subtrees = failure_tree.subtrees
-    failure_tree.subtrees.should include(@elt_1_result.failure_tree)
+    subtrees.size.should == 1
     failure_tree.subtrees.should include(@elt_2_result.failure_tree)
   end
 end

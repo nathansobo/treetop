@@ -104,7 +104,7 @@ module Treetop
       end
       tail_elements.node_class_eval do
         def elements
-          super.map(&:element)
+          super.map {|elt| elt.element}
         end
       end
       return tail_elements

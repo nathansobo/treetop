@@ -37,7 +37,7 @@ context "A new successful parse result, instantiated a with failure subtree" do
     @syntax_node = mock('syntax node yielded by the parse')
     @interval = 3...4
     @syntax_node.stub!(:interval).and_return(@interval)
-    @failure_subtrees = [mock('failure subtree')]
+    @failure_subtrees = [FailureTree.new(mock('expression'), 8, [])]
     @result = SuccessfulParseResult.new(@expression, @syntax_node, @failure_subtrees)
   end
   
