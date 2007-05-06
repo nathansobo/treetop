@@ -40,7 +40,7 @@ context "A parsing expression" do
   end
   
   specify "adds itself as an expected expression in the creation parse failures" do
-    failure = @expression.failure_at(0)
-    failure.parsing_expression.should == @expression
+    parse_result = @expression.send(:failure_at, 0)
+    parse_result.failure_tree.expression.should == @expression
   end  
 end

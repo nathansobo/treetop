@@ -9,7 +9,6 @@ module Treetop
     
     def to_s
       "(#{expression.to_s})?"
-    end
-    
+    end    
   end
 end

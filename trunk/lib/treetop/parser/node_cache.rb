@@ -1,21 +1,21 @@
 module Treetop
   class NodeCache
-    attr_reader :nodes
+    attr_reader :parse_results
     
     def initialize
-      @nodes = {}
+      @parse_results = {}
     end
   
     def empty?
-      nodes.empty?
+      parse_results.empty?
     end
   
-    def store(syntax_node)
-      nodes[syntax_node.interval.begin] = syntax_node
+    def store(parse_result)
+      parse_results[parse_result.consumed_interval.begin] = parse_result
     end
   
     def [](start_index)
-      nodes[start_index]
+      parse_results[start_index]
     end
   end
 end

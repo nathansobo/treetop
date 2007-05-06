@@ -4,52 +4,41 @@ require 'spec'
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
-context "A new parser" do
-  setup do
-    @grammar = mock("Grammar")
+context "A new parser with a nonterminal that successfully consumes 0...5, returning a parse result with a failure tree" do
+  setup do    
+    @grammar = Grammar.new
+    @root_expression = mock('parsing expression')
+    @grammar.add_parsing_rule(@grammar.nonterminal_symbol(:foo), @root_expression)
     @parser = Parser.new(@grammar)
+    
+    @result_of_root_expression = successful_parse_result_with_failure_tree_for(@root_expression)
+    @root_expression.stub!(:parse_at).and_return(@result_of_root_expression)
   end
   
-  specify "invokes parse_at on its grammar's root nonterminal when parse is called" do
-    input = "foo"
-    root_nonterminal = mock("Root nonterminal")
-    parse_result = mock("Parse result")
-    parse_result.should_receive(:success?).and_return(true)
-    parse_result.should_receive(:interval).and_return(0...3)
-    
-    root_nonterminal.should_receive(:parse_at).with(input, 0, @parser).and_return(parse_result)
-    @grammar.should_receive(:root).and_return(root_nonterminal)
-
-    @parser.parse(input).should_equal parse_result
+  specify "returns the value associated with the root node if the parse is successful" do
+    @parser.parse('12345').should_equal @result_of_root_expression.value
   end
   
-  specify "fails to parse if all input is not consumed" do
-    input = "foo"
-    root_nonterminal = mock("Root nonterminal")
-    parse_result = mock("Parse result")
-    nested_failures = [mock('a nested failure')]
-
-    root_nonterminal.stub!(:parse_at).and_return(parse_result)
-    @grammar.stub!(:root).and_return(root_nonterminal)
+  specify "returns a FailedParseResult if not all of the input is consumed, with a failure tree containing the failure tree of the root expression as a grandchild" do
+    result = @parser.parse('123')
+    result.should be_an_instance_of(FailedParseResult)
     
-    parse_result.should_receive(:success?).and_return(true)
-    parse_result.should_receive(:interval).twice.and_return(0...2)
-    result = @parser.parse("input longer than parse result's interval")
-    result.should_be_failure
+    failure_tree = result.failure_tree
+    failure_tree.should_not be_nil
+    subtrees = failure_tree.subtrees
+    subtrees.first.subtrees.first.should == @result_of_root_expression.failure_tree
   end
   
   specify "creates a new parse cache on call to parse" do
     input = "foo"
     root_nonterminal = mock("Root nonterminal")
     parse_result = mock("Parse result")
-    parse_result.should_receive(:success?).and_return(true)
-    parse_result.should_receive(:interval).and_return(0...3)
     
-    root_nonterminal.should_receive(:parse_at).with(input, 0, @parser).and_return(parse_result)
+    root_nonterminal.stub!(:parse_at).and_return(successful_parse_result_for(root_nonterminal))
     @grammar.should_receive(:root).and_return(root_nonterminal)
 
     @parser.parse(input)
-    @parser.parse_cache.should_be_an_instance_of ParseCache
+    @parser.parse_cache.should be_an_instance_of(ParseCache)
   end
   
   specify "can return a node cache for a specific parsing expression" do

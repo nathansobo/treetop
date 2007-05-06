@@ -16,7 +16,7 @@ module Treetop
       for alt in alternatives
         result = alt.parse_at(input, start_index, parser)
         if result.success?
-          return SuccessfulParseResult.new(self, result.value, collect_failure_subtrees(failed_results))
+          return success(result.value, failed_results)
         else
           failed_results << result
         end
