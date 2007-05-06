@@ -10,40 +10,63 @@ context "One-or-more of a terminal symbol" do
     @one_or_more = OneOrMore.new(@terminal)
   end
   
-  specify "fails when parsing epsilon" do
+  specify "fails when parsing epsilon with the failure of the nested expression to parse once as a subtree of its failure tree" do
     index = 0
     epsilon = ""
     result = @one_or_more.parse_at(epsilon, index, parser_with_empty_cache_mock)
-    result.should_be_failure
-    # xxx - matched_interval.begin
-    result.matched_interval_begin.should == index
+    result.should be_an_instance_of(FailedParseResult)
+    result.consumed_interval.should == (index...index)
+    
+    failure_tree = result.failure_tree
+    failure_tree.should_not be_nil
+    
+    subtrees = failure_tree.subtrees
+    subtrees.size.should == 1
+    subtrees.first.expression.should == @terminal
   end
   
-  specify "returns a sequence with one element when parsing input matching one of that terminal symbol" do
+  specify "returns a sequence with one element when parsing input matching one of that terminal symbol, with a failure subtree representing the failure terminating the sequence" do
     index = 0
     input = @terminal.prefix + "barbaz"
     result = @one_or_more.parse_at(input, index, parser_with_empty_cache_mock)
-    result.should_be_a_kind_of SequenceSyntaxNode
-    (result.elements.collect {|e| e.text_value }).should_eql [@terminal.prefix]
-    result.interval.end.should_equal index + @terminal.prefix.size
+
+    result.should_be_an_instance_of SuccessfulParseResult
+    result.consumed_interval.end.should_equal index + @terminal.prefix.size
+
+    value = result.value
+    value.should be_a_kind_of(SequenceSyntaxNode)
+    (value.elements.collect {|e| e.text_value }).should_eql [@terminal.prefix]
+
+    failure_tree = result.failure_tree
+    failure_tree.should_not be_nil
+    subtrees = failure_tree.subtrees
+    subtrees.size.should == 1
+    subtrees.first.expression.should == @terminal
+    subtrees.first.index.should == index + @terminal.prefix.length
   end
   
   specify "returns a sequence of size 5 when parsing input with 5 consecutive matches of that terminal symbol" do
     index = 0
     input = @terminal.prefix * 5
     result = @one_or_more.parse_at(input, index, parser_with_empty_cache_mock)
-    result.should_be_a_kind_of SequenceSyntaxNode
-    result.elements.size.should_equal 5
-    result.interval.end.should_equal(index + (@terminal.prefix.size * 5))
+    result.should be_an_instance_of(SuccessfulParseResult)
+    
+    value = result.value
+    value.should_be_a_kind_of SequenceSyntaxNode
+    value.elements.size.should_equal 5
+    value.interval.end.should_equal(index + (@terminal.prefix.size * 5))
   end
   
   specify "correctly matches multiples not starting at index 0" do
     index = 30
     input = ("x" * 30) + (@terminal.prefix * 5)
     result = @one_or_more.parse_at(input, index, parser_with_empty_cache_mock)
-    result.should_be_a_kind_of SequenceSyntaxNode
-    result.elements.size.should == 5
-    result.interval.end.should == (index + (@terminal.prefix.size * 5))
+    result.should be_an_instance_of(SuccessfulParseResult)
+    
+    value = result.value
+    value.should_be_a_kind_of SequenceSyntaxNode
+    value.elements.size.should == 5
+    value.interval.end.should == (index + (@terminal.prefix.size * 5))
   end
   
   specify "has a string representation" do
@@ -74,5 +97,33 @@ context "One-or-more of a terminal symbol with a method defined in its node clas
     input = @terminal.prefix * 5
     result = @one_or_more.parse_at(input, index, parser_with_empty_cache_mock)
     result.should_respond_to :method
+  end
+end
+
+context "The result of parsing a one-or-more of an expression, when the repeated expression successfully parses once with failure trees and then fails" do
+  setup do
+    @expression = mock('expression that is repeated')
+    
+    @subresult_1 = successful_parse_result_with_failure_tree_for(@expression)
+    @subresult_2 = failed_parse_result_for(@expression)
+    @expression.stub!(:parse_at).and_return(@subresult_1, @subresult_2)
+    
+    @one_or_more = OneOrMore.new(@expression)
+    
+    @result = @one_or_more.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
+  end
+  
+  specify "is a success" do
+    @result.should be_an_instance_of(SuccessfulParseResult)
+  end
+  
+  specify "has a failure tree with both failures encountered during the parse as subtrees" do
+    failure_tree = @result.failure_tree
+    failure_tree.should_not be_nil
+    subtrees = failure_tree.subtrees
+    
+    subtrees.size.should == 2
+    subtrees[0].should == @subresult_1.failure_tree
+    subtrees[1].should == @subresult_2.failure_tree
   end
 end

@@ -24,7 +24,7 @@ module Treetop
         syntax_node = node_class.new(input, interval, results.collect(&:value))
         success(syntax_node, results + [result])
       else
-        return failure_at(start_index)
+        return failure_at(start_index, results + [result])
       end
     end
   
