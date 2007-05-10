@@ -1,0 +1,33 @@
+require 'rubygems'
+require 'rake'
+require 'spec/rake/spectask'
+Gem::manage_gems
+require 'rake/gempackagetask'
+
+task :default => :spec
+
+@spec_files = FileList['spec/**/*_spec.rb']
+Spec::Rake::SpecTask.new(:spec) do |t|
+  t.spec_files = @spec_files
+  #t.spec_opts = ["--format", "specdoc"]
+end
+
+gemspec = Gem::Specification.new do |s|
+  s.name = "Treetop"
+  s.version = "0.1.0"
+  s.author = "Nathan Sobo"
+  s.email = "nathansobo@gmail.com"
+  s.homepage = "http://functionalform.blogspot.com"
+  s.platform = Gem::Platform::RUBY
+  s.summary = "A Ruby-based text parsing and interpretation DSL"
+  s.files = FileList["{test,lib}/**/*"].to_a
+  s.require_path = "lib"
+  s.autorequire = "treetop"
+  s.has_rdoc = false
+end
+
+Rake::GemPackageTask.new(gemspec) do |pkg|
+  pkg.need_tar = true
+end
+
+
