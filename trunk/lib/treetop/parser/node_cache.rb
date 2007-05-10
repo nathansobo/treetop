@@ -14,7 +14,7 @@ module Treetop
       if parse_result.failure?
         parse_results[parse_result.index] = parse_result
       else
-        parse_results[parse_result.consumed_interval.begin] = parse_result
+        parse_results[parse_result.interval.begin] = parse_result
       end
     end
   

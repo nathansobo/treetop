@@ -28,8 +28,7 @@ module Treetop
     def parse_at_without_caching(input, start_index, parser)
       match = prefix_regex.match(input[start_index...(input.length)])
       if match
-        match_interval = start_index...(match.end(0) + start_index)
-        success(node_class.new(input, match_interval))
+        return node_class.new(input, start_index...(match.end(0) + start_index))
       else
         failure_at(start_index)
       end

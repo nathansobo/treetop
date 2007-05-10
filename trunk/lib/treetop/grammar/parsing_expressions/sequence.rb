@@ -23,13 +23,11 @@ module Treetop
       for elt in elements
         result = elt.parse_at(input, next_index, parser)
         results << result
-        return failure_at(start_index, results) if result.failure?
-        next_index = result.consumed_interval.end
+        return failure_at(start_index) if result.failure?
+        next_index = result.interval.end
       end
-    
-      interval = start_index...next_index
-      syntax_node = node_class.new(input, interval, results.collect { |result| result.value })
-      return success(syntax_node, results)
+
+      return node_class.new(input, start_index...next_index, results)
     end    
   end
 end

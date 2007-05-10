@@ -11,7 +11,7 @@ module Treetop
       if result.success?
         return failure_at(start_index)
       else
-        return success_at(start_index, input, result)
+        return success_at(start_index, input)
       end
     end
   end

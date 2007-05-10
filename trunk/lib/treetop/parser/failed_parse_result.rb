@@ -1,13 +1,10 @@
 module Treetop
-  class FailedParseResult < ParseResult
-    attr_reader :failure_tree
+  class FailedParseResult < ParseResult    
+    attr_reader :expression, :index
     
-    def initialize(expression, index, failure_subtrees)
-      if failure_subtrees.empty?
-        @failure_tree = FailureLeaf.new(expression, index)
-      else
-        @failure_tree = FailureTree.new(expression, index, failure_subtrees)
-      end
+    def initialize(expression, index)
+      @expression = expression
+      @index = index
     end
     
     def success?
@@ -18,12 +15,8 @@ module Treetop
       true
     end
     
-    def consumed_interval
-      @consumed_interval ||= (index...index)
-    end
-    
-    def index
-      @index ||= failure_tree.index
+    def interval
+      @interval ||= (index...index)
     end
   end
 end

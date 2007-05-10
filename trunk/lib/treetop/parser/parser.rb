@@ -10,11 +10,10 @@ module Treetop
     def parse(input)
       @parse_cache = ParseCache.new
       result = grammar.root.parse_at(input, 0, self)
-      if result.success? and result.consumed_interval.end == input.size
-        return result.value
+      if result.success? and result.interval.end == input.size
+        return result
       else
-        failure_subtrees = result.failure_tree ? [result.failure_tree] : []
-        return FailedParseResult.new(nil, result.consumed_interval.end, failure_subtrees)
+        return FailedParseResult.new(nil, result.interval.end)
       end
     end
     
