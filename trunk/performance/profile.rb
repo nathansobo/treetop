@@ -19,6 +19,3 @@ File.open(metagrammar_file_path, 'r') do |metagrammar_file|
     printer.print(profile_file, 0)
   end
 end
-
-
-
