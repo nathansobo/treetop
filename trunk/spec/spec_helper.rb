@@ -23,17 +23,8 @@ def parser_with_empty_cache_mock
   return parser
 end
 
-def successful_parse_result_for(succeeding_expression, interval = 0...5)
-  value = SyntaxNode.new(mock('input'), interval)
-  SuccessfulParseResult.new(succeeding_expression, value, [])
-end
-
-
-def successful_parse_result_with_failure_tree_for(succeeding_expression, interval = 0...5)
-  value = SyntaxNode.new(mock('input'), interval)
-  failing_subexpression = mock('failing subexpression')
-  failure_subtree = FailureLeaf.new(failing_subexpression, interval.end + 5)
-  SuccessfulParseResult.new(succeeding_expression, value, [failure_subtree])
+def successful_parse_result(interval = 0...5)
+  SyntaxNode.new(mock('input'), interval)
 end
 
 def failed_parse_result_for(failing_expression, failure_index = 5)
