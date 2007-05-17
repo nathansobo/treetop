@@ -23,7 +23,7 @@ context "A parser for a grammar that contains only atomic symbols" do
   
   specify "returns a SyntaxNode with a text value equal to the input upon a successful parse" do
     input = "bar"
-    @parser.parse(input).text_value.should eql input
+    @parser.parse(input).text_value.should == input
   end
 end
 
@@ -131,7 +131,7 @@ context "A parser for a grammar that contains only atomic symbols" do
   
   specify "returns a SyntaxNode with a text value equal to the input upon a successful parse" do
     input = "bar"
-    @parser.parse(input).text_value.should eql input
+    @parser.parse(input).text_value.should == input
   end
 end
 
@@ -228,27 +228,27 @@ context "A parser for a simple arithmetic grammar with method definitions" do
   end
   
   specify "returns a result has the correct value for a digit" do
-    @parser.parse("5").value.should equal 5
+    @parser.parse("5").value.should == 5
   end
   
   specify "succeeds for a multi-digit decimal" do
-    @parser.parse("5346").value.should equal 5346
+    @parser.parse("5346").value.should == 5346
   end
     
   specify "succeeds for a parenthesized decimal" do
-    @parser.parse("(53)").value.should equal 53
+    @parser.parse("(53)").value.should == 53
   end
   
   specify "succeeds for a multiplication" do
-    @parser.parse("45*4").value.should equal 180
+    @parser.parse("45*4").value.should == 180
   end
   
   specify "succeeds for an addition" do
-    @parser.parse("45+4").value.should equal 49
+    @parser.parse("45+4").value.should == 49
   end
   
   specify "succeeds for an expression with nested multiplication and addition" do
-    @parser.parse("(34+(44*(6*(67+(5)))))").value.should equal 19042
+    @parser.parse("(34+(44*(6*(67+(5)))))").value.should == 19042
   end
 end
 

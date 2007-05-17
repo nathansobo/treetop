@@ -107,13 +107,13 @@ context "The subset of the metagrammar rooted at the ordered_choice rule" do
 
       grammar = Grammar.new
       choice = syntax_node.value(grammar)
-      choice.should be_an_instance_of OrderedChoice
-      choice.alternatives[0].should be_an_instance_of TerminalSymbol
-      choice.alternatives[0].prefix.should eql "terminal"
-      choice.alternatives[1].should be_an_instance_of NonterminalSymbol
-      choice.alternatives[1].name.should equal :nonterminal1
-      choice.alternatives[2].should be_an_instance_of NonterminalSymbol
-      choice.alternatives[2].name.should equal :nonterminal2      
+      choice.should be_an_instance_of(OrderedChoice)
+      choice.alternatives[0].should be_an_instance_of(TerminalSymbol)
+      choice.alternatives[0].prefix.should == "terminal"
+      choice.alternatives[1].should be_an_instance_of(NonterminalSymbol)
+      choice.alternatives[1].name.should == :nonterminal1
+      choice.alternatives[2].should be_an_instance_of(NonterminalSymbol)
+      choice.alternatives[2].name.should == :nonterminal2      
     end
   end
   

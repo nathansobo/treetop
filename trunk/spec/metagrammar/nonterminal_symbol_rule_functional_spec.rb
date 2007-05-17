@@ -18,9 +18,9 @@ context "The subset of the metagrammar rooted at the nonterminal_symbol rule" do
 
       grammar = Grammar.new
       nonterminal = syntax_node.value(grammar)
-      nonterminal.should be_an_instance_of NonterminalSymbol
-      nonterminal.name.should equal :foo
-      grammar.nonterminal_symbol(:foo).should equal(nonterminal)      
+      nonterminal.should be_an_instance_of(NonterminalSymbol)
+      nonterminal.name.should == :foo
+      grammar.nonterminal_symbol(:foo).should == nonterminal
     end
   end
   

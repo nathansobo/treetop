@@ -20,24 +20,24 @@ context "A builder object extended with the ParsingExpressionBuilderHelper modul
   specify "implements a #term method that converts Ruby strings into terminal symbols" do
     prefix = "foo"
     terminal = @builder.term(prefix)
-    terminal.should be_an_instance_of TerminalSymbol
-    terminal.prefix.should eql prefix
+    terminal.should be_an_instance_of(TerminalSymbol)
+    terminal.prefix.should == prefix
   end
   
   specify "implements an #exp method that converts Ruby strings or symbols into terminal and nonterminal " +
           "symbols respectively and returns arguments that are already parsing expressions unchanged" do
     string = "foo"
     terminal = @builder.exp(string)
-    terminal.should be_an_instance_of TerminalSymbol
-    terminal.prefix.should eql string
+    terminal.should be_an_instance_of(TerminalSymbol)
+    terminal.prefix.should == string
     
     symbol = :foo
     nonterminal = @builder.exp(symbol)
-    nonterminal.should be_an_instance_of NonterminalSymbol
-    nonterminal.name.should equal symbol
+    nonterminal.should be_an_instance_of(NonterminalSymbol)
+    nonterminal.name.should == symbol
     
     expression = ParsingExpression.new
-    @builder.exp(expression).should equal expression
+    @builder.exp(expression).should == expression
   end
   
   specify "implements an #exp method that converts an array into an arrays of exp called on the original " +
@@ -46,12 +46,12 @@ context "A builder object extended with the ParsingExpressionBuilderHelper modul
   end
 
   specify "implements an #any method that returns an instance of AnythingSymbol" do
-    @builder.any.should be_an_instance_of AnythingSymbol
+    @builder.any.should be_an_instance_of(AnythingSymbol)
   end
   
   specify "implements a #char_class method that returns a CharacterClass based on its argument" do
     char_class = @builder.char_class('A-Z')
-    char_class.should be_an_instance_of CharacterClass
+    char_class.should be_an_instance_of(CharacterClass)
     char_class.prefix_regex.should eql(/\A[A-Z]/)
   end
   
@@ -60,7 +60,7 @@ context "A builder object extended with the ParsingExpressionBuilderHelper modul
     not_predicate = mock("not predicate")
     @builder.should_receive(:exp).with(expression).and_return(expression)
     expression.should_receive(:not_predicate).and_return(not_predicate)
-    @builder.notp(expression).should equal not_predicate
+    @builder.notp(expression).should == not_predicate
   end
 
   specify "implements an #andp method that creates an AndPredicate with the value of #exp for its argument" do
@@ -68,7 +68,7 @@ context "A builder object extended with the ParsingExpressionBuilderHelper modul
     and_predicate = mock("and predicate")
     @builder.should_receive(:exp).with(expression).and_return(expression)
     expression.should_receive(:and_predicate).and_return(and_predicate)
-    @builder.andp(expression).should equal and_predicate
+    @builder.andp(expression).should == and_predicate
   end
 
   specify "implements an #optional method that creates an Optional expression out of its argument" do
@@ -80,8 +80,8 @@ context "A builder object extended with the ParsingExpressionBuilderHelper modul
   specify "implements a #seq method that creates a Sequence from the value of #exp for its arguments" do
     expressions = [:foo, :bar, :baz]
     sequence = @builder.seq(*expressions)
-    sequence.should be_an_instance_of Sequence
-    sequence.elements.should eql @builder.exp(expressions)
+    sequence.should be_an_instance_of(Sequence)
+    sequence.elements.should == @builder.exp(expressions)
   end
   
   specify "implements a #seq method that calls node_class_eval on the generated Sequence if a block is provided" do
@@ -95,19 +95,19 @@ context "A builder object extended with the ParsingExpressionBuilderHelper modul
   specify "implements a #choice method that creates an OrderedChoice from the value of #exp for each of its arguments" do
     expressions = [:foo, :bar, :baz]
     choice = @builder.choice(*expressions)
-    choice.should be_an_instance_of OrderedChoice
-    choice.alternatives.should eql @builder.exp(expressions)
+    choice.should be_an_instance_of(OrderedChoice)
+    choice.alternatives.should == @builder.exp(expressions)
   end
   
   specify "implements a #zero_or_more method that returns zero_or_more of exp(argument)" do
     zero_or_more = @builder.zero_or_more(:foo)
-    zero_or_more.should be_an_instance_of ZeroOrMore
-    zero_or_more.repeated_expression.should eql(@builder.exp(:foo))
+    zero_or_more.should be_an_instance_of(ZeroOrMore)
+    zero_or_more.repeated_expression.should == @builder.exp(:foo)
   end
   
   specify "implements a #one_or_more method that returns one_or_more of exp(argument)" do
     one_or_more = @builder.one_or_more(:foo)
-    one_or_more.should be_an_instance_of OneOrMore
+    one_or_more.should be_an_instance_of(OneOrMore)
     one_or_more.repeated_expression.should eql(@builder.exp(:foo))
   end
   

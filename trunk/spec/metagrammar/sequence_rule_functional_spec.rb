@@ -19,13 +19,13 @@ context "The subset of the metagrammar rooted at the sequence rule" do
 
       grammar = Grammar.new
       sequence = syntax_node.value(grammar)
-      sequence.should be_an_instance_of Sequence
-      sequence.elements[0].should be_an_instance_of TerminalSymbol
-      sequence.elements[0].prefix.should eql "terminal"
-      sequence.elements[1].should be_an_instance_of NonterminalSymbol
-      sequence.elements[1].name.should equal :nonterminal1
-      sequence.elements[2].should be_an_instance_of NonterminalSymbol
-      sequence.elements[2].name.should equal :nonterminal2
+      sequence.should be_an_instance_of(Sequence)
+      sequence.elements[0].should be_an_instance_of(TerminalSymbol)
+      sequence.elements[0].prefix.should == "terminal"
+      sequence.elements[1].should be_an_instance_of(NonterminalSymbol)
+      sequence.elements[1].name.should == :nonterminal1
+      sequence.elements[2].should be_an_instance_of(NonterminalSymbol)
+      sequence.elements[2].name.should == :nonterminal2
     end
   end
   
@@ -35,7 +35,7 @@ context "The subset of the metagrammar rooted at the sequence rule" do
 
       grammar = Grammar.new
       sequence = syntax_node.value(grammar)
-      sequence.should be_an_instance_of Sequence      
+      sequence.should be_an_instance_of(Sequence)
     end
   end
   
@@ -46,7 +46,7 @@ context "The subset of the metagrammar rooted at the sequence rule" do
     
       grammar = Grammar.new
       sequence = result.value(grammar)
-      sequence.should be_an_instance_of Sequence
+      sequence.should be_an_instance_of(Sequence)
       sequence.node_class.instance_methods.should include('a_method')      
     end
   end
@@ -58,7 +58,7 @@ context "The subset of the metagrammar rooted at the sequence rule" do
     
       grammar = Grammar.new
       sequence = result.value(grammar)
-      sequence.should be_an_instance_of Sequence
+      sequence.should be_an_instance_of(Sequence)
       sequence.node_class.instance_methods.should_not include('a_method')
       sequence.elements[2].node_class.instance_methods.should include('a_method')      
     end

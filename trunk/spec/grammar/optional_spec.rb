@@ -22,7 +22,7 @@ context "An optional terminal symbol" do
     result = @optional.parse_at(@terminal.prefix, 0, parser_with_empty_cache_mock)
     result.should be_success
     result.should be_a_kind_of(TerminalSyntaxNode)
-    result.text_value.should eql @terminal.prefix
+    result.text_value.should == @terminal.prefix
   end
   
   specify "has a string representation" do

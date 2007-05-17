@@ -12,7 +12,7 @@ context "A terminal syntax node" do
   end
   
   specify "has the text value of the input over its interval " do
-    @node.text_value.should eql "foo"
+    @node.text_value.should == "foo"
   end  
 end
 

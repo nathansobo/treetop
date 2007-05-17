@@ -47,6 +47,6 @@ context "A sequence with terminal symbol followed by a !-predicate on another te
     index = 3
     result = @sequence.parse_at(input, index, parser_with_empty_cache_mock)
     result.should be_success
-    result.interval.end.should equal index + @terminal.prefix.size
+    result.interval.end.should == index + @terminal.prefix.size
   end
 end
