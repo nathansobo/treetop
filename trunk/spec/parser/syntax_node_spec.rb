@@ -14,7 +14,7 @@ context "An instance of SyntaxNode" do
   end
   
   specify "should not be failure" do
-    @node.should_not_be_failure
+    @node.should_not be_failure
   end
   
   specify "should not be epsilon" do

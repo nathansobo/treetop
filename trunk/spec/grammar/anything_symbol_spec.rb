@@ -21,10 +21,9 @@ context "An anything symbol (.)" do
     @anything.to_s.should == '.'
   end
   
-  specify "returns a FailedParseResult with a failure leaf when trying to parse epsilon" do
+  specify "returns a FailedParseResult" do
     result = @anything.parse_at('', 0, parser_with_empty_cache_mock)
     result.should be_an_instance_of(FailedParseResult)
-    result.failure_tree.should be_an_instance_of(FailureLeaf)
   end
   
   specify "parses a newline" do

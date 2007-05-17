@@ -16,19 +16,15 @@ context "An &-predication on a terminal symbol" do
     result = @and_predicate.parse_at(input, index, parser_with_empty_cache_mock)
     result.should be_success
     
-    result.should be_an_instance_of(SuccessfulParseResult)
+    result.should be_success
     
     result.interval.end.should == index
   end
   
-  specify "fails upon parsing non-matching input, with a FailureTree that has the failure of the predicated expression as a subtree" do
+  specify "fails upon parsing non-matching input" do
     input = "baz"
     result = @and_predicate.parse_at(input, 0, parser_with_empty_cache_mock)
-    result.should be_an_instance_of(FailedParseResult)
-    
-    failure_tree = result.failure_tree
-    failure_tree.should_not be_nil
-    failure_tree.subtrees.size.should == 1
+    result.should be_failure
   end
   
   specify "has a string representation" do
@@ -55,24 +51,5 @@ context "A sequence with terminal symbol followed by an &-predicate on another t
     input = "---" + @terminal.prefix + "baz"
     index = 3
     @sequence.parse_at(input, index, parser_with_empty_cache_mock).should be_a_failure
-  end
-end
-
-context "The result of an and predicate when the predicated expression parses successfully with a failure tree" do
-  setup do
-    @predicated_expression = mock('predicated expression')
-    @and_predicate = AndPredicate.new(@predicated_expression)
-
-    @predicated_expression_result = successful_parse_result_with_failure_tree_for(@predicated_expression)    
-    @predicated_expression.stub!(:parse_at).and_return(@predicated_expression_result)
-    
-    @result = @and_predicate.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
-  end
-  
-  specify "should have a failure tree with the failure tree of the successful subexpression parse as its subtree" do    
-    failure_tree = @result.failure_tree
-    failure_tree.should_not be_nil
-    
-    failure_tree.subtrees.should include(@predicated_expression_result.failure_tree)
   end
 end
