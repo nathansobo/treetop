@@ -4,24 +4,24 @@ require 'spec'
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
-context "A new grammar" do
+describe "A new grammar" do
   setup do
     @grammar = Grammar.new
   end
 
-  specify "returns an instance of Parser in response to new_parser" do
+  it "returns an instance of Parser in response to new_parser" do
     @grammar.new_parser.should be_an_instance_of(Parser)
   end
   
-  specify "returns unique parsers in response to repeated calls to new_parser" do
+  it "returns unique parsers in response to repeated calls to new_parser" do
     @grammar.new_parser.should be_an_instance_of(Parser)
   end
   
-  specify "returns parsers that retain a reference to that grammar" do
+  it "returns parsers that retain a reference to that grammar" do
     @grammar.new_parser.grammar.should == @grammar
   end
   
-  specify "retains an explicitly set root even if the first parsing rule is added " +
+  it "retains an explicitly set root even if the first parsing rule is added " +
           "subsequently to it being set" do
     alt_root = mock("Alternate root nonterminal")
     @grammar.root = alt_root
@@ -30,7 +30,7 @@ context "A new grammar" do
     @grammar.root.should == alt_root
   end
   
-  specify "constructs or returns a previously constructed a nonterminal symbol " +
+  it "constructs or returns a previously constructed a nonterminal symbol " +
           "with a reference to itself on call to nonterminal_symbol" do
     ruby_sym = :foo
     nonterminal = @grammar.nonterminal_symbol(ruby_sym)
@@ -38,7 +38,7 @@ context "A new grammar" do
     @grammar.nonterminal_symbol(ruby_sym).should == nonterminal
   end
   
-  specify "constructs a parsing rule automatically if add_parsing_rule is called with " +
+  it "constructs a parsing rule automatically if add_parsing_rule is called with " +
           "a nonterminal symbol and a parsing expression" do
     ruby_sym = :foo
     nonterminal = @grammar.nonterminal_symbol(ruby_sym)
@@ -47,37 +47,37 @@ context "A new grammar" do
     @grammar.get_parsing_expression(nonterminal).should == expression
   end
   
-  specify "has a builder" do
+  it "has a builder" do
     @grammar.builder.should_not be_nil
   end
 
-  specify "assigns the builders grammar to itself" do
+  it "assigns the builders grammar to itself" do
     @grammar.builder.grammar.should == @grammar
   end
 
-  specify "proxies calls to #build to its associated builder" do
+  it "proxies calls to #build to its associated builder" do
     @grammar.builder.should_receive(:foo)
     @grammar.build do
       foo
     end
   end
   
-  specify "raises an exception if a nonexistent rule is accessed" do
+  it "raises an exception if a nonexistent rule is accessed" do
     lambda do
       @grammar.get_parsing_expression(@grammar.nonterminal_symbol(:nonexistent))
     end.should raise_error
   end
 end
 
-context "The Grammar class" do
-  specify "calls build on a new instance with a block if it is provided to #new" do
+describe "The Grammar class" do
+  it "calls build on a new instance with a block if it is provided to #new" do
     builder_mock = mock("builder")
     GrammarBuilder.should_receive(:new).and_return(builder_mock)
     builder_mock.should_receive(:build)
     Grammar.new { }
   end
   
-  specify "does not call build on a new instance if no block is provided to #new" do
+  it "does not call build on a new instance if no block is provided to #new" do
     builder_mock = mock("builder")
     GrammarBuilder.should_receive(:new).and_return(builder_mock)
     builder_mock.should_not_receive(:build)
@@ -85,24 +85,24 @@ context "The Grammar class" do
   end
 end
 
-context "A grammar with a parsing rule" do
+describe "A grammar with a parsing rule" do
   setup do
     @grammar = Grammar.new
     @rule = make_parsing_rule
     @grammar.add_parsing_rule(@rule)
   end
   
-  specify "can retrive the parsing expression associated with that rule based on " +
+  it "can retrive the parsing expression associated with that rule based on " +
           "its nonterminal symbol" do
     @grammar.get_parsing_expression(@rule.nonterminal_symbol).should == @rule.parsing_expression
   end
   
-  specify "is rooted at that parsing rule's nonterminal because it was the first " +
+  it "is rooted at that parsing rule's nonterminal because it was the first " +
           "added and no root was explicitly set" do
     @grammar.root.should == @rule.nonterminal_symbol
   end
   
-  specify "is rooted at a different root if one is explicitly set" do
+  it "is rooted at a different root if one is explicitly set" do
     alt_root = mock("Alternate root nonterminal")
     @grammar.root = alt_root
     @grammar.root.should == alt_root

@@ -4,21 +4,21 @@ require 'spec'
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
-context "A nonterminal symbol" do
+describe "A nonterminal symbol" do
   setup do
     @grammar = mock("Grammar")
     @nonterminal = NonterminalSymbol.new(:foo, @grammar)
   end
   
-  specify "retains a reference to the grammar of which it's a member" do
+  it "retains a reference to the grammar of which it's a member" do
     @nonterminal.grammar.should equal(@grammar)
   end
   
-  specify "has a string representation" do
+  it "has a string representation" do
     @nonterminal.to_s.should == 'foo'
   end
   
-  specify "propagates parsing to the parsing expression to which it refers" do
+  it "propagates parsing to the parsing expression to which it refers" do
     referrent_expression = mock("Associated parsing expression")
     @grammar.should_receive(:get_parsing_expression).with(@nonterminal).and_return(referrent_expression)
     parse_result_of_referrent = successful_parse_result

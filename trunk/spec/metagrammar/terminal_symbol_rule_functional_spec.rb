@@ -6,14 +6,14 @@ require "#{dir}/../spec_helper"
 require "#{dir}/metagrammar_spec_context_helper"
 
 
-context "The subset of the metagrammar rooted at the terminal_symbol rule" do
+describe "The subset of the metagrammar rooted at the terminal_symbol rule" do
   include MetagrammarSpecContextHelper
   
   setup do
     @root = :terminal_symbol
   end
   
-  specify "parses a single-quoted string as a TerminalSymbol with the correct prefix value" do
+  it "parses a single-quoted string as a TerminalSymbol with the correct prefix value" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       terminal = parser.parse("'foo'").value
       terminal.should be_an_instance_of(TerminalSymbol)
@@ -21,7 +21,7 @@ context "The subset of the metagrammar rooted at the terminal_symbol rule" do
     end
   end
   
-  specify "parses a double-quoted string as a TerminalSymbol with the correct prefix value" do
+  it "parses a double-quoted string as a TerminalSymbol with the correct prefix value" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       terminal = parser.parse('"foo"').value
       terminal.should be_an_instance_of(TerminalSymbol)
@@ -29,7 +29,7 @@ context "The subset of the metagrammar rooted at the terminal_symbol rule" do
     end
   end
   
-  specify "parses a terminal symbol followed by a node class eval block" do
+  it "parses a terminal symbol followed by a node class eval block" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       result = parser.parse("'foo' {\ndef a_method\n\nend\n}")
       result.should be_success

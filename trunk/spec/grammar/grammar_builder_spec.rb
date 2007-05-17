@@ -4,20 +4,20 @@ require 'spec'
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
-context "A Grammar builder" do
+describe "A Grammar builder" do
   setup do
     @grammar = Grammar.new
     @builder = GrammarBuilder.new(@grammar)
   end
   
-  specify "instance evaluates blocks passed to #build" do
+  it "instance evaluates blocks passed to #build" do
     @builder.should_receive(:foo)
     @builder.build do
       foo
     end
   end
   
-  specify "sets the grammar root to a nonterminal with the name passed to #root" do
+  it "sets the grammar root to a nonterminal with the name passed to #root" do
     nonterminal = @grammar.nonterminal_symbol(:foo)
     
     @grammar.should_receive(:root=).with(nonterminal)
@@ -27,7 +27,7 @@ context "A Grammar builder" do
     end
   end
   
-  specify "on a call to #rule, creates a parsing rule with the second argument as its expression" +
+  it "on a call to #rule, creates a parsing rule with the second argument as its expression" +
           "if it is already a parsing expression" do
     nonterminal = @grammar.nonterminal_symbol(:foo)
     parsing_expression = ParsingExpression.new
@@ -35,7 +35,7 @@ context "A Grammar builder" do
     @builder.rule :foo, parsing_expression
   end
   
-  specify "on a call to #rule, creates a parsing rule with the results of calling #build second argument " +
+  it "on a call to #rule, creates a parsing rule with the results of calling #build second argument " +
           "if it is builder, after setting its grammar" do
     
     nonterminal = @grammar.nonterminal_symbol(:foo)

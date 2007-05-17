@@ -5,14 +5,14 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 require "#{dir}/metagrammar_spec_context_helper"
 
-context "The subset of the metagrammar rooted at the space rule" do
+describe "The subset of the metagrammar rooted at the space rule" do
   include MetagrammarSpecContextHelper
   
   setup do
     @root = :space
   end
 
-  specify "parses different types of whitespace" do
+  it "parses different types of whitespace" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       grammar = Grammar.new
 
@@ -23,7 +23,7 @@ context "The subset of the metagrammar rooted at the space rule" do
     end
   end
   
-  specify "does not parse nonwhitespace characters" do
+  it "does not parse nonwhitespace characters" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       grammar = Grammar.new
       parser.parse('g').should be_failure

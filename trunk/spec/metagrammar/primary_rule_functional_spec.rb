@@ -5,21 +5,21 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 require "#{dir}/metagrammar_spec_context_helper"
 
-context "The subset of the metagrammar rooted at the primary rule" do
+describe "The subset of the metagrammar rooted at the primary rule" do
   include MetagrammarSpecContextHelper
 
   setup do
     @root = :primary
   end
 
-  specify "parses an expression followed immediately by a + as one or more of that expression" do
+  it "parses an expression followed immediately by a + as one or more of that expression" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       result = parse_result_for(parser, '"b"+')
       result.should be_an_instance_of(OneOrMore)      
     end
   end
 
-  specify "parses a nonterminal, string terminal, anything character, or character class" do
+  it "parses a nonterminal, string terminal, anything character, or character class" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       grammar = Grammar.new
 
@@ -30,7 +30,7 @@ context "The subset of the metagrammar rooted at the primary rule" do
     end
   end
 
-  specify "parses an &-predication" do
+  it "parses an &-predication" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       result = parse_result_for(parser, '&"foo"')
 
@@ -38,7 +38,7 @@ context "The subset of the metagrammar rooted at the primary rule" do
     end
   end
 
-  specify "parses a !-predication" do
+  it "parses a !-predication" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       result = parse_result_for(parser, '!"foo"')
 
@@ -46,7 +46,7 @@ context "The subset of the metagrammar rooted at the primary rule" do
     end
   end
 
-  specify "parses suffixes with higher precedence than prefixes" do
+  it "parses suffixes with higher precedence than prefixes" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       result = parse_result_for(parser, '!"foo"+')
 
@@ -55,7 +55,7 @@ context "The subset of the metagrammar rooted at the primary rule" do
     end
   end
   
-  specify "parses a parenthesized terminal symbol followed by a block with the block bound to that terminal" do
+  it "parses a parenthesized terminal symbol followed by a block with the block bound to that terminal" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       result = parser.parse("( 'foo' ) {\n  def a_method\n  end\n}")
       result.should be_success
@@ -66,7 +66,7 @@ context "The subset of the metagrammar rooted at the primary rule" do
     end
   end
   
-  specify "parses a parenthesized sequence ending in a terminal symbol followed by a block with the block bound to that sequence" do
+  it "parses a parenthesized sequence ending in a terminal symbol followed by a block with the block bound to that sequence" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       result = parser.parse("( 'foo' 'bar' 'baz' ) {\n  def a_method\n  end\n}")
       result.should be_success
@@ -77,7 +77,7 @@ context "The subset of the metagrammar rooted at the primary rule" do
     end
   end
   
-  specify "raises when a block follows a non-node-instantiating parenthesized expression is followed by a block" do
+  it "raises when a block follows a non-node-instantiating parenthesized expression is followed by a block" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       result = parser.parse("( 'foo' / 'bar' / 'baz' ) {\n  def a_method\n  end\n}")
     

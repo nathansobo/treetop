@@ -5,7 +5,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 require "#{dir}/metagrammar_spec_context_helper"
 
-context "The subset of the metagrammar rooted at the parsing_rule_sequence rule" do
+describe "The subset of the metagrammar rooted at the parsing_rule_sequence rule" do
   include MetagrammarSpecContextHelper
 
   setup do
@@ -15,7 +15,7 @@ context "The subset of the metagrammar rooted at the parsing_rule_sequence rule"
     @metagrammar.root = @metagrammar.nonterminal_symbol(:parsing_rule_sequence)
   end
   
-  specify "parses a single rule" do
+  it "parses a single rule" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       input = "rule foo bar end"
     
@@ -29,7 +29,7 @@ context "The subset of the metagrammar rooted at the parsing_rule_sequence rule"
     end
   end
   
-  specify "parses two rules" do
+  it "parses two rules" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       input = "rule foo bar end rule baz bop end"
     
@@ -45,7 +45,7 @@ context "The subset of the metagrammar rooted at the parsing_rule_sequence rule"
     end
   end
   
-  specify "parses a parse rule with newlines in it" do
+  it "parses a parse rule with newlines in it" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       input = 
       %{rule foo

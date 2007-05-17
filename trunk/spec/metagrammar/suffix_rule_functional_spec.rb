@@ -5,14 +5,14 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 require "#{dir}/metagrammar_spec_context_helper"
 
-context "The subset of the metagrammar rooted at the suffix rule" do
+describe "The subset of the metagrammar rooted at the suffix rule" do
   include MetagrammarSpecContextHelper
   
   setup do
     @root = :suffix
   end
 
-  specify "parses a * to a node that can modify the semantics of an expression it follows appropriately" do
+  it "parses a * to a node that can modify the semantics of an expression it follows appropriately" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       result = parser.parse('*')
     
@@ -24,7 +24,7 @@ context "The subset of the metagrammar rooted at the suffix rule" do
     end
   end
 
-  specify "parses a + node that can modify the semantics of an expression it follows appropriately" do
+  it "parses a + node that can modify the semantics of an expression it follows appropriately" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       result = parser.parse('+')
     
@@ -36,7 +36,7 @@ context "The subset of the metagrammar rooted at the suffix rule" do
     end
   end
 
-  specify "parses a ? node that can modify the semantics of an expression it follows appropriately" do
+  it "parses a ? node that can modify the semantics of an expression it follows appropriately" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       result = parser.parse('?')
     

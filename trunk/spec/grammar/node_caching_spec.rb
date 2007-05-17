@@ -4,19 +4,19 @@ require 'spec'
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
-context "A sequence" do
+describe "A sequence" do
   setup do
     @sequence = Sequence.new([])
     @parser = mock("parser")
     @node_cache = mock("node cache")    
   end
   
-  specify "has a node cache stored in the parser" do
+  it "has a node cache stored in the parser" do
     @parser.should_receive(:node_cache_for).with(@sequence).and_return(@node_cache)
     @sequence.node_cache(@parser).should == @node_cache
   end
   
-  specify "checks its cache for a node stored at an interval beginning at the start index" do
+  it "checks its cache for a node stored at an interval beginning at the start index" do
     start_index = 0
     @sequence.stub!(:node_cache).and_return(@node_cache)    
     stored_node = mock("node previously stored in the cache at interval starting at start_index")
@@ -25,7 +25,7 @@ context "A sequence" do
     @sequence.parse_at(mock('input'), start_index, @parser).should equal(stored_node)
   end
   
-  specify "stores parse results in its node cache before returning them" do
+  it "stores parse results in its node cache before returning them" do
     start_index = 0
     input = mock("input")
     @sequence.stub!(:node_cache).and_return(@node_cache)    

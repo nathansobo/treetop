@@ -5,14 +5,14 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 require "#{dir}/metagrammar_spec_context_helper"
 
-context "The subset of the metagrammar rooted at the parsing_rule rule" do
+describe "The subset of the metagrammar rooted at the parsing_rule rule" do
   include MetagrammarSpecContextHelper
   
   setup do
     @root = :parsing_rule
   end
 
-  specify "parses an empty string" do
+  it "parses an empty string" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       result = parse_result_for(parser, "rule foo 'bar' end")
    
@@ -20,7 +20,7 @@ context "The subset of the metagrammar rooted at the parsing_rule rule" do
     end
   end
   
-  specify "parses a parse rule with a terminal symbol as its expression" do
+  it "parses a parse rule with a terminal symbol as its expression" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       result = parse_result_for(parser, "rule foo 'bar' end")
    
@@ -30,7 +30,7 @@ context "The subset of the metagrammar rooted at the parsing_rule rule" do
     end
   end
   
-  specify "parses a parse rule with a complex expression" do
+  it "parses a parse rule with a complex expression" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       result = parse_result_for(parser, "rule foo 'bar' baz+ (xyzzy / plugh*) !bar end")
    

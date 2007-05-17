@@ -5,14 +5,14 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 require "#{dir}/metagrammar_spec_context_helper"
 
-context "The subset of the metagrammar rooted at the prefix rule" do
+describe "The subset of the metagrammar rooted at the prefix rule" do
   include MetagrammarSpecContextHelper
   
   setup do
     @root = :prefix
   end
 
-  specify "parses an & as a node that can modify the semantics of an expression it precedes appropriately" do
+  it "parses an & as a node that can modify the semantics of an expression it precedes appropriately" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       result = parser.parse('&')
     
@@ -24,7 +24,7 @@ context "The subset of the metagrammar rooted at the prefix rule" do
     end
   end
 
-  specify "parses an ! as a node that can modify the semantics of an expression it precedes appropriately" do
+  it "parses an ! as a node that can modify the semantics of an expression it precedes appropriately" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       result = parser.parse('!')
     

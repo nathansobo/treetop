@@ -4,7 +4,7 @@ require 'spec'
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
-context "A new parser with a nonterminal that successfully consumes 0...5, returning a parse result with a failure tree" do
+describe "A new parser with a nonterminal that successfully consumes 0...5, returning a parse result with a failure tree" do
   setup do    
     @grammar = Grammar.new
     @root_expression = mock('parsing expression')
@@ -15,16 +15,16 @@ context "A new parser with a nonterminal that successfully consumes 0...5, retur
     @root_expression.stub!(:parse_at).and_return(@result_of_root_expression)
   end
   
-  specify "returns the value associated with the root node if the parse is successful" do
+  it "returns the value associated with the root node if the parse is successful" do
     @parser.parse('12345').should == @result_of_root_expression
   end
   
-  specify "returns a FailedParseResult if not all of the input is consumed" do
+  it "returns a FailedParseResult if not all of the input is consumed" do
     result = @parser.parse('123')
     result.should be_an_instance_of(FailedParseResult)
   end
   
-  specify "creates a new parse cache on call to parse" do
+  it "creates a new parse cache on call to parse" do
     input = "foo"
     root_nonterminal = mock("Root nonterminal")
     parse_result = mock("Parse result")
@@ -36,7 +36,7 @@ context "A new parser with a nonterminal that successfully consumes 0...5, retur
     @parser.parse_cache.should be_an_instance_of(ParseCache)
   end
   
-  specify "can return a node cache for a specific parsing expression" do
+  it "can return a node cache for a specific parsing expression" do
     sequence_expression = mock("sequence expression")
     cache_for_sequence = mock("cache for sequence")
     @parser.parse_cache.should_receive(:[]).with(sequence_expression).and_return(cache_for_sequence)

@@ -5,14 +5,14 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 require "#{dir}/metagrammar_spec_context_helper"
 
-context "The subset of the metagrammar rooted at the sequence rule" do
+describe "The subset of the metagrammar rooted at the sequence rule" do
   include MetagrammarSpecContextHelper
   
   setup do
     @root = :sequence
   end
 
-  specify "parses a series of space-separated terminals and nonterminals as a sequence" do
+  it "parses a series of space-separated terminals and nonterminals as a sequence" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       syntax_node = parser.parse('"terminal" nonterminal1 nonterminal2')
       syntax_node.should be_success  
@@ -29,7 +29,7 @@ context "The subset of the metagrammar rooted at the sequence rule" do
     end
   end
   
-  specify "parses a series of space-separated non-terminals as a sequence" do
+  it "parses a series of space-separated non-terminals as a sequence" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       syntax_node = parser.parse('a b c')
 
@@ -39,7 +39,7 @@ context "The subset of the metagrammar rooted at the sequence rule" do
     end
   end
   
-  specify "node class evaluates a block following a sequence in the parsing expression for that sequence" do
+  it "node class evaluates a block following a sequence in the parsing expression for that sequence" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       result = parser.parse("a b c {\n  def a_method\n  end\n}")
       result.should be_success
@@ -51,7 +51,7 @@ context "The subset of the metagrammar rooted at the sequence rule" do
     end
   end
   
-  specify "binds trailing blocks more tightly to terminal symbols than sequences" do
+  it "binds trailing blocks more tightly to terminal symbols than sequences" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       result = parser.parse("a b 'c' {\n  def a_method\n  end\n}")
       result.should be_success

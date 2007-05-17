@@ -5,12 +5,12 @@ require 'ruby-prof'
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
-context "A parser for the metagrammar" do
+describe "A parser for the metagrammar" do
   setup do
     @parser = Metagrammar.new_parser
   end
   
-  specify "can parse the metagrammar" do
+  it "can parse the metagrammar" do
 
     metagrammar_file_path =
       File.expand_path('metagrammar.treetop', "#{File.dirname(__FILE__)}/../../lib/treetop/metagrammar/")

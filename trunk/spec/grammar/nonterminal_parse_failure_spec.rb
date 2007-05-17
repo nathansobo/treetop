@@ -4,7 +4,7 @@ require 'spec'
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
-context "An instance of NonterminalParseFailure" do
+describe "An instance of NonterminalParseFailure" do
   setup do
     @matched_interval_begin = 1
     
@@ -15,16 +15,16 @@ context "An instance of NonterminalParseFailure" do
     @parse_failure = NonterminalParseFailure.new(@matched_interval_begin, mock('nonterminal expression that failed'), @nested_failures)
   end
   
-  specify "has a matched_interval that begins at the supplied match_interval_begin and ends at the maximum matched_interval_end of the nested failures" do
+  it "has a matched_interval that begins at the supplied match_interval_begin and ends at the maximum matched_interval_end of the nested failures" do
     @parse_failure.matched_interval.should == (@matched_interval_begin...@nested_failure_1.matched_interval.end)
   end
   
-  specify "of those nested failures with which it is instantiated, propagates only those with the highest match interval end index" do
+  it "of those nested failures with which it is instantiated, propagates only those with the highest match interval end index" do
     @parse_failure.nested_failures.should == [@nested_failure_1]
   end
 end
 
-context "An instance of NonterminalParseFailure with three nested failures, two of which have the same matched_interval.end" do
+describe "An instance of NonterminalParseFailure with three nested failures, two of which have the same matched_interval.end" do
   setup do
     @matched_interval_begin = 1
     
@@ -36,11 +36,11 @@ context "An instance of NonterminalParseFailure with three nested failures, two 
     @parse_failure = NonterminalParseFailure.new(@matched_interval_begin, mock('nonterminal expression that failed'), @nested_failures)
   end
   
-  specify "has a matched_interval that begins at the supplied match_interval_begin and ends at the maximum matched_interval_end of the nested failures" do
+  it "has a matched_interval that begins at the supplied match_interval_begin and ends at the maximum matched_interval_end of the nested failures" do
     @parse_failure.matched_interval.should == (@matched_interval_begin...@nested_failure_1.matched_interval.end)
   end
   
-  specify "of those nested failures with which it is instantiated, propagates only those with the highest match interval end index" do
+  it "of those nested failures with which it is instantiated, propagates only those with the highest match interval end index" do
     @parse_failure.nested_failures.should == [@nested_failure_1, @nested_failure_2]
   end
   

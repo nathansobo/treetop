@@ -4,5 +4,5 @@ require 'spec'
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
-context "A SequenceSyntaxNode" do
+describe "A SequenceSyntaxNode" do
 end

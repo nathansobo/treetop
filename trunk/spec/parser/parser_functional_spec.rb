@@ -4,7 +4,7 @@ require 'spec'
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
-context "A parser for a grammar that contains only atomic symbols" do
+describe "A parser for a grammar that contains only atomic symbols" do
   setup do
     @grammar = Grammar.new
     
@@ -16,18 +16,18 @@ context "A parser for a grammar that contains only atomic symbols" do
     @parser = @grammar.new_parser
   end
   
-  specify "returns a kind of SyntaxNode upon a successful parse" do
+  it "returns a kind of SyntaxNode upon a successful parse" do
     input = "bar"
     @parser.parse(input).should be_a_kind_of(SyntaxNode)
   end
   
-  specify "returns a SyntaxNode with a text value equal to the input upon a successful parse" do
+  it "returns a SyntaxNode with a text value equal to the input upon a successful parse" do
     input = "bar"
     @parser.parse(input).text_value.should == input
   end
 end
 
-context "A parser for a simple arithmetic grammar" do
+describe "A parser for a simple arithmetic grammar" do
   setup do
     @grammar = Grammar.new
     
@@ -71,48 +71,48 @@ context "A parser for a simple arithmetic grammar" do
     @parser = @grammar.new_parser
   end
   
-  specify "succeeds for a single digit decimal" do
+  it "succeeds for a single digit decimal" do
     @parser.parse("5").should be_success
   end
   
-  specify "succeeds for a multi-digit decimal" do
+  it "succeeds for a multi-digit decimal" do
     @parser.parse("5346").should be_success
   end
   
-  specify "fails for a multi-digit decimal that begins with zero" do
+  it "fails for a multi-digit decimal that begins with zero" do
     @parser.parse("05346").should be_failure
   end
   
-  specify "fails for a multi-digit decimal that ends with characters" do
+  it "fails for a multi-digit decimal that ends with characters" do
     @parser.parse("05346xs").should be_failure
   end
   
-  specify "succeeds for a parenthesized decimal" do
+  it "succeeds for a parenthesized decimal" do
     @parser.parse("(53)").should be_success
   end
   
-  specify "fails for a partially partially decimal" do
+  it "fails for a partially partially decimal" do
     @parser.parse("(53").should be_failure
   end
   
-  specify "succeeds for a multiplication" do
+  it "succeeds for a multiplication" do
     @parser.parse("45*4").should be_success
   end
   
-  specify "fails for a partial multiplication" do
+  it "fails for a partial multiplication" do
     @parser.parse("53*").should be_failure
   end
   
-  specify "succeeds for an addition" do
+  it "succeeds for an addition" do
     @parser.parse("45+4").should be_success
   end
   
-  specify "succeeds for an expression with nested multiplication and addition" do
+  it "succeeds for an expression with nested multiplication and addition" do
     @parser.parse("((34*10)+(44*(6*(67+(5)))))").should be_success
   end
 end
 
-context "A parser for a grammar that contains only atomic symbols" do
+describe "A parser for a grammar that contains only atomic symbols" do
   setup do
     @grammar = Grammar.new
     
@@ -124,18 +124,18 @@ context "A parser for a grammar that contains only atomic symbols" do
     @parser = @grammar.new_parser
   end
   
-  specify "returns a kind of SyntaxNode upon a successful parse" do
+  it "returns a kind of SyntaxNode upon a successful parse" do
     input = "bar"
     @parser.parse(input).should be_a_kind_of(SyntaxNode)
   end
   
-  specify "returns a SyntaxNode with a text value equal to the input upon a successful parse" do
+  it "returns a SyntaxNode with a text value equal to the input upon a successful parse" do
     input = "bar"
     @parser.parse(input).text_value.should == input
   end
 end
 
-context "A parser for a simple arithmetic grammar with method definitions" do
+describe "A parser for a simple arithmetic grammar with method definitions" do
   module BinaryOperator
       def left_arg
         elements[0]
@@ -227,32 +227,32 @@ context "A parser for a simple arithmetic grammar with method definitions" do
     @parser = @grammar.new_parser
   end
   
-  specify "returns a result has the correct value for a digit" do
+  it "returns a result has the correct value for a digit" do
     @parser.parse("5").value.should == 5
   end
   
-  specify "succeeds for a multi-digit decimal" do
+  it "succeeds for a multi-digit decimal" do
     @parser.parse("5346").value.should == 5346
   end
     
-  specify "succeeds for a parenthesized decimal" do
+  it "succeeds for a parenthesized decimal" do
     @parser.parse("(53)").value.should == 53
   end
   
-  specify "succeeds for a multiplication" do
+  it "succeeds for a multiplication" do
     @parser.parse("45*4").value.should == 180
   end
   
-  specify "succeeds for an addition" do
+  it "succeeds for an addition" do
     @parser.parse("45+4").value.should == 49
   end
   
-  specify "succeeds for an expression with nested multiplication and addition" do
+  it "succeeds for an expression with nested multiplication and addition" do
     @parser.parse("(34+(44*(6*(67+(5)))))").value.should == 19042
   end
 end
 
-context "A parser for grammar with a single terminal symbol" do
+describe "A parser for grammar with a single terminal symbol" do
   setup do
     grammar = Grammar.new do
       rule :foo, exp("foo")
@@ -260,7 +260,7 @@ context "A parser for grammar with a single terminal symbol" do
     @parser = grammar.new_parser
   end
   
-  specify "parses a matching input successfully after failing to parse nonmatching input" do
+  it "parses a matching input successfully after failing to parse nonmatching input" do
     @parser.parse("bar").should be_failure
     @parser.parse("foo").should be_success
   end

@@ -4,13 +4,13 @@ require 'spec'
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
-context "Zero-or-more of a terminal symbol" do
+describe "Zero-or-more of a terminal symbol" do
   setup do
     @terminal = TerminalSymbol.new("foo")
     @zero_or_more = ZeroOrMore.new(@terminal)
   end
   
-  specify "returns an empty kind of SequenceSyntaxNode when parsing epsilon without advancing the index" do
+  it "returns an empty kind of SequenceSyntaxNode when parsing epsilon without advancing the index" do
     index = 0
     epsilon = ""
     result = @zero_or_more.parse_at(epsilon, index, parser_with_empty_cache_mock)
@@ -22,7 +22,7 @@ context "Zero-or-more of a terminal symbol" do
     result.should be_empty
   end
   
-  specify "returns a sequence with one element when parsing input matching one of that terminal symbol" do
+  it "returns a sequence with one element when parsing input matching one of that terminal symbol" do
     index = 0
     input = @terminal.prefix + "barbaz"
     result = @zero_or_more.parse_at(input, index, parser_with_empty_cache_mock)
@@ -34,7 +34,7 @@ context "Zero-or-more of a terminal symbol" do
     result.interval.end.should == index + @terminal.prefix.size
   end
   
-  specify "returns a sequence of size 5 when parsing input with 5 consecutive matches of that terminal symbol" do
+  it "returns a sequence of size 5 when parsing input with 5 consecutive matches of that terminal symbol" do
     index = 0
     input = @terminal.prefix * 5
     result = @zero_or_more.parse_at(input, index, parser_with_empty_cache_mock)
@@ -45,7 +45,7 @@ context "Zero-or-more of a terminal symbol" do
     result.interval.end.should == (index + (@terminal.prefix.size * 5))
   end
   
-  specify "correctly matches multiples not starting at index 0" do
+  it "correctly matches multiples not starting at index 0" do
     index = 30
     input = ("x" * 30) + (@terminal.prefix * 5)
     result = @zero_or_more.parse_at(input, index, parser_with_empty_cache_mock)
@@ -57,12 +57,12 @@ context "Zero-or-more of a terminal symbol" do
     result.interval.end.should equal(index + (@terminal.prefix.size * 5))
   end
   
-  specify "has a string representation" do
+  it "has a string representation" do
     @zero_or_more.to_s.should == '("foo")*'
   end
 end
 
-context "Zero-or-more of a terminal symbol with a method defined in its node class" do
+describe "Zero-or-more of a terminal symbol with a method defined in its node class" do
   setup do
     @terminal = TerminalSymbol.new("foo")
     @zero_or_more = ZeroOrMore.new(@terminal)
@@ -73,7 +73,7 @@ context "Zero-or-more of a terminal symbol with a method defined in its node cla
     end
   end
   
-  specify "returns a node that has that method upon a successful parse of epsilon" do
+  it "returns a node that has that method upon a successful parse of epsilon" do
     index = 0
     epsilon = ""
     result = @zero_or_more.parse_at(epsilon, index, parser_with_empty_cache_mock)
@@ -82,14 +82,14 @@ context "Zero-or-more of a terminal symbol with a method defined in its node cla
     result.should respond_to(:a_method)
   end
   
-  specify "returns a node that has that method upon a successful parse of one of the repeated symbol" do
+  it "returns a node that has that method upon a successful parse of one of the repeated symbol" do
     index = 0
     input = @terminal.prefix + "barbaz"
     result = @zero_or_more.parse_at(input, index, parser_with_empty_cache_mock)
     result.should respond_to(:a_method)
   end
   
-  specify "returns a node that has that method upon a successful parse of multiple of the repeated symbols" do
+  it "returns a node that has that method upon a successful parse of multiple of the repeated symbols" do
     index = 0
     input = @terminal.prefix * 5
     result = @zero_or_more.parse_at(input, index, parser_with_empty_cache_mock)
