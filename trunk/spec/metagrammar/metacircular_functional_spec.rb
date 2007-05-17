@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'spec'
-require 'ruby-prof'
 
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
