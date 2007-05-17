@@ -35,7 +35,7 @@ context "The result of TerminalSymbol#parse_at for a matching input prefix at a 
   end
   
   specify "is an instance of SuccessfulParseResult" do
-    @result.should be_an_instance_of(SuccessfulParseResult)
+    @result.should be_success
   end
   
   specify "is successful" do

@@ -15,26 +15,23 @@ context "Zero-or-more of a terminal symbol" do
     epsilon = ""
     result = @zero_or_more.parse_at(epsilon, index, parser_with_empty_cache_mock)
     
-    result.should be_an_instance_of(SuccessfulParseResult)
-    result.interval.end.should equal index
+    result.should be_success
+    result.interval.end.should == index
     
-    value = result.value
-    value.should be_a_kind_of(SequenceSyntaxNode)
-    value.should be_empty
+    result.should be_a_kind_of(SequenceSyntaxNode)
+    result.should be_empty
   end
   
   specify "returns a sequence with one element when parsing input matching one of that terminal symbol" do
     index = 0
     input = @terminal.prefix + "barbaz"
     result = @zero_or_more.parse_at(input, index, parser_with_empty_cache_mock)
-    result.should be_an_instance_of(SuccessfulParseResult)
+    result.should be_success
 
-    value = result.value    
-    value.should be_a_kind_of SequenceSyntaxNode
-    value.elements.size.should == 1
-    value.elements.first.text_value.should == @terminal.prefix
-    
-    result.interval.end.should equal index + @terminal.prefix.size
+    result.should be_a_kind_of(SequenceSyntaxNode)
+    result.elements.size.should == 1
+    result.elements.first.text_value.should == @terminal.prefix
+    result.interval.end.should == index + @terminal.prefix.size
   end
   
   specify "returns a sequence of size 5 when parsing input with 5 consecutive matches of that terminal symbol" do
@@ -42,24 +39,21 @@ context "Zero-or-more of a terminal symbol" do
     input = @terminal.prefix * 5
     result = @zero_or_more.parse_at(input, index, parser_with_empty_cache_mock)
     
-    result.should be_an_instance_of(SuccessfulParseResult)
-    value = result.value
-    value.should be_a_kind_of(SequenceSyntaxNode)
-    value.elements.size.should equal 5
-    
-    result.interval.end.should equal(index + (@terminal.prefix.size * 5))
+    result.should be_success
+    result.should be_a_kind_of(SequenceSyntaxNode)
+    result.elements.size.should == 5
+    result.interval.end.should == (index + (@terminal.prefix.size * 5))
   end
   
   specify "correctly matches multiples not starting at index 0" do
     index = 30
     input = ("x" * 30) + (@terminal.prefix * 5)
     result = @zero_or_more.parse_at(input, index, parser_with_empty_cache_mock)
-    result.should be_an_instance_of(SuccessfulParseResult)
+    result.should be_success
     
-    value = result.value
-    value.should be_a_kind_of(SequenceSyntaxNode)
-    value.elements.size.should equal 5
-    
+
+    result.should be_a_kind_of(SequenceSyntaxNode)
+    result.elements.size.should == 5
     result.interval.end.should equal(index + (@terminal.prefix.size * 5))
   end
   
@@ -84,43 +78,21 @@ context "Zero-or-more of a terminal symbol with a method defined in its node cla
     epsilon = ""
     result = @zero_or_more.parse_at(epsilon, index, parser_with_empty_cache_mock)
     
-    result.should be_an_instance_of(SuccessfulParseResult)
-    result.value.should respond_to(:a_method)
+    result.should be_success
+    result.should respond_to(:a_method)
   end
   
   specify "returns a node that has that method upon a successful parse of one of the repeated symbol" do
     index = 0
     input = @terminal.prefix + "barbaz"
     result = @zero_or_more.parse_at(input, index, parser_with_empty_cache_mock)
-    result.value.should respond_to :a_method
+    result.should respond_to(:a_method)
   end
   
   specify "returns a node that has that method upon a successful parse of multiple of the repeated symbols" do
     index = 0
     input = @terminal.prefix * 5
     result = @zero_or_more.parse_at(input, index, parser_with_empty_cache_mock)
-    result.value.should respond_to(:a_method)
+    result.should respond_to(:a_method)
   end
 end
-
-context "The result of parsing zero or more of an expression, when some results of the expression have failure trees" do
-  setup do
-    @expression = mock('repeated parsing expression')
-    @zero_or_more = ZeroOrMore.new(@expression)
-    
-    @parse_result_1 = successful_parse_result_with_failure_tree_for(@expression)
-    @parse_result_2 = successful_parse_result_with_failure_tree_for(@expression, 5...10)
-    @parse_result_3 = failed_parse_result_for(@expression, 10)
-    
-    @expression.stub!(:parse_at).and_return(@parse_result_1, @parse_result_2, @parse_result_3)
-    
-    @result = @zero_or_more.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
-  end
-  
-  specify "has a failure tree with the maximal failure that occured during the parse as its subtree" do    
-    subtrees = @result.failure_tree.subtrees
-    subtrees.size.should == 1
-    subtrees.should include(@parse_result_2.failure_tree)
-  end
-end
-

@@ -14,7 +14,7 @@ context "The result of a sequence parsing expression with one element, when that
   end
       
   specify "returns a SuccessfulParseResult with a SequenceSyntaxNode value with the element's parse result as an element if the parse is successful" do    
-    @result.should be_an_instance_of(SuccessfulParseResult)
+    @result.should be_success
     @result.value.should be_a_kind_of SequenceSyntaxNode
     @result.value.elements.should eql [@elt_result.value]
   end  

@@ -13,14 +13,14 @@ context "An optional terminal symbol" do
   specify "returns a SuccessfulParseResult with empty terminal node as its value on parsing epsilon" do
     epsilon = ""
     result = @optional.parse_at(epsilon, 0, parser_with_empty_cache_mock)
-    result.should be_an_instance_of(SuccessfulParseResult)
+    result.should be_success
     result.value.should be_a_kind_of(TerminalSyntaxNode)
     result.value.should be_epsilon
   end
   
   specify "returns a SuccessfulParseResult with a terminal node matching the terminal symbol on parsing matching input" do
     result = @optional.parse_at(@terminal.prefix, 0, parser_with_empty_cache_mock)
-    result.should be_an_instance_of(SuccessfulParseResult)
+    result.should be_success
     result.value.should be_a_kind_of(TerminalSyntaxNode)
     result.value.text_value.should eql @terminal.prefix
   end
@@ -42,7 +42,7 @@ context "The result of an optional parsing expression, when the optional express
   end
   
   specify "is a SuccessfulParseResult" do
-    @result.should be_an_instance_of(SuccessfulParseResult)
+    @result.should be_success
   end
   
   specify "has the failure of the optional expression to parse as a subtree of its failure tree" do

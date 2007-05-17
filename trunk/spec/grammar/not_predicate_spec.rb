@@ -20,7 +20,7 @@ context "A !-predicate for a TerminalSymbol" do
     input = "baz"
     index = 0
     result = @not_predicate.parse_at(input, index, parser_with_empty_cache_mock)
-    result.should be_an_instance_of(SuccessfulParseResult)
+    result.should be_success
     result.interval.should == (index...index)
     failure_subtrees = result.failure_tree.subtrees
     failure_subtrees.size.should == 1

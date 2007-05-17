@@ -12,7 +12,7 @@ context "An ordered choice parsing expression with three terminal alternatives" 
   
   specify "returns a SuccessfulParseResult with the value of the first alternative as its value if it succeeds" do
     result = @choice.parse_at(@alts[0], 0, parser_with_empty_cache_mock)
-    result.should be_an_instance_of(SuccessfulParseResult)
+    result.should be_success
     result.value.text_value.should eql @alts[0]
   end
 
@@ -30,7 +30,7 @@ context "The result of an ordered choice with three terminal alternatives, if th
   end
   
   specify "is an instance SuccessfulParseResult" do
-    @result.should be_an_instance_of(SuccessfulParseResult)
+    @result.should be_success
   end
   
   specify "has the parse result of the second terminal as its value" do
@@ -57,7 +57,7 @@ context "The result of an ordered choice with three terminal alternatives, if th
   end
   
   specify "is an instance SuccessfulParseResult" do
-    @result.should be_an_instance_of(SuccessfulParseResult)
+    @result.should be_success
   end
   
   specify "has the parse result of the third terminal as its value" do
