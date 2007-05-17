@@ -12,7 +12,7 @@ context "An instance of ParseFailure instantiated with no failure paths" do
   end
   
   specify "should be failure" do
-    @parse_failure.should_be_failure
+    @parse_failure.should be_failure
   end
   
   specify "should not be success" do

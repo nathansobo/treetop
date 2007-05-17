@@ -11,7 +11,7 @@ context "A Grammar builder" do
   end
   
   specify "instance evaluates blocks passed to #build" do
-    @builder.should_receive(:foo)
+    @builder.should receive(:foo)
     @builder.build do
       foo
     end
@@ -20,7 +20,7 @@ context "A Grammar builder" do
   specify "sets the grammar root to a nonterminal with the name passed to #root" do
     nonterminal = @grammar.nonterminal_symbol(:foo)
     
-    @grammar.should_receive(:root=).with(nonterminal)
+    @grammar.should receive(:root=).with(nonterminal)
 
     @builder.build do
       root :foo
@@ -31,7 +31,7 @@ context "A Grammar builder" do
           "if it is already a parsing expression" do
     nonterminal = @grammar.nonterminal_symbol(:foo)
     parsing_expression = ParsingExpression.new
-    @grammar.should_receive(:add_parsing_rule).with(nonterminal, parsing_expression)
+    @grammar.should receive(:add_parsing_rule).with(nonterminal, parsing_expression)
     @builder.rule :foo, parsing_expression
   end
   
@@ -42,10 +42,10 @@ context "A Grammar builder" do
 
     expression_builder = ParsingExpressionBuilder.new
     parsing_expression = mock("parsing expression")
-    expression_builder.should_receive(:grammar=).with(@grammar)
-    expression_builder.should_receive(:build).and_return(parsing_expression)
+    expression_builder.should receive(:grammar=).with(@grammar)
+    expression_builder.should receive(:build).and_return(parsing_expression)
     
-    @grammar.should_receive(:add_parsing_rule).with(nonterminal, parsing_expression)
+    @grammar.should receive(:add_parsing_rule).with(nonterminal, parsing_expression)
     
     @builder.rule :foo, expression_builder
   end

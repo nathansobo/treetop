@@ -11,14 +11,14 @@ context "A terminal symbol" do
     
   specify "returns the correct interval for a prefix starting after 0" do
     result = @terminal.parse_at("xfoo", 1, parser_with_empty_cache_mock)
-    result.consumed_interval.should_eql 1...4
+    result.interval.should eql 1...4
     
     result = @terminal.parse_at("---foo", 3, parser_with_empty_cache_mock)
-    result.consumed_interval.should_eql 3...6
+    result.interval.should eql 3...6
   end
   
   specify "shouldn't parse nonmatching input at the index even if a match occurs later in the input" do
-    @terminal.parse_at(" foo", 0, parser_with_empty_cache_mock).should_be_failure
+    @terminal.parse_at(" foo", 0, parser_with_empty_cache_mock).should be_failure
   end
   
   specify "has a string representation" do
@@ -39,15 +39,15 @@ context "The result of TerminalSymbol#parse_at for a matching input prefix at a 
   end
   
   specify "is successful" do
-    @result.should_be_success
+    @result.should be_success
   end
   
   specify "has a text value matching the terminal symbol" do
-    @result.value.text_value.should_eql @terminal.prefix
+    @result.value.text_value.should eql @terminal.prefix
   end
   
   specify "is a kind of TerminalSyntaxNode" do
-    @result.value.should_be_a_kind_of TerminalSyntaxNode
+    @result.value.should be_a_kind_of TerminalSyntaxNode
   end
 end
 
@@ -65,7 +65,7 @@ context "The result of TerminalSymbol#parse_at for a non-matching input prefix a
   end
   
   specify "has a consumed interval that start and end at the start index of the parse" do
-    @result.consumed_interval.should == (@start_index...@start_index)    
+    @result.interval.should == (@start_index...@start_index)    
   end
   
   specify "has one failure tree that is also a failure leaf that has a reference back to the failing terminal" do
@@ -91,8 +91,8 @@ context "A terminal symbol with a method defined in its node class" do
     parser = parser_with_empty_cache_mock
     
     result = @terminal.parse_at(input, index, parser)
-    result.should_be_success
-    result.should_respond_to :method
+    result.should be_success
+    result.should respond_to :method
   end
 end
 

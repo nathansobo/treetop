@@ -9,7 +9,7 @@ context "A new node cache" do
   end
   
   specify "is empty" do
-    @node_cache.should_be_empty
+    @node_cache.should be_empty
   end
 end
 

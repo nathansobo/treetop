@@ -16,7 +16,7 @@ context "Zero-or-more of a terminal symbol" do
     result = @zero_or_more.parse_at(epsilon, index, parser_with_empty_cache_mock)
     
     result.should be_an_instance_of(SuccessfulParseResult)
-    result.consumed_interval.end.should_equal index
+    result.interval.end.should equal index
     
     value = result.value
     value.should be_a_kind_of(SequenceSyntaxNode)
@@ -30,11 +30,11 @@ context "Zero-or-more of a terminal symbol" do
     result.should be_an_instance_of(SuccessfulParseResult)
 
     value = result.value    
-    value.should_be_a_kind_of SequenceSyntaxNode
+    value.should be_a_kind_of SequenceSyntaxNode
     value.elements.size.should == 1
     value.elements.first.text_value.should == @terminal.prefix
     
-    result.consumed_interval.end.should_equal index + @terminal.prefix.size
+    result.interval.end.should equal index + @terminal.prefix.size
   end
   
   specify "returns a sequence of size 5 when parsing input with 5 consecutive matches of that terminal symbol" do
@@ -45,9 +45,9 @@ context "Zero-or-more of a terminal symbol" do
     result.should be_an_instance_of(SuccessfulParseResult)
     value = result.value
     value.should be_a_kind_of(SequenceSyntaxNode)
-    value.elements.size.should_equal 5
+    value.elements.size.should equal 5
     
-    result.consumed_interval.end.should_equal(index + (@terminal.prefix.size * 5))
+    result.interval.end.should equal(index + (@terminal.prefix.size * 5))
   end
   
   specify "correctly matches multiples not starting at index 0" do
@@ -58,9 +58,9 @@ context "Zero-or-more of a terminal symbol" do
     
     value = result.value
     value.should be_a_kind_of(SequenceSyntaxNode)
-    value.elements.size.should_equal 5
+    value.elements.size.should equal 5
     
-    result.consumed_interval.end.should_equal(index + (@terminal.prefix.size * 5))
+    result.interval.end.should equal(index + (@terminal.prefix.size * 5))
   end
   
   specify "has a string representation" do
@@ -92,7 +92,7 @@ context "Zero-or-more of a terminal symbol with a method defined in its node cla
     index = 0
     input = @terminal.prefix + "barbaz"
     result = @zero_or_more.parse_at(input, index, parser_with_empty_cache_mock)
-    result.value.should_respond_to :a_method
+    result.value.should respond_to :a_method
   end
   
   specify "returns a node that has that method upon a successful parse of multiple of the repeated symbols" do

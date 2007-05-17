@@ -11,7 +11,7 @@ context "A nonterminal symbol" do
   end
   
   specify "retains a reference to the grammar of which it's a member" do
-    @nonterminal.grammar.should_equal(@grammar)
+    @nonterminal.grammar.should equal(@grammar)
   end
   
   specify "has a string representation" do
@@ -20,7 +20,7 @@ context "A nonterminal symbol" do
   
   specify "propagates parsing to the parsing expression to which it refers" do
     referrent_expression = mock("Associated parsing expression")
-    @grammar.should_receive(:get_parsing_expression).with(@nonterminal).and_return(referrent_expression)
+    @grammar.should receive(:get_parsing_expression).with(@nonterminal).and_return(referrent_expression)
     parse_result_of_referrent = successful_parse_result_for(referrent_expression)
     referrent_expression.stub!(:parse_at).and_return(parse_result_of_referrent)
 
@@ -31,7 +31,7 @@ context "A nonterminal symbol" do
     
   specify "returns a failure tree in the successful result of the referrent expression as a subtree of the failure tree of its own result" do
     referrent_expression = mock("Associated parsing expression")
-    @grammar.should_receive(:get_parsing_expression).with(@nonterminal).and_return(referrent_expression)
+    @grammar.should receive(:get_parsing_expression).with(@nonterminal).and_return(referrent_expression)
     parse_result_of_referrent = successful_parse_result_with_failure_tree_for(referrent_expression)
     referrent_expression.stub!(:parse_at).and_return(parse_result_of_referrent)
 
@@ -43,7 +43,7 @@ context "A nonterminal symbol" do
   
   specify "if the referrent expression fails to parse, returns a failure tree with the failure of the referrent expression as a subtree of its failure tree" do
     referrent_expression = mock("Associated parsing expression")
-    @grammar.should_receive(:get_parsing_expression).with(@nonterminal).and_return(referrent_expression)
+    @grammar.should receive(:get_parsing_expression).with(@nonterminal).and_return(referrent_expression)
     parse_result_of_referrent = failed_parse_result_for(referrent_expression)
     referrent_expression.stub!(:parse_at).and_return(parse_result_of_referrent)
 

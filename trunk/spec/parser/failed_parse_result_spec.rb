@@ -17,7 +17,7 @@ context "A new failed parse result, instantiated without any failure subtrees th
   end
   
   specify "has a zero length consumed interval starting at the index at which the failure occurred" do
-    @result.consumed_interval.should == (@failure_index...@failure_index)
+    @result.interval.should == (@failure_index...@failure_index)
   end
   
   specify "has one failure leaf rooted at its the index of the failure with a reference back to the failing expression" do

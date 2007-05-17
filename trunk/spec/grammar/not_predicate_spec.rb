@@ -13,7 +13,7 @@ context "A !-predicate for a TerminalSymbol" do
   specify "fails upon parsing matching input" do
     input = @terminal.prefix
     index = 0
-    @not_predicate.parse_at(input, index, parser_with_empty_cache_mock).should_be_failure
+    @not_predicate.parse_at(input, index, parser_with_empty_cache_mock).should be_failure
   end
   
   specify "upon parsing non-matching input, returns a SuccessfulParseResult with a zero-length consumed interval and the failed result of the predicated expression as a subtree of its failure tree" do
@@ -21,7 +21,7 @@ context "A !-predicate for a TerminalSymbol" do
     index = 0
     result = @not_predicate.parse_at(input, index, parser_with_empty_cache_mock)
     result.should be_an_instance_of(SuccessfulParseResult)
-    result.consumed_interval.should == (index...index)
+    result.interval.should == (index...index)
     failure_subtrees = result.failure_tree.subtrees
     failure_subtrees.size.should == 1
     failure_subtrees.first.should be_an_instance_of(FailureLeaf)
@@ -42,14 +42,14 @@ context "A sequence with terminal symbol followed by a !-predicate on another te
   specify "fails when look-ahead predicate matches" do
     input = "---" + @terminal.prefix + @not_predicate.expression.prefix
     index = 3
-    @sequence.parse_at(input, index, parser_with_empty_cache_mock).should_be_failure
+    @sequence.parse_at(input, index, parser_with_empty_cache_mock).should be_failure
   end
   
   specify "succeeds when look-ahead does not match, without advancing index beyond end of first terminal" do
     input = "---" + @terminal.prefix + "baz"
     index = 3
     result = @sequence.parse_at(input, index, parser_with_empty_cache_mock)
-    result.should_be_success
-    result.consumed_interval.end.should_equal index + @terminal.prefix.size
+    result.should be_success
+    result.interval.end.should equal index + @terminal.prefix.size
   end
 end

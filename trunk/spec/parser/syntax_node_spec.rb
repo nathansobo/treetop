@@ -10,7 +10,7 @@ context "An instance of SyntaxNode" do
   end
   
   specify "should be success" do
-    @node.should_be_success
+    @node.should be_success
   end
   
   specify "should not be failure" do

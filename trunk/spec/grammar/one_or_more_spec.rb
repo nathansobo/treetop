@@ -15,7 +15,7 @@ context "One-or-more of a terminal symbol" do
     epsilon = ""
     result = @one_or_more.parse_at(epsilon, index, parser_with_empty_cache_mock)
     result.should be_an_instance_of(FailedParseResult)
-    result.consumed_interval.should == (index...index)
+    result.interval.should == (index...index)
     
     failure_tree = result.failure_tree
     failure_tree.should_not be_nil
@@ -30,12 +30,12 @@ context "One-or-more of a terminal symbol" do
     input = @terminal.prefix + "barbaz"
     result = @one_or_more.parse_at(input, index, parser_with_empty_cache_mock)
 
-    result.should_be_an_instance_of SuccessfulParseResult
-    result.consumed_interval.end.should_equal index + @terminal.prefix.size
+    result.should be_an_instance_of SuccessfulParseResult
+    result.interval.end.should equal index + @terminal.prefix.size
 
     value = result.value
     value.should be_a_kind_of(SequenceSyntaxNode)
-    (value.elements.collect {|e| e.text_value }).should_eql [@terminal.prefix]
+    (value.elements.collect {|e| e.text_value }).should eql [@terminal.prefix]
 
     failure_tree = result.failure_tree
     failure_tree.should_not be_nil
@@ -52,9 +52,9 @@ context "One-or-more of a terminal symbol" do
     result.should be_an_instance_of(SuccessfulParseResult)
     
     value = result.value
-    value.should_be_a_kind_of SequenceSyntaxNode
-    value.elements.size.should_equal 5
-    value.interval.end.should_equal(index + (@terminal.prefix.size * 5))
+    value.should be_a_kind_of SequenceSyntaxNode
+    value.elements.size.should equal 5
+    value.interval.end.should equal(index + (@terminal.prefix.size * 5))
   end
   
   specify "correctly matches multiples not starting at index 0" do
@@ -64,7 +64,7 @@ context "One-or-more of a terminal symbol" do
     result.should be_an_instance_of(SuccessfulParseResult)
     
     value = result.value
-    value.should_be_a_kind_of SequenceSyntaxNode
+    value.should be_a_kind_of SequenceSyntaxNode
     value.elements.size.should == 5
     value.interval.end.should == (index + (@terminal.prefix.size * 5))
   end
@@ -89,14 +89,14 @@ context "One-or-more of a terminal symbol with a method defined in its node clas
     index = 0
     input = @terminal.prefix + "barbaz"
     result = @one_or_more.parse_at(input, index, parser_with_empty_cache_mock)
-    result.should_respond_to :method
+    result.should respond_to :method
   end
   
   specify "returns a node that has that method upon a successful parse of multiple of the repeated symbols" do
     index = 0
     input = @terminal.prefix * 5
     result = @one_or_more.parse_at(input, index, parser_with_empty_cache_mock)
-    result.should_respond_to :method
+    result.should respond_to :method
   end
 end
 

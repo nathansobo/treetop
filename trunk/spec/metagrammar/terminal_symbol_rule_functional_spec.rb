@@ -16,16 +16,16 @@ context "The subset of the metagrammar rooted at the terminal_symbol rule" do
   specify "parses a single-quoted string as a TerminalSymbol with the correct prefix value" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       terminal = parser.parse("'foo'").value
-      terminal.should_be_an_instance_of TerminalSymbol
-      terminal.prefix.should_eql 'foo'
+      terminal.should be_an_instance_of TerminalSymbol
+      terminal.prefix.should eql 'foo'
     end
   end
   
   specify "parses a double-quoted string as a TerminalSymbol with the correct prefix value" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       terminal = parser.parse('"foo"').value
-      terminal.should_be_an_instance_of TerminalSymbol
-      terminal.prefix.should_eql 'foo'      
+      terminal.should be_an_instance_of TerminalSymbol
+      terminal.prefix.should eql 'foo'      
     end
   end
   
@@ -34,7 +34,7 @@ context "The subset of the metagrammar rooted at the terminal_symbol rule" do
       result = parser.parse("'foo' {\ndef a_method\n\nend\n}")
       result.should be_success
       terminal = result.value
-      terminal.should_be_an_instance_of TerminalSymbol
+      terminal.should be_an_instance_of TerminalSymbol
       terminal.node_class.instance_methods.should include('a_method')      
     end
   end

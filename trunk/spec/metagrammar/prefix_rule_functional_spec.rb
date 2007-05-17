@@ -18,7 +18,7 @@ context "The subset of the metagrammar rooted at the prefix rule" do
     
       parsing_expression = mock('expression following the prefix')
       and_predicate = mock('&-predicated parsing expression')
-      parsing_expression.should_receive(:and_predicate).and_return(and_predicate)
+      parsing_expression.should receive(:and_predicate).and_return(and_predicate)
     
       result.value(parsing_expression).should == and_predicate
     end
@@ -30,7 +30,7 @@ context "The subset of the metagrammar rooted at the prefix rule" do
     
       parsing_expression = mock('expression following the prefix')
       not_predicate = mock('!-predicated parsing expression')
-      parsing_expression.should_receive(:not_predicate).and_return(not_predicate)
+      parsing_expression.should receive(:not_predicate).and_return(not_predicate)
     
       result.value(parsing_expression).should == not_predicate
     end

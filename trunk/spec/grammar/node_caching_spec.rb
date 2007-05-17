@@ -12,7 +12,7 @@ context "A sequence" do
   end
   
   specify "has a node cache stored in the parser" do
-    @parser.should_receive(:node_cache_for).with(@sequence).and_return(@node_cache)
+    @parser.should receive(:node_cache_for).with(@sequence).and_return(@node_cache)
     @sequence.node_cache(@parser).should == @node_cache
   end
   
@@ -20,7 +20,7 @@ context "A sequence" do
     start_index = 0
     @sequence.stub!(:node_cache).and_return(@node_cache)    
     stored_node = mock("node previously stored in the cache at interval starting at start_index")
-    @node_cache.should_receive(:[]).with(start_index).and_return(stored_node)
+    @node_cache.should receive(:[]).with(start_index).and_return(stored_node)
 
     @sequence.parse_at(mock('input'), start_index, @parser).should equal(stored_node)
   end
@@ -29,12 +29,12 @@ context "A sequence" do
     start_index = 0
     input = mock("input")
     @sequence.stub!(:node_cache).and_return(@node_cache)    
-    @node_cache.should_receive(:[]).with(start_index).and_return(nil)
+    @node_cache.should receive(:[]).with(start_index).and_return(nil)
 
     parse_result = mock('parse result')
     @sequence.stub!(:parse_at_without_caching).and_return(parse_result)
     
-    @node_cache.should_receive(:store).with(parse_result).and_return(parse_result)
+    @node_cache.should receive(:store).with(parse_result).and_return(parse_result)
     @sequence.parse_at(input, start_index, @parser).should == parse_result
   end
   

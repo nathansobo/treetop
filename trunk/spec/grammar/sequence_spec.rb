@@ -15,8 +15,8 @@ context "The result of a sequence parsing expression with one element, when that
       
   specify "returns a SuccessfulParseResult with a SequenceSyntaxNode value with the element's parse result as an element if the parse is successful" do    
     @result.should be_an_instance_of(SuccessfulParseResult)
-    @result.value.should_be_a_kind_of SequenceSyntaxNode
-    @result.value.elements.should_eql [@elt_result.value]
+    @result.value.should be_a_kind_of SequenceSyntaxNode
+    @result.value.elements.should eql [@elt_result.value]
   end  
 end
 
@@ -30,18 +30,18 @@ context "A sequence parsing expression with multiple terminal symbols as element
     input = @elts.join
     index = 0
     result = @sequence.parse_at(input, index, parser_with_empty_cache_mock)
-    result.should_be_success
-    (result.value.elements.collect {|elt| elt.text_value}).should_eql @elts
-    result.consumed_interval.end.should_equal index + input.size
+    result.should be_success
+    (result.value.elements.collect {|elt| elt.text_value}).should eql @elts
+    result.interval.end.should equal index + input.size
   end
   
   specify "returns a successful result with correct elements when matching input is parsed when starting at a non-zero index" do
     input = "----" + @elts.join
     index = 4
     result = @sequence.parse_at(input, index, parser_with_empty_cache_mock)
-    result.should_be_success
-    (result.value.elements.collect {|elt| elt.text_value}).should_eql @elts
-    result.consumed_interval.end.should_equal index + @elts.join.size
+    result.should be_success
+    (result.value.elements.collect {|elt| elt.text_value}).should eql @elts
+    result.interval.end.should equal index + @elts.join.size
   end
   
   specify "has a string representation" do
@@ -69,7 +69,7 @@ context "The result of a sequence parsing expression with one element and a meth
   end
   
   specify "responds to the method defined in the node class" do
-    @result.should_respond_to :method    
+    @result.should respond_to :method    
   end
 end
 
@@ -93,7 +93,7 @@ context "The result of a sequence parsing expression with one element and a meth
   end
   
   specify "responds to the method defined in the node class" do
-    @result.should_respond_to :method    
+    @result.should respond_to :method    
   end
 end
 

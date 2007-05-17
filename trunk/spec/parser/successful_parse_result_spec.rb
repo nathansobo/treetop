@@ -22,8 +22,8 @@ context "A new successful parse result, instantiated without any failure subtree
   
   specify "represents the interval covered by the successful result as its consumed interval" do
     interval = mock('interval')
-    @syntax_node.should_receive(:interval).and_return(interval)
-    @result.consumed_interval.should == interval
+    @syntax_node.should receive(:interval).and_return(interval)
+    @result.interval.should == interval
   end
   
   specify "has a nil failure_tree" do
