@@ -17,7 +17,7 @@ context "A node cache with one stored parse result" do
   setup do
     @node_cache = NodeCache.new
     @interval = 7...29
-    @parse_result = successful_parse_result_for(mock('a parsing expression'), @interval)
+    @parse_result = successful_parse_result(@interval)
     @node_cache.store(@parse_result)
   end
   

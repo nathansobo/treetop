@@ -16,7 +16,7 @@ context "An instance of ParseFailure instantiated with no failure paths" do
   end
   
   specify "should not be success" do
-    @parse_failure.should_not_be_success
+    @parse_failure.should_not be_success
   end 
   
   specify "has a zero length interval at the beginning of its match interval" do

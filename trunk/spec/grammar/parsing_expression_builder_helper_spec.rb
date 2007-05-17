@@ -13,7 +13,7 @@ context "A builder object extended with the ParsingExpressionBuilderHelper modul
   end
   
   specify "implements a #nonterm method that converts Ruby symbols to nonterminal symbols from the grammar" do
-    @grammar.should receive(:nonterminal_symbol).with(:foo)
+    @grammar.should_receive(:nonterminal_symbol).with(:foo)
     @builder.nonterm(:foo)
   end
   
@@ -58,16 +58,16 @@ context "A builder object extended with the ParsingExpressionBuilderHelper modul
   specify "implements a #notp method that creates a NotPredicate with the value of #exp for its argument" do
     expression = mock("parsing expression")
     not_predicate = mock("not predicate")
-    @builder.should receive(:exp).with(expression).and_return(expression)
-    expression.should receive(:not_predicate).and_return(not_predicate)
+    @builder.should_receive(:exp).with(expression).and_return(expression)
+    expression.should_receive(:not_predicate).and_return(not_predicate)
     @builder.notp(expression).should equal not_predicate
   end
 
   specify "implements an #andp method that creates an AndPredicate with the value of #exp for its argument" do
     expression = mock("parsing expression")
     and_predicate = mock("and predicate")
-    @builder.should receive(:exp).with(expression).and_return(expression)
-    expression.should receive(:and_predicate).and_return(and_predicate)
+    @builder.should_receive(:exp).with(expression).and_return(expression)
+    expression.should_receive(:and_predicate).and_return(and_predicate)
     @builder.andp(expression).should equal and_predicate
   end
 

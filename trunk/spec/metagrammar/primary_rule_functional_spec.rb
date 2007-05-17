@@ -23,10 +23,10 @@ context "The subset of the metagrammar rooted at the primary rule" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       grammar = Grammar.new
 
-      parser.parse("'foo'").value(grammar).should be_an_instance_of TerminalSymbol
-      parser.parse('foo').value(grammar).should be_an_instance_of NonterminalSymbol
-      parser.parse('.').value(grammar).should be_an_instance_of AnythingSymbol
-      parser.parse('[abc]').value(grammar).should be_an_instance_of CharacterClass      
+      parser.parse("'foo'").value(grammar).should be_an_instance_of(TerminalSymbol)
+      parser.parse('foo').value(grammar).should be_an_instance_of(NonterminalSymbol)
+      parser.parse('.').value(grammar).should be_an_instance_of(AnythingSymbol)
+      parser.parse('[abc]').value(grammar).should be_an_instance_of(CharacterClass)      
     end
   end
 
@@ -83,7 +83,7 @@ context "The subset of the metagrammar rooted at the primary rule" do
     
       lambda do
         result.value(Grammar.new)
-      end.should raise RuntimeError      
+      end.should raise_error(RuntimeError)
     end
   end
 end

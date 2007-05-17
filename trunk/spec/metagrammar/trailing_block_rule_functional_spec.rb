@@ -20,7 +20,7 @@ context "The subset of the metagrammar rooted at the trailing_block rule" do
       result.should be_success
         
       parsing_expression = mock('parsing expression preceding the block')
-      parsing_expression.should receive(:node_class_eval).with(block_contents)
+      parsing_expression.should_receive(:node_class_eval).with(block_contents)
     
       result.value(parsing_expression).should == parsing_expression
     end
