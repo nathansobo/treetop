@@ -10,12 +10,15 @@ describe "One-or-more of a terminal symbol" do
     @one_or_more = OneOrMore.new(@terminal)
   end
   
-  it "fails when parsing epsilon" do
+  it "fails when parsing epsilon with a nested failure" do
     index = 0
     epsilon = ""
     result = @one_or_more.parse_at(epsilon, index, parser_with_empty_cache_mock)
     result.should be_an_instance_of(ParseFailure)
-    result.interval.should == (index...index)    
+    result.interval.should == (index...index)
+
+    result.nested_failures.size.should == 1
+    result.nested_failures.first.expression.should == @terminal
   end
   
   it "returns a sequence with one element when parsing input matching one of that terminal symbol" do

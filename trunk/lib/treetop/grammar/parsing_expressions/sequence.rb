@@ -26,11 +26,15 @@ module Treetop
         return failure_at(start_index, results) if result.failure?
         next_index = result.interval.end
       end
-
+      
+      success(input, start_index...next_index, results, results)
+    end
+    
+    def success(input, interval, results, encountered_child_results)
       return node_class.new(input,
-                            start_index...next_index,
+                            interval,
                             results,
-                            collect_nested_failures(results))
+                            collect_nested_failures(encountered_child_results))
     end
   end
 end

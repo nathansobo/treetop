@@ -21,11 +21,10 @@ module Treetop
             
       if enough? results
         interval = start_index...next_index
-        return node_class.new(input, interval, results, collect_nested_failures(results + [result]))  
+        return success(input, interval, results, results + [result])
       else
-        return failure_at(start_index)
+        return failure_at(start_index, results + [result])
       end
     end
-  
   end
 end
