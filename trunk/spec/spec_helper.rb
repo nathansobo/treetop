@@ -1,11 +1,17 @@
+module Kernel
+  def h(object)
+    object.inspect.gsub(/</, '&lt;').gsub(/>/, '&gt;')
+  end
+  
+  def ph(object)
+    puts h(object)
+  end
+end
+
 dir = File.dirname(__FILE__)
 require File.expand_path('treetop', "#{dir}/../lib/")
 
 include Treetop
-
-def h(text)
-  text.inspect.gsub(/</, '&lt;').gsub(/>/, '&gt;')
-end
 
 class FakeEmptyNodeCache
   def [](parsing_expression)
@@ -32,8 +38,8 @@ def successful_parse_result_with_nested_failure_at(failure_index, interval = 0..
   SyntaxNode.new(mock('input'), interval, [nested_failure])
 end
 
-def failed_parse_result_for(failing_expression, failure_index = 5)
-  ParseFailure.new(failing_expression, failure_index, [])
+def parse_failure_at(failure_index = 5)
+  ParseFailure.new(failure_index, [])
 end
 
 def terminal_parse_failure_at(index)

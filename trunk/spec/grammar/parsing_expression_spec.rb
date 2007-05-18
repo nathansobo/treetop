@@ -37,5 +37,17 @@ describe "A parsing expression" do
     and_predicate = @expression.not_predicate
     and_predicate.should be_an_instance_of(NotPredicate)
     and_predicate.expression.should == @expression
-  end  
+  end
+  
+  it "can collect nested failures out of nested results with nested failures at the same index" do
+    result_1 = successful_parse_result_with_nested_failure_at(2)
+    result_2 = terminal_parse_failure_at(2)
+    nested_results = [result_1, result_2]
+        
+    nested_failures = @expression.send(:collect_nested_failures, nested_results)
+        
+    nested_failures.size.should == 2
+    nested_failures.should include(result_1.nested_failures.first)
+    nested_failures.should include(result_2)    
+  end
 end
