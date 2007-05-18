@@ -10,7 +10,7 @@ describe "Zero-or-more of a terminal symbol" do
     @zero_or_more = ZeroOrMore.new(@terminal)
   end
   
-  it "returns an empty kind of SequenceSyntaxNode when parsing epsilon without advancing the index" do
+  it "returns an empty kind of SequenceSyntaxNode when parsing epsilon with a nested failure representing the match failure" do
     index = 0
     epsilon = ""
     result = @zero_or_more.parse_at(epsilon, index, parser_with_empty_cache_mock)
@@ -20,6 +20,9 @@ describe "Zero-or-more of a terminal symbol" do
     
     result.should be_a_kind_of(SequenceSyntaxNode)
     result.should be_empty
+    
+    result.nested_failures.size.should == 1
+    result.nested_failures.first.expression.should == @terminal
   end
   
   it "returns a sequence with one element when parsing input matching one of that terminal symbol" do
