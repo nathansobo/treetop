@@ -8,7 +8,7 @@ describe "A new failed parse result" do
   setup do
     @expression = mock('expression that failed to parse')
     @failure_index = 3
-    @result = FailedParseResult.new(@expression, @failure_index)
+    @result = ParseFailure.new(@expression, @failure_index)
   end
   
   it "is a failure" do

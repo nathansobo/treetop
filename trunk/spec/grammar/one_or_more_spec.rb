@@ -14,7 +14,7 @@ describe "One-or-more of a terminal symbol" do
     index = 0
     epsilon = ""
     result = @one_or_more.parse_at(epsilon, index, parser_with_empty_cache_mock)
-    result.should be_an_instance_of(FailedParseResult)
+    result.should be_an_instance_of(ParseFailure)
     result.interval.should == (index...index)    
   end
   

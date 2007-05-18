@@ -65,7 +65,7 @@ describe "The result of an ordered choice with two terminal alternatives, if nie
     @result = @choice.parse_at('crapola', 0, parser_with_empty_cache_mock)
   end
   
-  it "is an instance FailedParseResult" do
-    @result.should be_an_instance_of(FailedParseResult)
+  it "is an instance ParseFailure" do
+    @result.should be_an_instance_of(ParseFailure)
   end    
 end

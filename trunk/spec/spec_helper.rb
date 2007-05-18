@@ -28,5 +28,5 @@ def successful_parse_result(interval = 0...5)
 end
 
 def failed_parse_result_for(failing_expression, failure_index = 5)
-  FailedParseResult.new(failing_expression, failure_index, [])
+  ParseFailure.new(failing_expression, failure_index, [])
 end

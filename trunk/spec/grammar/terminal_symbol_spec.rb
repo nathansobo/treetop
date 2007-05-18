@@ -60,8 +60,8 @@ describe "The result of TerminalSymbol#parse_at for a non-matching input prefix 
     @result = @terminal.parse_at(input, @start_index, @parser)
   end
   
-  it "is an instance of of FailedParseResult" do
-    @result.should be_an_instance_of(FailedParseResult)
+  it "is an instance of of ParseFailure" do
+    @result.should be_an_instance_of(ParseFailure)
   end
   
   it "has a consumed interval that start and end at the start index of the parse" do

@@ -19,9 +19,9 @@ describe "A new parser with a nonterminal that successfully consumes 0...5, retu
     @parser.parse('12345').should == @result_of_root_expression
   end
   
-  it "returns a FailedParseResult if not all of the input is consumed" do
+  it "returns a ParseFailure if not all of the input is consumed" do
     result = @parser.parse('123')
-    result.should be_an_instance_of(FailedParseResult)
+    result.should be_an_instance_of(ParseFailure)
   end
   
   it "creates a new parse cache on call to parse" do

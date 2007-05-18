@@ -16,8 +16,8 @@ describe "A character class with the range A-Z" do
   end
   
   it "does not match single characters outside of that range" do
-    @char_class.parse_at('8', 0, parser_with_empty_cache_mock).should be_an_instance_of(FailedParseResult)
-    @char_class.parse_at('a', 0, parser_with_empty_cache_mock).should be_an_instance_of(FailedParseResult)
+    @char_class.parse_at('8', 0, parser_with_empty_cache_mock).should be_an_instance_of(ParseFailure)
+    @char_class.parse_at('a', 0, parser_with_empty_cache_mock).should be_an_instance_of(ParseFailure)
   end
   
   it "has a string representation" do
