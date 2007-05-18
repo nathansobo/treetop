@@ -125,7 +125,27 @@ describe "The parse result of a sequence of two terminals when the second fails 
   end
 end
 
-describe "The result of a sequence whose child expressions return nodes with nested failures" do
+describe "The result of a sequence whose child expressions return successfully with nested failures" do
+  before(:each) do
+    @elt_1 = mock("Parsing expression in sequence")
+    @elt_1_result = successful_parse_result_with_nested_failure_at(2)
+    @elt_1.stub!(:parse_at).and_return(@elt_1_result)
+
+    @elt_2 = mock("Parsing expression in sequence")
+    @elt_2_result = successful_parse_result_with_nested_failure_at(4)
+    @elt_2.stub!(:parse_at).and_return(@elt_2_result)
+
+    @sequence = Sequence.new([@elt_1, @elt_2])
+    
+    @result = @sequence.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
+  end
+  
+  it "has the highest-indexed of its child results' nested failures as its nested failures" do
+    @result.nested_failures.should == [@elt_2_result.nested_failures.first]
+  end
+end
+
+describe "The result of a sequence whose first child expression returns successfully with nested failures and whose second fails" do
   before(:each) do
     @elt_1 = mock("Parsing expression in sequence")
     @elt_1_result = successful_parse_result_with_nested_failure_at(2)
