@@ -96,3 +96,43 @@ describe "Zero-or-more of a terminal symbol with a method defined in its node cl
     result.should respond_to(:a_method)
   end
 end
+
+describe "The result of zero or more of an expression that parses successfully with nested failures twice and then fails, when the nested failure of the second result has the highest index of all failures encountered" do
+  before(:each) do
+    @expression = mock('parsing expression')
+    
+    @result_1 = parse_success_with_nested_failure_at(2)
+    @result_2 = parse_success_with_nested_failure_at(5)
+    @result_3 = parse_failure_at(4)
+    
+    @expression.stub!(:parse_at).and_return(@result_1, @result_2, @result_3)
+    
+    @zero_or_more = ZeroOrMore.new(@expression)
+    
+    @result = @zero_or_more.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
+  end
+  
+  it "has the nested failure of encountered results with the highest index as its only nested failure" do
+    nested_failures = @result.nested_failures
+    nested_failures.size.should == 1
+    nested_failures.should include(@result_2.nested_failures.first)
+  end
+end
+
+describe "The result of zero or more of an expression that fails on the first parsing attempt with nested failures" do
+  before(:each) do
+    @expression = mock('parsing expression')
+    @child_result = parse_failure_at_with_nested_failured_at(0, 4)
+    @expression.stub!(:parse_at).and_return(@child_result)
+    @zero_or_more = ZeroOrMore.new(@expression)
+    @result = @zero_or_more.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
+  end
+
+  it "is successful" do
+    @result.should be_success
+  end
+  
+  it "has the nested failure on the encountered failure as its nested failure" do
+    @result.nested_failures.should include(@child_result.nested_failures.first)
+  end
+end

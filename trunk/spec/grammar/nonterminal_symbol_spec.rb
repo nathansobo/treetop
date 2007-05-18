@@ -21,7 +21,7 @@ describe "A nonterminal symbol" do
   it "propagates parsing to the parsing expression to which it refers" do
     referrent_expression = mock("Associated parsing expression")
     @grammar.should_receive(:get_parsing_expression).with(@nonterminal).and_return(referrent_expression)
-    parse_result_of_referrent = successful_parse_result
+    parse_result_of_referrent = parse_success
     referrent_expression.stub!(:parse_at).and_return(parse_result_of_referrent)
 
     result = @nonterminal.parse_at(mock('input'), 0, parser_with_empty_cache_mock)

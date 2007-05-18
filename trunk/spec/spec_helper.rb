@@ -29,17 +29,21 @@ def parser_with_empty_cache_mock
   return parser
 end
 
-def successful_parse_result(interval = 0...5)
+def parse_success(interval = 0...5)
   SyntaxNode.new(mock('input'), interval)
 end
 
-def successful_parse_result_with_nested_failure_at(failure_index, interval = 0...5)
+def parse_success_with_nested_failure_at(failure_index, interval = 0...5)
   nested_failure = TerminalParseFailure.new(failure_index, mock('terminal expression'))
   SyntaxNode.new(mock('input'), interval, [nested_failure])
 end
 
 def parse_failure_at(failure_index = 5)
   ParseFailure.new(failure_index, [])
+end
+
+def parse_failure_at_with_nested_failured_at(failure_index = 0, nested_failure_index = 5)
+  ParseFailure.new(failure_index, [terminal_parse_failure_at(nested_failure_index)])
 end
 
 def terminal_parse_failure_at(index)

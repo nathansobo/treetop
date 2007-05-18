@@ -11,7 +11,7 @@ describe "A new parser with a nonterminal that successfully consumes 0...5, retu
     @grammar.add_parsing_rule(@grammar.nonterminal_symbol(:foo), @root_expression)
     @parser = Parser.new(@grammar)
     
-    @result_of_root_expression = successful_parse_result
+    @result_of_root_expression = parse_success
     @root_expression.stub!(:parse_at).and_return(@result_of_root_expression)
   end
   
@@ -29,7 +29,7 @@ describe "A new parser with a nonterminal that successfully consumes 0...5, retu
     root_nonterminal = mock("Root nonterminal")
     parse_result = mock("Parse result")
     
-    root_nonterminal.stub!(:parse_at).and_return(successful_parse_result)
+    root_nonterminal.stub!(:parse_at).and_return(parse_success)
     @grammar.should_receive(:root).and_return(root_nonterminal)
 
     @parser.parse(input)

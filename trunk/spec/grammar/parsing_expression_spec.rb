@@ -40,7 +40,7 @@ describe "A parsing expression" do
   end
   
   it "can collect nested failures out of nested results with nested failures at the same index" do
-    result_1 = successful_parse_result_with_nested_failure_at(2)
+    result_1 = parse_success_with_nested_failure_at(2)
     result_2 = terminal_parse_failure_at(2)
     nested_results = [result_1, result_2]
         

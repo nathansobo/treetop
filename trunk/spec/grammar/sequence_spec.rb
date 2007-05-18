@@ -7,7 +7,7 @@ require "#{dir}/../spec_helper"
 describe "The result of a sequence parsing expression with one element, when that element parses successfully" do
   setup do
     @element = mock("Parsing expression in sequence")
-    @elt_result = successful_parse_result
+    @elt_result = parse_success
     @elt.stub!(:parse_at).and_return(@elt_result)
     @sequence = Sequence.new([@elt])
     @result = @sequence.parse_at(mock('input'), 0, parser_with_empty_cache_mock)    
@@ -52,7 +52,7 @@ end
 describe "The result of a sequence parsing expression with one element and a method defined in its node class" do
   setup do
     @elt = mock("Parsing expression in sequence")
-    @elt_result = successful_parse_result
+    @elt_result = parse_success
     @elt.stub!(:parse_at).and_return(@elt_result)
 
     @sequence = Sequence.new([@elt])
@@ -76,7 +76,7 @@ end
 describe "The result of a sequence parsing expression with one element and a method defined in its node class via the evaluation of a string" do
   setup do
     @elt = mock("Parsing expression in sequence")
-    @elt_result = successful_parse_result
+    @elt_result = parse_success
     @elt.stub!(:parse_at).and_return(@elt_result)
 
     @sequence = Sequence.new([@elt])
@@ -128,11 +128,11 @@ end
 describe "The result of a sequence whose child expressions return successfully with nested failures" do
   before(:each) do
     @elt_1 = mock("first parsing expression in sequence")
-    @elt_1_result = successful_parse_result_with_nested_failure_at(2)
+    @elt_1_result = parse_success_with_nested_failure_at(2)
     @elt_1.stub!(:parse_at).and_return(@elt_1_result)
 
     @elt_2 = mock("second parsing expression in sequence")
-    @elt_2_result = successful_parse_result_with_nested_failure_at(4)
+    @elt_2_result = parse_success_with_nested_failure_at(4)
     @elt_2.stub!(:parse_at).and_return(@elt_2_result)
 
     @sequence = Sequence.new([@elt_1, @elt_2])
@@ -148,7 +148,7 @@ end
 describe "The result of a sequence whose first child expression returns successfully with nested failures and whose second expression fails at the same index" do
   before(:each) do    
     @elt_1 = mock("first parsing expression in sequence")
-    @elt_1_result = successful_parse_result_with_nested_failure_at(2)
+    @elt_1_result = parse_success_with_nested_failure_at(2)
     @elt_1.stub!(:parse_at).and_return(@elt_1_result)
 
     @elt_2 = mock("second parsing expression in sequence")

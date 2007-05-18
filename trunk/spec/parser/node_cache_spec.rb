@@ -17,7 +17,7 @@ describe "A node cache with one stored parse result" do
   setup do
     @node_cache = NodeCache.new
     @interval = 7...29
-    @parse_result = successful_parse_result(@interval)
+    @parse_result = parse_success(@interval)
     @node_cache.store(@parse_result)
   end
   
