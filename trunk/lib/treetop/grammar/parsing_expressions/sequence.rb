@@ -23,7 +23,7 @@ module Treetop
       for elt in elements
         result = elt.parse_at(input, next_index, parser)
         results << result
-        return failure_at(start_index) if result.failure?
+        return failure_at(start_index, results) if result.failure?
         next_index = result.interval.end
       end
 

@@ -116,7 +116,6 @@ describe "The parse result of a sequence of two terminals when the second fails 
     @result.index.should == @index
   end
   
-=begin
   it "has a single nested failure for the second terminal's failure" do
     nested_failures = @result.nested_failures
     nested_failures.size.should == 1
@@ -124,5 +123,4 @@ describe "The parse result of a sequence of two terminals when the second fails 
     terminal_failure.should be_an_instance_of(TerminalParseFailure)
     terminal_failure.expression.should == @terminal_2
   end
-=end 
 end

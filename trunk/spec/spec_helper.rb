@@ -30,3 +30,7 @@ end
 def failed_parse_result_for(failing_expression, failure_index = 5)
   ParseFailure.new(failing_expression, failure_index, [])
 end
+
+def terminal_parse_failure_at(index)
+  TerminalParseFailure.new(index, mock('terminal parsing expression'))
+end

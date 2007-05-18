@@ -22,5 +22,9 @@ module Treetop
     def epsilon?
       false
     end
+    
+    def nested_failures
+      []
+    end
   end
 end

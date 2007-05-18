@@ -26,3 +26,18 @@ describe ParseFailure do
     @parse_failure.nested_failures.should == []
   end
 end
+
+describe ParseFailure, " instantiated with nested failures at various indices" do
+  before(:each) do
+    @index = 0
+    @nested_failures = [5, 5, 3, 0].collect {|index| terminal_parse_failure_at(index)}
+    @failure = ParseFailure.new(@index, @nested_failures)
+  end
+  
+  it "retains those nested failures with the highest index" do
+    nested_failures = @failure.nested_failures
+    nested_failures.size.should == 2
+    nested_failures[0].index.should == 5
+    nested_failures[1].index.should == 5
+  end
+end

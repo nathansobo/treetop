@@ -35,8 +35,12 @@ module Treetop
     end
     
     protected
-    def failure_at(index)
-      ParseFailure.new(index)
-    end    
+    def failure_at(index, nested_results = [])
+      ParseFailure.new(index, collect_nested_failures(nested_results))
+    end
+    
+    def collect_nested_failures(results)
+      (results.collect {|result| result.nested_failures}).flatten
+    end
   end
 end
