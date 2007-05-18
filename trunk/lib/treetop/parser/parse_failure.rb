@@ -17,5 +17,9 @@ module Treetop
     def interval      
       @interval ||= (index...index)
     end
+    
+    def nested_failures
+      []
+    end
   end
 end

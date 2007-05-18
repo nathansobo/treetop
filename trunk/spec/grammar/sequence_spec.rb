@@ -17,7 +17,7 @@ describe "The result of a sequence parsing expression with one element, when tha
     @result.should be_success
     @result.should be_a_kind_of(SequenceSyntaxNode)
     @result.elements.should == [@elt_result]
-  end  
+  end
 end
 
 describe "A sequence parsing expression with multiple terminal symbols as elements" do
@@ -114,5 +114,15 @@ describe "The parse result of a sequence of two terminals when the second fails 
   
   it "has an index equivalent to the start index of the parse" do
     @result.index.should == @index
-  end  
+  end
+  
+=begin
+  it "has a single nested failure for the second terminal's failure" do
+    nested_failures = @result.nested_failures
+    nested_failures.size.should == 1
+    terminal_failure = nested_failures.first
+    terminal_failure.should be_an_instance_of(TerminalParseFailure)
+    terminal_failure.expression.should == @terminal_2
+  end
+=end 
 end

@@ -28,15 +28,15 @@ grammar Metagrammar
 			def value(grammar)
 				[head.value(grammar)] + tail_values(grammar)
 			end
-			
+		
 			def head
 				elements[0]
 			end
-						
+					
 			def tail_elements
 				elements[1].elements
 			end
-			
+		
 			def tail_values(grammar)
 				tail_elements.collect {|tail_element| tail_element.elements[1].value(grammar)}
 			end
@@ -52,17 +52,17 @@ grammar Metagrammar
 	rule parsing_rule
 		('rule' space nonterminal_symbol space ordered_choice space 'end') {
 			def value(grammar)
-        ParsingRule.new(nonterminal_symbol.value(grammar),
-                        parsing_expression.value(grammar))
-      end
-    
-      def nonterminal_symbol
-        elements[2]
-      end
-    
-      def parsing_expression
-        elements[4]
-      end
+	       ParsingRule.new(nonterminal_symbol.value(grammar),
+	                       parsing_expression.value(grammar))
+	     end
+   
+	     def nonterminal_symbol
+	       elements[2]
+	     end
+   
+	     def parsing_expression
+	       elements[4]
+	     end
 		}
 	end
 
@@ -71,19 +71,19 @@ grammar Metagrammar
 			def value(grammar)
 				OrderedChoice.new(alternatives(grammar))
 			end
-			
+		
 			def alternatives(grammar)
 				[head.value(grammar)] + tail_values(grammar)
 			end
-			
+		
 			def head
 				elements[0]
 			end
-			
+		
 			def tail_elements
 				elements[1].elements
 			end
-			
+		
 			def tail_values(grammar)
 				tail_elements.map {|tail_element| tail_element.elements[3].value(grammar)}
 			end
@@ -91,29 +91,29 @@ grammar Metagrammar
 		/
 		sequence
 	end
-	
+
 	rule sequence
 		(primary (space primary)+ trailing_block)	{
 			def value(grammar)
 				trailing_block.value(Sequence.new(sequence_elements(grammar)))
 			end
-			
+		
 			def trailing_block
 				elements[2]
 			end
-		
+	
 			def sequence_elements(grammar)
 				[head.value(grammar)] + tail_values(grammar)
 			end
-		
+	
 			def head
 				elements[0]
 			end
-		
+	
 			def tail_elements
 				elements[1].elements
 			end
-		
+	
 			def tail_values(grammar)
 				tail_elements.map {|tail_element| tail_element.elements[1].value(grammar)}
 			end
@@ -125,17 +125,17 @@ grammar Metagrammar
 	rule parenthesized_ordered_choice
 		'(' space? ordered_choice space? ')' trailing_block {
 			def value(grammar)
-        nested_value = nested_expression.value(grammar)
-        unless trailing_block.epsilon? || nested_value.kind_of?(NodeInstantiatingParsingExpression)
-          raise "Blocks can only follow node-instantiating parsing expressions such as sequences and terminal symbols."
-        end
-        return trailing_block.value(nested_expression.value(grammar))
-      end
-      
+	       nested_value = nested_expression.value(grammar)
+	       unless trailing_block.epsilon? || nested_value.kind_of?(NodeInstantiatingParsingExpression)
+	         raise "Blocks can only follow node-instantiating parsing expressions such as sequences and terminal symbols."
+	       end
+	       return trailing_block.value(nested_expression.value(grammar))
+	     end
+     
 			def nested_expression
 	      elements[2]
 	    end
-  
+ 
 	    def trailing_block
 	      elements[5]
 	    end
@@ -150,21 +150,21 @@ grammar Metagrammar
 				value = prefix.value(value) unless prefix.epsilon?
 				value
 			end
-		
+	
 			def prefix
 				elements[0]
 			end
-			
+		
 			def primary_expression
 				elements[1].elements[0]
 			end
-			
+		
 			def suffix
 				elements[1].elements[1]
 			end
 		}
 	end	
-		
+	
 	rule prefix
 		'&' {
 			def value(parsing_expression)
@@ -178,7 +178,7 @@ grammar Metagrammar
 			end
 		}
 	end
-	
+
 	rule suffix
 		'*' {
 			def value(parsing_expression)
@@ -204,17 +204,17 @@ grammar Metagrammar
 			def value(grammar)
 				grammar.nonterminal_symbol(name)
 			end
-			
+		
 			def name
 				elements[1].text_value.to_sym
 			end
 		}
 	end
-	
+
 	rule alpha_char
 		[A-Za-z_]
 	end
-	
+
 	rule alphanumeric_char
 		alpha_char / [0-9]
 	end
@@ -222,16 +222,16 @@ grammar Metagrammar
 	rule terminal_symbol
 		terminal_symbol_prefix trailing_block {
 			def value(grammar = nil)
-      	trailing_block.value(terminal_symbol.value)
-      end
-      
-      def terminal_symbol
-        elements[0]
-      end
-      
-      def trailing_block
-        elements[1]
-    	end
+	     	trailing_block.value(terminal_symbol.value)
+	     end
+     
+	     def terminal_symbol
+	       elements[0]
+	     end
+     
+	     def trailing_block
+	       elements[1]
+	   	end
 		}
 	end
 

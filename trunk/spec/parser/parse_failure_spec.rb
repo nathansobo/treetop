@@ -4,7 +4,7 @@ require 'spec'
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
-describe "An instance of ParseFailure instantiated with no failure paths" do
+describe ParseFailure do
   setup do
     @matched_interval_begin = 0
     @parse_failure = ParseFailure.new(@matched_interval_begin)
@@ -20,5 +20,9 @@ describe "An instance of ParseFailure instantiated with no failure paths" do
   
   it "has a zero length interval at the beginning of its match interval" do
     @parse_failure.interval.should == (@matched_interval_begin...@matched_interval_begin)
-  end      
+  end
+  
+  it "has an empty array of nested failures" do
+    @parse_failure.nested_failures.should == []
+  end
 end

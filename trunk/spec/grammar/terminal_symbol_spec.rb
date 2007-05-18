@@ -71,6 +71,10 @@ describe "The result of TerminalSymbol#parse_at for a non-matching input prefix 
   it "retains reference to the failing terminal symbol" do
     @result.expression.should == @terminal
   end
+  
+  it "has itself as a nested failure" do
+    @result.nested_failures.should == [@result]
+  end
 end
 
 describe "A terminal symbol with a method defined in its node class" do
