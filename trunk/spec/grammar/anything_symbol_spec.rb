@@ -21,9 +21,9 @@ describe "An anything symbol (.)" do
     @anything.to_s.should == '.'
   end
   
-  it "returns a ParseFailure" do
+  it "returns a TerminalParseFailure" do
     result = @anything.parse_at('', 0, parser_with_empty_cache_mock)
-    result.should be_an_instance_of(ParseFailure)
+    result.should be_an_instance_of(TerminalParseFailure)
   end
   
   it "parses a newline" do

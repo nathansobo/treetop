@@ -30,7 +30,7 @@ module Treetop
       if match
         return node_class.new(input, start_index...(match.end(0) + start_index))
       else
-        failure_at(start_index)
+        TerminalParseFailure.new(start_index, self)
       end
     end
   end

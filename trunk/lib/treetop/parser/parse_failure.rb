@@ -14,7 +14,7 @@ module Treetop
       true
     end
     
-    def interval
+    def interval      
       @interval ||= (index...index)
     end
   end
