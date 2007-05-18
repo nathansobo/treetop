@@ -147,6 +147,8 @@ end
 
 describe "The result of a sequence whose first child expression returns successfully with nested failures and whose second fails" do
   before(:each) do
+    raise "This is unfinished"
+    
     @elt_1 = mock("Parsing expression in sequence")
     @elt_1_result = successful_parse_result_with_nested_failure_at(2)
     @elt_1.stub!(:parse_at).and_return(@elt_1_result)
