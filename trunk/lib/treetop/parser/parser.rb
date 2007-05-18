@@ -13,7 +13,7 @@ module Treetop
       if result.success? and result.interval.end == input.size
         return result
       else
-        return ParseFailure.new(nil, result.interval.end)
+        return ParseFailure.new(result.interval.end)
       end
     end
     

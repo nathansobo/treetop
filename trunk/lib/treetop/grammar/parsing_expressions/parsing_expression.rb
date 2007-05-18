@@ -36,7 +36,7 @@ module Treetop
     
     protected
     def failure_at(index)
-      ParseFailure.new(self, index)
+      ParseFailure.new(index)
     end    
   end
 end
