@@ -1,5 +1,6 @@
 dir = File.dirname(__FILE__)
 require "#{dir}/parser/parser"
+require "#{dir}/parser/parse_result"
 require "#{dir}/parser/syntax_node"
 require "#{dir}/parser/terminal_syntax_node"
 require "#{dir}/parser/sequence_syntax_node"

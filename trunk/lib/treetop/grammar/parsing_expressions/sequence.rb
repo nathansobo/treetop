@@ -27,7 +27,10 @@ module Treetop
         next_index = result.interval.end
       end
 
-      return node_class.new(input, start_index...next_index, results)
-    end    
+      return node_class.new(input,
+                            start_index...next_index,
+                            results,
+                            collect_nested_failures(results))
+    end
   end
 end

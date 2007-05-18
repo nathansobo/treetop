@@ -1,8 +1,9 @@
 module Treetop
-  class SyntaxNode
+  class SyntaxNode < ParseResult
     attr_reader :input, :interval
     
-    def initialize(input, interval)
+    def initialize(input, interval, nested_failures = [])
+      super(nested_failures)
       @input = input
       @interval = interval
     end
@@ -21,10 +22,6 @@ module Treetop
     
     def epsilon?
       false
-    end
-    
-    def nested_failures
-      []
     end
   end
 end

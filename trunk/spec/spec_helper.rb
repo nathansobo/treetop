@@ -27,6 +27,11 @@ def successful_parse_result(interval = 0...5)
   SyntaxNode.new(mock('input'), interval)
 end
 
+def successful_parse_result_with_nested_failure_at(failure_index, interval = 0...5)
+  nested_failure = TerminalParseFailure.new(failure_index, mock('terminal expression'))
+  SyntaxNode.new(mock('input'), interval, [nested_failure])
+end
+
 def failed_parse_result_for(failing_expression, failure_index = 5)
   ParseFailure.new(failing_expression, failure_index, [])
 end
