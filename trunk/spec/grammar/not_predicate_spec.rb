@@ -16,12 +16,16 @@ describe "A !-predicate for a TerminalSymbol" do
     @not_predicate.parse_at(input, index, parser_with_empty_cache_mock).should be_failure
   end
   
-  it "upon parsing non-matching input, returns a SuccessfulParseResult with a zero-length consumed interval" do
+  it "upon parsing non-matching input, returns a SuccessfulParseResult with a zero-length consumed interval and a nested failure" do
     input = "baz"
     index = 0
     result = @not_predicate.parse_at(input, index, parser_with_empty_cache_mock)
     result.should be_success
     result.interval.should == (index...index)
+    
+    nested_failures = result.nested_failures
+    nested_failures.size.should == 1
+    nested_failures.first.expression.should == @terminal
   end
   
   it "has a string representation" do

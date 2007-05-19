@@ -42,7 +42,7 @@ def parse_failure_at(failure_index = 5)
   ParseFailure.new(failure_index, [])
 end
 
-def parse_failure_at_with_nested_failured_at(failure_index = 0, nested_failure_index = 5)
+def parse_failure_at_with_nested_failure_at(failure_index = 0, nested_failure_index = 5)
   ParseFailure.new(failure_index, [terminal_parse_failure_at(nested_failure_index)])
 end
 

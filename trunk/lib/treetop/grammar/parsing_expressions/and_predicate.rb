@@ -5,14 +5,13 @@ module Treetop
     end
     
     protected
-    def parse_at_without_caching(input, start_index, parser)
-      result = expression.parse_at(input, start_index, parser)
-      
-      if result.success?        
-        return success_at(start_index, input)
-      else
-        return failure_at(start_index)
-      end
+    
+    def child_expression_success(index, input, result)
+      return success_at(index, input, [result])
+    end
+    
+    def child_expression_failure(index, input, result)
+      return failure_at(index, [result])
     end
   end
 end

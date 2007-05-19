@@ -21,10 +21,14 @@ describe "An &-predication on a terminal symbol" do
     result.interval.end.should == index
   end
   
-  it "fails upon parsing non-matching input" do
+  it "fails upon parsing non-matching input with a nested failure representing the failed match" do
     input = "baz"
     result = @and_predicate.parse_at(input, 0, parser_with_empty_cache_mock)
     result.should be_failure
+    
+    nested_failures = result.nested_failures
+    nested_failures.size.should == 1
+    nested_failures.first.expression.should == @terminal
   end
   
   it "has a string representation" do
@@ -47,9 +51,14 @@ describe "A sequence with terminal symbol followed by an &-predicate on another 
     result.interval.end.should == index + @terminal.prefix.size
   end
   
-  it "fails when look-ahead predicate does not match" do
+  it "fails when look-ahead predicate does not match with a nested failure" do
     input = "---" + @terminal.prefix + "baz"
     index = 3
-    @sequence.parse_at(input, index, parser_with_empty_cache_mock).should be_a_failure
+    result = @sequence.parse_at(input, index, parser_with_empty_cache_mock)
+    result.should be_a_failure
+    
+    nested_failures = result.nested_failures
+    nested_failures.size.should == 1
+    nested_failures.first.expression.should == @and_predicate.expression
   end
 end

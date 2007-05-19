@@ -113,7 +113,7 @@ end
 describe "The result of one or more of an expression that fails on the first parsing attempt with nested failures" do
   before(:each) do
     @expression = mock('parsing expression')
-    @child_result = parse_failure_at_with_nested_failured_at(0, 4)
+    @child_result = parse_failure_at_with_nested_failure_at(0, 4)
     @expression.stub!(:parse_at).and_return(@child_result)
     @one_or_more = OneOrMore.new(@expression)
     @result = @one_or_more.parse_at(mock('input'), 0, parser_with_empty_cache_mock)

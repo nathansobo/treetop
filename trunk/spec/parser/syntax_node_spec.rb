@@ -27,8 +27,6 @@ describe SyntaxNode, " instantiated without nested failures" do
 end
 
 describe SyntaxNode, " instantiated with multiple nested failures" do
-  
-  
   before(:each) do
     @index = 0
     @nested_failures = [5, 5, 3, 0].collect {|index| terminal_parse_failure_at(index)}
@@ -42,4 +40,20 @@ describe SyntaxNode, " instantiated with multiple nested failures" do
     nested_failures[1].index.should == 5
   end
   
+  it "retains its existing nested failures when updated with a set of new failures whose indices are less than the index of its existing nested failures" do
+    new_nested_failures = [1, 2, 3].collect {|index| terminal_parse_failure_at(index)}
+    
+    nested_failures_before_update = @node.nested_failures.clone
+    @node.update_nested_failures(new_nested_failures)
+    @node.nested_failures.should == nested_failures_before_update
+  end
+  
+  it "adds to existing nested failures if updated with a set of existing failures with a maximum index equal to the existing maximum index" do
+    new_nested_failure = terminal_parse_failure_at(5)
+    
+    pre_update_nested_failure_count = @node.nested_failures.size
+    @node.update_nested_failures([new_nested_failure])
+    @node.nested_failures.size.should == pre_update_nested_failure_count + 1
+    @node.nested_failures.should include(new_nested_failure)
+  end
 end
