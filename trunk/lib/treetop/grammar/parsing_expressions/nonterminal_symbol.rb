@@ -16,15 +16,24 @@ module Treetop
     end
 
     def parse_at(input, start_index, parser)
+      node_cache = parser.node_cache_for(self)
+      if cached_result = node_cache[start_index]
+        return cached_result
+      else
+        return node_cache.store(parse_at_without_caching(input, start_index, parser))
+      end
+    end
+    
+    protected
+    def parse_at_without_caching(input, start_index, parser)
       result = parsing_expression.parse_at(input, start_index, parser)
+      
       if result.success?
         result
       else
         return failure_at(start_index, result.nested_failures)
       end
     end
-    
-    protected
     
     def node_cache(parser)
       parser.node_cache_for(self)

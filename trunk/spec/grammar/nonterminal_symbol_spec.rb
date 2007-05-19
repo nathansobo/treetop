@@ -4,11 +4,16 @@ require 'spec'
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
-describe "A nonterminal symbol" do
+describe "A nonterminal symbol that refers to an expression that parses successfully" do
   setup do
     @grammar = Grammar.new
     @parser = @grammar.new_parser
     @nonterminal = NonterminalSymbol.new(:foo, @grammar)
+    
+    @referrent_expression = mock("Associated parsing expression")
+    @grammar.stub!(:get_parsing_expression).and_return(@referrent_expression)
+    @parse_result_of_referrent = parse_success
+    @referrent_expression.stub!(:parse_at).and_return(@parse_result_of_referrent)
   end
   
   it "retains a reference to the grammar of which it's a member" do
@@ -20,21 +25,19 @@ describe "A nonterminal symbol" do
   end
   
   it "propagates parsing to the parsing expression to which it refers" do
-    referrent_expression = mock("Associated parsing expression")
-    @grammar.should_receive(:get_parsing_expression).with(@nonterminal).and_return(referrent_expression)
-    parse_result_of_referrent = parse_success
-    referrent_expression.stub!(:parse_at).and_return(parse_result_of_referrent)
-
     result = @nonterminal.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
     result.should be_success
-    result == parse_result_of_referrent
+    result == @parse_result_of_referrent
   end
   
-  it "can repeatedly retrieve a node cache for itself" do  
-    node_cache = @nonterminal.send(:node_cache, @parser)
-      
-    node_cache.should be_an_instance_of(NodeCache)
-    node_cache.should == @nonterminal.send(:node_cache, @parser)
+  it "first checks the cache for a memoized value at the start index of the parse, then stores the result there" do
+    index = 0
+
+    node_cache = @parser.node_cache_for(@nonterminal)
+    node_cache.should_receive(:[]).with(index).and_return(nil)
+    node_cache.should_receive(:store).with(@parse_result_of_referrent)
+    
+    @nonterminal.parse_at(mock('input'), index, @parser)
   end
 end
 
