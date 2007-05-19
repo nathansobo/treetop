@@ -29,3 +29,24 @@ describe "A nonterminal symbol" do
     result == parse_result_of_referrent
   end
 end
+
+describe "The result of parsing a nonterminal symbol that refers to an expression that fails to parse, with a nested failure" do
+  before(:each) do
+    @grammar = mock("Grammar")
+    @nonterminal = NonterminalSymbol.new(:foo, @grammar)
+    
+    @referenced_expression = mock('referenced expression')
+    @referenced_expression_result = parse_failure_at_with_nested_failure_at(0, 5)
+    @referenced_expression.stub!(:parse_at).and_return(@referenced_expression_result)
+    
+    @grammar.stub!(:get_parsing_expression).and_return(@referenced_expression)
+    
+    @result = @nonterminal.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
+  end
+  
+  it "propagates the nested failure on its result" do
+    nested_failures = @result.nested_failures
+    nested_failures.size.should == 1
+    nested_failures.first.should == @referenced_expression_result.nested_failures.first
+  end
+end

@@ -44,3 +44,21 @@ describe "A new parser with a nonterminal that successfully consumes 0...5, retu
   end
 end
 
+describe "A parser for a grammar with one rule that fails to parse with nested failures" do
+  
+  before(:each) do
+    @grammar = Grammar.new
+    @root_expression = mock('parsing expression')
+    @grammar.add_parsing_rule(@grammar.nonterminal_symbol(:foo), @root_expression)
+    @parser = Parser.new(@grammar)
+    
+    @result_of_root_expression = parse_failure_at_with_nested_failure_at(0, 5)
+    @root_expression.stub!(:parse_at).and_return(@result_of_root_expression)
+  end
+  
+  it "propagates the nested failures on the rule's result" do
+    nested_failures = @parser.parse(mock('input')).nested_failures
+    nested_failures.size.should == 1
+    nested_failures.first.should == @result_of_root_expression.nested_failures.first
+  end
+end

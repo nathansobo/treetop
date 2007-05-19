@@ -21,7 +21,7 @@ module Treetop
       if result.success?
         result
       else
-        return failure_at(start_index)
+        return failure_at(start_index, result.nested_failures)
       end
     end    
   end

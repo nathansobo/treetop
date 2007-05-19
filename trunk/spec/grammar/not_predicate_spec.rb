@@ -46,11 +46,15 @@ describe "A sequence with terminal symbol followed by a !-predicate on another t
     @sequence.parse_at(input, index, parser_with_empty_cache_mock).should be_failure
   end
   
-  it "succeeds when look-ahead does not match, without advancing index beyond end of first terminal" do
+  it "succeeds when look-ahead does not match, without advancing index beyond end of first terminal, with a nested failure representing the failure of the !-predicated expression" do
     input = "---" + @terminal.prefix + "baz"
     index = 3
     result = @sequence.parse_at(input, index, parser_with_empty_cache_mock)
     result.should be_success
     result.interval.end.should == index + @terminal.prefix.size
+    
+    nested_failures = result.nested_failures
+    nested_failures.size.should == 1
+    nested_failures.first.expression.should == @not_predicate.expression
   end
 end
