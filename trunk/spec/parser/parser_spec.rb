@@ -37,10 +37,10 @@ describe "A new parser with a nonterminal that successfully consumes 0...5, retu
   end
   
   it "can return a node cache for a specific parsing expression" do
-    sequence_expression = mock("sequence expression")
-    cache_for_sequence = mock("cache for sequence")
-    @parser.parse_cache.should_receive(:[]).with(sequence_expression).and_return(cache_for_sequence)
-    @parser.node_cache_for(sequence_expression).should == cache_for_sequence
+    parsing_expression = mock("parsing expression")
+    cache_for_parsing_expression = mock("cache for parsing expression")
+    @parser.parse_cache.should_receive(:[]).with(parsing_expression).and_return(cache_for_parsing_expression)
+    @parser.node_cache_for(parsing_expression).should == cache_for_parsing_expression
   end
 end
 

@@ -5,10 +5,8 @@ module Treetop
     def initialize(expression)
       @expression = expression
     end
-    
-    protected
-    
-    def parse_at_without_caching(input, start_index, parser)
+        
+    def parse_at(input, start_index, parser)
       result = expression.parse_at(input, start_index, parser)
       
       if result.success?
@@ -17,6 +15,8 @@ module Treetop
         return child_expression_failure(start_index, input, result)
       end        
     end
+    
+    protected
     
     def success_at(index, input, nested_results)
       SyntaxNode.new(input, index...index, collect_nested_failures(nested_results))

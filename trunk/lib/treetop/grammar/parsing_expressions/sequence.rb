@@ -15,8 +15,7 @@ module Treetop
       parenthesize((@elements.collect {|elt| elt.to_s}).join(" "))
     end
 
-    protected
-    def parse_at_without_caching(input, start_index, parser)
+    def parse_at(input, start_index, parser)
       results = []
       next_index = start_index
       
@@ -30,6 +29,8 @@ module Treetop
       success(input, start_index...next_index, results, results)
     end
     
+    protected
+
     def success(input, interval, results, encountered_child_results)
       return node_class.new(input,
                             interval,

@@ -24,8 +24,7 @@ module Treetop
       "\"#{prefix}\""
     end
     
-    protected
-    def parse_at_without_caching(input, start_index, parser)
+    def parse_at(input, start_index, parser)
       match = prefix_regex.match(input[start_index...(input.length)])
       if match
         return node_class.new(input, start_index...(match.end(0) + start_index))

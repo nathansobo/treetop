@@ -10,8 +10,7 @@ module Treetop
       parenthesize((alternatives.collect {|alt| alt.to_s}).join(" / "))
     end
     
-    protected
-    def parse_at_without_caching(input, start_index, parser)
+    def parse_at(input, start_index, parser)
       failures = []
       for alt in alternatives
         result = alt.parse_at(input, start_index, parser)

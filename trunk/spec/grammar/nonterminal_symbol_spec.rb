@@ -6,7 +6,8 @@ require "#{dir}/../spec_helper"
 
 describe "A nonterminal symbol" do
   setup do
-    @grammar = mock("Grammar")
+    @grammar = Grammar.new
+    @parser = @grammar.new_parser
     @nonterminal = NonterminalSymbol.new(:foo, @grammar)
   end
   
@@ -27,6 +28,13 @@ describe "A nonterminal symbol" do
     result = @nonterminal.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
     result.should be_success
     result == parse_result_of_referrent
+  end
+  
+  it "can repeatedly retrieve a node cache for itself" do  
+    node_cache = @nonterminal.send(:node_cache, @parser)
+      
+    node_cache.should be_an_instance_of(NodeCache)
+    node_cache.should == @nonterminal.send(:node_cache, @parser)
   end
 end
 
