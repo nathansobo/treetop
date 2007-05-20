@@ -1,8 +1,16 @@
 module Treetop
-  class AnythingSymbol < TerminalSymbol
+  class AnythingSymbol < TerminalParsingExpression
     def initialize
-      super('\A(.|\n)')
-      self.prefix_regex = /\A(.|\n)/
+      super
+    end
+    
+    def parse_at(input, start_index, parser)
+      if start_index < input.length
+        interval = (start_index...(start_index + 1))
+        return node_class.new(input, interval)
+      else
+        TerminalParseFailure.new(start_index, self)
+      end
     end
     
     def to_s

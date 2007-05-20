@@ -5,7 +5,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
 describe "A builder object extended with the ParsingExpressionBuilderHelper module and an assigned grammar" do
-  setup do
+  before do
     @builder = Object.new
     @builder.extend ParsingExpressionBuilderHelper
     @grammar = Grammar.new
@@ -52,7 +52,7 @@ describe "A builder object extended with the ParsingExpressionBuilderHelper modu
   it "implements a #char_class method that returns a CharacterClass based on its argument" do
     char_class = @builder.char_class('A-Z')
     char_class.should be_an_instance_of(CharacterClass)
-    char_class.prefix_regex.should eql(/\A[A-Z]/)
+    char_class.prefix_regex.should eql(/[A-Z]/)
   end
   
   it "implements a #notp method that creates a NotPredicate with the value of #exp for its argument" do

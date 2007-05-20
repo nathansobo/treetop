@@ -5,7 +5,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
 describe "A !-predicate for a TerminalSymbol" do
-  setup do
+  before do
     @terminal = TerminalSymbol.new("foo")
     @not_predicate = NotPredicate.new(@terminal)
   end
@@ -34,7 +34,7 @@ describe "A !-predicate for a TerminalSymbol" do
 end
 
 describe "A sequence with terminal symbol followed by a !-predicate on another terminal symbol" do
-  setup do
+  before do
     @terminal = TerminalSymbol.new("foo")
     @not_predicate = NotPredicate.new(TerminalSymbol.new("bar"))
     @sequence = Sequence.new([@terminal, @not_predicate])

@@ -6,7 +6,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 =begin
 describe "An arithmetic grammar defined via the parsing of arithmetic.treetop" do
-  setup do
+  before do
     Arithmetic = parse_grammar("#{dir}/arithmetic")
   end
   
@@ -16,7 +16,7 @@ describe "An arithmetic grammar defined via the parsing of arithmetic.treetop" d
 end
 
 describe "A parser for an arithmetic grammar defined via a file" do
-  setup do
+  before do
     Arithmetic = parse_grammar("#{dir}/arithmetic")
     parser = Arithmetic.new_parser
   end

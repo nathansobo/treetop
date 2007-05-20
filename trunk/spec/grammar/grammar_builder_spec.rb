@@ -5,7 +5,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
 describe "A Grammar builder" do
-  setup do
+  before do
     @grammar = Grammar.new
     @builder = GrammarBuilder.new(@grammar)
   end

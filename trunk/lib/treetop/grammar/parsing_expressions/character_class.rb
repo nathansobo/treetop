@@ -1,11 +1,20 @@
 module Treetop
-  class CharacterClass < TerminalSymbol
-    attr_reader :char_class_string
+  class CharacterClass < TerminalParsingExpression
+
+    attr_reader :char_class_string, :prefix_regex
     
     def initialize(char_class_string)
-      super('')
+      super()
       @char_class_string = char_class_string
-      self.prefix_regex = Regexp.new("\\A[#{char_class_string}]")
+      @prefix_regex = Regexp.new("[#{char_class_string}]")
+    end
+    
+    def parse_at(input, start_index, parser)
+      if input.index(prefix_regex, start_index) == start_index
+        return node_class.new(input, start_index...(start_index + 1))
+      else
+        TerminalParseFailure.new(start_index, self)
+      end
     end
     
     def to_s

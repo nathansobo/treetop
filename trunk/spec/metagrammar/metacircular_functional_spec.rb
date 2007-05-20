@@ -5,7 +5,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
 describe "A parser for the metagrammar" do
-  setup do
+  before do
     @parser = Metagrammar.new_parser
   end
   

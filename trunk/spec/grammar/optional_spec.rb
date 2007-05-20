@@ -5,7 +5,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
 describe "An optional terminal symbol" do
-  setup do
+  before do
     @terminal = TerminalSymbol.new("foo")
     @optional = Optional.new(@terminal)
   end

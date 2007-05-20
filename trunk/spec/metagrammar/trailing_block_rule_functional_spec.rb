@@ -9,7 +9,7 @@ require "#{dir}/metagrammar_spec_context_helper"
 describe "The subset of the metagrammar rooted at the trailing_block rule" do
   include MetagrammarSpecContextHelper
   
-  setup do
+  before do
     @root = :trailing_block
   end
   

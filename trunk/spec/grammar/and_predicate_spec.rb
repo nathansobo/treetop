@@ -5,7 +5,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
 describe "An &-predication on a terminal symbol" do
-  setup do
+  before do
     @terminal = TerminalSymbol.new("foo")
     @and_predicate = AndPredicate.new(@terminal)
   end
@@ -37,7 +37,7 @@ describe "An &-predication on a terminal symbol" do
 end
 
 describe "A sequence with terminal symbol followed by an &-predicate on another terminal symbol" do
-  setup do
+  before do
     @terminal = TerminalSymbol.new("foo")
     @and_predicate = AndPredicate.new(TerminalSymbol.new("bar"))
     @sequence = Sequence.new([@terminal, @and_predicate])

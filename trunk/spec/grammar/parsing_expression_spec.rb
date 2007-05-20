@@ -5,7 +5,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
 describe "A parsing expression" do
-  setup do
+  before do
     @expression = ParsingExpression.new
   end
   

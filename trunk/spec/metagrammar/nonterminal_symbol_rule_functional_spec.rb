@@ -8,7 +8,7 @@ require "#{dir}/metagrammar_spec_context_helper"
 describe "The subset of the metagrammar rooted at the nonterminal_symbol rule" do
   include MetagrammarSpecContextHelper
   
-  setup do
+  before do
     @root = :nonterminal_symbol
   end
 

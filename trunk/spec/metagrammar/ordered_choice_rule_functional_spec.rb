@@ -8,7 +8,7 @@ require "#{dir}/metagrammar_spec_context_helper"
 describe "The subset of the metagrammar rooted at the ordered_choice rule" do
   include MetagrammarSpecContextHelper
   
-  setup do
+  before do
     @root = :ordered_choice
   end
   

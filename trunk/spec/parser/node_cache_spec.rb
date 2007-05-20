@@ -4,7 +4,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
 describe "A new node cache" do
-  setup do
+  before do
     @node_cache = NodeCache.new
   end
   
@@ -14,7 +14,7 @@ describe "A new node cache" do
 end
 
 describe "A node cache with one stored parse result" do
-  setup do
+  before do
     @node_cache = NodeCache.new
     @interval = 7...29
     @parse_result = parse_success(@interval)

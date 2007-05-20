@@ -5,7 +5,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
 describe "A new failed parse result" do
-  setup do
+  before do
     @expression = mock('expression that failed to parse')
     @failure_index = 3
     @result = ParseFailure.new(@failure_index)

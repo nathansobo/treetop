@@ -5,7 +5,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
 describe "Zero-or-more of a terminal symbol" do
-  setup do
+  before do
     @terminal = TerminalSymbol.new("foo")
     @zero_or_more = ZeroOrMore.new(@terminal)
   end
@@ -66,7 +66,7 @@ describe "Zero-or-more of a terminal symbol" do
 end
 
 describe "Zero-or-more of a terminal symbol with a method defined in its node class" do
-  setup do
+  before do
     @terminal = TerminalSymbol.new("foo")
     @zero_or_more = ZeroOrMore.new(@terminal)
     @zero_or_more.node_class_eval do

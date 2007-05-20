@@ -5,7 +5,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
 describe "An ordered choice parsing expression with three terminal alternatives" do
-  setup do
+  before do
     @alts = ["foo", "bar", "baz"]
     @choice = OrderedChoice.new(@alts.collect { |alt| TerminalSymbol.new(alt) })
   end
@@ -22,7 +22,7 @@ describe "An ordered choice parsing expression with three terminal alternatives"
 end
 
 describe "The result of an ordered choice with three terminal alternatives, if the second is successful" do
-  setup do
+  before do
     @alts = ["foo", "bar", "baz"].collect { |alt| TerminalSymbol.new(alt) }
     @choice = OrderedChoice.new(@alts)
 
@@ -46,7 +46,7 @@ describe "The result of an ordered choice with three terminal alternatives, if t
 end
 
 describe "The result of an ordered choice with three terminal alternatives, if the third is successful" do
-  setup do
+  before do
     @alts = ["foo", "bar", "baz"].collect { |alt| TerminalSymbol.new(alt) }
     @choice = OrderedChoice.new(@alts)
 
@@ -71,7 +71,7 @@ describe "The result of an ordered choice with three terminal alternatives, if t
 end
 
 describe "The result of an ordered choice with two terminal alternatives, if niether is successful" do
-  setup do
+  before do
     @alts = ["foo", "bar"].collect { |alt| TerminalSymbol.new(alt) }
     @choice = OrderedChoice.new(@alts)
 

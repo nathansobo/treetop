@@ -5,7 +5,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
 describe "An empty parse cache" do
-  setup do
+  before do
     @parse_cache = ParseCache.new
   end
   

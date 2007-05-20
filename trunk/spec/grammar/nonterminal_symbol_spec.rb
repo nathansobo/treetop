@@ -5,7 +5,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
 describe "A nonterminal symbol that refers to an expression that parses successfully" do
-  setup do
+  before do
     @grammar = Grammar.new
     @parser = @grammar.new_parser
     @nonterminal = NonterminalSymbol.new(:foo, @grammar)

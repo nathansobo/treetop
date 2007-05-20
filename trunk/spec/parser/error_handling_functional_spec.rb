@@ -6,7 +6,7 @@ require "#{dir}/../spec_helper"
 
 describe "A parser a grammar describing one or more characters followed by semicolons surrounded by braces" do
   
-  before(:each) do
+  before do
     @grammar_parser = Metagrammar.new_parser
     result = @grammar_parser.parse("""grammar
                                         rule brace_thingy

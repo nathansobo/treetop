@@ -2,12 +2,20 @@ grammar Metagrammar
   rule grammar
     ('grammar' space grammar_name? parsing_rule_sequence space? 'end') {
       def value
-        grammar = Grammar.new
+        grammar = Grammar.new(grammar_name)
         parsing_rules(grammar).each do |parsing_rule|
           grammar.add_parsing_rule(parsing_rule)
         end
         return grammar
       end
+			
+			def grammar_name
+				if elements[2].epsilon?
+					nil
+				else
+					elements[2].value
+				end
+			end
 
       def parsing_rules(grammar)
         elements[3].value(grammar)

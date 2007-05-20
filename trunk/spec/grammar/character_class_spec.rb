@@ -5,7 +5,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
 describe "A character class with the range A-Z" do
-  setup do
+  before do
     @char_class = CharacterClass.new('A-Z')
   end
   
@@ -24,5 +24,11 @@ describe "A character class with the range A-Z" do
     @char_class.to_s.should == '[A-Z]'
   end
   
+  it "matches a single character within that range at index 1" do
+    @char_class.parse_at(' A', 1, parser_with_empty_cache_mock).should be_success
+  end
   
+  it "fails to match a single character out of that range at index 1" do
+    @char_class.parse_at(' 1', 1, parser_with_empty_cache_mock).should be_failure
+  end
 end

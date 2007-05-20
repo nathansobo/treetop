@@ -8,7 +8,7 @@ require "#{dir}/metagrammar_spec_context_helper"
 describe "The subset of the metagrammar rooted at the grammar rule" do
   include MetagrammarSpecContextHelper
 
-  setup do
+  before do
     @root = :grammar
     @metagrammar = Protometagrammar.new
     parser = @metagrammar.new_parser
@@ -18,7 +18,9 @@ describe "The subset of the metagrammar rooted at the grammar rule" do
   it "parses a named empty grammar" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       result = parser.parse("grammar Foo end")
-      result.value.should be_instance_of(Grammar)
+      value = result.value
+      value.should be_instance_of(Grammar)
+      value.name.should == :Foo
     end
   end
 

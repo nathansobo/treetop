@@ -5,7 +5,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
 describe SyntaxNode, " instantiated without nested failures" do
-  setup do
+  before do
     @node = SyntaxNode.new(mock("input"), mock("interval"))
   end
   

@@ -5,7 +5,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
 describe "A new parser with a nonterminal that successfully consumes 0...5, returning a parse result with a failure tree" do
-  setup do    
+  before do    
     @grammar = Grammar.new
     @root_expression = mock('parsing expression')
     @grammar.add_parsing_rule(@grammar.nonterminal_symbol(:foo), @root_expression)

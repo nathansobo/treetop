@@ -1,8 +1,9 @@
 module Treetop
   class Grammar
-    attr_accessor :root, :builder
+    attr_accessor :root, :builder, :name
     
-    def initialize(&block)
+    def initialize(name = nil, &block)
+      @name = name
       @parsing_rules = Hash.new
       @nonterminal_symbols = Hash.new
       self.builder = GrammarBuilder.new(self)

@@ -5,7 +5,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
 describe "A new grammar" do
-  setup do
+  before do
     @grammar = Grammar.new
   end
 
@@ -86,7 +86,7 @@ describe "The Grammar class" do
 end
 
 describe "A grammar with a parsing rule" do
-  setup do
+  before do
     @grammar = Grammar.new
     @rule = make_parsing_rule
     @grammar.add_parsing_rule(@rule)
@@ -106,6 +106,17 @@ describe "A grammar with a parsing rule" do
     alt_root = mock("Alternate root nonterminal")
     @grammar.root = alt_root
     @grammar.root.should == alt_root
+  end
+end
+
+describe "A Grammar instantiated with a name" do
+  before do
+    @name = 'Foo'
+    @grammar = Grammar.new(@name)
+  end
+  
+  it "retains its name" do
+    @grammar.name.should == @name
   end
 end
 

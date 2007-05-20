@@ -5,7 +5,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
 describe "A parser for a grammar that contains only atomic symbols" do
-  setup do
+  before do
     @grammar = Grammar.new
     
     terminal = TerminalSymbol.new("bar")
@@ -28,7 +28,7 @@ describe "A parser for a grammar that contains only atomic symbols" do
 end
 
 describe "A parser for a simple arithmetic grammar" do
-  setup do
+  before do
     @grammar = Grammar.new
     
     additive = @grammar.nonterminal_symbol(:additive)
@@ -113,7 +113,7 @@ describe "A parser for a simple arithmetic grammar" do
 end
 
 describe "A parser for a grammar that contains only atomic symbols" do
-  setup do
+  before do
     @grammar = Grammar.new
     
     terminal = TerminalSymbol.new("bar")
@@ -150,7 +150,7 @@ describe "A parser for a simple arithmetic grammar with method definitions" do
       end
   end
   
-  setup do
+  before do
     @grammar = Grammar.new
     
     additive = @grammar.nonterminal_symbol(:additive)
@@ -253,7 +253,7 @@ describe "A parser for a simple arithmetic grammar with method definitions" do
 end
 
 describe "A parser for grammar with a single terminal symbol" do
-  setup do
+  before do
     grammar = Grammar.new do
       rule :foo, exp("foo")
     end

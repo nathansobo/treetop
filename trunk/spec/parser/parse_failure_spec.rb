@@ -5,7 +5,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
 describe ParseFailure do
-  setup do
+  before do
     @matched_interval_begin = 0
     @parse_failure_forre = ParseFailure.new(@matched_interval_begin)
   end

@@ -5,7 +5,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
 describe "The result of a sequence parsing expression with one element, when that element parses successfully" do
-  setup do
+  before do
     @element = mock("Parsing expression in sequence")
     @elt_result = parse_success
     @elt.stub!(:parse_at).and_return(@elt_result)
@@ -21,7 +21,7 @@ describe "The result of a sequence parsing expression with one element, when tha
 end
 
 describe "A sequence parsing expression with multiple terminal symbols as elements" do
-  setup do
+  before do
     @elts = ["foo", "bar", "baz"]
     @sequence = Sequence.new(@elts.collect { |w| TerminalSymbol.new(w) })
   end
@@ -50,7 +50,7 @@ describe "A sequence parsing expression with multiple terminal symbols as elemen
 end
 
 describe "The result of a sequence parsing expression with one element and a method defined in its node class" do
-  setup do
+  before do
     @elt = mock("Parsing expression in sequence")
     @elt_result = parse_success
     @elt.stub!(:parse_at).and_return(@elt_result)
@@ -74,7 +74,7 @@ describe "The result of a sequence parsing expression with one element and a met
 end
 
 describe "The result of a sequence parsing expression with one element and a method defined in its node class via the evaluation of a string" do
-  setup do
+  before do
     @elt = mock("Parsing expression in sequence")
     @elt_result = parse_success
     @elt.stub!(:parse_at).and_return(@elt_result)
@@ -98,7 +98,7 @@ describe "The result of a sequence parsing expression with one element and a met
 end
 
 describe "The parse result of a sequence of two terminals when the second fails to parse" do
-  setup do
+  before do
     @terminal_1 = TerminalSymbol.new('{')
     @terminal_2 = TerminalSymbol.new('}')
     @sequence = Sequence.new([@terminal_1, @terminal_2])

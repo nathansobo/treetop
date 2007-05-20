@@ -5,7 +5,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
 describe "A terminal syntax node" do
-  setup do
+  before do
     input = "foobar"
     interval = 0...3
     @node = TerminalSyntaxNode.new(input, interval)
@@ -17,7 +17,7 @@ describe "A terminal syntax node" do
 end
 
 describe "An empty terminal syntax node" do
-  setup do
+  before do
     input = ""
     interval = 0...0
     @node = TerminalSyntaxNode.new(input, interval)
