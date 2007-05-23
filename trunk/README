@@ -1,5 +1,74 @@
 == Treetop
 
-Treetop is a Ruby-based text parsing and interpretation DSL.
+Treetop makes it easy to write programs that deal with language. You describe the grammar of the language you wish to parse in a Ruby-like custom syntax, and Treetop generates a parser that builds syntax-trees for input that matches your description. You can install methods on the objects that comprise this syntax tree right alongside your grammar description.
 
-It's just getting started.
+Unlike tools like Lex and Yacc, Treetop makes parser development simple. There is no need to tokenize your input. Treetop lets you write the rules of your grammar in terms of arbitrary characters. It doesn't force you to contort your grammar to fit its limitations either. You describe your language cleanly and naturally, with powerful lookahead assertions and infinite backtracking at your disposal. Despite this expressive power, Treetop's packrat parsers run in linear time.
+
+Lets develop a Treetop grammar for arithmetic expressions involving multiplication and addition.
+
+For our first iteration, lets create a grammar that can match only addition.
+
+--- arithmetic.treetop ---
+
+grammar Arithmetic
+	rule additive
+		number space '+' space additive / number
+	end
+	
+	rule number
+		[1-9] [0-9]*
+	end
+	
+	def space
+		' '*
+	end
+end
+
+--------------------------
+
+This snippet introduces the fundamentals of Treetop grammars. It is a 'grammar' declaration and name wrapping a series of parse rules. A parse rule consists of the 'rule' keyword followed by the rule's name and a parsing expression. Parsing expressions are similar to regular expressions, but more powerful.
+
+The first rule, 'additive', is the root of our grammar. It is an example of an ordered choice rule. When parsing a choice, Treetop first attempts to match the first expression, preceding the '/' character. If this fails, the parser attempts the next expression, continuing until all alternatives are exhausted.
+
+The first alternative in the 'additive' rule is an example of a sequence. All expressions in the sequence must be matched in order for it to be parsed successfully. Each element of this sequence except for the '+' character is actually a reference to another rule. These referring expressions are called nonterminal symbols. The '+' matches text in the input directly; it is the end of the line, and is called a terminal symbol.
+
+Lets walk through the behavior of a parser for this grammar as it matches an example string:
+
+load_parser 'aritmetic'
+result = Arithmetic.new_parser.parse('1 + 2 + 3')
+
+This code parses 'arithmetic.treetop' and makes it available by name as a constant in the environment. It then creates a new parser for the grammar and uses it to parse an arithmetic expression.
+
+The parsing expression associated root of the grammar, which is 'additive' because it is defined first, attempts to match itself against the input. The first expression of the first alternative is 'number', which is defined as a digit from 1-9 followed by zero or more digits from zero to 9. This maches the '1' character and control returns to the 'additive' expression. Next is the 'space' nonterminal which consumes the whitespace between '1' and '+'. Next is the '+' nonterminal, which matches and consumes the '+' sign, then another space is consumed.
+
+The parser has now consumed input up to '2 + 3', and it is here that the power of parsing expressions shines. The next nonterminal in 'additive' is a recursive reference back to additive. This causes '2 + ' to be consumed in the same manner as '1 + ', leading another recursive invocation of the 'additive' rule to analyze the remaining '3'. The first alternative, (number '+' additive), is again attempted, but the '+' cannot be matched because the end of the input is reached after the '3' is consumed by the 'number' rule.
+
+This is where the 'additive' rule's second alternative comes into play. Failing to parse the '+' needed by the first alternative, the parser backtracks and tries to match the '3' in the input against 'number'. This succeeds, terminating the parse. A syntax tree is returned that looks like this.
+
+             ^
+      			/|\
+           / | \
+      		/  |  \
+      	 /   |   \ 
+      	/    |    ^	
+       /     |   /|\   
+      1      |  / | \ 
+         	   + 2  +  3
+
+That took forever to draw.
+
+This is all I have time to write for now. Check out the Wikipedia entry on parsing expression grammars and look at metagrammar.treetop for more information on using Treetop. All of the standard parsing expressions are supported. This includes:
+
+& - nonconsuming lookahead assertion
+! - nonconsuming negative lookahead assertion
+? - optional
++ - one or more
+* - zero or more
+( - parentheses to override precedence
+
+Have fun!
+
+== Issues
+
+Treetop is still pretty slow. I'll be working on optimizing it in the near future, but at the moment it takes about .9 seconds to parse the metagrammar. I'm hoping to improve this by several orders of magnitude by rewriting critical portions of it in C.
+
