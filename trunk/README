@@ -30,12 +30,17 @@ This snippet introduces the fundamentals of Treetop grammars. It is a 'grammar' 
 
 The first rule, 'additive', is the root of our grammar. It is an example of an ordered choice rule. When parsing a choice, Treetop first attempts to match the first expression, preceding the '/' character. If this fails, the parser attempts the next expression, continuing until all alternatives are exhausted.
 
-The first alternative in the 'additive' rule is an example of a sequence. All expressions in the sequence must be matched in order for it to be parsed successfully. Each element of this sequence except for the '+' character is actually a reference to another rule. These referring expressions are called nonterminal symbols. The '+' matches text in the input directly; it is the end of the line, and is called a terminal symbol.
+The first alternative in the 'additive' rule is an example of a sequence. All expressions in the sequence must be matched in order for it to be parsed successfully. Each element of this sequence except for the '+' character is actually a reference to another rule. These referring expressions are called nonterminal symbols. The '+' matches text in the input directly, and is called a terminal symbol.
 
 Lets walk through the behavior of a parser for this grammar as it matches an example string:
 
+
+--------------------------
+
 load_parser 'aritmetic'
 result = Arithmetic.new_parser.parse('1 + 2 + 3')
+
+--------------------------
 
 This code parses 'arithmetic.treetop' and makes it available by name as a constant in the environment. It then creates a new parser for the grammar and uses it to parse an arithmetic expression.
 
