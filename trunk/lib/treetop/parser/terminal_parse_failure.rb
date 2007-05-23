@@ -10,5 +10,9 @@ module Treetop
     def nested_failures
       [self]
     end
+    
+    def to_s
+      "String matching #{expression} expected at position #{index}."
+    end
   end
 end
