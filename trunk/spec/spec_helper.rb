@@ -1,3 +1,8 @@
+require 'rubygems'
+require 'spec'
+$:.unshift("#{File.dirname(__FILE__)}/../lib")
+require 'treetop'
+
 module Kernel
   def h(object)
     object.inspect.gsub(/</, '&lt;').gsub(/>/, '&gt;')
@@ -8,8 +13,6 @@ module Kernel
   end
 end
 
-dir = File.dirname(__FILE__)
-require File.expand_path('treetop', "#{dir}/../lib/")
 
 include Treetop
 

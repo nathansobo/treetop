@@ -1,6 +1,3 @@
-require 'rubygems'
-require 'spec'
-
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 require "#{dir}/metagrammar_spec_context_helper"

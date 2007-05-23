@@ -1,7 +1,5 @@
-dir = File.dirname(__FILE__)
-require "#{dir}/treetop/grammar"
-require "#{dir}/treetop/protometagrammar"
-require "#{dir}/treetop/parser"
-require "#{dir}/treetop/ruby_extension"
-require "#{dir}/treetop/metagrammar"
-require "#{dir}/treetop/api"
+require "treetop/grammar"
+require "treetop/protometagrammar"
+require "treetop/parser"
+require "treetop/ruby_extension"
+require "treetop/metagrammar"
