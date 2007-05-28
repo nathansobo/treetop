@@ -1,7 +1,7 @@
+$:.unshift(File.join(File.dirname(__FILE__), *%w[.. lib]))
+require 'treetop'
 require 'rubygems'
 require 'spec'
-$:.unshift("#{File.dirname(__FILE__)}/../lib")
-require 'treetop'
 
 module Kernel
   def h(object)

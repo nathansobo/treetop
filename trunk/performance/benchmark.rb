@@ -1,15 +1,21 @@
-require 'benchmark'
-
 dir = File.dirname(__FILE__)
-require "#{dir}/../lib/treetop"
+$:.unshift(File.join(dir, *%w[.. lib]))
+
+require 'benchmark'
+require "treetop"
+
 include Treetop
 
-metagrammar_file_path = "#{dir}/../lib/treetop/metagrammar/metagrammar.treetop"
+metagrammar_file_path = File.join(dir, *%w[.. lib treetop metagrammar metagrammar.treetop])
 File.open(metagrammar_file_path, 'r') do |metagrammar_file|
   @parser = Metagrammar.new_parser
 
   # Benchmarking occurs here:
-  puts(Benchmark.measure do
-    result = @parser.parse(metagrammar_file.read)
-  end)
+  Benchmark.bm do |results|
+    results.report do
+      30.times do
+        result = @parser.parse(metagrammar_file.read)
+      end
+    end
+  end
 end

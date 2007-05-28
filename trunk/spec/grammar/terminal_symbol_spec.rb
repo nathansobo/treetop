@@ -1,5 +1,4 @@
-dir = File.dirname(__FILE__)
-require "#{dir}/../spec_helper"
+require File.join(File.dirname(__FILE__), *%w[.. spec_helper])
 
 describe "A terminal symbol" do
   before do
