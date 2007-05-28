@@ -29,23 +29,25 @@ module Treetop
       end
     else
       inline do |builder|
-        builder.c <<-EOC
+        builder.c <<-C
           VALUE parse_at(VALUE input, int start_index, VALUE parser) {
-            int i, prefix_length;
+            int i, prefix_length, input_length;
             char *prefix_ptr, *input_ptr;
-    
             VALUE parse_failure_argv[2], node_class_argv[2];
             VALUE node_class;
-            VALUE prefix = rb_iv_get(self, "@prefix");
+            
+            VALUE prefix = rb_funcall(self, rb_intern("prefix"), 0);
             VALUE mTreetop = rb_const_get(rb_cObject, rb_intern("Treetop"));
             VALUE cTerminalParseFailure = rb_const_get(mTreetop, rb_intern("TerminalParseFailure"));
+            
     
             input_ptr = RSTRING(input)->ptr;
+            input_length = RSTRING(input)->len;
             prefix_ptr = RSTRING(prefix)->ptr;
             prefix_length = RSTRING(prefix)->len;
     
             for (i = 0; i < prefix_length; i++) {
-              if (input_ptr[i + start_index] != prefix_ptr[i]) {
+              if (i >= input_length || input_ptr[i + start_index] != prefix_ptr[i]) {
                 parse_failure_argv[0] = INT2NUM(start_index);
                 parse_failure_argv[1] = self;
                 return rb_class_new_instance(2, parse_failure_argv, cTerminalParseFailure);
@@ -57,7 +59,7 @@ module Treetop
             node_class_argv[1] = rb_range_new(INT2NUM(start_index), INT2NUM(prefix_length + start_index), 1);
             return (rb_class_new_instance(2, node_class_argv, node_class));
           }
-        EOC
+        C
       end
     end
   end
