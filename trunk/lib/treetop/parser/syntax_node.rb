@@ -8,8 +8,18 @@ module Treetop
       @interval = interval
     end
     
-    def update_nested_failures(failures)      
-      @nested_failures = select_failures_at_maximum_index(nested_failures + failures)
+    def update_nested_failures(new_nested_failures)
+      return if new_nested_failures.empty?
+      @nested_failures = new_nested_failures and return if nested_failures.empty?
+      
+      current_nested_failure_index = nested_failures.first.index
+      new_nested_failure_index = new_nested_failures.first.index
+      
+      if new_nested_failure_index > current_nested_failure_index
+        @nested_failures = new_nested_failures
+      elsif new_nested_failure_index == current_nested_failure_index
+        @nested_failures += new_nested_failures
+      end
     end
         
     def text_value

@@ -29,14 +29,7 @@ describe SyntaxNode, " instantiated with multiple nested failures" do
     @nested_failures = [5, 5, 3, 0].collect {|index| terminal_parse_failure_at(index)}
     @node = SyntaxNode.new(mock('input'), mock('interval'), @nested_failures)
   end
-  
-  it "retains those nested failures with the highest index" do
-    nested_failures = @node.nested_failures
-    nested_failures.size.should == 2
-    nested_failures[0].index.should == 5
-    nested_failures[1].index.should == 5
-  end
-  
+    
   it "retains its existing nested failures when updated with a set of new failures whose indices are less than the index of its existing nested failures" do
     new_nested_failures = [1, 2, 3].collect {|index| terminal_parse_failure_at(index)}
     
