@@ -16,7 +16,7 @@ module Treetop
     end
 
     def parse_at(input, start_index, parser)
-      node_cache = parser.node_cache_for(self)
+      node_cache = parser.parse_cache[self]
       if cached_result = node_cache[start_index]
         return cached_result
       else

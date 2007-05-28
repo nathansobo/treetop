@@ -29,6 +29,11 @@ end
 def parser_with_empty_cache_mock
   parser = mock("parser with empty cache")
   parser.stub!(:node_cache_for).and_return(FakeEmptyNodeCache.new)
+  
+  parse_cache_mock = mock('parse cache')
+  parse_cache_mock.stub!(:[]).and_return(FakeEmptyNodeCache.new)
+  
+  parser.stub!(:parse_cache).and_return(parse_cache_mock)
   return parser
 end
 
