@@ -31,11 +31,11 @@ module Treetop
     
     protected
 
-    def success(input, interval, results, encountered_child_results)
+    def success(input, interval, results, nested_results)
       return node_class.new(input,
                             interval,
                             results,
-                            collect_nested_failures_at_maximum_index(encountered_child_results))
+                            nested_results)
     end
   end
 end

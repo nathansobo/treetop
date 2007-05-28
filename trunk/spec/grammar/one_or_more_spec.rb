@@ -100,7 +100,7 @@ describe "The result of one or more of an expression that parses successfully wi
     @result = @one_or_more.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
   end
   
-  it "has the nested failure of encountered results with the highest index as its only nested failure" do
+  it "has the nested failure of nested results with the highest index as its only nested failure" do
     nested_failures = @result.nested_failures
     nested_failures.size.should == 1
     nested_failures.should include(@result_2.nested_failures.first)
@@ -120,7 +120,7 @@ describe "The result of one or more of an expression that fails on the first par
     @result.should be_failure
   end
   
-  it "has the nested failure on the encountered failure as its nested failure" do
+  it "has the nested failure on the result it encounters as its nested failure" do
     @result.nested_failures.should include(@child_result.nested_failures.first)
   end
 end

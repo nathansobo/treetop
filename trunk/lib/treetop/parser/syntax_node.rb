@@ -2,13 +2,15 @@ module Treetop
   class SyntaxNode < ParseResult
     attr_reader :input, :interval
     
-    def initialize(input, interval, nested_failures = [])
-      super(nested_failures)
+    def initialize(input, interval, nested_results = [])
+      super(nested_results)
       @input = input
       @interval = interval
     end
     
-    def update_nested_failures(new_nested_failures)
+    def update_nested_failures(nested_results)
+      new_nested_failures = collect_nested_failures_at_maximum_index(nested_results)
+      
       return if new_nested_failures.empty?
       @nested_failures = new_nested_failures and return if nested_failures.empty?
       

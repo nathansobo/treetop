@@ -13,7 +13,7 @@ module Treetop
       if result.success? and result.interval.end == input.size
         return result
       else        
-        return ParseFailure.new(result.interval.end, result.nested_failures)
+        return ParseFailure.new(result.interval.end, [result])
       end
     end
     

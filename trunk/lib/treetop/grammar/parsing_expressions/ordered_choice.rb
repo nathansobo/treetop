@@ -11,17 +11,17 @@ module Treetop
     end
     
     def parse_at(input, start_index, parser)
-      failures = []
+      failed_results = []
       for alt in alternatives
         result = alt.parse_at(input, start_index, parser)
         if result.success?
-          result.update_nested_failures(collect_nested_failures_at_maximum_index(failures))
+          result.update_nested_failures(failed_results)
           return result
         else
-          failures << result
+          failed_results << result
         end
       end
-      return failure_at(start_index, failures)
+      return failure_at(start_index, failed_results)
     end
   end
 end

@@ -24,10 +24,19 @@ describe ParseFailure do
   end
 end
 
-describe ParseFailure, " instantiated with nested failures at various indices" do
-  before(:each) do
-    @index = 0
-    @nested_failures = [5, 5, 3, 0].collect {|index| terminal_parse_failure_at(index)}
-    @failure = ParseFailure.new(@index, @nested_failures)
-  end  
+describe ParseFailure, " instantiated with results that have nested failures" do
+  before do
+    @result_1 = terminal_parse_failure_at(4)
+    @result_2 = parse_failure_at_with_nested_failure_at(3, 4)
+    @result_3 = parse_success_with_nested_failure_at(3)
+    
+    @nested_results = [@result_1, @result_2, @result_3]
+    @failure = ParseFailure.new(mock('interval'), @nested_results)
+  end
+
+
+  it "has the nested failures with the highest index out of those results" do
+    @failure.nested_failures.should include(@result_1)
+    @failure.nested_failures.should include(@result_2.nested_failures.first)
+  end
 end
