@@ -40,7 +40,6 @@ module Treetop
             VALUE mTreetop = rb_const_get(rb_cObject, rb_intern("Treetop"));
             VALUE cTerminalParseFailure = rb_const_get(mTreetop, rb_intern("TerminalParseFailure"));
             
-    
             input_ptr = RSTRING(input)->ptr;
             input_length = RSTRING(input)->len;
             prefix_ptr = RSTRING(prefix)->ptr;
