@@ -15,7 +15,7 @@ module Treetop
       for alt in alternatives
         result = alt.parse_at(input, start_index, parser)
         if result.success?
-          result.update_nested_failures(collect_nested_failures(failures))
+          result.update_nested_failures(collect_nested_failures_at_maximum_index(failures))
           return result
         else
           failures << result

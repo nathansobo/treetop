@@ -7,7 +7,7 @@ module Treetop
     protected
     
     def child_expression_success(index, input, result)
-      return success_at(index, input, [result])
+      return success_at(index, input, result)
     end
     
     def child_expression_failure(index, input, result)

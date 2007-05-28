@@ -11,7 +11,7 @@ module Treetop
     end
     
     def child_expression_failure(index, input, result)
-      return success_at(index, input, [result])
+      return success_at(index, input, result)
     end
     
   end

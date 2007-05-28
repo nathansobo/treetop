@@ -35,7 +35,7 @@ module Treetop
       return node_class.new(input,
                             interval,
                             results,
-                            collect_nested_failures(encountered_child_results))
+                            collect_nested_failures_at_maximum_index(encountered_child_results))
     end
   end
 end

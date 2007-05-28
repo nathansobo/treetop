@@ -36,15 +36,16 @@ describe "A parsing expression" do
     and_predicate.expression.should == @expression
   end
   
-  it "can collect nested failures out of nested results with nested failures at the same index" do
+  it "can collect the nested failures of an array of results with the maximum index" do
     result_1 = parse_success_with_nested_failure_at(2)
     result_2 = terminal_parse_failure_at(2)
-    nested_results = [result_1, result_2]
+    result_3 = terminal_parse_failure_at(1)
+    nested_results = [result_1, result_2, result_3]
         
-    nested_failures = @expression.send(:collect_nested_failures, nested_results)
+    nested_failures = @expression.send(:collect_nested_failures_at_maximum_index, nested_results)
         
     nested_failures.size.should == 2
     nested_failures.should include(result_1.nested_failures.first)
-    nested_failures.should include(result_2)    
+    nested_failures.should include(result_2)
   end
 end
