@@ -25,7 +25,16 @@ module Treetop
         return nested_failures
       end
     else
-      inline do |builder|
+      inline do |builder|        
+        builder.prefix "inline static VALUE collect_nested_failures_at_maximum_index(VALUE self, VALUE _results);"
+        
+        builder.c <<-C
+          VALUE initialize(VALUE nested_results) {
+            rb_iv_set(self, "@nested_failures", collect_nested_failures_at_maximum_index(self, nested_results));
+            return self;
+          }
+        C
+        
         builder.c <<-C
           VALUE collect_nested_failures_at_maximum_index(VALUE results) {
             int i, j, current_index;
