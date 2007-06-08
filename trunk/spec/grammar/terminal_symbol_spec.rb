@@ -73,11 +73,11 @@ describe "The result of TerminalSymbol#parse_at for a non-matching input prefix 
   end
 end
 
-describe "A terminal symbol with a method defined in its node class" do
+describe "A terminal symbol with a method defined in its node class via node_class_eval" do
   before do
     @terminal = TerminalSymbol.new("foo")
     @terminal.node_class_eval do
-      def method
+      def a_method
       end
     end
   end
@@ -89,7 +89,22 @@ describe "A terminal symbol with a method defined in its node class" do
     
     result = @terminal.parse_at(input, index, parser)
     result.should be_success
-    result.should respond_to(:method)
+    result.should respond_to(:a_method)
+  end
+end
+
+describe "A terminal symbol with a method defined in its node class via a block passed to its initializer" do
+  before do
+    @terminal = TerminalSymbol.new("foo") do
+      def a_method
+      end
+    end
+  end
+  
+  it "returns nodes that have that method on a successful parse" do
+    result = @terminal.parse_at(@terminal.prefix, 0, parser_with_empty_cache_mock)
+    result.should be_success
+    result.should respond_to(:a_method)
   end
 end
 

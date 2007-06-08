@@ -8,14 +8,14 @@ grammar Metagrammar
         end
         return grammar
       end
-			
-			def grammar_name
-				if elements[2].epsilon?
-					nil
-				else
-					elements[2].value
-				end
-			end
+      
+      def grammar_name
+        if elements[2].epsilon?
+          nil
+        else
+          elements[2].value
+        end
+      end
 
       def parsing_rules(grammar)
         elements[3].value(grammar)
@@ -31,237 +31,249 @@ grammar Metagrammar
     }
   end
 
-	rule parsing_rule_sequence
-		(parsing_rule (space parsing_rule)*) {
-			def value(grammar)
-				[head.value(grammar)] + tail_values(grammar)
-			end
-		
-			def head
-				elements[0]
-			end
-					
-			def tail_elements
-				elements[1].elements
-			end
-		
-			def tail_values(grammar)
-				tail_elements.collect {|tail_element| tail_element.elements[1].value(grammar)}
-			end
-		}
-		/
-		'' {
-		  def value(grammar)
-		    []
-		  end
-		}
-	end
+  rule parsing_rule_sequence
+    (parsing_rule (space parsing_rule)*) {
+      def value(grammar)
+        [head.value(grammar)] + tail_values(grammar)
+      end
+    
+      def head
+        elements[0]
+      end
+          
+      def tail_elements
+        elements[1].elements
+      end
+    
+      def tail_values(grammar)
+        tail_elements.collect {|tail_element| tail_element.elements[1].value(grammar)}
+      end
+    }
+    /
+    '' {
+      def value(grammar)
+        []
+      end
+    }
+  end
 
-	rule parsing_rule
-		('rule' space nonterminal_symbol space ordered_choice space 'end') {
-			def value(grammar)
-	       ParsingRule.new(nonterminal_symbol.value(grammar),
-	                       parsing_expression.value(grammar))
-	     end
+  rule parsing_rule
+    ('rule' space nonterminal_symbol space ordered_choice space 'end') {
+      def value(grammar)
+         ParsingRule.new(nonterminal_symbol.value(grammar),
+                         parsing_expression.value(grammar))
+       end
    
-	     def nonterminal_symbol
-	       elements[2]
-	     end
+       def nonterminal_symbol
+         elements[2]
+       end
    
-	     def parsing_expression
-	       elements[4]
-	     end
-		}
-	end
+       def parsing_expression
+         elements[4]
+       end
+    }
+  end
 
-	rule ordered_choice
-		(sequence (space? '/' space? sequence)+) {
-			def value(grammar)
-				OrderedChoice.new(alternatives(grammar))
-			end
-		
-			def alternatives(grammar)
-				[head.value(grammar)] + tail_values(grammar)
-			end
-		
-			def head
-				elements[0]
-			end
-		
-			def tail_elements
-				elements[1].elements
-			end
-		
-			def tail_values(grammar)
-				tail_elements.map {|tail_element| tail_element.elements[3].value(grammar)}
-			end
-		}
-		/
-		sequence
-	end
+  rule ordered_choice
+    (sequence (space? '/' space? sequence)+) {
+      def value(grammar)
+        OrderedChoice.new(alternatives(grammar))
+      end
+    
+      def alternatives(grammar)
+        [head.value(grammar)] + tail_values(grammar)
+      end
+    
+      def head
+        elements[0]
+      end
+    
+      def tail_elements
+        elements[1].elements
+      end
+    
+      def tail_values(grammar)
+        tail_elements.map {|tail_element| tail_element.elements[3].value(grammar)}
+      end
+    }
+    /
+    sequence
+  end
 
-	rule sequence
-		(primary (space primary)+ trailing_block)	{
-			def value(grammar)
-				trailing_block.value(Sequence.new(sequence_elements(grammar)))
-			end
-		
-			def trailing_block
-				elements[2]
-			end
-	
-			def sequence_elements(grammar)
-				[head.value(grammar)] + tail_values(grammar)
-			end
-	
-			def head
-				elements[0]
-			end
-	
-			def tail_elements
-				elements[1].elements
-			end
-	
-			def tail_values(grammar)
-				tail_elements.map {|tail_element| tail_element.elements[1].value(grammar)}
-			end
-		}
-		/
-		primary
-	end
+  rule sequence
+    (primary (space primary)+ trailing_block)  {
+      def value(grammar)
+        trailing_block.value(Sequence.new(sequence_elements(grammar)))
+      end
+    
+      def trailing_block
+        elements[2]
+      end
+  
+      def sequence_elements(grammar)
+        [head.value(grammar)] + tail_values(grammar)
+      end
+  
+      def head
+        elements[0]
+      end
+  
+      def tail_elements
+        elements[1].elements
+      end
+  
+      def tail_values(grammar)
+        tail_elements.map {|tail_element| tail_element.elements[1].value(grammar)}
+      end
+    }
+    /
+    primary
+  end
 
-	rule parenthesized_ordered_choice
-		'(' space? ordered_choice space? ')' trailing_block {
-			def value(grammar)
-	       nested_value = nested_expression.value(grammar)
-	       unless trailing_block.epsilon? || nested_value.kind_of?(NodeInstantiatingParsingExpression)
-	         raise "Blocks can only follow node-instantiating parsing expressions such as sequences and terminal symbols."
-	       end
-	       return trailing_block.value(nested_expression.value(grammar))
-	     end
+  rule parenthesized_ordered_choice
+    '(' space? ordered_choice space? ')' trailing_block {
+      def value(grammar)
+         nested_value = nested_expression.value(grammar)
+         unless trailing_block.epsilon? || nested_value.kind_of?(NodeInstantiatingParsingExpression)
+           raise "Blocks can only follow node-instantiating parsing expressions such as sequences and terminal symbols."
+         end
+         return trailing_block.value(nested_expression.value(grammar))
+       end
      
-			def nested_expression
-	      elements[2]
-	    end
+      def nested_expression
+        elements[2]
+      end
  
-	    def trailing_block
-	      elements[5]
-	    end
-		}
-	end
+      def trailing_block
+        elements[5]
+      end
+    }
+  end
 
-	rule primary
-		(prefix? ((parenthesized_ordered_choice / terminal_symbol / nonterminal_symbol) suffix?)) {
-			def value(grammar)
-				value = primary_expression.value(grammar)
-				value = suffix.value(value) unless suffix.epsilon?
-				value = prefix.value(value) unless prefix.epsilon?
-				value
-			end
-	
-			def prefix
-				elements[0]
-			end
-		
-			def primary_expression
-				elements[1].elements[0]
-			end
-		
-			def suffix
-				elements[1].elements[1]
-			end
-		}
-	end	
-	
-	rule prefix
-		'&' {
-			def value(parsing_expression)
-				parsing_expression.and_predicate
-			end
-		}
-		/
-		'!' {
-			def value(parsing_expression)
-				parsing_expression.not_predicate
-			end
-		}
-	end
+  rule primary
+    (prefix? ((parenthesized_ordered_choice / terminal_symbol / nonterminal_symbol) suffix?)) {
+      def value(grammar)
+        value = primary_expression.value(grammar)
+        value = suffix.value(value) unless suffix.epsilon?
+        value = prefix.value(value) unless prefix.epsilon?
+        value
+      end
+  
+      def prefix
+        elements[0]
+      end
+    
+      def primary_expression
+        elements[1].elements[0]
+      end
+    
+      def suffix
+        elements[1].elements[1]
+      end
+    }
+  end  
+  
+  rule prefix
+    '&' {
+      def value(parsing_expression)
+        parsing_expression.and_predicate
+      end
+    }
+    /
+    '!' {
+      def value(parsing_expression)
+        parsing_expression.not_predicate
+      end
+    }
+  end
 
-	rule suffix
-		'*' {
-			def value(parsing_expression)
-				parsing_expression.zero_or_more
-			end
-		}
-		/
-		'+' {
-			def value(parsing_expression)
-				parsing_expression.one_or_more
-			end
-		}
-		/
-		'?' {
-			def value(parsing_expression)
-				parsing_expression.optional
-			end
-		}
-	end
-	
-	rule nonterminal_symbol
-		(!(keyword !alphanumeric_char) (alpha_char alphanumeric_char*)) {
-			def value(grammar)
-				grammar.nonterminal_symbol(name)
-			end
-		
-			def name
-				elements[1].text_value.to_sym
-			end
-		}
-	end
+  rule suffix
+    '*' {
+      def value(parsing_expression)
+        parsing_expression.zero_or_more
+      end
+    }
+    /
+    '+' {
+      def value(parsing_expression)
+        parsing_expression.one_or_more
+      end
+    }
+    /
+    '?' {
+      def value(parsing_expression)
+        parsing_expression.optional
+      end
+    }
+  end
+  
+  rule nonterminal_symbol
+    (!(keyword !alphanumeric_char) (alpha_char alphanumeric_char*)) {
+      def value(grammar)
+        grammar.nonterminal_symbol(name)
+      end
+    
+      def name
+        elements[1].text_value.to_sym
+      end
+    }
+  end
 
-	rule alpha_char
-		[A-Za-z_]
-	end
+  rule alpha_char
+    [A-Za-z_]
+  end
 
-	rule alphanumeric_char
-		alpha_char / [0-9]
-	end
+  rule alphanumeric_char
+    alpha_char / [0-9]
+  end
 
-	rule terminal_symbol
-		terminal_symbol_prefix trailing_block {
-			def value(grammar = nil)
-	     	trailing_block.value(terminal_symbol.value)
-	     end
+  rule terminal_symbol
+    terminal_symbol_prefix trailing_block {
+      def value(grammar = nil)
+        trailing_block.value(terminal_symbol.value)
+      end
      
-	     def terminal_symbol
-	       elements[0]
-	     end
+      def terminal_symbol
+        elements[0]
+      end
      
-	     def trailing_block
-	       elements[1]
-	   	end
-		}
-	end
+      def trailing_block
+        elements[1]
+      end
+      
+      def to_ruby
+        trailing_block.to_ruby(terminal_symbol)
+      end
+    }
+  end
 
-	rule terminal_symbol_prefix
-		single_quoted_string / double_quoted_string / character_class / anything_symbol
-	end
+  rule terminal_symbol_prefix
+    single_quoted_string / double_quoted_string / character_class / anything_symbol
+  end
 
-	rule double_quoted_string
-		('"' (!'"' ('\"' / .))* '"') {
-			def value
-				TerminalSymbol.new(elements[1].text_value)
-			end
-		}
-	end
+  rule double_quoted_string
+    ('"' (!'"' ('\"' / .))* '"') {
+      def value
+        TerminalSymbol.new(elements[1].text_value)
+      end
+      
+      def to_ruby
+        "TerminalSymbol.new('#{elements[1].text_value}')"
+      end
+    }
+  end
 
-	rule single_quoted_string
-		("'" (!"'" ("\'" / .))* "'") {
-			def value
-				TerminalSymbol.new(elements[1].text_value)
-			end
-		}
-	end
+  rule single_quoted_string
+    ("'" (!"'" ("\'" / .))* "'") {
+      def value
+        TerminalSymbol.new(elements[1].text_value)
+      end
+      
+      def to_ruby
+        "TerminalSymbol.new('#{elements[1].text_value}')"
+      end
+    }
+  end
 
   rule trailing_block
     space block {
@@ -273,11 +285,19 @@ grammar Metagrammar
       def block
         elements[1]
       end
+      
+      def to_ruby(preceding_expression)
+        "#{preceding_expression.to_ruby} do#{block.value}end"
+      end
     }
     /
     '' {
       def value(parsing_expression)
         parsing_expression
+      end
+      
+      def to_ruby(preceding_expression)
+        preceding_expression.to_ruby
       end
     }
   end
