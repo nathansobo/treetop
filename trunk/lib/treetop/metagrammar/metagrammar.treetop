@@ -333,7 +333,11 @@ grammar Metagrammar
 
       def characters
         elements[1].text_value
-      end    
+      end
+      
+      def to_ruby
+        "CharacterClass.new('#{characters}')"
+      end
     }
   end
   

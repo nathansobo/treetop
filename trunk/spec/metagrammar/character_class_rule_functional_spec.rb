@@ -28,3 +28,17 @@ describe "The subset of the metagrammar rooted at the character_class rule" do
     end
   end
 end
+
+describe "in the Metagrammar only, the node returned by the character_class rule's successful parsing" do
+  include MetagrammarSpecContextHelper
+  
+  before do
+    with_metagrammar(:character_class) do |parser|
+      @node = parser.parse('[A-C123\]]')
+    end
+  end
+  
+  it "has a Ruby source representation" do
+    @node.to_ruby.should == 'CharacterClass.new(\'A-C123\]\')'
+  end
+end
