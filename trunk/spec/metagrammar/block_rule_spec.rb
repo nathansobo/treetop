@@ -51,3 +51,33 @@ describe "The subset of the metagrammar rooted at the block rule" do
     end
   end
 end
+
+describe "In the Metagrammar only, the node returned by the block rule's successful parsing of a Ruby block with newlines between its contents and its enclosing braces" do
+  include MetagrammarSpecContextHelper
+  
+  before do
+    with_metagrammar(:block) do |parser|
+      @block_contents = "\ndef a_method\n\nend\n"
+      @node = parser.parse("{#{@block_contents}}")
+    end
+  end
+  
+  it "has a Ruby source representation" do
+    @node.to_ruby.should == "do#{@block_contents}end"
+  end
+end
+
+describe "In the Metagrammar only, the node returned by the block rule's successful parsing of a Ruby block with no whitespace between its contents and its enclosing braces" do
+  include MetagrammarSpecContextHelper
+  
+  before do
+    with_metagrammar(:block) do |parser|
+      @block_contents = "def a_method\n\nend"
+      @node = parser.parse("{#{@block_contents}}")
+    end
+  end
+  
+  it "has a Ruby source representation with newlines inserted between the do and end to ensure syntactic correctness" do
+    @node.to_ruby.should == "do\n#{@block_contents}\nend"
+  end
+end

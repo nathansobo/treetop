@@ -72,4 +72,3 @@ describe "In the Metagrammar only, the node returned by the trailing_block rule'
     @node.to_ruby(preceding_expression).should == ruby_for_preceding_expression
   end
 end
-

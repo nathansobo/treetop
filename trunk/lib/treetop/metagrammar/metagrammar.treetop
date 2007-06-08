@@ -287,7 +287,7 @@ grammar Metagrammar
       end
       
       def to_ruby(preceding_expression)
-        "#{preceding_expression.to_ruby} do#{block.value}end"
+        "#{preceding_expression.to_ruby} #{block.to_ruby}"
       end
     }
     /
@@ -305,7 +305,22 @@ grammar Metagrammar
   rule block
     ('{' (block / ![{}] .)* '}') {
       def value
+        block_contents
+      end
+            
+      def to_ruby
+        first_character = block_contents[0]
+        last_character = block_contents[-1]
+      
+        "do#{newline_if_needed(first_character)}#{block_contents}#{newline_if_needed(last_character)}end"
+      end
+      
+      def block_contents
         elements[1].text_value
+      end
+      
+      def newline_if_needed(character)
+        character == 10 ? "" : "\n"
       end
     }
   end
@@ -330,6 +345,10 @@ grammar Metagrammar
     '.' {
       def value(grammar = nil)
         AnythingSymbol.new
+      end
+      
+      def to_ruby
+        'AnythingSymbol.new'
       end
     }
   end

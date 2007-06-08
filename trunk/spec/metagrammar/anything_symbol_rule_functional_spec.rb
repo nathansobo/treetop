@@ -16,3 +16,17 @@ describe "The subset of the metagrammar rooted at the anything_symbol rule" do
     end
   end
 end
+
+describe "In the Metagrammar only, the node returned by anything_symbol rule's the successful parsing of a . character" do
+  include MetagrammarSpecContextHelper
+  
+  before do
+    with_metagrammar(:anything_symbol) do |parser|
+      @node = parser.parse('.')
+    end
+  end
+  
+  it "has a Ruby source representation" do
+    @node.to_ruby.should == 'AnythingSymbol.new'
+  end
+end
