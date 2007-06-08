@@ -109,21 +109,25 @@ grammar Metagrammar
       def trailing_block
         elements[2]
       end
-  
+
       def sequence_elements(grammar)
         [head.value(grammar)] + tail_values(grammar)
       end
-  
+
       def head
         elements[0]
       end
-  
+
       def tail_elements
         elements[1].elements
       end
-  
+
       def tail_values(grammar)
         tail_elements.map {|tail_element| tail_element.elements[1].value(grammar)}
+      end
+      
+      def to_ruby
+        
       end
     }
     /
@@ -170,6 +174,13 @@ grammar Metagrammar
       def suffix
         elements[1].elements[1]
       end
+      
+      def to_ruby(grammar_node)
+        ruby_source = primary_expression.to_ruby(grammar_node)
+        ruby_source = suffix.to_ruby(ruby_source) unless suffix.epsilon?
+        ruby_source = prefix.to_ruby(ruby_source) unless prefix.epsilon?
+        ruby_source
+      end
     }
   end  
   
@@ -178,11 +189,19 @@ grammar Metagrammar
       def value(parsing_expression)
         parsing_expression.and_predicate
       end
+      
+      def to_ruby(subsequent_expression_ruby_source)
+        "AndPredicate.new(#{subsequent_expression_ruby_source})"
+      end
     }
     /
     '!' {
       def value(parsing_expression)
         parsing_expression.not_predicate
+      end
+      
+      def to_ruby(subsequent_expression_ruby_source)
+        "NotPredicate.new(#{subsequent_expression_ruby_source})"
       end
     }
   end
@@ -192,17 +211,29 @@ grammar Metagrammar
       def value(parsing_expression)
         parsing_expression.zero_or_more
       end
+      
+      def to_ruby(preceding_expression_ruby_source)
+        "ZeroOrMore.new(#{preceding_expression_ruby_source})"
+      end
     }
     /
     '+' {
       def value(parsing_expression)
         parsing_expression.one_or_more
       end
+      
+      def to_ruby(preceding_expression_ruby_source)
+        "OneOrMore.new(#{preceding_expression_ruby_source})"
+      end
     }
     /
     '?' {
       def value(parsing_expression)
         parsing_expression.optional
+      end
+      
+      def to_ruby(preceding_expression_ruby_source)
+        "Optional.new(#{preceding_expression_ruby_source})"
       end
     }
   end
@@ -215,6 +246,10 @@ grammar Metagrammar
     
       def name
         elements[1].text_value.to_sym
+      end
+      
+      def to_ruby(grammar_node)
+        "#{grammar_node.name}.nonterminal_symbol(:#{name})"
       end
     }
   end
@@ -241,7 +276,7 @@ grammar Metagrammar
         elements[1]
       end
       
-      def to_ruby
+      def to_ruby(grammar_node = nil)
         trailing_block.to_ruby(terminal_symbol)
       end
     }

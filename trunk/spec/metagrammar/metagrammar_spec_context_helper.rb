@@ -30,4 +30,8 @@ module MetagrammarSpecContextHelper
     yield(parser)
     Metagrammar.root = previous_root
   end
+  
+  def grammar_node_mock(name = "MockGrammar")
+    stub("grammar_node", :name => name)
+  end
 end

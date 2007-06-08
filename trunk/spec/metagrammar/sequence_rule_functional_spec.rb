@@ -61,3 +61,26 @@ describe "The subset of the metagrammar rooted at the sequence rule" do
     end
   end
 end
+
+describe "In the Metagrammar only, the result of the sequence rule's successful parsing of space-separated terminals" do
+  include MetagrammarSpecContextHelper
+
+  before do
+    with_metagrammar(:sequence) do |parser|
+      @node = parser.parse('"foo" "bar" "baz"')
+    end
+  end
+  
+  it "has a Ruby source representation"
+  #   @node.to_ruby.should == "Sequence.new([TerminalSymbol.new('foo'), TerminalSymbol.new('bar'), TerminalSymbol.new('baz')])"
+  # end
+end
+
+describe "In the Metagrammar only, the result of the sequence rule's successful parsing of space-separated terminals and nonterminals" do
+  before do
+    @node = parser.parse('"foo" bar baz')
+  end
+  
+  it "has a Ruby source representation"
+
+end

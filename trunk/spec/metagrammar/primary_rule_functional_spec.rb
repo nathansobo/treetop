@@ -84,3 +84,75 @@ describe "The subset of the metagrammar rooted at the primary rule" do
     end
   end
 end
+
+
+describe "In only the Metagrammar, the node returned by the primary rule's successful parsing of a terminal symbol followed by a +" do
+  include MetagrammarSpecContextHelper
+
+  before do
+    with_metagrammar(:primary) do |parser|
+      @node = parser.parse('"b"+')
+    end
+  end
+
+  it "has a Ruby source representiation" do
+    @node.to_ruby(grammar_node_mock).should == "OneOrMore.new(TerminalSymbol.new('b'))"
+  end
+end
+
+describe "In only the Metagrammar, the node returned by the primary rule's successful parsing of a terminal symbol" do
+  include MetagrammarSpecContextHelper
+
+  before do
+    with_metagrammar(:primary) do |parser|
+      @node = parser.parse('"foo"')
+    end
+  end
+
+  it "has a Ruby source representiation" do
+    @node.to_ruby(grammar_node_mock).should == "TerminalSymbol.new('foo')"
+  end
+end
+
+describe "In only the Metagrammar, the node returned by the primary rule's successful parse of a terminal symbol preceded by an &" do
+  include MetagrammarSpecContextHelper
+
+  before do
+    with_metagrammar(:primary) do |parser|
+      @node = parser.parse('&"foo"')
+    end
+  end
+    
+  it "has a Ruby source representation" do
+    @node.to_ruby(grammar_node_mock).should == "AndPredicate.new(TerminalSymbol.new('foo'))"
+  end
+end
+
+
+describe "In only the Metagrammar, the node returned by the primary rule's successful parse of a terminal symbol preceded by a ! and followed by a +" do
+  include MetagrammarSpecContextHelper
+
+  before do
+    with_metagrammar(:primary) do |parser|
+      @node = parser.parse('!"foo"+')
+    end
+  end
+
+  it "has a Ruby source representation" do
+    @node.to_ruby(grammar_node_mock).should == "NotPredicate.new(OneOrMore.new(TerminalSymbol.new('foo')))"
+  end
+end
+
+describe "In only the Metagrammar, the node returned by the primary rule's successful parsing of a nonterminal symbol" do
+  include MetagrammarSpecContextHelper
+
+  before do
+    with_metagrammar(:primary) do |parser|
+      @node = parser.parse('foo')
+    end
+  end
+
+  it "has a Ruby source representation given a named grammar in which the symbol is referenced" do
+    @node.to_ruby(grammar_node_mock('Bar')).should == "Bar.nonterminal_symbol(:foo)"
+  end
+end

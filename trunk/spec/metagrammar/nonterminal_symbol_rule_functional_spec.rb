@@ -41,3 +41,20 @@ describe "The subset of the metagrammar rooted at the nonterminal_symbol rule" d
     end
   end
 end
+
+describe "In only Metagrammar, the node returned by the nonterminal_symbol rule's successful parsing of a nonterminal" do
+  include MetagrammarSpecContextHelper
+
+  before do
+    with_metagrammar(:nonterminal_symbol) do |parser|
+      @node = parser.parse('foo')
+    end
+  end
+
+  it "has the Ruby source representation of the nonterminal being requested from a given grammar" do
+    grammar = mock('a grammar syntax node')
+    grammar.should_receive(:name).and_return('Bar')
+    
+    @node.to_ruby(grammar).should == "Bar.nonterminal_symbol(:foo)"
+  end
+end
