@@ -101,33 +101,44 @@ grammar Metagrammar
   end
 
   rule sequence
-    (primary (space primary)+ trailing_block)  {
-      def value(grammar)
-        trailing_block.value(Sequence.new(sequence_elements(grammar)))
+    (primary (space primary)+ trailing_block) {
+      
+      def to_ruby(grammar_node)      
+        elements_ruby = sequence_elements.map {|element| element.to_ruby(grammar_node)}
+        sequence_ruby = "Sequence.new([#{elements_ruby.join(', ')}])"        
+        trailing_block.to_ruby(sequence_ruby)
       end
-    
-      def trailing_block
-        elements[2]
+      
+      def sequence_elements
+        [head_element] + tail_elements
       end
 
-      def sequence_elements(grammar)
-        [head.value(grammar)] + tail_values(grammar)
-      end
-
-      def head
+      def head_element
         elements[0]
       end
 
       def tail_elements
-        elements[1].elements
-      end
-
-      def tail_values(grammar)
-        tail_elements.map {|tail_element| tail_element.elements[1].value(grammar)}
+        elements[1].elements.map {|space_primary_sequence| space_primary_sequence.elements[1]}
       end
       
-      def to_ruby
-        
+      def trailing_block
+        elements[2]
+      end
+
+      def value(grammar)
+        trailing_block.value(Sequence.new(sequence_element_values(grammar)))
+      end
+      
+      def sequence_element_values(grammar)
+        [head_element_value(grammar)] + tail_element_values(grammar)
+      end
+      
+      def head_element_value(grammar)
+        head_element.value(grammar)
+      end
+      
+      def tail_element_values(grammar)
+        tail_elements.map {|tail_element| tail_element.value(grammar)}
       end
     }
     /
@@ -277,7 +288,7 @@ grammar Metagrammar
       end
       
       def to_ruby(grammar_node = nil)
-        trailing_block.to_ruby(terminal_symbol)
+        trailing_block.to_ruby(terminal_symbol.to_ruby)
       end
     }
   end
@@ -321,8 +332,8 @@ grammar Metagrammar
         elements[1]
       end
       
-      def to_ruby(preceding_expression)
-        "#{preceding_expression.to_ruby} #{block.to_ruby}"
+      def to_ruby(preceding_expression_ruby_source)
+        "#{preceding_expression_ruby_source} #{block.to_ruby}"
       end
     }
     /
@@ -331,8 +342,8 @@ grammar Metagrammar
         parsing_expression
       end
       
-      def to_ruby(preceding_expression)
-        preceding_expression.to_ruby
+      def to_ruby(preceding_expression_ruby_source)
+        preceding_expression_ruby_source
       end
     }
   end

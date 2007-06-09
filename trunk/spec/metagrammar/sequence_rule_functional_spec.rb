@@ -62,7 +62,7 @@ describe "The subset of the metagrammar rooted at the sequence rule" do
   end
 end
 
-describe "In the Metagrammar only, the result of the sequence rule's successful parsing of space-separated terminals" do
+describe "In the Metagrammar only, the node returned by the sequence rule's successful parsing of space-separated terminals" do
   include MetagrammarSpecContextHelper
 
   before do
@@ -71,16 +71,36 @@ describe "In the Metagrammar only, the result of the sequence rule's successful 
     end
   end
   
-  it "has a Ruby source representation"
-  #   @node.to_ruby.should == "Sequence.new([TerminalSymbol.new('foo'), TerminalSymbol.new('bar'), TerminalSymbol.new('baz')])"
-  # end
+  it "has a Ruby source representation" do
+    @node.to_ruby(grammar_node_mock).should == "Sequence.new([TerminalSymbol.new('foo'), TerminalSymbol.new('bar'), TerminalSymbol.new('baz')])"
+  end
 end
 
-describe "In the Metagrammar only, the result of the sequence rule's successful parsing of space-separated terminals and nonterminals" do
+describe "In the Metagrammar only, the node returned by the sequence rule's successful parsing of space-separated terminals and nonterminals" do
+  include MetagrammarSpecContextHelper
+
   before do
-    @node = parser.parse('"foo" bar baz')
+    with_metagrammar(:sequence) do |parser|
+      @node = parser.parse('"foo" bar baz')
+    end
   end
   
-  it "has a Ruby source representation"
+  it "has a Ruby source representation" do
+    @node.to_ruby(grammar_node_mock('Foo')).should == "Sequence.new([TerminalSymbol.new('foo'), Foo.nonterminal_symbol(:bar), Foo.nonterminal_symbol(:baz)])"
+  end
+end
+
+describe "In the Metagrammar only, a sequence followed by a block" do
+  include MetagrammarSpecContextHelper
+
+  before do
+    with_metagrammar(:sequence) do |parser|
+      @node = parser.parse("foo bar {\ndef a_method\n\nend\n}")
+    end
+  end
+  
+  it "has a Ruby source representation" do
+    @node.to_ruby(grammar_node_mock('Foo')).should == "Sequence.new([Foo.nonterminal_symbol(:foo), Foo.nonterminal_symbol(:bar)]) do\ndef a_method\n\nend\nend"
+  end
 
 end

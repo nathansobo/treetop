@@ -47,11 +47,8 @@ describe "In the Metagrammar only, the node returned by the trailing_block rule'
   end
   
   it "has a Ruby source representation with that block subsequent to the Ruby representation of the preceding expression" do
-    preceding_expression = mock('preceding expression')
     ruby_for_preceding_expression = 'TerminalSymbol.new("foo")'
-    preceding_expression.should_receive(:to_ruby).and_return(ruby_for_preceding_expression)
-
-    @node.to_ruby(preceding_expression).should == "#{ruby_for_preceding_expression} do#{@ruby_block_contents}end"
+    @node.to_ruby(ruby_for_preceding_expression).should == "#{ruby_for_preceding_expression} do#{@ruby_block_contents}end"
   end
 end
 
@@ -65,10 +62,7 @@ describe "In the Metagrammar only, the node returned by the trailing_block rule'
   end
   
   it "has a Ruby source representation identical to that of a given preceding expression" do
-    preceding_expression = mock('preceding expression')
     ruby_for_preceding_expression = 'TerminalSymbol.new("foo")'
-    preceding_expression.should_receive(:to_ruby).and_return(ruby_for_preceding_expression)
-
-    @node.to_ruby(preceding_expression).should == ruby_for_preceding_expression
+    @node.to_ruby(ruby_for_preceding_expression).should == ruby_for_preceding_expression
   end
 end
