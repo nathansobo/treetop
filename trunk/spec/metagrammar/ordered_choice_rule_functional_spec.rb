@@ -141,3 +141,17 @@ describe "The subset of the metagrammar rooted at the ordered_choice rule" do
     end
   end
 end
+
+describe "In the Metagrammar only, the node returned by the ordered_choice rule's successful parsing of an ordered choice between a terminal and a nonterminal" do
+  include MetagrammarSpecContextHelper
+  
+  before do
+    with_metagrammar(:ordered_choice) do |parser|
+      @node = parser.parse("'foo' / bar")
+    end
+  end
+
+  it "has a Ruby source representation" do
+    @node.to_ruby(grammar_node_mock('Foo')).should == "OrderedChoice.new([TerminalSymbol.new('foo'), Foo.nonterminal_symbol(:bar)])"
+  end
+end

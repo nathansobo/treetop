@@ -76,24 +76,30 @@ grammar Metagrammar
 
   rule ordered_choice
     (sequence (space? '/' space? sequence)+) {
+
+      def to_ruby(grammar_node)
+        alternatives_ruby = alternatives.map {|alternative| alternative.to_ruby(grammar_node)}
+        "OrderedChoice.new([#{alternatives_ruby.join(', ')}])"
+      end
+
       def value(grammar)
-        OrderedChoice.new(alternatives(grammar))
+        OrderedChoice.new(alternative_values(grammar))
       end
     
-      def alternatives(grammar)
-        [head.value(grammar)] + tail_values(grammar)
+      def alternative_values(grammar)
+        alternatives.map {|alternative| alternative.value(grammar)}
+      end
+      
+      def alternatives
+        [head_alternative] + tail_alternatives
       end
     
-      def head
+      def head_alternative
         elements[0]
       end
     
-      def tail_elements
-        elements[1].elements
-      end
-    
-      def tail_values(grammar)
-        tail_elements.map {|tail_element| tail_element.elements[3].value(grammar)}
+      def tail_alternatives
+        elements[1].elements.map {|repeated_tail_sequence| repeated_tail_sequence.elements[3]}
       end
     }
     /
@@ -147,14 +153,18 @@ grammar Metagrammar
 
   rule parenthesized_ordered_choice
     '(' space? ordered_choice space? ')' trailing_block {
+      def to_ruby(grammar_node)
+        trailing_block.to_ruby(nested_expression.to_ruby(grammar_node))
+      end
+
       def value(grammar)
          nested_value = nested_expression.value(grammar)
          unless trailing_block.epsilon? || nested_value.kind_of?(NodeInstantiatingParsingExpression)
            raise "Blocks can only follow node-instantiating parsing expressions such as sequences and terminal symbols."
          end
          return trailing_block.value(nested_expression.value(grammar))
-       end
-     
+      end
+      
       def nested_expression
         elements[2]
       end
