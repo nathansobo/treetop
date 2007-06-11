@@ -82,4 +82,24 @@ describe "In the Metagrammar only, the node returned by the grammar rule's succe
   it "has a Ruby source representation" do
     @node.to_ruby.should == "Foo = Grammar.new\n"
   end
-end  
+end
+
+describe "In the Metagrammar only, the node returned by the grammar rule's successful parsing of a grammar with a single rule" do
+  include MetagrammarSpecContextHelper
+  
+  before do
+    with_metagrammar(:grammar) do |parser|
+      input =
+      %{grammar Foo
+        rule bar
+          'baz'
+        end
+      end}
+      @node = parser.parse(input)
+    end
+  end
+  
+  it "has a Ruby source representation" do
+    @node.to_ruby.should == "Foo = Grammar.new\nFoo.add_parsing_rule(ParsingRule.new(Foo.nonterminal_symbol(:bar), TerminalSymbol.new('baz')))\n"
+  end
+end

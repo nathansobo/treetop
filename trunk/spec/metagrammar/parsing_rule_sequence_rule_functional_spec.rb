@@ -54,3 +54,23 @@ describe "The subset of the metagrammar rooted at the parsing_rule_sequence rule
     end
   end
 end
+
+describe "In the Metagrammar only, the node returned by the parsing_rule_sequence rule's successful parsing of two parsing rules" do
+  before do
+    with_metagrammar(:parsing_rule_sequence) do |parser|
+      input =
+      %{rule foo
+          'bar'
+        end
+      
+        rule baz
+          'bot'
+        end}
+      
+      @node = parser.parse(input)
+    end
+    
+  end
+  
+  it "has a Ruby source representation"
+end
