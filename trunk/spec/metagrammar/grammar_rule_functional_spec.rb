@@ -68,3 +68,18 @@ describe "The subset of the metagrammar rooted at the grammar rule" do
     end
   end
 end
+
+
+describe "In the Metagrammar only, the node returned by the grammar rule's successful parsing of a grammar with no rules" do
+  include MetagrammarSpecContextHelper
+  
+  before do
+    with_metagrammar(:grammar) do |parser|
+      @node = parser.parse %{grammar Foo end}
+    end
+  end
+  
+  it "has a Ruby source representation" do
+    @node.to_ruby.should == "Foo = Grammar.new\n"
+  end
+end  

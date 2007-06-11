@@ -20,6 +20,14 @@ grammar Metagrammar
       def parsing_rules(grammar)
         elements[3].value(grammar)
       end
+      
+      def name
+        grammar_name
+      end
+      
+      def to_ruby
+        "#{name} = Grammar.new\n"
+      end
     }
   end
 
