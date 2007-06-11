@@ -27,3 +27,17 @@ describe "The subset of the metagrammar rooted at the parsing_rule rule" do
     end
   end
 end
+
+describe "In the Metagrammar only, the node returned by the parsing_rule rule's successful parsing of a rule with a terminal expression" do
+  include MetagrammarSpecContextHelper
+
+  before do
+    with_metagrammar(:parsing_rule) do |parser|
+      @node = parser.parse("rule foo 'bar' end")
+    end
+  end
+
+  it "has a Ruby source representation" do
+    @node.to_ruby(grammar_node_mock('Foo')).should == "ParsingRule.new(Foo.nonterminal_symbol(:foo), TerminalSymbol.new('bar'))"
+  end
+end

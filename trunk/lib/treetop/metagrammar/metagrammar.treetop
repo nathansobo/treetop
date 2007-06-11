@@ -63,7 +63,11 @@ grammar Metagrammar
          ParsingRule.new(nonterminal_symbol.value(grammar),
                          parsing_expression.value(grammar))
        end
-   
+
+       def to_ruby(grammar_node)
+        "ParsingRule.new(#{nonterminal_symbol.to_ruby(grammar_node)}, #{parsing_expression.to_ruby(grammar_node)})"
+       end
+
        def nonterminal_symbol
          elements[2]
        end
