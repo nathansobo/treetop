@@ -40,4 +40,8 @@ describe "In the Metagrammar only, the node returned by the parsing_rule rule's 
   it "has a Ruby source representation" do
     @node.to_ruby(grammar_node_mock('Foo')).should == "ParsingRule.new(Foo.nonterminal_symbol(:foo), TerminalSymbol.new('bar'))"
   end
+  
+  it 'can generate the Ruby to add itself to a grammar' do
+    @node.add_rule_ruby(grammar_node_mock('Foo')).should == "Foo.add_parsing_rule(ParsingRule.new(Foo.nonterminal_symbol(:foo), TerminalSymbol.new('bar')))"
+  end
 end
