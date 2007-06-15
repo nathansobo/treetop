@@ -6,9 +6,14 @@ describe "The node returned by the nonterminal_symbol rule's successful parsing 
   include MetagrammarSpecContextHelper
 
   before(:all) do
+    Bar = Grammar.new
     with_metagrammar(:nonterminal_symbol) do |parser|
       @node = parser.parse('foo')
     end
+  end
+  
+  after(:all) do
+    Object.send(:remove_const, :Bar)
   end
   
   it "is successful" do
@@ -16,7 +21,6 @@ describe "The node returned by the nonterminal_symbol rule's successful parsing 
   end
 
   it "has the Ruby source representation that evaluates to a nonterminal in the containing grammar" do    
-    Bar = Grammar.new
     value = eval(@node.to_ruby(grammar_node_mock('Bar')))
     Bar.nonterminal_symbol(:foo).should == value
   end

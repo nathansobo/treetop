@@ -10,7 +10,7 @@ describe "The subset of the metagrammar rooted at the space rule" do
   end
 
   it "parses different types of whitespace" do
-    with_both_protometagrammar_and_metagrammar(@root) do |parser|
+    with_metagrammar(@root) do |parser|
       grammar = Grammar.new
 
       parser.parse(' ').should be_success
@@ -21,7 +21,7 @@ describe "The subset of the metagrammar rooted at the space rule" do
   end
   
   it "does not parse nonwhitespace characters" do
-    with_both_protometagrammar_and_metagrammar(@root) do |parser|
+    with_metagrammar(@root) do |parser|
       grammar = Grammar.new
       parser.parse('g').should be_failure
       parser.parse('g ').should be_failure
