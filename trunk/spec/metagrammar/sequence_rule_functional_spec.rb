@@ -67,7 +67,7 @@ describe "In the Metagrammar only, the node returned by the sequence rule's succ
 
   before do
     with_metagrammar(:sequence) do |parser|
-      @node = parser.parse('"foo" "bar" "baz"')
+      @node = parser.parse("'foo' 'bar' 'baz'")
     end
   end
   
@@ -81,7 +81,7 @@ describe "In the Metagrammar only, the node returned by the sequence rule's succ
 
   before do
     with_metagrammar(:sequence) do |parser|
-      @node = parser.parse('"foo" bar baz')
+      @node = parser.parse("'foo' bar baz")
     end
   end
   

@@ -96,7 +96,7 @@ describe "In only the Metagrammar, the node returned by the primary rule's succe
   end
 
   it "has a Ruby source representiation" do
-    @node.to_ruby(grammar_node_mock).should == "OneOrMore.new(TerminalSymbol.new('b'))"
+    @node.to_ruby(grammar_node_mock).should == 'OneOrMore.new(TerminalSymbol.new("b"))'
   end
 end
 
@@ -110,7 +110,7 @@ describe "In only the Metagrammar, the node returned by the primary rule's succe
   end
 
   it "has a Ruby source representiation" do
-    @node.to_ruby(grammar_node_mock).should == "TerminalSymbol.new('foo')"
+    @node.to_ruby(grammar_node_mock).should == 'TerminalSymbol.new("foo")'
   end
 end
 
@@ -119,7 +119,7 @@ describe "In only the Metagrammar, the node returned by the primary rule's succe
 
   before do
     with_metagrammar(:primary) do |parser|
-      @node = parser.parse('&"foo"')
+      @node = parser.parse("&'foo'")
     end
   end
     
@@ -134,7 +134,7 @@ describe "In only the Metagrammar, the node returned by the primary rule's succe
 
   before do
     with_metagrammar(:primary) do |parser|
-      @node = parser.parse('!"foo"+')
+      @node = parser.parse("!'foo'+")
     end
   end
 

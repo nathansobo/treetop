@@ -343,7 +343,7 @@ grammar Metagrammar
       end
       
       def to_ruby
-        "TerminalSymbol.new('#{elements[1].text_value}')"
+        "TerminalSymbol.new(\"#{elements[1].text_value}\")"
       end
     }
   end

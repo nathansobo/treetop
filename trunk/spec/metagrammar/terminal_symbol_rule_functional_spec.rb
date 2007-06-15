@@ -75,9 +75,38 @@ describe "The node returned by the terminal_symbol rule's successful parsing of 
   end
 
   it "can generate Ruby to construct a TerminalSymbol" do
-    @node.to_ruby.should == "TerminalSymbol.new('foo')"
+    @node.to_ruby.should == 'TerminalSymbol.new("foo")'
   end
 end
+
+describe "The node returned by the terminal_symbol rule's successful parsing of a single quote in double quotes" do
+  include MetagrammarSpecContextHelper
+
+  before do
+    with_metagrammar(:terminal_symbol) do |parser|
+      @node = parser.parse("\"'\"")
+    end
+  end
+
+  it "can generate Ruby to construct a TerminalSymbol" do
+    @node.to_ruby.should == "TerminalSymbol.new(\"'\")"
+  end
+end
+
+describe "The node returned by the terminal_symbol rule's successful parsing of an escaped single quote in single quotes" do
+  include MetagrammarSpecContextHelper
+
+  before do
+    with_metagrammar(:terminal_symbol) do |parser|
+      @node = parser.parse("'\\''")
+    end
+  end
+
+  it "can generate Ruby to construct a TerminalSymbol" do
+    @node.to_ruby.should == "TerminalSymbol.new('\\'')"
+  end
+end
+
 
 describe "The node returned by the terminal_symbol rule's successful parsing of a double-quoted string followed by a Ruby block" do
   include MetagrammarSpecContextHelper
@@ -89,6 +118,6 @@ describe "The node returned by the terminal_symbol rule's successful parsing of 
   end
 
   it "can generate Ruby to construct a TerminalSymbol that evaluates the trailing block in its node class" do
-    @node.to_ruby.should == "TerminalSymbol.new('foo') do\ndef a_method\n\nend\nend"
+    @node.to_ruby.should == "TerminalSymbol.new(\"foo\") do\ndef a_method\n\nend\nend"
   end
 end
