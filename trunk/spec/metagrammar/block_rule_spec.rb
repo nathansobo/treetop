@@ -2,7 +2,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 require "#{dir}/metagrammar_spec_context_helper"
 
-describe "The subset of the metagrammar rooted at the block rule" do
+describe "The subset of the Metagrammar rooted at the block rule" do
   include MetagrammarSpecContextHelper
   
   before do
@@ -13,7 +13,6 @@ describe "The subset of the metagrammar rooted at the block rule" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       result = parser.parse('{}')
       result.should be_success
-      result.value.should == ""
     end
   end
   
@@ -21,7 +20,6 @@ describe "The subset of the metagrammar rooted at the block rule" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       result = parser.parse('{   }')
       result.should be_success
-      result.value.should == "   "
     end
   end
 
@@ -30,36 +28,31 @@ describe "The subset of the metagrammar rooted at the block rule" do
       text = "some_text"
       result = parser.parse("{#{text}}")
       result.should be_success
-      result.value.should == text
     end
   end
 
-  it "parses a block with Ruby code that uses blocks in it" do
+  it "parses a block with containing Ruby code that also uses blocks" do
     with_both_protometagrammar_and_metagrammar(@root) do |parser|
       ruby_code = "[1, 2, 3].map {|x| x + 1}"
       block = "{#{ruby_code}}"
       result = parser.parse(block)
       result.should be_success
-      result.value.should == ruby_code
-    end
-  end
-  
-  it "parses a block with newlines in it" do
-    with_both_protometagrammar_and_metagrammar(@root) do |parser|
-      result = parser.parse("{\ndef a_method\n\nend\n}")
-      result.should be_success
     end
   end
 end
 
-describe "In the Metagrammar only, the node returned by the block rule's successful parsing of a Ruby block with newlines between its contents and its enclosing braces" do
+describe "The node returned by the block rule's successful parsing of a Ruby block with newlines between its contents and its enclosing braces" do
   include MetagrammarSpecContextHelper
   
-  before do
+  before(:all) do
     with_metagrammar(:block) do |parser|
       @block_contents = "\ndef a_method\n\nend\n"
       @node = parser.parse("{#{@block_contents}}")
     end
+  end
+  
+  it "is successful" do
+    @node.should be_success
   end
   
   it "has a Ruby source representation" do
@@ -67,7 +60,7 @@ describe "In the Metagrammar only, the node returned by the block rule's success
   end
 end
 
-describe "In the Metagrammar only, the node returned by the block rule's successful parsing of a Ruby block with no whitespace between its contents and its enclosing braces" do
+describe "The node returned by the block rule's successful parsing of a Ruby block with no whitespace between its contents and its enclosing braces" do
   include MetagrammarSpecContextHelper
   
   before do
