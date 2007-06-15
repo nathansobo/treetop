@@ -30,7 +30,7 @@ grammar Metagrammar
       end
       
       def to_ruby
-        "#{name} = Grammar.new\n#{parsing_rule_sequence.to_ruby(self)}"
+        "#{name} = Grammar.new('#{name}')\n#{parsing_rule_sequence.to_ruby(self)}"
       end
     }
   end

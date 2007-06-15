@@ -2,75 +2,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 require "#{dir}/metagrammar_spec_context_helper"
 
-describe "The subset of the metagrammar rooted at the grammar rule" do
-  include MetagrammarSpecContextHelper
-
-  before do
-    @root = :grammar
-    @metagrammar = Protometagrammar.new
-    parser = @metagrammar.new_parser
-    @metagrammar.root = @metagrammar.nonterminal_symbol(:grammar)
-  end
-  
-  it "parses a named empty grammar" do
-    with_both_protometagrammar_and_metagrammar(@root) do |parser|
-      result = parser.parse("grammar Foo end")
-      value = result.value
-      value.should be_instance_of(Grammar)
-      value.name.should == :Foo
-    end
-  end
-
-  it "parses an anonymous empty grammar" do
-    with_both_protometagrammar_and_metagrammar(@root) do |parser|
-      result = parser.parse("grammar end")
-      result.value.should be_instance_of(Grammar)
-    end
-  end
-
-  it "parses a grammar with one rule" do
-    with_both_protometagrammar_and_metagrammar(@root) do |parser|
-      input = 
-      %{grammar
-          rule foo
-            bar
-          end
-        end}
-      result = parser.parse(input)
-      result.should be_success
-      grammar = result.value
-      grammar.should be_instance_of(Grammar)
-    
-      grammar.get_parsing_expression(grammar.nonterminal_symbol(:foo)).should be_an_instance_of(NonterminalSymbol)
-    end
-  end
-  
-  it "parses a grammar with two rules" do
-    with_both_protometagrammar_and_metagrammar(@root) do |parser|
-      input = 
-      %{grammar
-          rule foo
-            bar
-          end
-        
-          rule baz
-            bop
-          end
-        end}
-      result = parser.parse(input)
-      result.should be_success
-    
-      grammar = result.value
-      grammar.should be_instance_of(Grammar)
-    
-      grammar.get_parsing_expression(grammar.nonterminal_symbol(:foo)).should be_an_instance_of(NonterminalSymbol)
-      grammar.get_parsing_expression(grammar.nonterminal_symbol(:baz)).should be_an_instance_of(NonterminalSymbol)
-    end
-  end
-end
-
-
-describe "In the Metagrammar only, the node returned by the grammar rule's successful parsing of a grammar with no rules" do
+describe "The node returned by the grammar rule's successful parsing of a grammar with no rules" do
   include MetagrammarSpecContextHelper
   
   before do
@@ -79,12 +11,20 @@ describe "In the Metagrammar only, the node returned by the grammar rule's succe
     end
   end
   
-  it "has a Ruby source representation" do
-    @node.to_ruby.should == "Foo = Grammar.new\n"
+  after do
+    Object.instance_eval do
+      remove_const(:Foo) if const_defined?(:Foo)
+    end
+  end
+  
+  it "has a Ruby source representation that creates that grammar when evaluated" do
+    eval(@node.to_ruby)
+    Foo.should be_an_instance_of(Grammar)
+    Foo.name.should == 'Foo'
   end
 end
 
-describe "In the Metagrammar only, the node returned by the grammar rule's successful parsing of a grammar with a single rule" do
+describe "The node returned by the grammar rule's successful parsing of a grammar with a single rule" do
   include MetagrammarSpecContextHelper
   
   before do
@@ -94,12 +34,20 @@ describe "In the Metagrammar only, the node returned by the grammar rule's succe
         rule bar
           'baz'
         end
+        rule boo
+          'bip'
+        end
       end}
       @node = parser.parse(input)
     end
   end
   
-  it "has a Ruby source representation" do
-    @node.to_ruby.should == "Foo = Grammar.new\nFoo.add_parsing_rule(ParsingRule.new(Foo.nonterminal_symbol(:bar), TerminalSymbol.new('baz')))\n"
+  it "has a Ruby source representation that creates a grammar with that rule when evaluated" do
+    eval(@node.to_ruby)
+    Foo.should be_an_instance_of(Grammar)
+    Foo.name.should == 'Foo'
+    Foo.get_parsing_expression(Foo.nonterminal_symbol(:bar)).should be_an_instance_of(TerminalSymbol)
+    Foo.get_parsing_expression(Foo.nonterminal_symbol(:boo)).should be_an_instance_of(TerminalSymbol)
   end
 end
+
