@@ -1,0 +1,3 @@
+#!/usr/bin/env ruby -w
+dir = File.dirname(__FILE__)
+`#{dir}/svnadd; #{dir}/svnrm`

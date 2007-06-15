@@ -12,7 +12,9 @@ describe "In the Metagrammar only, the node returned by the parenthesized_ordere
   end
   
   it "has the Ruby source representation of the parenthesized terminal as its source representation" do
-    @node.to_ruby(grammar_node_mock).should == "TerminalSymbol.new('foo')"
+    value = eval(@node.to_ruby(grammar_node_mock))
+    value.should be_an_instance_of(TerminalSymbol)
+    value.prefix.should == 'foo'
   end
 end
 
@@ -25,7 +27,9 @@ describe "In the Metagrammar only, the node returned by the parenthesized_ordere
     end
   end
   
-  it "has the Ruby source representation of the sequence followed by the block" do
-    @node.to_ruby(grammar_node_mock).should == "Sequence.new([TerminalSymbol.new('foo'), TerminalSymbol.new('bar')]) do\ndef a_method\nend\nend"
+  it "has a Ruby source representation that evaluates to the sequence with the method block from the block defined on its node class" do
+    value = eval(@node.to_ruby(grammar_node_mock))
+    value.should be_an_instance_of(Sequence)
+    value.node_class.instance_methods.should include('a_method')
   end
 end
