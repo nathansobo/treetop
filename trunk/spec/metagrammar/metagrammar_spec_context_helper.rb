@@ -1,10 +1,8 @@
 module MetagrammarSpecContextHelper
-  def parse_result_for(parser, input)
-    grammar = Grammar.new
+  def parse_result_for(parser, grammar_name, input)
     result = parser.parse(input)
-
     result.should_not be_failure
-    result.value(grammar)
+    eval(result.to_ruby(grammar_node_mock(grammar_name)))
   end
   
   def with_both_protometagrammar_and_metagrammar(root_sym, &block)

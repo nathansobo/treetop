@@ -16,7 +16,8 @@ describe "The subset of the metagrammar rooted at the ordered_choice rule" do
   
   it "parses sequences with higher precedence than ordered choices" do
     with_metagrammar(@root) do |parser|
-      result = parse_result_for(parser, 'a b / c d')
+      result = eval(parser.parse('a b / c d').to_ruby(grammar_node_mock('Bar')))
+      
       result.should be_an_instance_of(OrderedChoice)
       result.alternatives[0].should be_an_instance_of(Sequence)
       result.alternatives[1].should be_an_instance_of(Sequence)          
@@ -25,33 +26,33 @@ describe "The subset of the metagrammar rooted at the ordered_choice rule" do
   
   it "parses expressions in parentheses as themselves" do        
     with_metagrammar(@root) do |parser|
-      parse_result_for(parser, "('foo')").should be_an_instance_of(TerminalSymbol)
-      parse_result_for(parser, '("foo")').should be_an_instance_of(TerminalSymbol)
-      parse_result_for(parser, '(foo)').should be_an_instance_of(NonterminalSymbol)
-      parse_result_for(parser, '(.)').should be_an_instance_of(AnythingSymbol)
-      parse_result_for(parser, '([abc])').should be_an_instance_of(CharacterClass)
-      parse_result_for(parser, '("terminal" / nonterminal1 / nonterminal2)').should be_an_instance_of(OrderedChoice)
-      parse_result_for(parser, '(a b / c d)').should be_an_instance_of(OrderedChoice)
-      parse_result_for(parser, '("terminal" nonterminal1 nonterminal2)').should be_an_instance_of(Sequence)
+      parse_result_for(parser, 'Bar', "('foo')").should be_an_instance_of(TerminalSymbol)
+      parse_result_for(parser, 'Bar', '("foo")').should be_an_instance_of(TerminalSymbol)
+      parse_result_for(parser, 'Bar', '(foo)').should be_an_instance_of(NonterminalSymbol)
+      parse_result_for(parser, 'Bar', '(.)').should be_an_instance_of(AnythingSymbol)
+      parse_result_for(parser, 'Bar', '([abc])').should be_an_instance_of(CharacterClass)
+      parse_result_for(parser, 'Bar', '("terminal" / nonterminal1 / nonterminal2)').should be_an_instance_of(OrderedChoice)
+      parse_result_for(parser, 'Bar', '(a b / c d)').should be_an_instance_of(OrderedChoice)
+      parse_result_for(parser, 'Bar', '("terminal" nonterminal1 nonterminal2)').should be_an_instance_of(Sequence)
     end
   end
 
   it "parses expressions in parentheses with extra spaces as themselves" do        
     with_metagrammar(@root) do |parser|
-      parse_result_for(parser, "( 'foo' )").should be_an_instance_of(TerminalSymbol)
-      parse_result_for(parser, '( "foo" )').should be_an_instance_of(TerminalSymbol)
-      parse_result_for(parser, '( foo  )').should be_an_instance_of(NonterminalSymbol)
-      parse_result_for(parser, '(  .  )').should be_an_instance_of(AnythingSymbol)
-      parse_result_for(parser, '( [abc] )').should be_an_instance_of(CharacterClass)
-      parse_result_for(parser, '(   "terminal" / nonterminal1 / nonterminal2  )').should be_an_instance_of(OrderedChoice)
-      parse_result_for(parser, '( a b / c d  )').should be_an_instance_of(OrderedChoice)
-      parse_result_for(parser, '(  "terminal" nonterminal1 nonterminal2  )').should be_an_instance_of(Sequence)      
+      parse_result_for(parser, 'Bar', "( 'foo' )").should be_an_instance_of(TerminalSymbol)
+      parse_result_for(parser, 'Bar', '( "foo" )').should be_an_instance_of(TerminalSymbol)
+      parse_result_for(parser, 'Bar', '( foo  )').should be_an_instance_of(NonterminalSymbol)
+      parse_result_for(parser, 'Bar', '(  .  )').should be_an_instance_of(AnythingSymbol)
+      parse_result_for(parser, 'Bar', '( [abc] )').should be_an_instance_of(CharacterClass)
+      parse_result_for(parser, 'Bar', '(   "terminal" / nonterminal1 / nonterminal2  )').should be_an_instance_of(OrderedChoice)
+      parse_result_for(parser, 'Bar', '( a b / c d  )').should be_an_instance_of(OrderedChoice)
+      parse_result_for(parser, 'Bar', '(  "terminal" nonterminal1 nonterminal2  )').should be_an_instance_of(Sequence)      
     end
   end
 
   it "allows parentheses to override default precedence rules" do
     with_metagrammar(@root) do |parser|
-      result = parse_result_for(parser, '(a / b) (c / d)')
+      result = parse_result_for(parser, 'Bar', '(a / b) (c / d)')
       result.should be_an_instance_of(Sequence)
     
       result.elements[0].should be_an_instance_of(OrderedChoice)
@@ -61,7 +62,7 @@ describe "The subset of the metagrammar rooted at the ordered_choice rule" do
 
   it "allows nested parentheses to control precedence" do
     with_metagrammar(@root) do |parser|
-      result = parse_result_for(parser, '(a / ((ba / bb) (bc / bd))) (c / d)')
+      result = parse_result_for(parser, 'Bar', '(a / ((ba / bb) (bc / bd))) (c / d)')
       result.should be_an_instance_of(Sequence)
     
       first_element = result.elements[0]
@@ -78,27 +79,27 @@ describe "The subset of the metagrammar rooted at the ordered_choice rule" do
   
   it "parses an expression followed immediately by a * as zero or more of that expression" do    
     with_metagrammar(@root) do |parser|
-      result = parse_result_for(parser, '"b"*')
+      result = parse_result_for(parser, 'Bar', '"b"*')
       result.should be_an_instance_of(ZeroOrMore)      
     end
   end
   
   it "parses any kind of parsing expression with the ordered choice rule" do
     with_metagrammar(@root) do |parser|
-      parse_result_for(parser, '"terminal" / nonterminal1 / nonterminal2').should be_an_instance_of(OrderedChoice)
-      parse_result_for(parser, 'a b / c d').should be_an_instance_of(OrderedChoice)
-      parse_result_for(parser, '"terminal" nonterminal1 nonterminal2').should be_an_instance_of(Sequence)
-      parse_result_for(parser, "'foo'").should be_an_instance_of(TerminalSymbol)
-      parse_result_for(parser, '"foo"').should be_an_instance_of(TerminalSymbol)
-      parse_result_for(parser, 'foo').should be_an_instance_of(NonterminalSymbol)
-      parse_result_for(parser, '.').should be_an_instance_of(AnythingSymbol)
-      parse_result_for(parser, '[abc]').should be_an_instance_of(CharacterClass)      
+      parse_result_for(parser, 'Bar', '"terminal" / nonterminal1 / nonterminal2').should be_an_instance_of(OrderedChoice)
+      parse_result_for(parser, 'Bar', 'a b / c d').should be_an_instance_of(OrderedChoice)
+      parse_result_for(parser, 'Bar', '"terminal" nonterminal1 nonterminal2').should be_an_instance_of(Sequence)
+      parse_result_for(parser, 'Bar', "'foo'").should be_an_instance_of(TerminalSymbol)
+      parse_result_for(parser, 'Bar', '"foo"').should be_an_instance_of(TerminalSymbol)
+      parse_result_for(parser, 'Bar', 'foo').should be_an_instance_of(NonterminalSymbol)
+      parse_result_for(parser, 'Bar', '.').should be_an_instance_of(AnythingSymbol)
+      parse_result_for(parser, 'Bar', '[abc]').should be_an_instance_of(CharacterClass)      
     end
   end
 
   it "parses an expression followed immediately by a ? as an optional expression" do
     with_metagrammar(@root) do |parser|
-      result = parse_result_for(parser, '"b"?')
+      result = parse_result_for(parser, 'Bar', '"b"?')
       result.should be_an_instance_of(Optional)      
     end
   end
@@ -121,14 +122,14 @@ describe "The subset of the metagrammar rooted at the ordered_choice rule" do
   
   it "parses any kind of parsing expression" do    
     with_metagrammar(@root) do |parser|
-      parse_result_for(parser, '"terminal" / nonterminal1 / nonterminal2').should be_an_instance_of(OrderedChoice)
-      parse_result_for(parser, 'a b / c d').should be_an_instance_of(OrderedChoice)
-      parse_result_for(parser, '"terminal" nonterminal1 nonterminal2').should be_an_instance_of(Sequence)
-      parse_result_for(parser, "'foo'").should be_an_instance_of(TerminalSymbol)
-      parse_result_for(parser, '"foo"').should be_an_instance_of(TerminalSymbol)
-      parse_result_for(parser, 'foo').should be_an_instance_of(NonterminalSymbol)
-      parse_result_for(parser, '.').should be_an_instance_of(AnythingSymbol)
-      parse_result_for(parser, '[abc]').should be_an_instance_of(CharacterClass)      
+      parser.parse('"terminal" / nonterminal1 / nonterminal2').should be_success
+      parser.parse('a b / c d').should  be_success
+      parser.parse('"terminal" nonterminal1 nonterminal2').should be_success
+      parser.parse("'foo'").should be_success
+      parser.parse('"foo"').should be_success
+      parser.parse('foo').should be_success
+      parser.parse('.').should be_success
+      parser.parse('[abc]').should be_success
     end
   end
 
