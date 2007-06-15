@@ -1,4 +1,4 @@
-module MetagrammarSpecContextHelper
+module ProtometagrammarSpecContextHelper
   def parse_result_for(parser, input)
     grammar = Grammar.new
     result = parser.parse(input)

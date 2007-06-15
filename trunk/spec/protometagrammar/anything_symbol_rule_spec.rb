@@ -3,7 +3,7 @@ require "#{dir}/../spec_helper"
 require "#{dir}/protometagrammar_spec_context_helper"
 
 describe "The subset of the Protometagrammar rooted at the anything_symbol rule" do
-  include MetagrammarSpecContextHelper
+  include ProtometagrammarSpecContextHelper
   
   before do
     @root = :anything_symbol
