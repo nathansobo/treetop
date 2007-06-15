@@ -3,7 +3,7 @@ grammar Metagrammar
     ('grammar' space grammar_name? parsing_rule_sequence space? 'end') {
       def value
         grammar = Grammar.new(grammar_name)
-        parsing_rules(grammar).each do |parsing_rule|
+        parsing_rule_sequence_value(grammar).each do |parsing_rule|
           grammar.add_parsing_rule(parsing_rule)
         end
         return grammar
@@ -16,9 +16,13 @@ grammar Metagrammar
           elements[2].value
         end
       end
+      
+      def parsing_rule_sequence_value(grammar)
+        elements[3].value(grammar)      
+      end
 
-      def parsing_rules(grammar)
-        elements[3].value(grammar)
+      def parsing_rule_sequence
+        elements[3]
       end
       
       def name
@@ -26,7 +30,7 @@ grammar Metagrammar
       end
       
       def to_ruby
-        "#{name} = Grammar.new\n"
+        "#{name} = Grammar.new\n#{parsing_rule_sequence.to_ruby(self)}"
       end
     }
   end
@@ -42,25 +46,34 @@ grammar Metagrammar
   rule parsing_rule_sequence
     (parsing_rule (space parsing_rule)*) {
       def value(grammar)
-        [head.value(grammar)] + tail_values(grammar)
+        rules.map {|rule| rule.value(grammar)}
       end
     
-      def head
+      def head_rule
         elements[0]
       end
           
-      def tail_elements
-        elements[1].elements
+      def tail_rules
+        elements[1].elements.map {|space_parsing_rule_sequence| space_parsing_rule_sequence.elements[1]}
       end
     
-      def tail_values(grammar)
-        tail_elements.collect {|tail_element| tail_element.elements[1].value(grammar)}
+      def rules
+        [head_rule] + tail_rules
+      end
+      
+      def to_ruby(grammar_node)
+        add_rules_ruby = rules.map {|rule| rule.add_rule_ruby(grammar_node)}
+        add_rules_ruby.join("\n") + "\n"
       end
     }
     /
     '' {
       def value(grammar)
         []
+      end
+      
+      def to_ruby(grammar)
+        ''
       end
     }
   end
