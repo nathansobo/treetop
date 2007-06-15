@@ -14,7 +14,6 @@ describe "A parser for the metagrammar" do
     File.open(metagrammar_file_path, 'r') do |file|
       result = @parser.parse(file.read)
       result.should be_success
-      result.value.should be_an_instance_of(Grammar)
     end
   end
 end

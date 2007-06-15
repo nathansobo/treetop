@@ -6,8 +6,7 @@ class Object
       result = Metagrammar.new_parser.parse(grammar_file.read)
       
       if result.success?
-        grammar = result.value
-        Object.instance_eval { const_set(grammar.name, grammar) }
+        eval(result.to_ruby)
       else
         raise MalformedGrammarException.new(result.nested_failures)
       end

@@ -5,13 +5,17 @@ describe "A parser a grammar describing one or more characters followed by semic
   
   before do
     @grammar_parser = Metagrammar.new_parser
-    result = @grammar_parser.parse("""grammar
+    result = @grammar_parser.parse("""grammar BraceThingy
                                         rule brace_thingy
                                           '{' (. ';')+  '}'
                                         end
                                       end""")
-    grammar = result.value
-    @parser = grammar.new_parser
+    eval(result.to_ruby)
+    @parser = BraceThingy.new_parser
+  end
+  
+  after do
+    Object.send(:remove_const, :BraceThingy)
   end
   
   it "parses input matching the grammar successfully" do

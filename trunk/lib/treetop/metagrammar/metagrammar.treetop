@@ -1,14 +1,6 @@
 grammar Metagrammar
   rule grammar
     ('grammar' space grammar_name? parsing_rule_sequence space? 'end') {
-      def value
-        grammar = Grammar.new(grammar_name)
-        parsing_rule_sequence_value(grammar).each do |parsing_rule|
-          grammar.add_parsing_rule(parsing_rule)
-        end
-        return grammar
-      end
-      
       def grammar_name
         if elements[2].epsilon?
           nil
