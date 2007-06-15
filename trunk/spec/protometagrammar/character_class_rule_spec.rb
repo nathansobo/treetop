@@ -1,8 +1,8 @@
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
-require "#{dir}/metagrammar_spec_context_helper"
+require "#{dir}/protometagrammar_spec_context_helper"
 
-describe "The subset of the metagrammar rooted at the character_class rule" do
+describe "The subset of the Protometagrammar rooted at the character_class rule" do
   include MetagrammarSpecContextHelper
   
   before do
@@ -10,7 +10,7 @@ describe "The subset of the metagrammar rooted at the character_class rule" do
   end
 
   it "parses a bracketed string as a CharacterClass" do
-    with_both_protometagrammar_and_metagrammar(@root) do |parser|
+    with_protometagrammar(@root) do |parser|
       result = parser.parse('[A-C123\]]')
       result.should be_success
       
@@ -26,19 +26,5 @@ describe "The subset of the metagrammar rooted at the character_class rule" do
       char_class.parse_at('3', 0, parser).should be_success
       char_class.parse_at(']', 0, parser).should be_success
     end
-  end
-end
-
-describe "in the Metagrammar only, the node returned by the character_class rule's successful parsing" do
-  include MetagrammarSpecContextHelper
-  
-  before do
-    with_metagrammar(:character_class) do |parser|
-      @node = parser.parse('[A-C123\]]')
-    end
-  end
-  
-  it "has a Ruby source representation" do
-    @node.to_ruby.should == 'CharacterClass.new(\'A-C123\]\')'
   end
 end
