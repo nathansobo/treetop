@@ -289,7 +289,7 @@ grammar Metagrammar
   end
   
   rule nonterminal_symbol
-    (!(keyword !alphanumeric_char) (alpha_char alphanumeric_char*)) {
+    (!keyword (alpha_char alphanumeric_char*)) {
       def value(grammar)
         grammar.nonterminal_symbol(name)
       end
@@ -427,7 +427,7 @@ grammar Metagrammar
   end
   
   rule keyword
-    'rule' / 'end'
+    ('rule' / 'end') !(!space .)
   end
 
   rule anything_symbol
