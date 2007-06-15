@@ -18,7 +18,7 @@ module Treetop
         rule :block, BlockExpressionBuilder.new
         rule :trailing_block, TrailingBlockExpressionBuilder.new
         rule :space, one_or_more(char_class(" \t\n\r"))
-        rule :keyword, choice('rule', 'end')
+        rule :keyword, KeywordExpressionBuilder.new
       end
     end
   end
