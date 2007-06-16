@@ -117,22 +117,6 @@ grammar Metagrammar
       def trailing_block
         elements[2]
       end
-
-      def value(grammar)
-        trailing_block.value(Sequence.new(sequence_element_values(grammar)))
-      end
-      
-      def sequence_element_values(grammar)
-        [head_element_value(grammar)] + tail_element_values(grammar)
-      end
-      
-      def head_element_value(grammar)
-        head_element.value(grammar)
-      end
-      
-      def tail_element_values(grammar)
-        tail_elements.map {|tail_element| tail_element.value(grammar)}
-      end
     }
     /
     primary
@@ -144,14 +128,6 @@ grammar Metagrammar
         trailing_block.to_ruby(nested_expression.to_ruby(grammar_node))
       end
 
-      def value(grammar)
-         nested_value = nested_expression.value(grammar)
-         unless trailing_block.epsilon? || nested_value.kind_of?(NodeInstantiatingParsingExpression)
-           raise "Blocks can only follow node-instantiating parsing expressions such as sequences and terminal symbols."
-         end
-         return trailing_block.value(nested_expression.value(grammar))
-      end
-      
       def nested_expression
         elements[2]
       end
@@ -164,13 +140,13 @@ grammar Metagrammar
 
   rule primary
     (prefix? ((parenthesized_ordered_choice / terminal_symbol / nonterminal_symbol) suffix?)) {
-      def value(grammar)
-        value = primary_expression.value(grammar)
-        value = suffix.value(value) unless suffix.epsilon?
-        value = prefix.value(value) unless prefix.epsilon?
-        value
+      def to_ruby(grammar_node)
+        ruby_source = primary_expression.to_ruby(grammar_node)
+        ruby_source = suffix.to_ruby(ruby_source) unless suffix.epsilon?
+        ruby_source = prefix.to_ruby(ruby_source) unless prefix.epsilon?
+        ruby_source
       end
-  
+
       def prefix
         elements[0]
       end
@@ -182,32 +158,17 @@ grammar Metagrammar
       def suffix
         elements[1].elements[1]
       end
-      
-      def to_ruby(grammar_node)
-        ruby_source = primary_expression.to_ruby(grammar_node)
-        ruby_source = suffix.to_ruby(ruby_source) unless suffix.epsilon?
-        ruby_source = prefix.to_ruby(ruby_source) unless prefix.epsilon?
-        ruby_source
-      end
     }
   end  
   
   rule prefix
     '&' {
-      def value(parsing_expression)
-        parsing_expression.and_predicate
-      end
-      
       def to_ruby(subsequent_expression_ruby_source)
         "AndPredicate.new(#{subsequent_expression_ruby_source})"
       end
     }
     /
     '!' {
-      def value(parsing_expression)
-        parsing_expression.not_predicate
-      end
-      
       def to_ruby(subsequent_expression_ruby_source)
         "NotPredicate.new(#{subsequent_expression_ruby_source})"
       end
@@ -216,30 +177,18 @@ grammar Metagrammar
 
   rule suffix
     '*' {
-      def value(parsing_expression)
-        parsing_expression.zero_or_more
-      end
-      
       def to_ruby(preceding_expression_ruby_source)
         "ZeroOrMore.new(#{preceding_expression_ruby_source})"
       end
     }
     /
     '+' {
-      def value(parsing_expression)
-        parsing_expression.one_or_more
-      end
-      
       def to_ruby(preceding_expression_ruby_source)
         "OneOrMore.new(#{preceding_expression_ruby_source})"
       end
     }
     /
     '?' {
-      def value(parsing_expression)
-        parsing_expression.optional
-      end
-      
       def to_ruby(preceding_expression_ruby_source)
         "Optional.new(#{preceding_expression_ruby_source})"
       end
@@ -248,12 +197,8 @@ grammar Metagrammar
   
   rule nonterminal_symbol
     (!keyword (alpha_char alphanumeric_char*)) {
-      def value(grammar)
-        grammar.nonterminal_symbol(name)
-      end
-    
       def name
-        elements[1].text_value.to_sym
+        elements[1].text_value
       end
       
       def to_ruby(grammar_node)
@@ -272,20 +217,16 @@ grammar Metagrammar
 
   rule terminal_symbol
     terminal_symbol_prefix trailing_block {
-      def value(grammar = nil)
-        trailing_block.value(terminal_symbol.value)
+      def to_ruby(grammar_node = nil)
+        trailing_block.to_ruby(terminal_symbol.to_ruby)
       end
-     
+
       def terminal_symbol
         elements[0]
       end
      
       def trailing_block
         elements[1]
-      end
-      
-      def to_ruby(grammar_node = nil)
-        trailing_block.to_ruby(terminal_symbol.to_ruby)
       end
     }
   end
@@ -296,10 +237,6 @@ grammar Metagrammar
 
   rule double_quoted_string
     ('"' (!'"' ('\"' / .))* '"') {
-      def value
-        TerminalSymbol.new(elements[1].text_value)
-      end
-      
       def to_ruby
         "TerminalSymbol.new(\"#{elements[1].text_value}\")"
       end
@@ -308,10 +245,6 @@ grammar Metagrammar
 
   rule single_quoted_string
     ("'" (!"'" ("\'" / .))* "'") {
-      def value
-        TerminalSymbol.new(elements[1].text_value)
-      end
-      
       def to_ruby
         "TerminalSymbol.new('#{elements[1].text_value}')"
       end
@@ -320,25 +253,16 @@ grammar Metagrammar
 
   rule trailing_block
     space block {
-      def value(parsing_expression)
-        parsing_expression.node_class_eval(block.value)
-        return parsing_expression
+      def to_ruby(preceding_expression_ruby_source)
+        "#{preceding_expression_ruby_source} #{block.to_ruby}"
       end
 
       def block
         elements[1]
       end
-      
-      def to_ruby(preceding_expression_ruby_source)
-        "#{preceding_expression_ruby_source} #{block.to_ruby}"
-      end
     }
     /
     '' {
-      def value(parsing_expression)
-        parsing_expression
-      end
-      
       def to_ruby(preceding_expression_ruby_source)
         preceding_expression_ruby_source
       end
@@ -347,10 +271,6 @@ grammar Metagrammar
   
   rule block
     ('{' (block / ![{}] .)* '}') {
-      def value
-        block_contents
-      end
-            
       def to_ruby
         first_character = block_contents[0]
         last_character = block_contents[-1]
@@ -369,17 +289,13 @@ grammar Metagrammar
   end
 
   rule character_class
-    ('[' (!']' ('\]'/.))+ ']') {      
-      def value(grammar = nil)
-        CharacterClass.new(characters)
-      end
-
-      def characters
-        elements[1].text_value
-      end
-      
+    ('[' (!']' ('\]'/.))+ ']') {
       def to_ruby
         "CharacterClass.new('#{characters}')"
+      end
+      
+      def characters
+        elements[1].text_value
       end
     }
   end
@@ -390,10 +306,6 @@ grammar Metagrammar
 
   rule anything_symbol
     '.' {
-      def value(grammar = nil)
-        AnythingSymbol.new
-      end
-      
       def to_ruby
         'AnythingSymbol.new'
       end
