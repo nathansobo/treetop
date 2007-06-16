@@ -1,6 +1,6 @@
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
-require "#{dir}/protometagrammar_spec_context_helper"
+require "#{dir}/protometagrammar_spec_helper"
 
 describe "The subset of the Protometagrammar rooted at the anything_symbol rule" do
   include ProtometagrammarSpecContextHelper
@@ -10,7 +10,7 @@ describe "The subset of the Protometagrammar rooted at the anything_symbol rule"
   end
 
   it "parses . as an AnythingSymbol" do
-    with_protometagrammar(@root) do |parser|      
+    with_protometagrammar(@root) do |parser|
       char_class = parser.parse('.').value
       char_class.should be_an_instance_of(AnythingSymbol)
     end

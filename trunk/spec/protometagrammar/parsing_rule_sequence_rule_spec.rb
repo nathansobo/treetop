@@ -1,6 +1,6 @@
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
-require "#{dir}/protometagrammar_spec_context_helper"
+require "#{dir}/protometagrammar_spec_helper"
 
 describe "The subset of the protometagrammar rooted at the parsing_rule_sequence rule" do
   include ProtometagrammarSpecContextHelper

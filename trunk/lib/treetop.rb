@@ -1,10 +1,11 @@
 OPTIMIZE = true
 
+TREETOP_ROOT = File.join(File.dirname(__FILE__), 'treetop')
+
 require "rubygems"
 require "inline"
-require "treetop/parser"
-require "treetop/grammar"
-require "treetop/ruby_extension"
-require "treetop/protometagrammar"
-require "treetop/metagrammar"
-require "treetop/api"
+require "#{TREETOP_ROOT}/parser"
+require "#{TREETOP_ROOT}/grammar"
+require "#{TREETOP_ROOT}/ruby_extension"
+require "#{TREETOP_ROOT}/metagrammar"
+require "#{TREETOP_ROOT}/api"

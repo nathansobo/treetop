@@ -1,3 +1,5 @@
+require "#{TREETOP_ROOT}/protometagrammar"
+
 module ProtometagrammarSpecContextHelper
   def parse_result_for(parser, input)
     grammar = Grammar.new
