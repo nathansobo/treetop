@@ -244,7 +244,7 @@ grammar Metagrammar
   end
 
   rule single_quoted_string
-    ("'" (!"'" ("\'" / .))* "'") {
+    ("'" (!"'" ("\\'" / .))* "'") {
       def to_ruby
         "TerminalSymbol.new('#{elements[1].text_value}')"
       end

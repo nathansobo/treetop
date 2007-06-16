@@ -202,7 +202,7 @@ Metagrammar.add_parsing_rule(ParsingRule.new(Metagrammar.nonterminal_symbol(:dou
       end
     
 end))
-Metagrammar.add_parsing_rule(ParsingRule.new(Metagrammar.nonterminal_symbol(:single_quoted_string), Sequence.new([TerminalSymbol.new("'"), ZeroOrMore.new(Sequence.new([NotPredicate.new(TerminalSymbol.new("'")), OrderedChoice.new([TerminalSymbol.new("\'"), AnythingSymbol.new])])), TerminalSymbol.new("'")]) do
+Metagrammar.add_parsing_rule(ParsingRule.new(Metagrammar.nonterminal_symbol(:single_quoted_string), Sequence.new([TerminalSymbol.new("'"), ZeroOrMore.new(Sequence.new([NotPredicate.new(TerminalSymbol.new("'")), OrderedChoice.new([TerminalSymbol.new("\\'"), AnythingSymbol.new])])), TerminalSymbol.new("'")]) do
       def to_ruby
         "TerminalSymbol.new('#{elements[1].text_value}')"
       end
