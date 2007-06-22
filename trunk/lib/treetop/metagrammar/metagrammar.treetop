@@ -1,13 +1,5 @@
 grammar Metagrammar
 
-  rule file
-    grammar (space grammar)* {
-      def to_ruby
-        elements[0].to_ruby
-      end
-    }
-  end
-
   rule grammar
     ('grammar' space grammar_name parsing_rule_sequence space? 'end') {
       def to_ruby

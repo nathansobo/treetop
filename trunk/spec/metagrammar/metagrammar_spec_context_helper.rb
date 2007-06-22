@@ -1,10 +1,5 @@
-require "#{TREETOP_ROOT}/../../utilities/metagrammar_bootstrapper"
-
-
 module MetagrammarSpecContextHelper
-  
-  module_eval(Treetop::MetagrammarBootstrapper.metagrammar_ruby)
-  
+    
   def parse_result_for(parser, grammar_name, input)
     result = parser.parse(input)
     result.should_not be_failure
@@ -12,8 +7,6 @@ module MetagrammarSpecContextHelper
   end
   
   def with_metagrammar(root_sym, &block)
-    raise "the grammars should be different" if Treetop::Metagrammar == Metagrammar
-    with_grammar(Treetop::Metagrammar, root_sym, &block)
     with_grammar(Metagrammar, root_sym, &block)
   end
   
