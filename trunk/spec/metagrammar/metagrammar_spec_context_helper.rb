@@ -10,6 +10,10 @@ module MetagrammarSpecContextHelper
     with_grammar(Metagrammar, root_sym, &block)
   end
   
+  def with_gen_1(root_sym, &block)
+    with_grammar(MetagrammarBootstrapper.gen_1_metagrammar, root_sym, &block)
+  end
+  
   def with_grammar(grammar, root_sym)
     root = grammar.nonterminal_symbol(root_sym)
     previous_root = grammar.root

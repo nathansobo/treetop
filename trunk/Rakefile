@@ -35,7 +35,6 @@ end
 namespace :bootstrap do
   task :with_proto do |object|
     require "#{dir}/lib/treetop"
-    require "#{dir}/utilities/metagrammar_bootstrapper"
-    Treetop::MetagrammarBootstrapper.bootstrap_with_protometagrammar
+    Treetop::MetagrammarBootstrapper.generate_metagrammar
   end
 end

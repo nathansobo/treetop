@@ -82,6 +82,26 @@ describe "The node returned by the primary rule's successful parsing of a termin
   end
 end
 
+describe "The node returned by the primary rule's successful parsing of a terminal symbol followed by a + and a block" do
+  include MetagrammarSpecContextHelper
+
+  before(:all) do
+    with_metagrammar(:primary) do |parser|
+      @node = parser.parse('"b"+ { def a_method; end }')
+    end
+  end
+  
+  it "is successful" do
+    @node.should be_success
+  end
+
+  it "has a Ruby source representiation that evaluates to one or more terminal symbol with the method from the block on its node class" do
+    value = eval(@node.to_ruby(grammar_node_mock))
+    value.node_class.instance_methods.should include('a_method')
+  end
+end
+
+
 describe "The node returned by the primary rule's successful parsing of a terminal symbol" do
   include MetagrammarSpecContextHelper
 
