@@ -1,5 +1,11 @@
 module Treetop
 Metagrammar = Grammar.new('Metagrammar')
+Metagrammar.add_parsing_rule(ParsingRule.new(Metagrammar.nonterminal_symbol(:file), Sequence.new([Metagrammar.nonterminal_symbol(:grammar), ZeroOrMore.new(Sequence.new([Metagrammar.nonterminal_symbol(:space), Metagrammar.nonterminal_symbol(:grammar)]))]) do
+      def to_ruby
+        elements[0].to_ruby
+      end
+    
+end))
 Metagrammar.add_parsing_rule(ParsingRule.new(Metagrammar.nonterminal_symbol(:grammar), Sequence.new([TerminalSymbol.new('grammar'), Metagrammar.nonterminal_symbol(:space), Metagrammar.nonterminal_symbol(:grammar_name), Metagrammar.nonterminal_symbol(:parsing_rule_sequence), Optional.new(Metagrammar.nonterminal_symbol(:space)), TerminalSymbol.new('end')]) do
       def to_ruby
         "#{name} = Grammar.new('#{name}')\n#{parsing_rule_sequence.to_ruby(self)}"
@@ -15,7 +21,6 @@ Metagrammar.add_parsing_rule(ParsingRule.new(Metagrammar.nonterminal_symbol(:gra
     
 end))
 Metagrammar.add_parsing_rule(ParsingRule.new(Metagrammar.nonterminal_symbol(:grammar_name), Sequence.new([Sequence.new([CharacterClass.new('A-Z'), ZeroOrMore.new(Metagrammar.nonterminal_symbol(:alphanumeric_char))]), Metagrammar.nonterminal_symbol(:space)]) do
-    
       def value
         elements[0].text_value.to_sym
       end

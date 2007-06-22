@@ -10,21 +10,21 @@ describe "The subset of the Metagrammar rooted at the block rule" do
   end
 
   it "parses an empty block" do
-    with_both_protometagrammar_and_metagrammar(@root) do |parser|
+    with_metagrammar(@root) do |parser|
       result = parser.parse('{}')
       result.should be_success
     end
   end
   
   it "parses an otherwise empty block with space between the braces" do
-    with_both_protometagrammar_and_metagrammar(@root) do |parser|
+    with_metagrammar(@root) do |parser|
       result = parser.parse('{   }')
       result.should be_success
     end
   end
 
   it "parses a block with characters other than curly braces between its braces" do
-    with_both_protometagrammar_and_metagrammar(@root) do |parser|
+    with_metagrammar(@root) do |parser|
       text = "some_text"
       result = parser.parse("{#{text}}")
       result.should be_success
@@ -32,7 +32,7 @@ describe "The subset of the Metagrammar rooted at the block rule" do
   end
 
   it "parses a block with containing Ruby code that also uses blocks" do
-    with_both_protometagrammar_and_metagrammar(@root) do |parser|
+    with_metagrammar(@root) do |parser|
       ruby_code = "[1, 2, 3].map {|x| x + 1}"
       block = "{#{ruby_code}}"
       result = parser.parse(block)

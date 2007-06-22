@@ -1,4 +1,13 @@
 grammar Metagrammar
+
+  rule file
+    grammar (space grammar)* {
+      def to_ruby
+        elements[0].to_ruby
+      end
+    }
+  end
+
   rule grammar
     ('grammar' space grammar_name parsing_rule_sequence space? 'end') {
       def to_ruby
@@ -16,7 +25,7 @@ grammar Metagrammar
   end
 
   rule grammar_name
-    ([A-Z] alphanumeric_char*) space {    
+    ([A-Z] alphanumeric_char*) space {
       def value
         elements[0].text_value.to_sym
       end

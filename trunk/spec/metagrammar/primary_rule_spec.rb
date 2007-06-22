@@ -10,7 +10,7 @@ describe "The subset of the metagrammar rooted at the primary rule" do
   end
 
   it "parses a nonterminal, string terminal, anything character, or character class" do
-    with_both_protometagrammar_and_metagrammar(@root) do |parser|
+    with_metagrammar(@root) do |parser|
       grammar = Grammar.new
 
       parser.parse("'foo'").should be_success
@@ -142,7 +142,7 @@ describe "The node returned by the primary rule's successful parse of a terminal
   end
 end
 
-describe "In only the Metagrammar, the node returned by the primary rule's successful parsing of a nonterminal symbol" do
+describe "The node returned by the primary rule's successful parsing of a nonterminal symbol" do
   include MetagrammarSpecContextHelper
 
   before(:all) do

@@ -17,7 +17,7 @@ describe "In only the Metagrammar, the node returned by the suffix rule's succes
   end
 end
 
-describe "In only the Metagrammar, the node returned by the suffix rule's successful parsing of the '*' character" do
+describe "The node returned by the suffix rule's successful parsing of the '*' character" do
   include MetagrammarSpecContextHelper
   
   before do
@@ -32,7 +32,7 @@ describe "In only the Metagrammar, the node returned by the suffix rule's succes
   end
 end
 
-describe "In only the Metagrammar, the node returned by the suffix rule's successful parsing of the '*' character" do
+describe "The node returned by the suffix rule's successful parsing of the '*' character" do
   include MetagrammarSpecContextHelper
   
   before do
