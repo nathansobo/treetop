@@ -1,4 +1,41 @@
 grammar Metagrammar
+  rule trailing_block
+    space block {
+      def to_ruby(preceding_expression_ruby_source)
+        "#{preceding_expression_ruby_source} #{block.to_ruby}"
+      end
+
+      def block
+        elements[1]
+      end
+    }
+    /
+    '' {
+      def to_ruby(preceding_expression_ruby_source)
+        preceding_expression_ruby_source
+      end
+    }
+  end
+
+  rule block
+    ('{' (block / ![{}] .)* '}') {
+      def to_ruby
+        first_character = block_contents[0]
+        last_character = block_contents[-1]
+    
+        "do#{newline_if_needed(first_character)}#{block_contents}#{newline_if_needed(last_character)}end"
+      end
+    
+      def block_contents
+        elements[1].text_value
+      end
+    
+      def newline_if_needed(character)
+        character == 10 ? "" : "\n"
+      end
+    }
+  end
+
   rule nonterminal_symbol
     (!keyword (alpha_char alphanumeric_char*)) {
       def name
@@ -11,31 +48,7 @@ grammar Metagrammar
     }
   end
 
-  rule alpha_char
-    [A-Za-z_]
-  end
-
-  rule alphanumeric_char
-    alpha_char / [0-9]
-  end
-
   rule terminal_symbol
-    terminal_symbol_prefix trailing_block {
-      def to_ruby(grammar_node = nil)
-        trailing_block.to_ruby(terminal_symbol.to_ruby)
-      end
-
-      def terminal_symbol
-        elements[0]
-      end
-     
-      def trailing_block
-        elements[1]
-      end
-    }
-  end
-
-  rule terminal_symbol_prefix
     single_quoted_string / double_quoted_string / character_class / anything_symbol
   end
 
@@ -55,43 +68,6 @@ grammar Metagrammar
     }
   end
 
-  rule trailing_block
-    space block {
-      def to_ruby(preceding_expression_ruby_source)
-        "#{preceding_expression_ruby_source} #{block.to_ruby}"
-      end
-
-      def block
-        elements[1]
-      end
-    }
-    /
-    '' {
-      def to_ruby(preceding_expression_ruby_source)
-        preceding_expression_ruby_source
-      end
-    }
-  end
-  
-  rule block
-    ('{' (block / ![{}] .)* '}') {
-      def to_ruby
-        first_character = block_contents[0]
-        last_character = block_contents[-1]
-      
-        "do#{newline_if_needed(first_character)}#{block_contents}#{newline_if_needed(last_character)}end"
-      end
-      
-      def block_contents
-        elements[1].text_value
-      end
-      
-      def newline_if_needed(character)
-        character == 10 ? "" : "\n"
-      end
-    }
-  end
-
   rule character_class
     ('[' (!']' ('\]'/.))+ ']') {
       def to_ruby
@@ -103,10 +79,6 @@ grammar Metagrammar
       end
     }
   end
-  
-  rule keyword
-    ('rule' / 'end') !(!space .)
-  end
 
   rule anything_symbol
     '.' {
@@ -114,6 +86,18 @@ grammar Metagrammar
         'AnythingSymbol.new'
       end
     }
+  end
+  
+  rule keyword
+    ('rule' / 'end') !(!space .)
+  end
+
+  rule alpha_char
+    [A-Za-z_]
+  end
+
+  rule alphanumeric_char
+    alpha_char / [0-9]
   end
   
   rule space
