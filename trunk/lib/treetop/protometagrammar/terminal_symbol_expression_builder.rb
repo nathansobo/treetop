@@ -3,7 +3,7 @@ module Treetop
     class TerminalSymbolExpressionBuilder < ParsingExpressionBuilder
       module TerminalStringSyntaxNode
         def prefix
-          elements[1].text_value
+          elements[1].text_value.gsub(/\\\\/, '\\')
         end
       
         def value

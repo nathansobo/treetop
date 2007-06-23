@@ -65,7 +65,7 @@ module Treetop
     end
   
     def escaped(character)
-      seq('\\', character)
+      seq("\\", character)
     end
   
     def zero_or_more_delimited(expression, delimiter, &block)
