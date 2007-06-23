@@ -3,7 +3,7 @@ require "#{dir}/../spec_helper"
 require "#{dir}/metagrammar_spec_context_helper"
 
 describe "The node returned by the character_class rule's successful parsing of '[A-C123\\]]'" do
-  include MetagrammarSpecContextHelper
+  include NeometagrammarSpecContextHelper
   
   before(:all) do
     with_metagrammar(:character_class) do |parser|

@@ -3,7 +3,7 @@ require "#{dir}/../spec_helper"
 require "#{dir}/metagrammar_spec_context_helper"
 
 describe "The subset of the Metagrammar rooted at the block rule" do
-  include MetagrammarSpecContextHelper
+  include NeometagrammarSpecContextHelper
   
   before do
     @root = :block
@@ -42,7 +42,7 @@ describe "The subset of the Metagrammar rooted at the block rule" do
 end
 
 describe "The node returned by the block rule's successful parsing of a Ruby block with newlines between its contents and its enclosing braces" do
-  include MetagrammarSpecContextHelper
+  include NeometagrammarSpecContextHelper
   
   before(:all) do
     with_metagrammar(:block) do |parser|
@@ -61,7 +61,7 @@ describe "The node returned by the block rule's successful parsing of a Ruby blo
 end
 
 describe "The node returned by the block rule's successful parsing of a Ruby block with no whitespace between its contents and its enclosing braces" do
-  include MetagrammarSpecContextHelper
+  include NeometagrammarSpecContextHelper
   
   before do
     with_metagrammar(:block) do |parser|

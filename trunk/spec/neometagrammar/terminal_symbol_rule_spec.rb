@@ -3,7 +3,7 @@ require "#{dir}/../spec_helper"
 require "#{dir}/metagrammar_spec_context_helper"
 
 describe "The node returned by the terminal_symbol rule's successful parsing of a single-quoted string" do
-  include MetagrammarSpecContextHelper
+  include NeometagrammarSpecContextHelper
   
   before(:all) do
     with_metagrammar(:terminal_symbol) do |parser|
@@ -23,7 +23,7 @@ describe "The node returned by the terminal_symbol rule's successful parsing of 
 end
 
 describe "The node returned by the terminal_symbol rule's successful parsing of a single-quoted string followed by a Ruby block" do
-  include MetagrammarSpecContextHelper
+  include NeometagrammarSpecContextHelper
   
   before(:all) do
     with_metagrammar(:terminal_symbol) do |parser|
@@ -43,7 +43,7 @@ describe "The node returned by the terminal_symbol rule's successful parsing of 
 end
 
 describe "The node returned by the terminal_symbol rule's successful parsing of a double-quoted string" do
-  include MetagrammarSpecContextHelper
+  include NeometagrammarSpecContextHelper
 
   before(:all) do
     with_metagrammar(:terminal_symbol) do |parser|
@@ -63,7 +63,7 @@ describe "The node returned by the terminal_symbol rule's successful parsing of 
 end
 
 describe "The node returned by the terminal_symbol rule's successful parsing of a single quote in double quotes" do
-  include MetagrammarSpecContextHelper
+  include NeometagrammarSpecContextHelper
 
   before(:all) do
     with_metagrammar(:terminal_symbol) do |parser|
@@ -83,7 +83,7 @@ describe "The node returned by the terminal_symbol rule's successful parsing of 
 end
 
 describe "The node returned by the terminal_symbol rule's successful parsing of an escaped single quote in single quotes" do
-  include MetagrammarSpecContextHelper
+  include NeometagrammarSpecContextHelper
 
   before(:all) do
     with_metagrammar(:single_quoted_string) do |parser|
@@ -103,7 +103,7 @@ describe "The node returned by the terminal_symbol rule's successful parsing of 
 end
 
 describe "The node returned by the terminal_symbol rule's successful parsing of a double-quoted string followed by a Ruby block" do
-  include MetagrammarSpecContextHelper
+  include NeometagrammarSpecContextHelper
   
   before(:all) do
     with_metagrammar(:terminal_symbol) do |parser|

@@ -3,7 +3,7 @@ require "#{dir}/../spec_helper"
 require "#{dir}/metagrammar_spec_context_helper"
 
 describe "The node returned by the nonterminal_symbol rule's successful parsing of an unquoted string" do
-  include MetagrammarSpecContextHelper
+  include NeometagrammarSpecContextHelper
 
   before(:all) do
     Bar = Grammar.new
@@ -27,7 +27,7 @@ describe "The node returned by the nonterminal_symbol rule's successful parsing 
 end
 
 describe "The subset of the Metagrammar rooted at the nonterminal_symbol rule" do
-  include MetagrammarSpecContextHelper
+  include NeometagrammarSpecContextHelper
   
   before do
     @root = :nonterminal_symbol

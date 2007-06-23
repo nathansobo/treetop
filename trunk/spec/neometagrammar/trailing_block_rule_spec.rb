@@ -3,7 +3,7 @@ require "#{dir}/../spec_helper"
 require "#{dir}/metagrammar_spec_context_helper"
 
 describe "The node returned by the trailing_block rule's successful parsing of a space and a Ruby block" do
-  include MetagrammarSpecContextHelper
+  include NeometagrammarSpecContextHelper
   
   before do
     with_metagrammar(:trailing_block) do |parser|
@@ -19,7 +19,7 @@ describe "The node returned by the trailing_block rule's successful parsing of a
 end
 
 describe "The node returned by the trailing_block rule's successful parsing of epsilon" do
-  include MetagrammarSpecContextHelper
+  include NeometagrammarSpecContextHelper
   
   before do
     with_metagrammar(:trailing_block) do |parser|

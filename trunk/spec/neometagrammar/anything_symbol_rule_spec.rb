@@ -3,7 +3,7 @@ require "#{dir}/../spec_helper"
 require "#{dir}/metagrammar_spec_context_helper"
 
 describe "The node returned by the anything_symbol rule's the successful parsing of a . character" do
-  include MetagrammarSpecContextHelper
+  include NeometagrammarSpecContextHelper
   
   before(:all) do
     with_metagrammar(:anything_symbol) do |parser|
