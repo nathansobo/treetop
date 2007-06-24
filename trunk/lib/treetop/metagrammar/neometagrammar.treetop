@@ -1,7 +1,30 @@
 grammar Metagrammar
+  rule expression
+    choice / sequence / primary
+  end
+
+  rule instantiator
+    sequence / instantiator_primary
+  end
+  
+  rule propagator
+    choice / propagator_primary
+  end
+
+  rule choice
+    alternative (space? '/' space? alternative)+
+  end
+
+  rule sequence
+    primary (space primary)+ trailing_block
+  end
+  
+  rule alternative
+    sequence / primary
+  end
 
   rule primary
-    instantiator_primary
+    instantiator_primary trailing_block
     /
     propagator_primary
   end
@@ -31,11 +54,19 @@ grammar Metagrammar
   end
 
   rule atomic_instantiator
-    terminal
+    terminal / parenthesized_instantiator
   end
 
   rule atomic_propagator
-    nonterminal
+    nonterminal / parenthesized_propagator
+  end
+  
+  rule parenthesized_instantiator
+    '(' space? instantiator space? ')'
+  end
+  
+  rule parenthesized_propagator
+    '(' space? propagator space? ')'
   end
 
   rule nonterminal

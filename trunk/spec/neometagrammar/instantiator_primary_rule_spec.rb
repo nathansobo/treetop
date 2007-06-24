@@ -30,7 +30,11 @@ describe "A parser for the subset of the metagrammar rooted at the instantiator_
     @parser.parse('"foo"+').should be_success
   end
   
-  it "successfully parses zero or more of a sequence"
+  it "successfully parses zero or more of a sequence" do
+    @parser.parse('(a b c)*').should be_success
+  end
   
-  it "successfully parses one or more of a choice"
+  it "successfully parses one or more of a choice" do
+    @parser.parse('(a / b / c)+').should be_success
+  end
 end

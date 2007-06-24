@@ -18,9 +18,15 @@ describe "A parser for the subset of the metagrammar rooted at the atomic_instan
     @parser.parse('"foo"').should be_success
   end
   
-  it "successfully parses a parenthesized sequence"
+  it "successfully parses a parenthesized sequence" do
+    @parser.parse("( a b c )").should be_success
+  end
   
-  it "fails to parse a nonterminal"
+  it "fails to parse a nonterminal" do
+    @parser.parse('foo').should be_failure
+  end
   
-  it "fails to parse an optional terminal"
+  it "fails to parse an optional terminal" do
+    @parser.parse('"foo"?').should be_failure
+  end
 end

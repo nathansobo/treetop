@@ -18,7 +18,11 @@ describe "A parser for the subset of the metagrammar rooted at the atomic_propag
     @parser.parse('foo').should be_success
   end
   
-  it "successfully parses a parenthesized choice"
+  it "successfully parses a parenthesized choice" do
+    @parser.parse("( a / b / c )").should be_success
+  end
   
-  it "fails to parse a parenthesized terminal"
+  it "fails to parse a parenthesized terminal" do
+    @parser.parse("('a')").should be_failure
+  end
 end

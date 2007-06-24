@@ -22,7 +22,11 @@ describe "A parser for the subset of the metagrammar rooted at the atomic rule" 
     @parser.parse("'foo'").should be_success
   end
   
-  it "successfully parses a parenthesized repeated expression"
+  it "successfully parses a parenthesized repeated expression" do
+    @parser.parse("(foo+)").should be_success
+  end
   
-  it "successfully parses a parenthesized optional expression"
+  it "successfully parses a parenthesized optional expression" do
+    @parser.parse("(foo?)").should be_success
+  end
 end
