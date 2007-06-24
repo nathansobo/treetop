@@ -1,34 +1,28 @@
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
-require "#{dir}/metagrammar_spec_context_helper"
+require "#{dir}/neometagrammar_spec_context_helper"
 
-describe "The node returned by the trailing_block rule's successful parsing of a space and a Ruby block" do
+describe "A parser for the subset of the metagrammar rooted at the trailing_block rule" do
   include NeometagrammarSpecContextHelper
-  
-  before do
-    with_metagrammar(:trailing_block) do |parser|
-      @ruby_block_contents = "\ndef a_method\n\nend\n"
-      @node = parser.parse(" {#{@ruby_block_contents}}")
-    end
-  end
-  
-  it "has a Ruby source representation with that block subsequent to the Ruby representation of the preceding expression" do
-    ruby_for_preceding_expression = 'TerminalSymbol.new("foo")'
-    @node.to_ruby(ruby_for_preceding_expression).should == "#{ruby_for_preceding_expression} do#{@ruby_block_contents}end"
-  end
-end
 
-describe "The node returned by the trailing_block rule's successful parsing of epsilon" do
-  include NeometagrammarSpecContextHelper
-  
-  before do
-    with_metagrammar(:trailing_block) do |parser|
-      @node = parser.parse("")
-    end
+  before(:all) do
+    set_metagrammar_root(:trailing_block)
+    @parser = parser_for_metagrammar
   end
   
-  it "has a Ruby source representation identical to that of a given preceding expression" do
-    ruby_for_preceding_expression = 'TerminalSymbol.new("foo")'
-    @node.to_ruby(ruby_for_preceding_expression).should == ruby_for_preceding_expression
+  after(:all) do
+    reset_metagrammar_root
+  end
+  
+  it "generates Ruby a space followed by a block based on the Ruby generated for the expression preceding the block" do
+    result = @parser.parse(" {}")
+    result.should be_success
+    result.to_ruby('preceding_expression_ruby').should == 'preceding_expression_ruby {}'
+  end
+  
+  it "returns a node that returns the Ruby for the preceding expression unchanged when matching epsilon" do
+    result = @parser.parse("")
+    result.should be_success
+    result.to_ruby('preceding_expression_ruby').should == 'preceding_expression_ruby'
   end
 end

@@ -20,23 +20,12 @@ grammar Metagrammar
   rule block
     ('{' (block / ![{}] .)* '}') {
       def to_ruby
-        first_character = block_contents[0]
-        last_character = block_contents[-1]
-    
-        "do#{newline_if_needed(first_character)}#{block_contents}#{newline_if_needed(last_character)}end"
-      end
-    
-      def block_contents
-        elements[1].text_value
-      end
-    
-      def newline_if_needed(character)
-        character == 10 ? "" : "\n"
-      end
+        text_value
+      end    
     }
   end
 
-  rule nonterminal_symbol
+  rule nonterminal
     (!keyword (alpha_char alphanumeric_char*)) {
       def name
         elements[1].text_value
@@ -48,7 +37,7 @@ grammar Metagrammar
     }
   end
 
-  rule terminal_symbol
+  rule terminal
     single_quoted_string / double_quoted_string / character_class / anything_symbol
   end
 
