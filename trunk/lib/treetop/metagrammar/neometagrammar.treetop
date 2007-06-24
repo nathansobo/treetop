@@ -1,4 +1,25 @@
 grammar Metagrammar
+
+  rule parsing_rule
+    ('rule' space nonterminal space expression space 'end') {
+      def to_ruby(grammar_node)
+        "ParsingRule.new(#{nonterminal.to_ruby(grammar_node)}, #{expression.to_ruby(grammar_node)})"
+      end
+       
+      def add_rule_ruby(grammar_node)
+        "#{grammar_node.name}.add_parsing_rule(#{to_ruby(grammar_node)})"
+      end
+
+      def nonterminal
+         elements[2]
+      end
+      
+      def expression
+         elements[4]
+      end
+    }
+  end
+  
   rule expression
     choice / sequence / primary
   end
