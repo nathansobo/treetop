@@ -12,11 +12,49 @@ grammar Metagrammar
   end
 
   rule choice
-    alternative (space? '/' space? alternative)+
+    alternative (space? '/' space? alternative)+ {
+      def to_ruby(grammar_node)
+        alternatives_ruby = alternatives.map { |alternative| alternative.to_ruby(grammar_node) }
+        "OrderedChoice.new([#{alternatives_ruby.join(', ')}])"
+      end
+      
+      def alternatives
+        [head_alternative] + tail_alternatives
+      end
+      
+      def head_alternative
+        elements[0]
+      end
+      
+      def tail_alternatives
+        elements[1].elements.map {|tail_element| tail_element.elements[3]}
+      end
+    }
   end
 
   rule sequence
-    primary (space primary)+ trailing_block
+    primary (space primary)+ trailing_block {
+      def to_ruby(grammar_node)
+        elements_ruby = sequence_elements.map {|element| element.to_ruby(grammar_node)}
+        "Sequence.new([#{elements_ruby.join(', ')}])#{trailing_block.to_ruby}"
+      end
+    
+      def sequence_elements
+        [head_element] + tail_elements
+      end
+      
+      def head_element
+        elements[0]
+      end
+      
+      def tail_elements
+        elements[1].elements.map {|tail_element| tail_element.elements[1]}
+      end
+      
+      def trailing_block
+        elements[2]
+      end
+    }
   end
   
   rule alternative
@@ -24,29 +62,95 @@ grammar Metagrammar
   end
 
   rule primary
-    instantiator_primary trailing_block
+    instantiator_primary trailing_block {
+      def to_ruby(grammar_node)
+        "#{instantiator_primary.to_ruby(grammar_node)}#{trailing_block.to_ruby}"
+      end
+      
+      def instantiator_primary
+        elements[0]
+      end
+      
+      def trailing_block
+        elements[1]
+      end
+    }
     /
     propagator_primary
   end
 
   rule instantiator_primary
-    atomic repetition_suffix / atomic_instantiator
+    atomic repetition_suffix {
+      def to_ruby(grammar_node)
+        repetition_suffix.to_ruby(grammar_node, atomic)
+      end
+      
+      def atomic
+        elements[0]
+      end
+      
+      def repetition_suffix
+        elements[1]
+      end
+    }
+    /
+    atomic_instantiator
   end
   
   rule propagator_primary
-    prefix (instantiator_primary / atomic)
+    (prefix (instantiator_primary / atomic)) {
+      def to_ruby(grammar_node)
+        prefix.to_ruby(grammar_node, prefixed_expression)
+      end
+      
+      def prefix
+        elements[0]
+      end
+      
+      def prefixed_expression
+        elements[1]
+      end
+    }
     /
-    (instantiator_primary / atomic) '?'
+    ((instantiator_primary / atomic) '?') {
+      def to_ruby(grammar_node)
+        "Optional.new(#{optional_expression.to_ruby(grammar_node)})"
+      end
+    
+      def optional_expression
+        elements[0]
+      end
+    }
     /
     atomic_propagator
   end
   
   rule repetition_suffix
-    '+' / '*'
+    '+' {
+      def to_ruby(grammar_node, repeated_expression)
+        "OneOrMore.new(#{repeated_expression.to_ruby(grammar_node)})"
+      end
+    }
+    /
+    '*' {
+      def to_ruby(grammar_node, repeated_expression)
+        "ZeroOrMore.new(#{repeated_expression.to_ruby(grammar_node)})"
+      end
+    }
   end
   
   rule prefix
-    '&' / '!'
+    '&' {
+      def to_ruby(grammar_node, prefixed_expression)
+        "AndPredicate.new(#{prefixed_expression.to_ruby(grammar_node)})"
+      end
+    }
+    /
+    '!' {
+      def to_ruby(grammar_node, prefixed_expression)
+        "NotPredicate.new(#{prefixed_expression.to_ruby(grammar_node)})"
+      end
+    }
   end
 
   rule atomic
@@ -62,11 +166,27 @@ grammar Metagrammar
   end
   
   rule parenthesized_instantiator
-    '(' space? instantiator space? ')'
+    ('(' space? instantiator space? ')') {
+      def to_ruby(grammar_node)
+        instantiator.to_ruby(grammar_node)
+      end
+      
+      def instantiator
+        elements[2]
+      end
+    }
   end
   
   rule parenthesized_propagator
-    '(' space? propagator space? ')'
+    ('(' space? propagator space? ')') {
+      def to_ruby(grammar_node)
+        propagator.to_ruby(grammar_node)
+      end
+      
+      def propagator
+        elements[2]
+      end
+    }
   end
 
   rule nonterminal
@@ -87,7 +207,7 @@ grammar Metagrammar
 
   rule double_quoted_string
     ('"' (!'"' ('\"' / .))* '"') {
-      def to_ruby
+      def to_ruby(grammar_node = nil)
         "TerminalSymbol.new(\"#{elements[1].text_value}\")"
       end
     }
@@ -95,7 +215,7 @@ grammar Metagrammar
 
   rule single_quoted_string
     ("'" (!"'" ("\\'" / .))* "'") {
-      def to_ruby
+      def to_ruby(grammar_node = nil)
         "TerminalSymbol.new('#{elements[1].text_value}')"
       end
     }
@@ -123,8 +243,8 @@ grammar Metagrammar
   
   rule trailing_block
     space block {
-      def to_ruby(preceding_expression_ruby_source)
-        "#{preceding_expression_ruby_source} #{block.to_ruby}"
+      def to_ruby
+        " #{block.to_ruby}"
       end
 
       def block
@@ -133,8 +253,8 @@ grammar Metagrammar
     }
     /
     '' {
-      def to_ruby(preceding_expression_ruby_source)
-        preceding_expression_ruby_source
+      def to_ruby
+        ''
       end
     }
   end

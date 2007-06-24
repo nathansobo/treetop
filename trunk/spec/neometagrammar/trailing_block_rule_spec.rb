@@ -14,15 +14,14 @@ describe "A parser for the subset of the metagrammar rooted at the trailing_bloc
     reset_metagrammar_root
   end
   
-  it "generates Ruby a space followed by a block based on the Ruby generated for the expression preceding the block" do
+  it "successfully parses a space followed by a block" do
     result = @parser.parse(" {}")
-    result.should be_success
-    result.to_ruby('preceding_expression_ruby').should == 'preceding_expression_ruby {}'
+    result.to_ruby.should == ' {}'
   end
   
   it "returns a node that returns the Ruby for the preceding expression unchanged when matching epsilon" do
     result = @parser.parse("")
     result.should be_success
-    result.to_ruby('preceding_expression_ruby').should == 'preceding_expression_ruby'
+    result.to_ruby.should == ''
   end
 end

@@ -26,7 +26,7 @@ module NeometagrammarSpecContextHelper
     Object.send(:remove_const, name_symbol)
   end
   
-  def grammar_node_mock(name_symbol)
+  def grammar_node_mock(name_symbol = :GrammarNodeMock)
     grammar_node_mock = stub("#{name_symbol} grammar node", :name => name_symbol.to_s)
   end
 end
