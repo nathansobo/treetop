@@ -1,28 +1,41 @@
 grammar Metagrammar
-  rule trailing_block
-    space block {
-      def to_ruby(preceding_expression_ruby_source)
-        "#{preceding_expression_ruby_source} #{block.to_ruby}"
-      end
 
-      def block
-        elements[1]
-      end
-    }
+  rule primary
+    instantiator_primary
     /
-    '' {
-      def to_ruby(preceding_expression_ruby_source)
-        preceding_expression_ruby_source
-      end
-    }
+    propagator_primary
   end
 
-  rule block
-    ('{' (block / ![{}] .)* '}') {
-      def to_ruby
-        text_value
-      end    
-    }
+  rule instantiator_primary
+    atomic repetition_suffix / atomic_instantiator
+  end
+  
+  rule propagator_primary
+    prefix (instantiator_primary / atomic)
+    /
+    (instantiator_primary / atomic) '?'
+    /
+    atomic_propagator
+  end
+  
+  rule repetition_suffix
+    '+' / '*'
+  end
+  
+  rule prefix
+    '&' / '!'
+  end
+
+  rule atomic
+    atomic_instantiator / atomic_propagator
+  end
+
+  rule atomic_instantiator
+    terminal
+  end
+
+  rule atomic_propagator
+    nonterminal
   end
 
   rule nonterminal
@@ -77,6 +90,32 @@ grammar Metagrammar
     }
   end
   
+  rule trailing_block
+    space block {
+      def to_ruby(preceding_expression_ruby_source)
+        "#{preceding_expression_ruby_source} #{block.to_ruby}"
+      end
+
+      def block
+        elements[1]
+      end
+    }
+    /
+    '' {
+      def to_ruby(preceding_expression_ruby_source)
+        preceding_expression_ruby_source
+      end
+    }
+  end
+
+  rule block
+    ('{' (block / ![{}] .)* '}') {
+      def to_ruby
+        text_value
+      end    
+    }
+  end
+
   rule keyword
     ('rule' / 'end') !(!space .)
   end
