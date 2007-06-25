@@ -5,7 +5,7 @@ describe TerminalParseFailure do
   before(:each) do
     @index = 5
     @terminal = mock('terminal expression')
-    @failure = TerminalParseFailure.new(@index, @terminal)
+    @failure = TerminalParseFailure.new(@terminal, @index)
   end
   
   it "knows the index at which the failure occurred" do

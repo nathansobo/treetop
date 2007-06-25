@@ -24,7 +24,7 @@ module Treetop
         if input.index(prefix, start_index) == start_index
           return node_class.new(input, start_index...(prefix.length + start_index))
         else
-          TerminalParseFailure.new(start_index, self)
+          TerminalParseFailure.new(self, start_index)
         end
       end
     else
@@ -59,8 +59,8 @@ module Treetop
     
             for (i = 0; i < prefix_length; i++) {
               if (i >= input_length || input_ptr[i + start_index] != prefix_ptr[i]) {
-                parse_failure_argv[0] = INT2NUM(start_index);
-                parse_failure_argv[1] = self;
+                parse_failure_argv[0] = self;
+                parse_failure_argv[1] = INT2NUM(start_index);
                 return rb_class_new_instance(2, parse_failure_argv, cTerminalParseFailure);
               }
             }

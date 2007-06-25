@@ -13,7 +13,7 @@ module Treetop
       if input.index(prefix_regex, start_index) == start_index
         return node_class.new(input, start_index...(start_index + 1))
       else
-        TerminalParseFailure.new(start_index, self)
+        TerminalParseFailure.new(self, start_index)
       end
     end
     

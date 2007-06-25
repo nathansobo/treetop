@@ -9,7 +9,7 @@ module Treetop
         interval = (start_index...(start_index + 1))
         return node_class.new(input, interval)
       else
-        TerminalParseFailure.new(start_index, self)
+        TerminalParseFailure.new(self, start_index)
       end
     end
     
