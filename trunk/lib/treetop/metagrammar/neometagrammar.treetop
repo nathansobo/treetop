@@ -294,7 +294,7 @@ grammar Metagrammar
 
   rule character_class
     ('[' (!']' ('\]'/.))+ ']') {
-      def to_ruby
+      def to_ruby(grammar_node = nil)
         "CharacterClass.new('#{characters}')"
       end
       
@@ -306,7 +306,7 @@ grammar Metagrammar
 
   rule anything_symbol
     '.' {
-      def to_ruby
+      def to_ruby(grammar_node = nil)
         'AnythingSymbol.new'
       end
     }

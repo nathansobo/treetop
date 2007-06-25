@@ -1,11 +1,12 @@
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
-require "#{dir}/metagrammar_spec_context_helper"
+require "#{dir}/neometagrammar_spec_context_helper"
 
 describe "The grammar node returned by Metagrammar's parsing of itself" do
+  include NeometagrammarSpecContextHelper
   
   setup do
-    @node = parse_metagrammar_with(Metagrammar)
+    @node = parse_metagrammar_with(NeometagrammarSpecContextHelper::Neometagrammar)
     @old_metagrammar = Metagrammar
   end
   
