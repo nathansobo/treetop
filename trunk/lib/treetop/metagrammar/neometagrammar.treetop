@@ -1,5 +1,32 @@
 grammar Metagrammar
 
+  rule parsing_rule_sequence
+    (parsing_rule (space parsing_rule)*) {
+      def to_ruby(grammar_node)
+        add_rules_ruby = rules.map {|rule| rule.add_rule_ruby(grammar_node)}
+        add_rules_ruby.join("\n") + "\n"
+      end
+
+      def rules
+        [head_rule] + tail_rules
+      end
+      
+      def head_rule
+        elements[0]
+      end
+          
+      def tail_rules
+        elements[1].elements.map {|space_parsing_rule_sequence| space_parsing_rule_sequence.elements[1]}
+      end
+    }
+    /
+    '' {
+      def to_ruby(grammar)
+        ''
+      end
+    }
+  end
+  
   rule parsing_rule
     ('rule' space nonterminal space expression space 'end') {
       def to_ruby(grammar_node)
