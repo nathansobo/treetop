@@ -1,5 +1,4 @@
 grammar Metagrammar
-
   rule grammar
     ('grammar' space grammar_name parsing_rule_sequence space? 'end') {
       def to_ruby
@@ -23,7 +22,7 @@ grammar Metagrammar
       end
     }
   end
-
+  
   rule parsing_rule_sequence
     (parsing_rule (space parsing_rule)*) {
       def to_ruby(grammar_node)
@@ -50,153 +49,218 @@ grammar Metagrammar
       end
     }
   end
-
+  
   rule parsing_rule
-    ('rule' space nonterminal_symbol space ordered_choice space 'end') {
+    ('rule' space nonterminal space expression space 'end') {
       def to_ruby(grammar_node)
-        "ParsingRule.new(#{nonterminal_symbol.to_ruby(grammar_node)}, #{parsing_expression.to_ruby(grammar_node)})"
+        "ParsingRule.new(#{nonterminal.to_ruby(grammar_node)}, #{expression.to_ruby(grammar_node)})"
       end
        
       def add_rule_ruby(grammar_node)
         "#{grammar_node.name}.add_parsing_rule(#{to_ruby(grammar_node)})"
       end
 
-      def nonterminal_symbol
+      def nonterminal
          elements[2]
       end
       
-      def parsing_expression
+      def expression
          elements[4]
       end
     }
   end
+  
+  rule expression
+    choice / sequence / primary
+  end
 
-  rule ordered_choice
-    (sequence (space? '/' space? sequence)+) {
+  rule instantiator
+    sequence / instantiator_primary
+  end
+  
+  rule propagator
+    choice / propagator_primary
+  end
+
+  rule choice
+    (alternative (space? '/' space? alternative)+) {
       def to_ruby(grammar_node)
-        alternatives_ruby = alternatives.map {|alternative| alternative.to_ruby(grammar_node)}
+        alternatives_ruby = alternatives.map { |alternative| alternative.to_ruby(grammar_node) }
         "OrderedChoice.new([#{alternatives_ruby.join(', ')}])"
       end
-
+      
       def alternatives
         [head_alternative] + tail_alternatives
       end
-    
+      
       def head_alternative
         elements[0]
       end
-    
+      
       def tail_alternatives
-        elements[1].elements.map {|repeated_tail_sequence| repeated_tail_sequence.elements[3]}
+        elements[1].elements.map {|tail_element| tail_element.elements[3]}
       end
     }
-    /
-    sequence
   end
 
   rule sequence
-    (primary (space primary)+ trailing_block) {
-      
-      def to_ruby(grammar_node)      
+    primary (space primary)+ trailing_block {
+      def to_ruby(grammar_node)
         elements_ruby = sequence_elements.map {|element| element.to_ruby(grammar_node)}
-        sequence_ruby = "Sequence.new([#{elements_ruby.join(', ')}])"        
-        trailing_block.to_ruby(sequence_ruby)
+        "Sequence.new([#{elements_ruby.join(', ')}])#{trailing_block.to_ruby}"
       end
-      
+    
       def sequence_elements
         [head_element] + tail_elements
       end
-
+      
       def head_element
         elements[0]
       end
-
+      
       def tail_elements
-        elements[1].elements.map {|space_primary_sequence| space_primary_sequence.elements[1]}
+        elements[1].elements.map {|tail_element| tail_element.elements[1]}
       end
       
       def trailing_block
         elements[2]
       end
     }
-    /
-    primary
   end
-
-  rule parenthesized_ordered_choice
-    '(' space? ordered_choice space? ')' trailing_block {
-      def to_ruby(grammar_node)
-        trailing_block.to_ruby(nested_expression.to_ruby(grammar_node))
-      end
-
-      def nested_expression
-        elements[2]
-      end
- 
-      def trailing_block
-        elements[5]
-      end
-    }
+  
+  rule alternative
+    sequence / primary
   end
 
   rule primary
-    (prefix? ((parenthesized_ordered_choice / terminal_symbol / nonterminal_symbol) suffix?)) {
+    instantiator_primary trailing_block {
       def to_ruby(grammar_node)
-        ruby_source = primary_expression.to_ruby(grammar_node)
-        ruby_source = suffix.to_ruby(ruby_source) unless suffix.epsilon?
-        ruby_source = prefix.to_ruby(ruby_source) unless prefix.epsilon?
-        ruby_source
+        "#{instantiator_primary.to_ruby(grammar_node)}#{trailing_block.to_ruby}"
       end
+      
+      def instantiator_primary
+        elements[0]
+      end
+      
+      def trailing_block
+        elements[1]
+      end
+    }
+    /
+    propagator_primary
+  end
 
+  rule instantiator_primary
+    atomic repetition_suffix {
+      def to_ruby(grammar_node)
+        repetition_suffix.to_ruby(grammar_node, atomic)
+      end
+      
+      def atomic
+        elements[0]
+      end
+      
+      def repetition_suffix
+        elements[1]
+      end
+    }
+    /
+    atomic_instantiator
+  end
+  
+  rule propagator_primary
+    (prefix (instantiator_primary / atomic)) {
+      def to_ruby(grammar_node)
+        prefix.to_ruby(grammar_node, prefixed_expression)
+      end
+      
       def prefix
         elements[0]
       end
-    
-      def primary_expression
-        elements[1].elements[0]
-      end
-    
-      def suffix
-        elements[1].elements[1]
+      
+      def prefixed_expression
+        elements[1]
       end
     }
-  end  
+    /
+    ((instantiator_primary / atomic) '?') {
+      def to_ruby(grammar_node)
+        "Optional.new(#{optional_expression.to_ruby(grammar_node)})"
+      end
+    
+      def optional_expression
+        elements[0]
+      end
+    }
+    /
+    atomic_propagator
+  end
+  
+  rule repetition_suffix
+    '+' {
+      def to_ruby(grammar_node, repeated_expression)
+        "OneOrMore.new(#{repeated_expression.to_ruby(grammar_node)})"
+      end
+    }
+    /
+    '*' {
+      def to_ruby(grammar_node, repeated_expression)
+        "ZeroOrMore.new(#{repeated_expression.to_ruby(grammar_node)})"
+      end
+    }
+  end
   
   rule prefix
     '&' {
-      def to_ruby(subsequent_expression_ruby_source)
-        "AndPredicate.new(#{subsequent_expression_ruby_source})"
+      def to_ruby(grammar_node, prefixed_expression)
+        "AndPredicate.new(#{prefixed_expression.to_ruby(grammar_node)})"
       end
     }
     /
     '!' {
-      def to_ruby(subsequent_expression_ruby_source)
-        "NotPredicate.new(#{subsequent_expression_ruby_source})"
+      def to_ruby(grammar_node, prefixed_expression)
+        "NotPredicate.new(#{prefixed_expression.to_ruby(grammar_node)})"
       end
     }
   end
 
-  rule suffix
-    '*' {
-      def to_ruby(preceding_expression_ruby_source)
-        "ZeroOrMore.new(#{preceding_expression_ruby_source})"
+  rule atomic
+    atomic_instantiator / atomic_propagator
+  end
+
+  rule atomic_instantiator
+    terminal / parenthesized_instantiator
+  end
+
+  rule atomic_propagator
+    nonterminal / parenthesized_propagator
+  end
+  
+  rule parenthesized_instantiator
+    ('(' space? instantiator space? ')') {
+      def to_ruby(grammar_node)
+        instantiator.to_ruby(grammar_node)
       end
-    }
-    /
-    '+' {
-      def to_ruby(preceding_expression_ruby_source)
-        "OneOrMore.new(#{preceding_expression_ruby_source})"
-      end
-    }
-    /
-    '?' {
-      def to_ruby(preceding_expression_ruby_source)
-        "Optional.new(#{preceding_expression_ruby_source})"
+      
+      def instantiator
+        elements[2]
       end
     }
   end
   
-  rule nonterminal_symbol
+  rule parenthesized_propagator
+    ('(' space? propagator space? ')') {
+      def to_ruby(grammar_node)
+        propagator.to_ruby(grammar_node)
+      end
+      
+      def propagator
+        elements[2]
+      end
+    }
+  end
+
+  rule nonterminal
     (!keyword (alpha_char alphanumeric_char*)) {
       def name
         elements[1].text_value
@@ -208,37 +272,13 @@ grammar Metagrammar
     }
   end
 
-  rule alpha_char
-    [A-Za-z_]
-  end
-
-  rule alphanumeric_char
-    alpha_char / [0-9]
-  end
-
-  rule terminal_symbol
-    terminal_symbol_prefix trailing_block {
-      def to_ruby(grammar_node = nil)
-        trailing_block.to_ruby(terminal_symbol.to_ruby)
-      end
-
-      def terminal_symbol
-        elements[0]
-      end
-     
-      def trailing_block
-        elements[1]
-      end
-    }
-  end
-
-  rule terminal_symbol_prefix
+  rule terminal
     single_quoted_string / double_quoted_string / character_class / anything_symbol
   end
 
   rule double_quoted_string
     ('"' (!'"' ('\"' / .))* '"') {
-      def to_ruby
+      def to_ruby(grammar_node = nil)
         "TerminalSymbol.new(\"#{elements[1].text_value}\")"
       end
     }
@@ -246,52 +286,15 @@ grammar Metagrammar
 
   rule single_quoted_string
     ("'" (!"'" ("\\'" / .))* "'") {
-      def to_ruby
+      def to_ruby(grammar_node = nil)
         "TerminalSymbol.new('#{elements[1].text_value}')"
-      end
-    }
-  end
-
-  rule trailing_block
-    space block {
-      def to_ruby(preceding_expression_ruby_source)
-        "#{preceding_expression_ruby_source} #{block.to_ruby}"
-      end
-
-      def block
-        elements[1]
-      end
-    }
-    /
-    '' {
-      def to_ruby(preceding_expression_ruby_source)
-        preceding_expression_ruby_source
-      end
-    }
-  end
-  
-  rule block
-    ('{' (block / ![{}] .)* '}') {
-      def to_ruby
-        first_character = block_contents[0]
-        last_character = block_contents[-1]
-      
-        "do#{newline_if_needed(first_character)}#{block_contents}#{newline_if_needed(last_character)}end"
-      end
-      
-      def block_contents
-        elements[1].text_value
-      end
-      
-      def newline_if_needed(character)
-        character == 10 ? "" : "\n"
       end
     }
   end
 
   rule character_class
     ('[' (!']' ('\]'/.))+ ']') {
-      def to_ruby
+      def to_ruby(grammar_node = nil)
         "CharacterClass.new('#{characters}')"
       end
       
@@ -300,17 +303,51 @@ grammar Metagrammar
       end
     }
   end
+
+  rule anything_symbol
+    '.' {
+      def to_ruby(grammar_node = nil)
+        'AnythingSymbol.new'
+      end
+    }
+  end
   
+  rule trailing_block
+    space block {
+      def to_ruby
+        " #{block.to_ruby}"
+      end
+
+      def block
+        elements[1]
+      end
+    }
+    /
+    '' {
+      def to_ruby
+        ''
+      end
+    }
+  end
+
+  rule block
+    ('{' (block / ![{}] .)* '}') {
+      def to_ruby
+        text_value
+      end    
+    }
+  end
+
   rule keyword
     ('rule' / 'end') !(!space .)
   end
 
-  rule anything_symbol
-    '.' {
-      def to_ruby
-        'AnythingSymbol.new'
-      end
-    }
+  rule alpha_char
+    [A-Za-z_]
+  end
+
+  rule alphanumeric_char
+    alpha_char / [0-9]
   end
   
   rule space
