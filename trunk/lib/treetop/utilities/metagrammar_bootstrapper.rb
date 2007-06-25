@@ -18,17 +18,24 @@ module Treetop
     end
     
     def self.metagrammar_ruby
-      File.open(METAGRAMMAR_TREETOP_FILE_PATH, 'r') do |in_file|
-        metagrammar = gen_1_metagrammar.new_parser.parse(in_file.read)
-        return "module Treetop\n#{metagrammar.to_ruby}\nend"
-      end
+      return "module Treetop\n#{gen_2_metagrammar_ruby}\nend"
+    end
+    
+    def self.gen_2_metagrammar_ruby
+      result = parse_metagrammar_with(gen_1_metagrammar)
+      raise "Unable to parse metagrammar.treetop with the a first generation Metagrammar" if result.failure?
+      result.to_ruby
     end
     
     def self.gen_1_metagrammar
+      result = parse_metagrammar_with(Protometagrammar.new)
+      raise "Unable to parse metagrammar.treetop with Protometagrammar" if result.failure?
+      result.value
+    end
+    
+    def self.parse_metagrammar_with(grammar)
       File.open(METAGRAMMAR_TREETOP_FILE_PATH, 'r') do |in_file|
-        metagrammar_from_proto_result = Protometagrammar.new.new_parser.parse(in_file.read)
-        raise "Could not parse Metagrammar with Protometagrammar" if metagrammar_from_proto_result.failure?
-        metagrammar_from_proto_result.value
+        grammar.new_parser.parse(in_file.read)
       end
     end
   end

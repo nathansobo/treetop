@@ -32,8 +32,8 @@ Rake::GemPackageTask.new(gemspec) do |pkg|
   pkg.need_tar = true
 end
 
-namespace :bootstrap do
-  task :with_proto do |object|
+namespace :metagrammar do
+  task :generate do |object|
     require "#{dir}/lib/treetop"
     Treetop::MetagrammarBootstrapper.generate_metagrammar
   end
