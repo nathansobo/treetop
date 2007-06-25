@@ -40,5 +40,9 @@ module Treetop
     def epsilon?
       false
     end
+    
+    def method_missing(message, *args)
+      raise "Node returned by #{expression.to_s} does not respond to #{message}"
+    end
   end
 end
