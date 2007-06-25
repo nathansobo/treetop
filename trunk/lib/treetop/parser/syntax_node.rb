@@ -1,9 +1,10 @@
 module Treetop
   class SyntaxNode < ParseResult
-    attr_reader :input, :interval
+    attr_reader :expression, :input, :interval
     
-    def initialize(input, interval, nested_results = [])
+    def initialize(expression, input, interval, nested_results = [])
       super(nested_results)
+      @expression = expression
       @input = input
       @interval = interval
     end

@@ -3,7 +3,7 @@ require "#{dir}/../spec_helper"
 
 describe SyntaxNode, " instantiated without encountered results" do
   before do
-    @node = SyntaxNode.new(mock("input"), mock("interval"))
+    @node = SyntaxNode.new(mock('expression'), mock("input"), mock("interval"))
   end
   
   it "should be success" do
@@ -30,7 +30,7 @@ describe SyntaxNode, " instantiated with results that have nested failures" do
     @result_3 = parse_success_with_nested_failure_at(3)
     
     @nested_results = [@result_1, @result_2, @result_3]
-    @node = SyntaxNode.new(mock('input'), mock('interval'), @nested_results)
+    @node = SyntaxNode.new(mock('expression'), mock('input'), mock('interval'), @nested_results)
   end
   
   it "has the nested failures with the highest index out of those results" do

@@ -19,7 +19,7 @@ module Treetop
     protected
     
     def success_at(index, input, nested_result)
-      SyntaxNode.new(input, index...index, nested_result.nested_failures)
+      SyntaxNode.new(self, input, index...index, nested_result.nested_failures)
     end
   end
 end

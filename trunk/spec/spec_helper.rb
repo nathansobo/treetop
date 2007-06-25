@@ -38,12 +38,12 @@ def parser_with_empty_cache_mock
 end
 
 def parse_success(interval = 0...5)
-  SyntaxNode.new(mock('input'), interval)
+  SyntaxNode.new(mock('expression'), mock('input'), interval)
 end
 
 def parse_success_with_nested_failure_at(failure_index, interval = 0...5)
   nested_failure = TerminalParseFailure.new(mock('terminal expression'), failure_index)
-  SyntaxNode.new(mock('input'), interval, [nested_failure])
+  SyntaxNode.new(mock('expression'), mock('input'), interval, [nested_failure])
 end
 
 def parse_failure_at(failure_index = 5)
