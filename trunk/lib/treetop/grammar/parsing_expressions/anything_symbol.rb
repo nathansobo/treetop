@@ -7,7 +7,7 @@ module Treetop
     def parse_at(input, start_index, parser)
       if start_index < input.length
         interval = (start_index...(start_index + 1))
-        return node_class.new(input, interval)
+        return node_class.new(self, input, interval)
       else
         TerminalParseFailure.new(self, start_index)
       end

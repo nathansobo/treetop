@@ -11,7 +11,7 @@ module Treetop
     
     def parse_at(input, start_index, parser)
       if input.index(prefix_regex, start_index) == start_index
-        return node_class.new(input, start_index...(start_index + 1))
+        return node_class.new(self, input, start_index...(start_index + 1))
       else
         TerminalParseFailure.new(self, start_index)
       end
