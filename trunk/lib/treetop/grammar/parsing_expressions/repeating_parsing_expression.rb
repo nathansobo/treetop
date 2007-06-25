@@ -21,7 +21,7 @@ module Treetop
       if enough? results
         interval = start_index...next_index
         
-        return node_class.new(input, interval, results, results + [result])
+        return node_class.new(self, input, interval, results, results + [result])
       else
         return failure_at(start_index, results + [result])
       end

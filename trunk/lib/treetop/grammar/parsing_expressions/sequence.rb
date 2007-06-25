@@ -27,7 +27,7 @@ module Treetop
           next_index = result.interval.end
         end
         
-        return node_class.new(input, (start_index...next_index), results, results)
+        return node_class.new(self, input, (start_index...next_index), results, results)
       end
     else
       inline do |builder|
@@ -53,7 +53,7 @@ module Treetop
             
             VALUE results = rb_ary_new();
             int next_index = start_index;
-            VALUE node_class_args[4];
+            VALUE node_class_args[5];
             
             VALUE elements = rb_funcall(self, id_elements, 0);
             int elements_len = RARRAY_LEN(elements);
@@ -72,12 +72,13 @@ module Treetop
             
             VALUE node_class = rb_funcall(self, id_node_class, 0);
             interval = rb_range_new(INT2NUM(start_index), INT2NUM(next_index), 1);
-            node_class_args[0] = input;
-            node_class_args[1] = interval;
-            node_class_args[2] = results;
+            node_class_args[0] = self;
+            node_class_args[1] = input;
+            node_class_args[2] = interval;
             node_class_args[3] = results;
+            node_class_args[4] = results;
             
-            return rb_class_new_instance(4, node_class_args, node_class);
+            return rb_class_new_instance(5, node_class_args, node_class);
           }
         C
       end

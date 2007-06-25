@@ -1,9 +1,10 @@
 module Treetop
   class SequenceSyntaxNode < SyntaxNode
-    attr_reader :elements
+    attr_reader :elements, :expression
     
-    def initialize(input, interval, elements, nested_failures = [])
+    def initialize(expression, input, interval, elements, nested_failures = [])
       super(input, interval, nested_failures)
+      @expression = expression
       @elements = elements
     end
     
