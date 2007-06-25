@@ -1,9 +1,9 @@
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
-require "#{dir}/neometagrammar_spec_context_helper"
+require "#{dir}/metagrammar_spec_context_helper"
 
 describe "A parser for the subset of the metagrammar rooted at the choice rule" do
-  include NeometagrammarSpecContextHelper
+  include MetagrammarSpecContextHelper
 
   before do
     set_metagrammar_root(:choice)

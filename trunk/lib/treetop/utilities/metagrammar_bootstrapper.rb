@@ -31,15 +31,5 @@ module Treetop
         metagrammar_from_proto_result.value
       end
     end
-    
-    def self.gen_1_neometagrammar
-      File.open(NEOMETAGRAMMAR_TREETOP_FILE_PATH, 'r') do |in_file|
-        metagrammar_from_proto_result = Protometagrammar.new.new_parser.parse(in_file.read)
-        raise "Could not parse Metagrammar with Protometagrammar" if metagrammar_from_proto_result.failure?
-        metagrammar_from_proto_result.value
-      end
-    end
-    
-    
   end
 end

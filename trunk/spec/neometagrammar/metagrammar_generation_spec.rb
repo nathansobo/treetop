@@ -1,32 +1,22 @@
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
-require "#{dir}/neometagrammar_spec_context_helper"
+require "#{dir}/metagrammar_spec_context_helper"
 
-describe "The grammar node returned by Metagrammar's parsing of itself" do
-  include NeometagrammarSpecContextHelper
+describe "The second-generation Metagrammar, produced by evaluating the results of the first generation Metagrammar's parsing of metagrammar.treetop" do
+  include MetagrammarSpecContextHelper
   
-  setup do
-    @node = parse_metagrammar_with(NeometagrammarSpecContextHelper::Neometagrammar)
-    @old_metagrammar = Metagrammar
+  before do
+    gen_2_results = parse_metagrammar_with(parser_for_metagrammar)
+    eval("module SecondGeneration\n#{gen_2_results.to_ruby}\nend")
+    @gen_2_parser = SecondGeneration::Metagrammar.new_parser
   end
   
-  after do
-    Object.send(:remove_const, :Metagrammar)
-    Metagrammar = @old_metagrammar
-  end
-  
-  it "can generate Ruby whose evaluation creates a Metagrammar that can parse the file whence it came, producing a Metagrammar that can do the same thing again" do
-    @node.should be_success
-
-    eval(@node.to_ruby)
-    Metagrammar.should_not == @old_metagrammar
+  it "can parse metagrammar.treetop and generate a third-generation Metagrammar" do
     
-    @node = parse_metagrammar_with(Metagrammar)
-    @node.should be_success
+    gen_3_result = parse_metagrammar_with(@gen_2_parser)
+    eval("module ThirdGeneration\n#{gen_3_result.to_ruby}\nend")
     
-    Object.send(:remove_const, :Metagrammar)
-    eval(@node.to_ruby)
-    Metagrammar.should_not == @old_metagrammar
+    ThirdGeneration::Metagrammar.should be_an_instance_of(Grammar)
   end
   
   def parse_metagrammar_with(grammar)
@@ -34,7 +24,7 @@ describe "The grammar node returned by Metagrammar's parsing of itself" do
       File.expand_path('metagrammar.treetop', "#{File.dirname(__FILE__)}/../../lib/treetop/metagrammar/")
 
     File.open(metagrammar_file_path, 'r') do |file|
-      return grammar.new_parser.parse(file.read)
+      return grammar.parse(file.read)
     end
   end
 end
