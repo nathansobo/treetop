@@ -36,15 +36,24 @@ describe "A parser for the subset of the metagrammar rooted at the sequence rule
     value.elements[2].name.should == :c
   end
   
-  it "successfully parses and generates Ruby for a sequence of terminals, each followed by blocks" do
-    result = @parser.parse("'a' { def a_method; end } 'b' { def b_method; end } 'c' { def c_method; end }")
-    result.should be_success
-    value = eval(result.to_ruby(@grammar_node_mock))
-    value.should be_an_instance_of(Sequence)
-    value.elements[0].node_class.instance_methods.should include('a_method')
-    value.elements[1].node_class.instance_methods.should include('b_method')
-    value.elements[2].node_class.instance_methods.should include('c_method')
+  it "does not parse a sequence containing an unparenthesized terminal followed by a block" do
+    result = @parser.parse("'a' { def a_method; end } 'b' 'c'")
+    result.should be_failure
   end
+  
+  it "successfully parses a sequence containing a parenthesized terminal followed by a block" do
+    result = @parser.parse("('a' { def a_method; end }) 'b' 'c'")
+    result.should be_failure
+  end
+
+  it "successfully parses a sequence of terminals followed by a block, associating the block with the sequence and not the last terminal" do
+    result = @parser.parse("'a' 'b' 'c' { def a_method; end }")        
+    result.should be_success
+    
+    value = eval(result.to_ruby(@grammar_node_mock))
+    value.node_class.instance_methods.should include('a_method')
+  end
+  
   
   it "successfully parses and generates Ruby for a sequence of parenthesized choices" do
     result = @parser.parse("(a / b) (c / d) (e / f)")
@@ -52,16 +61,6 @@ describe "A parser for the subset of the metagrammar rooted at the sequence rule
     value = eval(result.to_ruby(@grammar_node_mock))
     value.should be_an_instance_of(Sequence)
     value.elements[0].should be_an_instance_of(OrderedChoice)
-  end
-  
-  it "successfully parses and generates Ruby for a sequence repeated nonterminals, each followed by blocks" do
-    result = @parser.parse("a+ { def a_method; end } b* { def b_method; end } c+ { def c_method; end }")
-    result.should be_success
-    value = eval(result.to_ruby(@grammar_node_mock))
-    value.should be_an_instance_of(Sequence)
-    value.elements[0].node_class.instance_methods.should include('a_method')
-    value.elements[1].node_class.instance_methods.should include('b_method')
-    value.elements[2].node_class.instance_methods.should include('c_method')
   end
   
   it "successfully parses a sequence of nonterminals followed by a block" do

@@ -7,6 +7,8 @@ parser = Arithmetic.new_parser
 
 node = parser.parse("1+3+5")
 
-puts node.success?
-puts node.value
-
+if node.success?
+  puts node.value
+else
+  puts 'Something went wrong'
+end

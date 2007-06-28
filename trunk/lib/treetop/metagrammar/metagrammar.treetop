@@ -104,7 +104,7 @@ grammar Metagrammar
   end
 
   rule sequence
-    primary (space primary)+ trailing_block {
+    blockless_primary (space blockless_primary)+ trailing_block {
       def to_ruby(grammar_node)
         elements_ruby = sequence_elements.map {|element| element.to_ruby(grammar_node)}
         "Treetop::Sequence.new([#{elements_ruby.join(', ')}])#{trailing_block.to_ruby}"
@@ -148,6 +148,10 @@ grammar Metagrammar
     }
     /
     propagator_primary
+  end
+  
+  rule blockless_primary
+    instantiator_primary / propagator_primary
   end
 
   rule instantiator_primary
