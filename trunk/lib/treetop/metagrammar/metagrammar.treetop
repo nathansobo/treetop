@@ -2,7 +2,7 @@ grammar Metagrammar
   rule grammar
     ('grammar' space grammar_name parsing_rule_sequence space? 'end') {
       def to_ruby
-        "#{name} = Grammar.new('#{name}')\n#{parsing_rule_sequence.to_ruby(self)}"
+        "#{name} = Treetop::Grammar.new('#{name}')\n#{parsing_rule_sequence.to_ruby(self)}"
       end
       
       def name
@@ -53,7 +53,7 @@ grammar Metagrammar
   rule parsing_rule
     ('rule' space nonterminal space expression space 'end') {
       def to_ruby(grammar_node)
-        "ParsingRule.new(#{nonterminal.to_ruby(grammar_node)}, #{expression.to_ruby(grammar_node)})"
+        "Treetop::ParsingRule.new(#{nonterminal.to_ruby(grammar_node)}, #{expression.to_ruby(grammar_node)})"
       end
        
       def add_rule_ruby(grammar_node)
@@ -86,7 +86,7 @@ grammar Metagrammar
     (alternative (space? '/' space? alternative)+) {
       def to_ruby(grammar_node)
         alternatives_ruby = alternatives.map { |alternative| alternative.to_ruby(grammar_node) }
-        "OrderedChoice.new([#{alternatives_ruby.join(', ')}])"
+        "Treetop::OrderedChoice.new([#{alternatives_ruby.join(', ')}])"
       end
       
       def alternatives
@@ -107,7 +107,7 @@ grammar Metagrammar
     primary (space primary)+ trailing_block {
       def to_ruby(grammar_node)
         elements_ruby = sequence_elements.map {|element| element.to_ruby(grammar_node)}
-        "Sequence.new([#{elements_ruby.join(', ')}])#{trailing_block.to_ruby}"
+        "Treetop::Sequence.new([#{elements_ruby.join(', ')}])#{trailing_block.to_ruby}"
       end
     
       def sequence_elements
@@ -185,7 +185,7 @@ grammar Metagrammar
     /
     ((instantiator_primary / atomic) '?') {
       def to_ruby(grammar_node)
-        "Optional.new(#{optional_expression.to_ruby(grammar_node)})"
+        "Treetop::Optional.new(#{optional_expression.to_ruby(grammar_node)})"
       end
     
       def optional_expression
@@ -199,13 +199,13 @@ grammar Metagrammar
   rule repetition_suffix
     '+' {
       def to_ruby(grammar_node, repeated_expression)
-        "OneOrMore.new(#{repeated_expression.to_ruby(grammar_node)})"
+        "Treetop::OneOrMore.new(#{repeated_expression.to_ruby(grammar_node)})"
       end
     }
     /
     '*' {
       def to_ruby(grammar_node, repeated_expression)
-        "ZeroOrMore.new(#{repeated_expression.to_ruby(grammar_node)})"
+        "Treetop::ZeroOrMore.new(#{repeated_expression.to_ruby(grammar_node)})"
       end
     }
   end
@@ -213,13 +213,13 @@ grammar Metagrammar
   rule prefix
     '&' {
       def to_ruby(grammar_node, prefixed_expression)
-        "AndPredicate.new(#{prefixed_expression.to_ruby(grammar_node)})"
+        "Treetop::AndPredicate.new(#{prefixed_expression.to_ruby(grammar_node)})"
       end
     }
     /
     '!' {
       def to_ruby(grammar_node, prefixed_expression)
-        "NotPredicate.new(#{prefixed_expression.to_ruby(grammar_node)})"
+        "Treetop::NotPredicate.new(#{prefixed_expression.to_ruby(grammar_node)})"
       end
     }
   end
@@ -279,7 +279,7 @@ grammar Metagrammar
   rule double_quoted_string
     ('"' (!'"' ('\"' / .))* '"') {
       def to_ruby(grammar_node = nil)
-        "TerminalSymbol.new(\"#{elements[1].text_value}\")"
+        "Treetop::TerminalSymbol.new(\"#{elements[1].text_value}\")"
       end
     }
   end
@@ -287,7 +287,7 @@ grammar Metagrammar
   rule single_quoted_string
     ("'" (!"'" ("\\'" / .))* "'") {
       def to_ruby(grammar_node = nil)
-        "TerminalSymbol.new('#{elements[1].text_value}')"
+        "Treetop::TerminalSymbol.new('#{elements[1].text_value}')"
       end
     }
   end
@@ -295,7 +295,7 @@ grammar Metagrammar
   rule character_class
     ('[' (!']' ('\]'/.))+ ']') {
       def to_ruby(grammar_node = nil)
-        "CharacterClass.new('#{characters}')"
+        "Treetop::CharacterClass.new('#{characters}')"
       end
       
       def characters
@@ -307,7 +307,7 @@ grammar Metagrammar
   rule anything_symbol
     '.' {
       def to_ruby(grammar_node = nil)
-        'AnythingSymbol.new'
+        'Treetop::AnythingSymbol.new'
       end
     }
   end
