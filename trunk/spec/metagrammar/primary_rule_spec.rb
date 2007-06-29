@@ -13,7 +13,7 @@ describe "A parser for the subset of the metagrammar rooted at the primary rule"
   
   after do
     reset_metagrammar_root
-    teardown_grammar_constant(:Bar)
+    teardown_global_constant(:Bar)
   end
   
   it "successfully parses and generates Ruby for a terminal followed by a block" do

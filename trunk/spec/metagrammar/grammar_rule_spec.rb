@@ -34,6 +34,6 @@ describe "A parser for the subset of the metagrammar rooted at the grammar rule"
     Foo.get_parsing_expression(Foo.nonterminal_symbol(:bar)).should be_an_instance_of(TerminalSymbol)
     Foo.get_parsing_expression(Foo.nonterminal_symbol(:boo)).should be_an_instance_of(TerminalSymbol)
     
-    teardown_grammar_constant(:Foo)
+    teardown_global_constant(:Foo)
   end
 end

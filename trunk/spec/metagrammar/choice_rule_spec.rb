@@ -13,7 +13,7 @@ describe "A parser for the subset of the metagrammar rooted at the choice rule" 
   
   after do
     reset_metagrammar_root
-    teardown_grammar_constant(:Bar)
+    teardown_global_constant(:Bar)
   end
   
   it "successfully parses and generates Ruby for a choice between terminals" do

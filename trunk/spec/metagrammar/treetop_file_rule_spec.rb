@@ -30,7 +30,7 @@ describe "A parser for the subset of the metagrammar rooted at the treetop_file 
     
     Foo::Bar.should be_an_instance_of(Grammar)
     
-    teardown_grammar_constant(:Foo)
+    teardown_global_constant(:Foo)
   end
   
   it "allows arbitrary ruby to be executed before and after a grammar declaration" do
@@ -50,6 +50,6 @@ describe "A parser for the subset of the metagrammar rooted at the treetop_file 
     @y.should == 'bar'
     
     Bar.should be_an_instance_of(Grammar)
-    teardown_grammar_constant(:Bar)
+    teardown_global_constant(:Bar)
   end
 end

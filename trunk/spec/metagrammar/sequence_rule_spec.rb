@@ -13,7 +13,7 @@ describe "A parser for the subset of the metagrammar rooted at the sequence rule
   
   after do
     reset_metagrammar_root
-    teardown_grammar_constant(:Bar)
+    teardown_global_constant(:Bar)
   end
   
   it "successfully parses and generates Ruby for a sequence of terminals" do
@@ -52,6 +52,22 @@ describe "A parser for the subset of the metagrammar rooted at the sequence rule
     
     value = eval(result.to_ruby(@grammar_node_mock))
     value.node_class.instance_methods.should include('a_method')
+  end
+
+  it "successfully parses a sequence of terminals followed by a node class expression and a Ruby block" do    
+    Object.class_eval do
+      class TestNodeClass < SequenceSyntaxNode
+      end
+    end
+    
+    result = @parser.parse("'a' 'b' 'c' <TestNodeClass> { def a_method; end }")
+    result.should be_success
+    
+    value = eval(result.to_ruby(@grammar_node_mock))
+    value.node_class.should == TestNodeClass
+    value.node_class.instance_methods.should include('a_method')
+    
+    teardown_global_constant(:TestNodeClass)
   end
   
   

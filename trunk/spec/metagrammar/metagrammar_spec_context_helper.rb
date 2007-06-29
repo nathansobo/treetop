@@ -27,7 +27,7 @@ module MetagrammarSpecContextHelper
     grammar_node_mock(name_symbol)
   end
   
-  def teardown_grammar_constant(name_symbol)
+  def teardown_global_constant(name_symbol)
     Object.send(:remove_const, name_symbol)
   end
   
