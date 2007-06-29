@@ -154,17 +154,21 @@ module Treetop
     end
 
     rule primary
-      instantiator_primary trailing_block {
+      instantiator_primary node_class_expression trailing_block {
         def to_ruby(grammar_node)
-          "#{instantiator_primary.to_ruby(grammar_node)}#{trailing_block.to_ruby}"
+          "#{instantiator_primary.to_ruby(grammar_node)}#{node_class_expression.to_ruby}#{trailing_block.to_ruby}"
         end
       
         def instantiator_primary
           elements[0]
         end
       
-        def trailing_block
+        def node_class_expression
           elements[1]
+        end
+      
+        def trailing_block
+          elements[2]
         end
       }
       /
