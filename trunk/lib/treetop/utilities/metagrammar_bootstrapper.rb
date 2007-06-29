@@ -6,10 +6,10 @@ module Treetop
     METAGRAMMAR_DIRECTORY = "#{TREETOP_ROOT}/metagrammar"
     
     def self.generate_metagrammar
+      FileUtils.copy(METAGRAMMAR_TREETOP_FILE_PATH, next_metagrammar_treetop_file_path)
       File.open(next_metagrammar_file_path, 'w') do |out_file|
         out_file.write(metagrammar_ruby)
       end
-      FileUtils.copy(METAGRAMMAR_TREETOP_FILE_PATH, next_metagrammar_treetop_file_path)
     end
     
     def self.next_metagrammar_file_path
@@ -27,7 +27,7 @@ module Treetop
     
     
     def self.latest_metagrammar_file_number
-      (latest_metagrammar_file_path =~ /(\d\d\d\d)\.rb/)[1].to_i
+      latest_metagrammar_file_path.match(/(\d\d\d\d)\.rb/)[1].to_i
     end
     
     def self.latest_metagrammar_file_path
@@ -37,7 +37,7 @@ module Treetop
     def self.metagrammar_ruby
       result = parse_metagrammar
       raise "Unable to parse metagrammar.treetop with the a first generation Metagrammar" if result.failure?
-      return "module Treetop\n#{result.to_ruby}\nend"
+      return result.to_ruby
     end
         
     def self.parse_metagrammar

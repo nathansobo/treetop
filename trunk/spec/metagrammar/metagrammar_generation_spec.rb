@@ -8,7 +8,7 @@ describe "The second-generation Metagrammar, produced by evaluating the results 
   before do
     gen_2_results = parse_metagrammar_with(parser_for_metagrammar)
     eval("module SecondGeneration\n#{gen_2_results.to_ruby}\nend")
-    @gen_2_parser = SecondGeneration::Metagrammar.new_parser
+    @gen_2_parser = SecondGeneration::Treetop::Metagrammar.new_parser
   end
   
   it "can parse metagrammar.treetop and generate a third-generation Metagrammar" do
@@ -16,7 +16,7 @@ describe "The second-generation Metagrammar, produced by evaluating the results 
     gen_3_result = parse_metagrammar_with(@gen_2_parser)
     eval("module ThirdGeneration\n#{gen_3_result.to_ruby}\nend")
     
-    ThirdGeneration::Metagrammar.should be_an_instance_of(Grammar)
+    ThirdGeneration::Treetop::Metagrammar.should be_an_instance_of(Grammar)
   end
   
   def parse_metagrammar_with(grammar)
