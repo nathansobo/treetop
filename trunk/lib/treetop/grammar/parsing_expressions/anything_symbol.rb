@@ -1,9 +1,5 @@
 module Treetop
   class AnythingSymbol < TerminalParsingExpression
-    def initialize(node_class = nil)
-      super(node_class)
-    end
-    
     def parse_at(input, start_index, parser)
       if start_index < input.length
         interval = (start_index...(start_index + 1))

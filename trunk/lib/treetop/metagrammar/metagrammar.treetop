@@ -124,7 +124,7 @@ module Treetop
       blockless_primary (space blockless_primary)+ node_class_expression trailing_block {
         def to_ruby(grammar_node)
           elements_ruby = sequence_elements.map {|element| element.to_ruby(grammar_node)}
-          "::Treetop::Sequence.new([#{elements_ruby.join(', ')}]#{node_class_expression.to_ruby})#{trailing_block.to_ruby}"
+          "::Treetop::Sequence.new([#{elements_ruby.join(', ')}])#{node_class_expression.to_ruby}#{trailing_block.to_ruby}"
         end
     
         def sequence_elements
@@ -340,7 +340,7 @@ module Treetop
     rule node_class_expression
       space '<' (!'>' .)+ '>' {
         def to_ruby
-          ", #{node_class_expression.text_value}"
+          ".with_node_class(#{node_class_expression.text_value})"
         end
         
         def node_class_expression

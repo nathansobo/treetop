@@ -98,7 +98,7 @@ describe "A terminal symbol instantiated with a custom node class and a block to
   before do
     @node_class = Class.new(TerminalSyntaxNode)
     
-    @terminal = TerminalSymbol.new("foo", @node_class) {
+    @terminal = TerminalSymbol.new("foo").with_node_class(@node_class) {
       def a_method
       end
     }

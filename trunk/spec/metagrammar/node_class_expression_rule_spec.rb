@@ -19,7 +19,7 @@ describe "A parser for the subset of the metagrammar rooted at the node_class_ex
   it "successfully parses and generates Ruby for a space followed by a <RubyConstant>" do
     result = @parser.parse(" <Foo>")
     result.should be_success
-    result.to_ruby.should == ", Foo"
+    result.to_ruby.should == ".with_node_class(Foo)"
   end
   
   it "successfully parses and generates Ruby for epsilon" do

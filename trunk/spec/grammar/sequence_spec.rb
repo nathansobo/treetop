@@ -78,7 +78,7 @@ describe "The result of a sequence parsing expression with specificed custom nod
     
     @node_class = Class.new(SequenceSyntaxNode)
 
-    @sequence = Sequence.new([@elt], @node_class) {
+    @sequence = Sequence.new([@elt]).with_node_class(@node_class) {
       def a_method
       end
     }

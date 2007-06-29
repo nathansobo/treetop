@@ -1,9 +1,9 @@
 module Treetop
   class Sequence < NodeInstantiatingParsingExpression
-    attr_reader :elements, :node_class
+    attr_reader :elements
     
-    def initialize(elements, node_class = nil)
-      super(node_class)
+    def initialize(elements)
+      super()
       @elements = elements
     end
     

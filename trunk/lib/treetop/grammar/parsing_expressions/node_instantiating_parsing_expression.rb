@@ -1,15 +1,24 @@
 module Treetop
   class NodeInstantiatingParsingExpression < ParsingExpression
-    attr_reader :node_class
     
-    def initialize(node_class = nil, &block)
-      @node_class = node_class || Class.new(node_superclass)
+    def initialize(&block)
       node_class_eval(&block) if block_given?
+    end
+    
+    def with_node_class(a_class, &block)
+      @node_class = a_class
+      node_class_eval(&block) if block_given?
+      return self
     end
     
     def node_class_eval(string = nil, &block)      
       node_class.class_eval(string) if string
       node_class.class_eval(&block) if block
-    end    
+    end
+    
+    def node_class
+      @node_class ||= Class.new(node_superclass)
+      @node_class
+    end
   end
 end
