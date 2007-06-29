@@ -1,2 +1,2 @@
 dir = File.dirname(__FILE__)
-require "#{dir}/metagrammar/metagrammar"
+require Treetop::MetagrammarBootstrapper.latest_metagrammar_file_path

@@ -1,20 +1,25 @@
 module MetagrammarSpecContextHelper
-  unless const_defined?(:Gen1Metagrammar)
-    Gen1Metagrammar = MetagrammarBootstrapper.gen_1_metagrammar
+  
+  module Test
+    # evaluate the Metagrammar under test inside Test module to distinguish it
+    # from the Metagrammar currently supporting the rest of the system
+    unless const_defined?(:Metagrammar)
+      module_eval MetagrammarBootstrapper.metagrammar_ruby
+    end  
   end
   
   def set_metagrammar_root(new_root_symbol)
-    new_root = Gen1Metagrammar.nonterminal_symbol(new_root_symbol)
-    @previous_root = Gen1Metagrammar.root
-    Gen1Metagrammar.root = new_root
+    new_root = Test::Treetop::Metagrammar.nonterminal_symbol(new_root_symbol)
+    @previous_root = Test::Treetop::Metagrammar.root
+    Test::Treetop::Metagrammar.root = new_root
   end
   
   def reset_metagrammar_root
-    Gen1Metagrammar.root = @previous_root
+    Test::Treetop::Metagrammar.root = @previous_root
   end
   
   def parser_for_metagrammar
-    Gen1Metagrammar.new_parser
+    Test::Treetop::Metagrammar.new_parser
   end
   
   def setup_grammar_constant(name_symbol)
