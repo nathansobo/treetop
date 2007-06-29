@@ -6,8 +6,8 @@ module Treetop
       @epsilon ||= self.new("")
     end
     
-    def initialize(prefix)
-      super()
+    def initialize(prefix, node_class = nil)
+      super(node_class)
       self.prefix = prefix
     end
     

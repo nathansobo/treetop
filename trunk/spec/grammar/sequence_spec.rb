@@ -52,8 +52,7 @@ describe "The result of a sequence parsing expression with one element and a met
     @elt_result = parse_success
     @elt.stub!(:parse_at).and_return(@elt_result)
 
-    @sequence = Sequence.new([@elt])
-    @sequence.node_class_eval do
+    @sequence = Sequence.new([@elt]) do
       def method
       end
     end
@@ -67,6 +66,32 @@ describe "The result of a sequence parsing expression with one element and a met
   
   it "responds to the method defined in the node class" do
     @result.should respond_to(:method)
+  end
+end
+
+describe "The result of a sequence parsing expression with specificed custom node class and a node class eval block" do
+
+  before do
+    @elt = mock("Parsing expression in sequence")
+    @elt_result = parse_success
+    @elt.stub!(:parse_at).and_return(@elt_result)
+    
+    @node_class = Class.new(SequenceSyntaxNode)
+
+    @sequence = Sequence.new([@elt], @node_class) {
+      def a_method
+      end
+    }
+    
+    @result = @sequence.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
+  end
+  
+  it "is an instance of that class" do
+    @result.should be_an_instance_of(@node_class)
+  end
+  
+  it "responds to a method defined in the node class eval block " do
+    @result.should respond_to(:a_method)
   end
 end
 

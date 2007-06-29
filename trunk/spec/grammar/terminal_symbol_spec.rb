@@ -93,6 +93,24 @@ describe "A terminal symbol with a method defined in its node class via node_cla
   end
 end
 
+describe "A terminal symbol instantiated with a custom node class and a block to be node_class" do
+  
+  before do
+    @node_class = Class.new(TerminalSyntaxNode)
+    
+    @terminal = TerminalSymbol.new("foo", @node_class) {
+      def a_method
+      end
+    }
+  end
+  
+  it "returns a node that is an instance of that class with methods defined in the node class eval block" do
+    result = @terminal.parse_at('foo', 0, parser_with_empty_cache_mock)
+    result.should be_an_instance_of(@node_class)
+    result.should respond_to(:a_method)
+  end
+end
+
 describe "A terminal symbol with a method defined in its node class via a block passed to its initializer" do
   before do
     @terminal = TerminalSymbol.new("foo") do

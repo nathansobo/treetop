@@ -1,7 +1,7 @@
 module Treetop
   class AnythingSymbol < TerminalParsingExpression
-    def initialize
-      super
+    def initialize(node_class = nil)
+      super(node_class)
     end
     
     def parse_at(input, start_index, parser)

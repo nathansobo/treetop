@@ -3,8 +3,8 @@ module Treetop
 
     attr_reader :char_class_string, :prefix_regex
     
-    def initialize(char_class_string)
-      super()
+    def initialize(char_class_string, node_class = nil)
+      super(node_class)
       @char_class_string = char_class_string
       @prefix_regex = Regexp.new("[#{char_class_string}]")
     end

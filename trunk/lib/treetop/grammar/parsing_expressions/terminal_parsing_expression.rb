@@ -1,6 +1,6 @@
 module Treetop
   class TerminalParsingExpression < NodeInstantiatingParsingExpression
-    def initialize
+    def initialize(node_class = nil)
       super
     end
       
