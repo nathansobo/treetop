@@ -1,4 +1,20 @@
 grammar Metagrammar
+  rule treetop_file
+    (grammar / arbitrary_character)* {
+      def to_ruby
+        elements.map { |elt| elt.to_ruby }.join
+      end
+    }
+  end
+
+  rule arbitrary_character
+    . {
+      def to_ruby
+        text_value
+      end
+    }
+  end
+  
   rule grammar
     'grammar' space grammar_name parsing_rule_sequence space? 'end' {
       def to_ruby
@@ -265,7 +281,7 @@ grammar Metagrammar
   end
 
   rule nonterminal
-    !keyword (alpha_char alphanumeric_char*) {
+    !keyword_inside_grammar (alpha_char alphanumeric_char*) {
       def name
         elements[1].text_value
       end
@@ -342,8 +358,12 @@ grammar Metagrammar
     }
   end
 
-  rule keyword
-    ('rule' / 'end') !(!space .)
+  rule keyword_inside_grammar
+    ('rule' / 'end') !non_space_char
+  end
+  
+  rule non_space_char
+    !space .
   end
 
   rule alpha_char
