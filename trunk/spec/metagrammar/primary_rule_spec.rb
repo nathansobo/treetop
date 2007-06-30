@@ -17,7 +17,6 @@ describe "A parser for the subset of the metagrammar rooted at the primary rule"
       class TestSequenceNodeClass < SequenceSyntaxNode
       end
     end
-    
   end
   
   after do

@@ -1,90 +1,31 @@
+require "#{TREETOP_ROOT}/metagrammar/node_classes"
+
 module Treetop
   grammar Metagrammar
     rule treetop_file
-      (grammar / arbitrary_character)* {
-        def to_ruby
-          elements.map { |elt| elt.to_ruby }.join
-        end
-      }
+      (grammar / arbitrary_character)* <MetagrammarNode::TreetopFile>
     end
 
     rule arbitrary_character
-      . {
-        def to_ruby
-          text_value
-        end
-      }
+      . <MetagrammarNode::ArbitraryCharacter>
     end
   
     rule grammar
-      'grammar' space grammar_name parsing_rule_sequence space? 'end' {
-        def to_ruby
-          "#{name} = ::Treetop::Grammar.new('#{name}')\n#{parsing_rule_sequence.to_ruby(self)}"
-        end
-      
-        def name
-          elements[2].value
-        end
-      
-        def parsing_rule_sequence
-          elements[3]
-        end
-      }
+      'grammar' space grammar_name parsing_rule_sequence space? 'end' <MetagrammarNode::GrammarNode>
     end
 
     rule grammar_name
-      ([A-Z] alphanumeric_char*) space {
-        def value
-          elements[0].text_value.to_sym
-        end
-      }
+      ([A-Z] alphanumeric_char*) space <MetagrammarNode::GrammarName>
     end
   
     rule parsing_rule_sequence
-      parsing_rule (space parsing_rule)* {
-        def to_ruby(grammar_node)
-          add_rules_ruby = rules.map {|rule| rule.add_rule_ruby(grammar_node)}
-          add_rules_ruby.join("\n") + "\n"
-        end
-
-        def rules
-          [head_rule] + tail_rules
-        end
-      
-        def head_rule
-          elements[0]
-        end
-          
-        def tail_rules
-          elements[1].elements.map {|space_parsing_rule_sequence| space_parsing_rule_sequence.elements[1]}
-        end
-      }
+      parsing_rule (space parsing_rule)* <MetagrammarNode::ParsingRuleSequence>
       /
-      '' {
-        def to_ruby(grammar)
-          ''
-        end
-      }
+      '' <MetagrammarNode::Epsilon>
     end
   
     rule parsing_rule
-      'rule' space nonterminal space expression space 'end' {
-        def to_ruby(grammar_node)
-          "::Treetop::ParsingRule.new(#{nonterminal.to_ruby(grammar_node)}, #{expression.to_ruby(grammar_node)})"
-        end
-       
-        def add_rule_ruby(grammar_node)
-          "#{grammar_node.name}.add_parsing_rule(#{to_ruby(grammar_node)})"
-        end
-
-        def nonterminal
-           elements[2]
-        end
-      
-        def expression
-           elements[4]
-        end
-      }
+      'rule' space nonterminal space expression space 'end' <MetagrammarNode::ParsingRuleNode>
     end
   
     rule expression
@@ -100,53 +41,11 @@ module Treetop
     end
 
     rule choice
-      alternative (space? '/' space? alternative)+ {
-        def to_ruby(grammar_node)
-          alternatives_ruby = alternatives.map { |alternative| alternative.to_ruby(grammar_node) }
-          "::Treetop::OrderedChoice.new([#{alternatives_ruby.join(', ')}])"
-        end
-      
-        def alternatives
-          [head_alternative] + tail_alternatives
-        end
-      
-        def head_alternative
-          elements[0]
-        end
-      
-        def tail_alternatives
-          elements[1].elements.map {|tail_element| tail_element.elements[3]}
-        end
-      }
+      alternative (space? '/' space? alternative)+ <MetagrammarNode::Choice>
     end
 
     rule sequence
-      blockless_primary (space blockless_primary)+ node_class_expression trailing_block {
-        def to_ruby(grammar_node)
-          elements_ruby = sequence_elements.map {|element| element.to_ruby(grammar_node)}
-          "::Treetop::Sequence.new([#{elements_ruby.join(', ')}])#{node_class_expression.to_ruby}#{trailing_block.to_ruby}"
-        end
-    
-        def sequence_elements
-          [head_element] + tail_elements
-        end
-      
-        def head_element
-          elements[0]
-        end
-      
-        def tail_elements
-          elements[1].elements.map {|tail_element| tail_element.elements[1]}
-        end
-        
-        def node_class_expression
-          elements[2]
-        end
-      
-        def trailing_block
-          elements[3]
-        end
-      }
+      blockless_primary (space blockless_primary)+ node_class_expression trailing_block <MetagrammarNode::Sequence>
     end
   
     rule alternative
@@ -154,23 +53,7 @@ module Treetop
     end
 
     rule primary
-      instantiator_primary node_class_expression trailing_block {
-        def to_ruby(grammar_node)
-          "#{instantiator_primary.to_ruby(grammar_node)}#{node_class_expression.to_ruby}#{trailing_block.to_ruby}"
-        end
-      
-        def instantiator_primary
-          elements[0]
-        end
-      
-        def node_class_expression
-          elements[1]
-        end
-      
-        def trailing_block
-          elements[2]
-        end
-      }
+      instantiator_primary node_class_expression trailing_block <MetagrammarNode::Primary>
       /
       propagator_primary
     end
@@ -180,77 +63,25 @@ module Treetop
     end
 
     rule instantiator_primary
-      atomic repetition_suffix {
-        def to_ruby(grammar_node)
-          repetition_suffix.to_ruby(grammar_node, atomic)
-        end
-      
-        def atomic
-          elements[0]
-        end
-      
-        def repetition_suffix
-          elements[1]
-        end
-      }
+      atomic repetition_suffix <MetagrammarNode::InstantiatorPrimary>
       /
       atomic_instantiator
     end
   
     rule propagator_primary
-      prefix (instantiator_primary / atomic) {
-        def to_ruby(grammar_node)
-          prefix.to_ruby(grammar_node, prefixed_expression)
-        end
-      
-        def prefix
-          elements[0]
-        end
-      
-        def prefixed_expression
-          elements[1]
-        end
-      }
+      prefix (instantiator_primary / atomic) <MetagrammarNode::PrefixedPrimary>
       /
-      (instantiator_primary / atomic) '?' {
-        def to_ruby(grammar_node)
-          "::Treetop::Optional.new(#{optional_expression.to_ruby(grammar_node)})"
-        end
-    
-        def optional_expression
-          elements[0]
-        end
-      }
+      (instantiator_primary / atomic) '?' <MetagrammarNode::OptionalPrimary>
       /
       atomic_propagator
     end
   
     rule repetition_suffix
-      '+' {
-        def to_ruby(grammar_node, repeated_expression)
-          "::Treetop::OneOrMore.new(#{repeated_expression.to_ruby(grammar_node)})"
-        end
-      }
-      /
-      '*' {
-        def to_ruby(grammar_node, repeated_expression)
-          "::Treetop::ZeroOrMore.new(#{repeated_expression.to_ruby(grammar_node)})"
-        end
-      }
+      '+' <MetagrammarNode::Plus> / '*' <MetagrammarNode::Star>
     end
   
     rule prefix
-      '&' {
-        def to_ruby(grammar_node, prefixed_expression)
-          "::Treetop::AndPredicate.new(#{prefixed_expression.to_ruby(grammar_node)})"
-        end
-      }
-      /
-      '!' {
-        def to_ruby(grammar_node, prefixed_expression)
-          "::Treetop::NotPredicate.new(#{prefixed_expression.to_ruby(grammar_node)})"
-        end
-      }
+      '&' <MetagrammarNode::And> / '!' <MetagrammarNode::Bang>
     end
 
     rule atomic
@@ -266,39 +97,15 @@ module Treetop
     end
   
     rule parenthesized_instantiator
-      '(' space? instantiator space? ')' {
-        def to_ruby(grammar_node)
-          instantiator.to_ruby(grammar_node)
-        end
-      
-        def instantiator
-          elements[2]
-        end
-      }
+      '(' space? instantiator space? ')' <MetagrammarNode::ParenthesizedInstantiator>
     end
   
     rule parenthesized_propagator
-      '(' space? propagator space? ')' {
-        def to_ruby(grammar_node)
-          propagator.to_ruby(grammar_node)
-        end
-      
-        def propagator
-          elements[2]
-        end
-      }
+      '(' space? propagator space? ')' <MetagrammarNode::ParenthesizedPropagator>
     end
 
     rule nonterminal
-      !keyword_inside_grammar (alpha_char alphanumeric_char*) {
-        def name
-          elements[1].text_value
-        end
-      
-        def to_ruby(grammar_node)
-          "#{grammar_node.name}.nonterminal_symbol(:#{name})"
-        end
-      }
+      !keyword_inside_grammar (alpha_char alphanumeric_char*) <MetagrammarNode::Nonterminal>
     end
 
     rule terminal
@@ -306,83 +113,35 @@ module Treetop
     end
 
     rule double_quoted_string
-      '"' (!'"' ('\"' / .))* '"' {
-        def to_ruby(grammar_node = nil)
-          "::Treetop::TerminalSymbol.new(\"#{elements[1].text_value}\")"
-        end
-      }
+      '"' (!'"' ('\"' / .))* '"' <MetagrammarNode::DoubleQuotedString>
     end
 
     rule single_quoted_string
-      "'" (!"'" ("\\'" / .))* "'" {
-        def to_ruby(grammar_node = nil)
-          "::Treetop::TerminalSymbol.new('#{elements[1].text_value}')"
-        end
-      }
+      "'" (!"'" ("\\'" / .))* "'" <MetagrammarNode::SingleQuotedString>
     end
 
     rule character_class
-      '[' (!']' ('\]'/.))+ ']' {
-        def to_ruby(grammar_node = nil)
-          "::Treetop::CharacterClass.new('#{characters}')"
-        end
-      
-        def characters
-          elements[1].text_value
-        end
-      }
+      '[' (!']' ('\]'/.))+ ']' <MetagrammarNode::CharacterClass>
     end
 
     rule anything_symbol
-      '.' {
-        def to_ruby(grammar_node = nil)
-          '::Treetop::AnythingSymbol.new'
-        end
-      }
+      '.' <MetagrammarNode::AnythingSymbol>
     end
     
     rule node_class_expression
-      space '<' (!'>' .)+ '>' {
-        def to_ruby
-          ".with_node_class(#{node_class_expression.text_value})"
-        end
-        
-        def node_class_expression
-          elements[2]
-        end
-      }
+      space '<' (!'>' .)+ '>' <MetagrammarNode::NodeClassExpression>
       /
-      '' {
-        def to_ruby
-          ''
-        end
-      }
+      '' <MetagrammarNode::Epsilon>
     end
   
     rule trailing_block
-      space block {
-        def to_ruby
-          " #{block.to_ruby}"
-        end
-
-        def block
-          elements[1]
-        end
-      }
+      space block <MetagrammarNode::TrailingBlock>
       /
-      '' {
-        def to_ruby
-          ''
-        end
-      }
+      '' <MetagrammarNode::Epsilon>
     end
 
     rule block
-      '{' (block / ![{}] .)* '}' {
-        def to_ruby
-          text_value
-        end    
-      }
+      '{' (block / ![{}] .)* '}' <MetagrammarNode::Block>
     end
 
     rule keyword_inside_grammar

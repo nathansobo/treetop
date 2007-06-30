@@ -3,7 +3,7 @@ module Treetop
   
     METAGRAMMAR_TREETOP_FILE_PATH = File.expand_path('metagrammar.treetop', "#{TREETOP_ROOT}/metagrammar/")
     NEOMETAGRAMMAR_TREETOP_FILE_PATH = File.expand_path('neometagrammar.treetop', "#{TREETOP_ROOT}/metagrammar/")
-    METAGRAMMAR_DIRECTORY = "#{TREETOP_ROOT}/metagrammar"
+    METAGRAMMAR_DIRECTORY = "#{TREETOP_ROOT}/metagrammar/generated"
     
     def self.generate_metagrammar
       FileUtils.copy(METAGRAMMAR_TREETOP_FILE_PATH, next_metagrammar_treetop_file_path)
