@@ -24,6 +24,10 @@ module Treetop
       "(#{string})"
     end
     
+    def label
+      nil
+    end
+    
     protected
     def failure_at(index, nested_results)
       ParseFailure.new(index, nested_results)

@@ -34,5 +34,10 @@ describe "A parsing expression" do
     and_predicate = @expression.not_predicate
     and_predicate.should be_an_instance_of(NotPredicate)
     and_predicate.expression.should == @expression
-  end  
+  end
+  
+  it "has a nil label by default" do
+    @expression.label.should be_nil
+  end
+  
 end

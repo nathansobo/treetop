@@ -3,10 +3,10 @@ require "#{dir}/../spec_helper"
 
 describe "The result of a sequence parsing expression with one element, when that element parses successfully" do
   before do
-    @element = mock("Parsing expression in sequence")
+    @element = parsing_expression_mock("parsing expression in sequence")
     @elt_result = parse_success
-    @elt.stub!(:parse_at).and_return(@elt_result)
-    @sequence = Sequence.new([@elt])
+    @element.stub!(:parse_at).and_return(@elt_result)
+    @sequence = Sequence.new([@element])
     @result = @sequence.parse_at(mock('input'), 0, parser_with_empty_cache_mock)    
   end
       
@@ -48,7 +48,7 @@ end
 
 describe "The result of a sequence parsing expression with one element and a method defined in its node class" do
   before do
-    @elt = mock("Parsing expression in sequence")
+    @elt = parsing_expression_mock("parsing expression in sequence")
     @elt_result = parse_success
     @elt.stub!(:parse_at).and_return(@elt_result)
 
@@ -72,7 +72,7 @@ end
 describe "The result of a sequence parsing expression with specificed custom node class and a node class eval block" do
 
   before do
-    @elt = mock("Parsing expression in sequence")
+    @elt = parsing_expression_mock("parsing expression in sequence")
     @elt_result = parse_success
     @elt.stub!(:parse_at).and_return(@elt_result)
     
@@ -97,7 +97,7 @@ end
 
 describe "The result of a sequence parsing expression with one element and a method defined in its node class via the evaluation of a string" do
   before do
-    @elt = mock("Parsing expression in sequence")
+    @elt = parsing_expression_mock("parsing expression in sequence")
     @elt_result = parse_success
     @elt.stub!(:parse_at).and_return(@elt_result)
 
@@ -149,11 +149,11 @@ end
 
 describe "The result of a sequence whose child expressions return successfully with nested failures" do
   before(:each) do
-    @elt_1 = mock("first parsing expression in sequence")
+    @elt_1 = parsing_expression_mock("first parsing expression in sequence")
     @elt_1_result = parse_success_with_nested_failure_at(2)
     @elt_1.stub!(:parse_at).and_return(@elt_1_result)
 
-    @elt_2 = mock("second parsing expression in sequence")
+    @elt_2 = parsing_expression_mock("second parsing expression in sequence")
     @elt_2_result = parse_success_with_nested_failure_at(4)
     @elt_2.stub!(:parse_at).and_return(@elt_2_result)
 
@@ -198,9 +198,9 @@ describe "A sequence with uniquely-named nonterminal elements" do
     @sequence = Sequence.new([grammar.nonterminal_symbol(:foo), grammar.nonterminal_symbol(:bar)])
   end
   
-  it "defines accessor methods for those elements in its node class"
-  #   node_class = @sequence.node_class
-  #   node_class.instance_methods.should include('foo')
-  #   node_class.instance_methods.should include('bar')
-  # end
+  it "defines accessor methods for those elements in its node class" do
+    node_class = @sequence.node_class
+    node_class.method_defined?(:foo).should be_true
+    node_class.method_defined?(:bar).should be_true
+  end
 end

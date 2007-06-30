@@ -37,6 +37,10 @@ def parser_with_empty_cache_mock
   return parser
 end
 
+def parsing_expression_mock(label = "parsing expression")
+  stub(label, :label => nil)
+end
+
 def parse_success(interval = 0...5)
   SyntaxNode.new(mock('expression'), mock('input'), interval)
 end

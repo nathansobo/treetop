@@ -26,5 +26,8 @@ module Treetop
         return failure_at(start_index, results + [result])
       end
     end
+    
+    def after_node_class_assignment
+    end
   end
 end

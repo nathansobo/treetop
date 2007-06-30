@@ -3,8 +3,8 @@ module Treetop
     attr_reader :elements
     
     def initialize(elements)
-      super()
       @elements = elements
+      super()
     end
     
     def node_superclass
@@ -81,6 +81,22 @@ module Treetop
             return rb_class_new_instance(5, node_class_args, node_class);
           }
         C
+      end
+    end
+    
+    protected
+
+    def after_node_class_assignment
+      elements.each_with_index { |element, index| define_element_accessor(element, index) }
+    end
+    
+    def define_element_accessor(element, index)
+      return if element.label.nil?
+      return if node_class.instance_methods.include?(element.label)
+      node_class.class_eval do
+        define_method element.label do
+          elements[index]
+        end
       end
     end
   end

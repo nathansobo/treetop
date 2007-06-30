@@ -11,6 +11,10 @@ module Treetop
       grammar.get_parsing_expression(self)
     end
     
+    def label
+      name
+    end
+    
     def to_s
       name.to_s
     end
