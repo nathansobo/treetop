@@ -216,6 +216,4 @@ describe "A sequence with uniquely-named nonterminal elements and a node class w
   it "does not define a method automatically for the last element, leaving the existing method" do
     @sequence.node_class.instance_method(:baz).should == @existing_method
   end
-      
-  
 end

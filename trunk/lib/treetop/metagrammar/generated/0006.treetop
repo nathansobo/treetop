@@ -1,4 +1,4 @@
-require "#{TREETOP_ROOT}/metagrammar/node_classes_2"
+require "#{TREETOP_ROOT}/metagrammar/node_classes"
 
 module Treetop
   grammar Metagrammar
@@ -19,7 +19,7 @@ module Treetop
     end
 
     rule parsing_rule_sequence
-      head_rule:parsing_rule tail_rules:(space parsing_rule)* <MetagrammarNode::ParsingRuleSequence>
+      parsing_rule (space parsing_rule)* <MetagrammarNode::ParsingRuleSequence>
       /
       '' <MetagrammarNode::Epsilon>
     end
@@ -41,11 +41,11 @@ module Treetop
     end
 
     rule choice
-      head_alternative:alternative (space? '/' space? alternative)+ <MetagrammarNode::Choice>
+      alternative (space? '/' space? alternative)+ <MetagrammarNode::Choice>
     end
 
     rule sequence
-      head_element:blockless_primary (space blockless_primary)+ node_class_expression trailing_block <MetagrammarNode::Sequence>
+      blockless_primary (space blockless_primary)+ node_class_expression trailing_block <MetagrammarNode::Sequence>
     end
 
     rule alternative
