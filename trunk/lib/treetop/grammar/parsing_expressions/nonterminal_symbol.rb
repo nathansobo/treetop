@@ -12,7 +12,7 @@ module Treetop
     end
     
     def label
-      name
+      super || name
     end
     
     def to_s

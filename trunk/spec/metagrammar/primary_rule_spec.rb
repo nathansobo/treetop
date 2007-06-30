@@ -27,7 +27,6 @@ describe "A parser for the subset of the metagrammar rooted at the primary rule"
   end
   
   it "successfully parses and generates Ruby for a terminal followed by a node class expression and a block" do
-    
     result = @parser.parse("label:'foo' <TestTerminalNodeClass> { def a_method; end }")
     result.should be_success
     value = eval(result.to_ruby(@grammar_node_mock))

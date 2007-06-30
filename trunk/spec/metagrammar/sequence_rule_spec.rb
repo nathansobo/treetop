@@ -26,14 +26,17 @@ describe "A parser for the subset of the metagrammar rooted at the sequence rule
     value.elements[2].prefix.should == 'c'
   end
   
-  it "successfully parses and generates Ruby for a sequence of nonterminals" do
-    result = @parser.parse("a b c")
+  it "successfully parses and generates Ruby for a sequence of labeled nonterminals" do
+    result = @parser.parse("label_a:a label_b:b label_c:c")
     result.should be_success
     value = eval(result.to_ruby(@grammar_node_mock))
     value.should be_an_instance_of(Sequence)
     value.elements[0].name.should == :a
+    value.elements[0].label.should == :label_a
     value.elements[1].name.should == :b
+    value.elements[1].label.should == :label_b
     value.elements[2].name.should == :c
+    value.elements[2].label.should == :label_c
   end
   
   it "does not parse a sequence containing an unparenthesized terminal followed by a block" do

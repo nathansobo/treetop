@@ -53,7 +53,11 @@ module Treetop
     end
 
     rule primary
-      label labelless_primary <MetagrammarNode::LabeledPrimary>
+      label labelless_primary {
+        def to_ruby(grammar_node)
+          "#{labelless_primary.to_ruby(grammar_node)}#{label.to_ruby}"
+        end
+      }
       /
       labelless_primary
     end
@@ -73,12 +77,6 @@ module Treetop
     end
 
     rule blockless_primary
-      label (labelless_blockless_primary) <MetagrammarNode::LabeledPrimary>
-      /
-      labelless_blockless_primary
-    end
-    
-    rule labelless_blockless_primary
       instantiator_primary / propagator_primary
     end
 

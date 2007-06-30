@@ -18,11 +18,7 @@ module Treetop
       end
   
       def name
-        elements[2].value
-      end
-  
-      def parsing_rule_sequence
-        elements[3]
+        grammar_name.value
       end
     end
   
@@ -109,6 +105,16 @@ module Treetop
       def to_ruby(grammar_node)
         "#{instantiator_primary.to_ruby(grammar_node)}#{node_class_expression.to_ruby}#{trailing_block.to_ruby}"
       end    
+    end
+    
+    class LabeledPrimary < SequenceSyntaxNode
+      def to_ruby(grammar_node)
+        "#{labeled_element.to_ruby(grammar_node)}#{label.to_ruby}"
+      end
+      
+      def labeled_element
+        elements[1]
+      end
     end
     
     class InstantiatorPrimary < SequenceSyntaxNode

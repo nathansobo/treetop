@@ -13,8 +13,9 @@ describe "A nonterminal symbol that refers to an expression that parses successf
     @referrent_expression.stub!(:parse_at).and_return(@parse_result_of_referrent)
   end
 
-  it "has a label equivalent to its name" do
+  it "has a label equivalent to its name, unless a label has been assigned" do
     @nonterminal.label.should == :foo
+    @nonterminal.labeled_as(:bar).label.should == :bar
   end
   
   it "retains a reference to the grammar of which it's a member" do
