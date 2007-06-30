@@ -59,19 +59,11 @@ module Treetop
   
     class ParsingRuleNode < SequenceSyntaxNode
       def to_ruby(grammar_node)
-        "::Treetop::ParsingRule.new(#{nonterminal.to_ruby(grammar_node)}, #{expression.to_ruby(grammar_node)})"
+        "::Treetop::ParsingRule.new(#{nonterminal.to_ruby(grammar_node)}, #{parsing_expression.to_ruby(grammar_node)})"
       end
    
       def add_rule_ruby(grammar_node)
         "#{grammar_node.name}.add_parsing_rule(#{to_ruby(grammar_node)})"
-      end
-
-      def nonterminal
-         elements[2]
-      end
-  
-      def expression
-         elements[4]
       end
     end
     
@@ -111,55 +103,23 @@ module Treetop
       def tail_elements
         elements[1].elements.map {|tail_element| tail_element.elements[1]}
       end
-      
-      def node_class_expression
-        elements[2]
-      end
-    
-      def trailing_block
-        elements[3]
-      end
     end
     
     class Primary < SequenceSyntaxNode
       def to_ruby(grammar_node)
         "#{instantiator_primary.to_ruby(grammar_node)}#{node_class_expression.to_ruby}#{trailing_block.to_ruby}"
-      end
-    
-      def instantiator_primary
-        elements[0]
-      end
-    
-      def node_class_expression
-        elements[1]
-      end
-    
-      def trailing_block
-        elements[2]
-      end
+      end    
     end
     
     class InstantiatorPrimary < SequenceSyntaxNode
       def to_ruby(grammar_node)
         repetition_suffix.to_ruby(grammar_node, atomic)
       end
-    
-      def atomic
-        elements[0]
-      end
-    
-      def repetition_suffix
-        elements[1]
-      end
     end
     
     class PrefixedPrimary < SequenceSyntaxNode
       def to_ruby(grammar_node)
         prefix.to_ruby(grammar_node, prefixed_expression)
-      end
-    
-      def prefix
-        elements[0]
       end
     
       def prefixed_expression
@@ -205,29 +165,21 @@ module Treetop
       def to_ruby(grammar_node)
         instantiator.to_ruby(grammar_node)
       end
-    
-      def instantiator
-        elements[2]
-      end
     end
     
     class ParenthesizedPropagator < SequenceSyntaxNode
       def to_ruby(grammar_node)
         propagator.to_ruby(grammar_node)
       end
-    
-      def propagator
-        elements[2]
-      end
     end
     
     class Nonterminal < SequenceSyntaxNode
-      def name
-        elements[1].text_value
-      end
-    
       def to_ruby(grammar_node)
         "#{grammar_node.name}.nonterminal_symbol(:#{name})"
+      end
+
+      def name
+        elements[1].text_value
       end
     end
     
@@ -272,10 +224,6 @@ module Treetop
     class TrailingBlock < SequenceSyntaxNode
       def to_ruby
         " #{block.to_ruby}"
-      end
-
-      def block
-        elements[1]
       end
     end
     

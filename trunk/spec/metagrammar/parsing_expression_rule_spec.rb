@@ -2,11 +2,11 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 require "#{dir}/metagrammar_spec_context_helper"
 
-describe "A parser for the subset of the metagrammar rooted at the expression rule" do
+describe "A parser for the subset of the metagrammar rooted at the parsing_expression rule" do
   include MetagrammarSpecContextHelper
 
   before(:all) do
-    set_metagrammar_root(:expression)
+    set_metagrammar_root(:parsing_expression)
     @parser = parser_for_metagrammar
   end
   

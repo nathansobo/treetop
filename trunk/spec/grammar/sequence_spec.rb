@@ -206,11 +206,16 @@ describe "A sequence with uniquely-named nonterminal elements and a node class w
   
   it "defines accessor methods for the first two elements automatically" do
     node_class = @sequence.node_class
-    node_class.method_defined?(:foo).should be_true
-    node_class.method_defined?(:bar).should be_true
+    elements = [mock('result of foo'), mock('result of bar')]
+    node = node_class.new(@sequence, "foobarbaz", 0...9, elements, [])
+    
+    node.foo.should == elements[0]
+    node.bar.should == elements[1]
   end
   
   it "does not define a method automatically for the last element, leaving the existing method" do
     @sequence.node_class.instance_method(:baz).should == @existing_method
   end
+      
+  
 end
