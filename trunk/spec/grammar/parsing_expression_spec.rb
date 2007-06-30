@@ -40,4 +40,10 @@ describe "A parsing expression" do
     @expression.label.should be_nil
   end
   
+  it "can be labelled" do
+    labeled_expression = @expression.labeled_as(:foo)
+    labeled_expression.should == @expression
+    labeled_expression.label.should == :foo
+  end
+  
 end

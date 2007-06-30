@@ -1,5 +1,7 @@
 module Treetop
   class ParsingExpression
+    attr_reader :label
+    
     def zero_or_more
       ZeroOrMore.new(self)
     end
@@ -24,10 +26,11 @@ module Treetop
       "(#{string})"
     end
     
-    def label
-      nil
+    def labeled_as(label)
+      @label = label
+      self
     end
-    
+
     protected
     def failure_at(index, nested_results)
       ParseFailure.new(index, nested_results)
