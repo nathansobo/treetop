@@ -190,3 +190,17 @@ describe "The result of a sequence whose first child expression returns successf
     nested_failures.should include(@elt_2_result)
   end
 end
+
+describe "A sequence with uniquely-named nonterminal elements" do
+  
+  before do
+    grammar = Grammar.new
+    @sequence = Sequence.new([grammar.nonterminal_symbol(:foo), grammar.nonterminal_symbol(:bar)])
+  end
+  
+  it "defines accessor methods for those elements in its node class"
+  #   node_class = @sequence.node_class
+  #   node_class.instance_methods.should include('foo')
+  #   node_class.instance_methods.should include('bar')
+  # end
+end

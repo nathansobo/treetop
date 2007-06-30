@@ -6,7 +6,7 @@ module Treetop
     end
     
     def with_node_class(a_class, &block)
-      @node_class = a_class
+      self.node_class = a_class
       node_class_eval(&block) if block_given?
       return self
     end
@@ -17,8 +17,19 @@ module Treetop
     end
     
     def node_class
-      @node_class ||= Class.new(node_superclass)
+      self.node_class = Class.new(node_superclass) if @node_class.nil?
       @node_class
     end
+    
+    protected
+    
+    def node_class=(a_class)
+      @node_class = a_class
+      after_node_class_assignment
+    end
+    
+    def after_node_class_assignment
+    end
+    
   end
 end
