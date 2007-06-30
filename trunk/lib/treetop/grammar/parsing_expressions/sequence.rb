@@ -92,7 +92,7 @@ module Treetop
     
     def define_element_accessor(element, index)
       return if element.label.nil?
-      return if node_class.instance_methods.include?(element.label)
+      return if node_class.method_defined?(element.label)
       node_class.class_eval do
         define_method element.label do
           elements[index]

@@ -191,16 +191,26 @@ describe "The result of a sequence whose first child expression returns successf
   end
 end
 
-describe "A sequence with uniquely-named nonterminal elements" do
-  
+describe "A sequence with uniquely-named nonterminal elements and a node class with a method with the same name as the last of the elements" do  
   before do
     grammar = Grammar.new
-    @sequence = Sequence.new([grammar.nonterminal_symbol(:foo), grammar.nonterminal_symbol(:bar)])
+    node_class = Class.new(SequenceSyntaxNode) do
+      def baz
+        'baz'
+      end
+    end
+    
+    @existing_method = node_class.instance_method(:baz)
+    @sequence = Sequence.new([grammar.nonterminal_symbol(:foo), grammar.nonterminal_symbol(:bar), grammar.nonterminal_symbol(:baz)]).with_node_class(node_class)
   end
   
-  it "defines accessor methods for those elements in its node class" do
+  it "defines accessor methods for the first two elements automatically" do
     node_class = @sequence.node_class
     node_class.method_defined?(:foo).should be_true
     node_class.method_defined?(:bar).should be_true
+  end
+  
+  it "does not define a method automatically for the last element, leaving the existing method" do
+    @sequence.node_class.instance_method(:baz).should == @existing_method
   end
 end
