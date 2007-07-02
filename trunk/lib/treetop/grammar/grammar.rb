@@ -15,7 +15,7 @@ module Treetop
     end
     
     def nonterminal_symbol(ruby_sym)
-      @nonterminal_symbols[ruby_sym] ||= NonterminalSymbol.new(ruby_sym, self)
+      NonterminalSymbol.new(ruby_sym, self)
     end
     
     def add_parsing_rule(parsing_rule_or_nonterminal, expression = nil)

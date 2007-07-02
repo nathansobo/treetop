@@ -26,6 +26,10 @@ describe "A nonterminal symbol that refers to an expression that parses successf
     @nonterminal.to_s.should == 'foo'
   end
   
+  it "is equivalent to a nonterminal with the same name and grammar" do
+    @nonterminal.should == NonterminalSymbol.new(:foo, @grammar)
+  end
+  
   it "propagates parsing to the parsing expression to which it refers" do
     result = @nonterminal.parse_at(mock('input'), 0, parser_with_empty_cache_mock)
     result.should be_success

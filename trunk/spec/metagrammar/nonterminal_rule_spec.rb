@@ -22,7 +22,8 @@ describe "A parser for the subset of the metagrammar rooted at the nonterminal r
     
     value = eval(result.to_ruby(@grammar_node_mock))
     value.should be_an_instance_of(NonterminalSymbol)
-    value.should == Bar.nonterminal_symbol(:foo)
+    value.name.should == :foo
+    value.grammar.should == Bar
   end
   
   

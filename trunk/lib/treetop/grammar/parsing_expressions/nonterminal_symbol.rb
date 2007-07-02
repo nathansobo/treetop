@@ -18,6 +18,10 @@ module Treetop
     def to_s
       name.to_s
     end
+    
+    def ==(other_nonterminal)
+      other_nonterminal.grammar == grammar && other_nonterminal.name == name
+    end
 
     def parse_at(input, start_index, parser)
       node_cache = parser.parse_cache[self]

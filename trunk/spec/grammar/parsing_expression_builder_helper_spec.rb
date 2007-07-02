@@ -37,9 +37,8 @@ describe "A builder object extended with the ParsingExpressionBuilderHelper modu
     @builder.exp(expression).should == expression
   end
   
-  it "implements an #exp method that converts an array into an arrays of exp called on the original " +
-          "array's elements" do
-    @builder.exp([:foo]).should eql([@builder.exp(:foo)])
+  it "implements an #exp method that converts an array into an arrays of exp called on the original array's elements" do
+    @builder.exp([:foo]).should == [@builder.exp(:foo)]
   end
 
   it "implements an #any method that returns an instance of AnythingSymbol" do
@@ -105,7 +104,7 @@ describe "A builder object extended with the ParsingExpressionBuilderHelper modu
   it "implements a #one_or_more method that returns one_or_more of exp(argument)" do
     one_or_more = @builder.one_or_more(:foo)
     one_or_more.should be_an_instance_of(OneOrMore)
-    one_or_more.repeated_expression.should eql(@builder.exp(:foo))
+    one_or_more.repeated_expression.should == @builder.exp(:foo)
   end
   
   it "can build a delimited sequence parsing expression" do 
