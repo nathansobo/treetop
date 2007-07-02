@@ -27,21 +27,19 @@ describe "A new grammar" do
     @grammar.root.should == alt_root
   end
   
-  it "constructs or returns a previously constructed a nonterminal symbol " +
-          "with a reference to itself on call to nonterminal_symbol" do
+  it "constructs or returns a previously constructed a nonterminal symbol with a reference to itself on call to nonterminal_symbol" do
     ruby_sym = :foo
     nonterminal = @grammar.nonterminal_symbol(ruby_sym)
     nonterminal.grammar.should == @grammar
     @grammar.nonterminal_symbol(ruby_sym).should == nonterminal
   end
   
-  it "constructs a parsing rule automatically if add_parsing_rule is called with " +
-          "a nonterminal symbol and a parsing expression" do
+  it "constructs a parsing rule automatically if add_parsing_rule is called with a nonterminal symbol and a parsing expression" do
     ruby_sym = :foo
     nonterminal = @grammar.nonterminal_symbol(ruby_sym)
     expression = TerminalSymbol.new("foo")
     @grammar.add_parsing_rule(nonterminal, expression)
-    @grammar.get_parsing_expression(nonterminal).should == expression
+    @grammar.get_parsing_expression(nonterminal.name).should == expression
   end
   
   it "has a builder" do
@@ -89,9 +87,8 @@ describe "A grammar with a parsing rule" do
     @grammar.add_parsing_rule(@rule)
   end
   
-  it "can retrive the parsing expression associated with that rule based on " +
-          "its nonterminal symbol" do
-    @grammar.get_parsing_expression(@rule.nonterminal_symbol).should == @rule.parsing_expression
+  it "can retrive the parsing expression associated with that rule based on its nonterminal symbol" do
+    @grammar.get_parsing_expression(@rule.nonterminal_symbol.name).should == @rule.parsing_expression
   end
   
   it "is rooted at that parsing rule's nonterminal because it was the first " +

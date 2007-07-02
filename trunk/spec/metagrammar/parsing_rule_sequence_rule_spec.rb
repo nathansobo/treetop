@@ -31,8 +31,8 @@ describe "A parser for the subset of the metagrammar rooted at the parsing_rule_
     result.should be_success
     eval(result.to_ruby(@grammar_node_mock))
     
-    Bar.get_parsing_expression(Bar.nonterminal_symbol(:foo)).prefix.should == 'bar'
-    Bar.get_parsing_expression(Bar.nonterminal_symbol(:baz)).prefix.should == 'bot'
+    Bar.get_parsing_expression(:foo).prefix.should == 'bar'
+    Bar.get_parsing_expression(:baz).prefix.should == 'bot'
   end
   
   it "succesfully parses epsilon" do

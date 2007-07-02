@@ -30,7 +30,7 @@ module Treetop
     
     protected
     def parse_at_without_caching(input, start_index, parser)
-      result = grammar.get_parsing_expression(self).parse_at(input, start_index, parser)
+      result = grammar.get_parsing_expression(name).parse_at(input, start_index, parser)
       
       if result.success?
         result

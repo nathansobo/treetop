@@ -26,6 +26,6 @@ describe "A parser for the subset of the metagrammar rooted at the parsing_rule 
     value.parsing_expression.prefix.should == 'bar'
     
     eval(result.add_rule_ruby(@grammar_node_mock))
-    Bar.get_parsing_expression(Bar.nonterminal_symbol(:foo)).prefix.should == 'bar'
+    Bar.get_parsing_expression(:foo).prefix.should == 'bar'
   end
 end

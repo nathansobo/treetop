@@ -24,9 +24,9 @@ module Treetop
       self.root ||= rule.nonterminal_symbol
     end
     
-    def get_parsing_expression(nonterminal_symbol)
-      if @parsing_rules[nonterminal_symbol.name]
-        @parsing_rules[nonterminal_symbol.name].parsing_expression
+    def get_parsing_expression(nonterminal_name_sym)
+      if @parsing_rules[nonterminal_name_sym]
+        @parsing_rules[nonterminal_name_sym].parsing_expression
       else
         raise "No parsing rule found named #{nonterminal_symbol}."
       end
