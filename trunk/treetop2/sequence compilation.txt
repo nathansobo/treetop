@@ -1,0 +1,74 @@
+rule prod
+  ...
+  e1 e2
+  ...
+end
+
+#class eval scope...
+node_classes[prod_N] = Class.new(SequenceSyntaxNode)
+#...
+
+lambda do |s|
+  results = []
+  
+  results << (r = [[e1]].call(s))
+  return _rt_failure_at(s, results) if r.failure?
+  
+  results << (r = [[e2]].call(s))
+  return _rt_failure_at(s, results) if r.failure?
+  
+  self.class.node_classes[prod_N].new(s, results)
+end
+
+---------------------------------------------------------------------
+
+e1 e2 <Foo>
+
+lambda do |s|
+  results = []
+  
+  results << (r = [[e1]].call(s))
+  return _rt_failure_at(s, results) if r.failure?
+  
+  results << (r = [[e2]].call(s))
+  return _rt_failure_at(s, results) if r.failure?
+  
+  Foo.new(s, results)
+end
+
+---------------------------------------------------------------------
+e1 e2 { def a_method; end }
+
+@node_class = Class.new(SequenceSyntaxNode)
+@node_class.class_eval "def a_method; end", #file, #line
+
+lambda do |s|
+  results = []
+  
+  results << (r = [[e1]].call(s))
+  return _rt_failure_at(s, results) if r.failure?
+  
+  results << (r = [[e2]].call(s))
+  return _rt_failure_at(s, results) if r.failure?
+  
+  @node_class.new(s, results)
+end
+
+---------------------------------------------------------------------
+e1 e2 <Foo> { def a_method; end }
+
+Foo.class_eval "def a_method; end", #file, #line
+
+lambda do |s|
+  results = []
+  
+  results << (r = [[e1]].call(s))
+  return _rt_failure_at(s, results) if r.failure?
+  
+  results << (r = [[e2]].call(s))
+  return _rt_failure_at(s, results) if r.failure?
+  
+  Foo.new(s, results)
+end
+
+

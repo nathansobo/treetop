@@ -1,0 +1,27 @@
+
+
+e1 / e2 / e3
+
+lambda do |s|
+  failed_results = []
+  r = [[ e1 ]].call(s)
+  if r.success?
+    return r
+  else
+    failed_results << r
+    r = [[ e2 ]].call(s)
+    if r.success?
+      r.update_nested_failures(failed_results)
+      return r
+    else
+      failed_results << r
+      r = [[ e3 ]].call(s)
+      if r.success?
+        r.update_nested_failures(failed_results)
+        return r
+      else
+        FailedParseResult.new(s, failed_results)
+      end
+    end
+  end
+end

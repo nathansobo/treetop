@@ -1,0 +1,28 @@
+
+nt1 / nt2
+
+failed_results = []
+
+
+...
+
+pr1 = nt1(is)
+if pr1.success?
+  r = pr1
+else
+  failed_results << pr1
+
+  pr2 = nt2(is)
+  if pr2.success?
+    pr2.update_nested_failures(failed_results)
+    r = pr2
+  else
+    failed_results << pr2
+    r = FailedParseResult.new(ps)
+  end
+end
+
+r
+
+
+...
