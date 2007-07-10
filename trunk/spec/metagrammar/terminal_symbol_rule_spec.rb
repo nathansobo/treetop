@@ -67,4 +67,22 @@ describe "A parser for the subset of the metagrammar rooted at the terminal rule
     value.should be_an_instance_of(TerminalSymbol)
     value.prefix.should == '"'
   end
+  
+  it "successfully parses an escaped backslash in single quotes" do
+    result = @parser.parse("'\\\\'")
+    result.should be_success
+    
+    value = eval(result.to_ruby)
+    value.should be_an_instance_of(TerminalSymbol)
+    value.prefix.should == '\\'
+  end
+  
+  it "successfully parses an escaped backslash in double quotes" do
+    result = @parser.parse('"\\\\"')
+    result.should be_success
+    
+    value = eval(result.to_ruby)
+    value.should be_an_instance_of(TerminalSymbol)
+    value.prefix.should == '\\'
+  end
 end
