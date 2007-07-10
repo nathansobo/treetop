@@ -1,4 +1,4 @@
-require "#{TREETOP_ROOT}/metagrammar/node_classes_2"
+require "#{TREETOP_ROOT}/metagrammar/node_classes"
 
 module Treetop
   Metagrammar = ::Treetop::Grammar.new('Metagrammar')
