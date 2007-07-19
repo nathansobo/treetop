@@ -1,4 +1,4 @@
-module Treetop
+module Treetop2
   class SequenceSyntaxNode < SyntaxNode
     attr_reader :elements
     

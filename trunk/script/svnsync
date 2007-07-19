@@ -1,3 +1,120 @@
-#!/usr/bin/env ruby -w
-dir = File.dirname(__FILE__)
-`#{dir}/svnadd; #{dir}/svnrm`
+Script started on Wed Jul 18 20:51:10 2007
+Lexington:~/workspace/treetop/treetop2 pivotal$ script/servercd workspace/emmet/[6Pscript/server[K../script/svnsync 
+Lexington:~/workspace/treetop/treetop2 pivotal$ svn st
+?      Rakefile
+?      planning
+!      ordered choice compilation - pre lambda
+?      lib/treetop2.rb
+?      lib/treetop/metagrammar
+M      lib/treetop/parser/parse_cache.rb
+M      lib/treetop/parser/parse_failure.rb
+M      lib/treetop/parser/sequence_syntax_node.rb
+M      lib/treetop/parser/terminal_syntax_node.rb
+M      lib/treetop/parser/compiled_parser.rb
+M      lib/treetop/parser/node_cache.rb
+M      lib/treetop/parser/parse_result.rb
+M      lib/treetop/parser/syntax_node.rb
+M      lib/treetop/parser/terminal_parse_failure.rb
+!      neometagrammar_spike.txt
+!      ordered choice compilation - lambda.txt
+?      spec/compiler
+M      spec/spec_helper.rb
+M      spec/parser/arithmetic_spec.rb
+M      spec/parser/arithmetic.rb
+!      not_predicate compilation - lambda.txt
+Lexington:~/workspace/treetop/treetop2 pivotal$ svn st
+A      Rakefile
+D      ordered choice compilation - pre lambda
+?      lib/treetop2.rb
+M      lib/treetop/parser/parse_cache.rb
+M      lib/treetop/parser/parse_failure.rb
+M      lib/treetop/parser/sequence_syntax_node.rb
+M      lib/treetop/parser/terminal_syntax_node.rb
+M      lib/treetop/parser/compiled_parser.rb
+M      lib/treetop/parser/node_cache.rb
+M      lib/treetop/parser/parse_result.rb
+M      lib/treetop/parser/syntax_node.rb
+M      lib/treetop/parser/terminal_parse_failure.rb
+A      lib/treetop/metagrammar
+A      lib/treetop/metagrammar/metagrammar.treetop
+A      planning
+A      planning/ordered choice compilation - pre lambda
+A      planning/sequence compilation.txt
+A      planning/ordered choice compilation - lambda.txt
+A      planning/not_predicate compilation - lambda.txt
+D      neometagrammar_spike.txt
+!      ordered choice compilation - lambda.txt
+A      spec/compiler
+A      spec/compiler/terminal_symbol_spec.rb
+M      spec/spec_helper.rb
+M      spec/parser/arithmetic_spec.rb
+M      spec/parser/arithmetic.rb
+D      not_predicate compilation - lambda.txt
+Lexington:~/workspace/treetop/treetop2 pivotal$ cd ..
+Lexington:~/workspace/treetop pivotal$ svn st
+M      script/svnsync
+A      treetop2/Rakefile
+D      treetop2/ordered choice compilation - pre lambda
+?      treetop2/lib/treetop2.rb
+M      treetop2/lib/treetop/parser/parse_cache.rb
+M      treetop2/lib/treetop/parser/parse_failure.rb
+M      treetop2/lib/treetop/parser/sequence_syntax_node.rb
+M      treetop2/lib/treetop/parser/terminal_syntax_node.rb
+M      treetop2/lib/treetop/parser/compiled_parser.rb
+M      treetop2/lib/treetop/parser/node_cache.rb
+M      treetop2/lib/treetop/parser/parse_result.rb
+M      treetop2/lib/treetop/parser/syntax_node.rb
+M      treetop2/lib/treetop/parser/terminal_parse_failure.rb
+A      treetop2/lib/treetop/metagrammar
+A      treetop2/lib/treetop/metagrammar/metagrammar.treetop
+A      treetop2/planning
+A      treetop2/planning/ordered choice compilation - pre lambda
+A      treetop2/planning/sequence compilation.txt
+A      treetop2/planning/ordered choice compilation - lambda.txt
+A      treetop2/planning/not_predicate compilation - lambda.txt
+D      treetop2/neometagrammar_spike.txt
+!      treetop2/ordered choice compilation - lambda.txt
+A      treetop2/spec/compiler
+A      treetop2/spec/compiler/terminal_symbol_spec.rb
+M      treetop2/spec/spec_helper.rb
+M      treetop2/spec/parser/arithmetic_spec.rb
+M      treetop2/spec/parser/arithmetic.rb
+D      treetop2/not_predicate compilation - lambda.txt
+Lexington:~/workspace/treetop pivotal$ script/svna rm
+svn: invalid option: 
+Type 'svn help' for usage.
+Lexington:~/workspace/treetop pivotal$ script/svnrm  st
+bash: script/svnst: No such file or directory
+Lexington:~/workspace/treetop pivotal$ script/svnst  add
+Lexington:~/workspace/treetop pivotal$ scr   svn st
+M      script/svnsync
+A      treetop2/Rakefile
+D      treetop2/ordered choice compilation - pre lambda
+M      treetop2/lib/treetop/parser/parse_cache.rb
+M      treetop2/lib/treetop/parser/parse_failure.rb
+M      treetop2/lib/treetop/parser/sequence_syntax_node.rb
+M      treetop2/lib/treetop/parser/terminal_syntax_node.rb
+M      treetop2/lib/treetop/parser/compiled_parser.rb
+M      treetop2/lib/treetop/parser/node_cache.rb
+M      treetop2/lib/treetop/parser/parse_result.rb
+M      treetop2/lib/treetop/parser/syntax_node.rb
+M      treetop2/lib/treetop/parser/terminal_parse_failure.rb
+A      treetop2/lib/treetop/metagrammar
+A      treetop2/lib/treetop/metagrammar/metagrammar.treetop
+A      treetop2/lib/treetop2.rb
+A      treetop2/planning
+A      treetop2/planning/ordered choice compilation - pre lambda
+A      treetop2/planning/sequence compilation.txt
+A      treetop2/planning/ordered choice compilation - lambda.txt
+A      treetop2/planning/not_predicate compilation - lambda.txt
+D      treetop2/neometagrammar_spike.txt
+!      treetop2/ordered choice compilation - lambda.txt
+A      treetop2/spec/compiler
+A      treetop2/spec/compiler/terminal_symbol_spec.rb
+M      treetop2/spec/spec_helper.rb
+M      treetop2/spec/parser/arithmetic_spec.rb
+M      treetop2/spec/parser/arithmetic.rb
+D      treetop2/not_predicate compilation - lambda.txt
+Lexington:~/workspace/treetop pivotal$ svn rm "treetop2/ordered choice compilation - lambda.txt"
+D         treetop2/ordered choice compilation - lambda.txt
+Lexington:~/workspace/treetop pivotal$ sn

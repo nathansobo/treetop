@@ -1,4 +1,4 @@
-module Treetop
+module Treetop2
   class NodeCache
     attr_reader :parse_results
     

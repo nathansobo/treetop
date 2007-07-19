@@ -1,4 +1,4 @@
-module Treetop
+module Treetop2
   class ParseResult
     attr_reader :nested_failures
     

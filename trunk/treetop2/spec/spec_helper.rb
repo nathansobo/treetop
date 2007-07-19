@@ -2,6 +2,6 @@ $:.unshift(File.join(File.dirname(__FILE__), *%w[.. lib]))
 require 'rubygems'
 require 'spec'
 
-require 'treetop'
+require 'treetop2'
 
-include Treetop
+include Treetop2

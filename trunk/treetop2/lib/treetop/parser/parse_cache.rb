@@ -1,4 +1,4 @@
-module Treetop
+module Treetop2
   class ParseCache
     attr_reader :node_caches
     

@@ -15,7 +15,7 @@ describe "An instance of a hand-built Arithmetic parser" do
     result.value.should == 1
   end
   
-  it "successfully parses a number" do
+  it "successfully parses a multi-digit number" do
     result = @parser.parse('123')
     result.should be_success
     result.value.should == 123
@@ -26,7 +26,7 @@ describe "An instance of a hand-built Arithmetic parser" do
     result.should be_success
     result.value.should == 7
   end
-
+  
   it "successfully parses a ridiculous addition" do
     result = @parser.parse('4+30+200+1000')
     result.should be_success

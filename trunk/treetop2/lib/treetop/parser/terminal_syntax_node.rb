@@ -1,4 +1,4 @@
-module Treetop
+module Treetop2
   class TerminalSyntaxNode < SyntaxNode
 
     def initialize(input, interval)

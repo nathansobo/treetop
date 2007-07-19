@@ -1,4 +1,4 @@
-module Treetop
+module Treetop2
   class CompiledParser
         
     attr_reader :input, :index
@@ -7,7 +7,20 @@ module Treetop
       @node_classes ||= Hash.new
     end
     
+    def self.subexpression_procs
+      @subexpression_procs
+    end
+    
+    def self.clear_subexpression_procs
+      @subexpression_procs = Hash.new
+    end
+    
+    def _rt_exp
+      self.class.subexpression_procs
+    end
+    
     def _rt_prepare_to_parse(input)
+      self.class.clear_subexpression_procs
       @input = input
       @index = 0
     end

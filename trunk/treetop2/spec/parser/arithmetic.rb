@@ -23,7 +23,8 @@ class Arithmetic < CompiledParser
   node_classes[:additive_1] = Class.new(TerminalSyntaxNode)
   
   def additive
-    e1 = lambda do 
+
+    e0 = lambda do 
       start_index_0 = index
       
       r = nil
@@ -45,15 +46,15 @@ class Arithmetic < CompiledParser
       self.class.node_classes[:additive_0].new(input, start_index_0...index, results)
     end
     
-    e2 = lambda { self.number }
+    e4 = lambda { self.number }
         
     failed_results = []
-    r = e1.call
+    r = e0.call
     if r.success?
       return r
     else
       failed_results << r
-      r = e2.call
+      r = e4.call
       if r.success?
         r.update_nested_failures(failed_results)
         return r
@@ -76,24 +77,24 @@ class Arithmetic < CompiledParser
   def number
     start_index_0 = index
     
-    e1 = lambda { _rt_parse_char_class('1-9', self.class.node_classes[:number_1]) }
-    e2 = lambda do
+    e0 = _rt_exp[:e0] ||= lambda { _rt_parse_char_class('1-9', self.class.node_classes[:number_1]) }
+    e1 = _rt_exp[:e1] = lambda do
       start_index_1 = index
-      e1 =  lambda { _rt_parse_char_class('0-9', self.class.node_classes[:number_2]) }
+      e2 =  lambda { _rt_parse_char_class('0-9', self.class.node_classes[:number_2]) }
       results = []
       while true
-        results << (r = e1.call)
+        results << (r = e2.call)
         return self.class.node_classes[:number_3].new(input, start_index_1...index, results) if r.failure?
       end
     end
     
     results = []
     
-    results << (r = e1.call)
-    return _rt_parse_failure(start_index, results) if r.failure?
+    results << (r = e0.call)
+    return _rt_parse_failure(start_index_0, results) if r.failure?
 
-    results << (r = e2.call)
-    return _rt_parse_failure(start_index, results) if r.failure?
+    results << (r = e1.call)
+    return _rt_parse_failure(start_index_0, results) if r.failure?
     
     self.class.node_classes[:number_0].new(input, start_index_0...index, results)
   end
