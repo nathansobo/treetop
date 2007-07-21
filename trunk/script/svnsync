@@ -1704,4 +1704,169 @@ Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/l
 
 (See full trace by running task with --trace)
 Lexington:~/workspace/treetop/treetop2 pivotal$ cd ..
-Lexington:~/workspace/treetop pivotal$ svn ci -m ""n"s" "-" "M"[1P"S"t"a"r"t"e"d" "[1P"[1P"[1P"[1P"[1P"[1P"[1P"[1P"I"m"p"l"e"m"n"e"t"[1P"[1P"[1P"[1P"n"t"e"d" "s"k"e"t"c"h"y" "t"e"s"t"i"n"g" "s"t"a"[1P"r"a"t"e"g"y" "
+Lexington:~/workspace/treetop pivotal$ svn ci -m ""n"s" "-" "M"[1P"S"t"a"r"t"e"d" "[1P"[1P"[1P"[1P"[1P"[1P"[1P"[1P"I"m"p"l"e"m"n"e"t"[1P"[1P"[1P"[1P"n"t"e"d" "s"k"e"t"c"h"y" "t"e"s"t"i"n"g" "s"t"a"[1P"r"a"t"e"g"y" "p"l"a"n"s"e[4hm[4l[4he[4lnted sketchy testing strategy plans"[1P[1P[1P[1P[1P[1P[1P[1Ptesting strategy plans""," "b"e"g"i"n"n"i"n"g" "t"o" "t"e"s"t" "c"o"m"p"i"l"a"t"i"o"n" "o"f" "t"e"r"m"i"n"a"l" "s"y"m"b"o"l"
+nathansobo@rubyforge.org's password: 
+Sending        lib/treetop/grammar/grammar.rb
+Sending        script/svnsync
+Sending        treetop2/Rakefile
+Deleting       treetop2/lib/treetop
+Deleting       treetop2/lib/treetop.rb
+Adding         treetop2/lib/treetop2
+Adding         treetop2/lib/treetop2/metagrammar
+Adding         treetop2/lib/treetop2/metagrammar/metagrammar.treetop
+Adding         treetop2/lib/treetop2/parser
+Adding         treetop2/lib/treetop2/parser/compiled_parser.rb
+Adding         treetop2/lib/treetop2/parser/node_cache.rb
+Adding         treetop2/lib/treetop2/parser/parse_cache.rb
+Adding         treetop2/lib/treetop2/parser/parse_failure.rb
+Adding         treetop2/lib/treetop2/parser/parse_result.rb
+Adding         treetop2/lib/treetop2/parser/sequence_syntax_node.rb
+Adding         treetop2/lib/treetop2/parser/syntax_node.rb
+Adding         treetop2/lib/treetop2/parser/terminal_parse_failure.rb
+Adding         treetop2/lib/treetop2/parser/terminal_syntax_node.rb
+Adding         treetop2/lib/treetop2/parser.rb
+Sending        treetop2/lib/treetop2.rb
+Sending        treetop2/spec/compiler/terminal_symbol_spec.rb
+Sending        treetop2/spec/parser/arithmetic.rb
+Sending        treetop2/spec/spec_helper.rb
+Transmitting file data ..................
+Committed revision 295.
+Lexington:~/workspace/treetop pivotal$ cd  cd treetop2/
+Lexington:~/workspace/treetop/treetop2 pivotal$ mate .
+Lexington:~/workspace/treetop/treetop2 pivotal$ cd tr  [Kcd    svn mv lib/meta    treetop2/metagrammar/  lib/treetop2/compiler
+A         lib/treetop2/compiler
+D         lib/treetop2/metagrammar/metagrammar.treetop
+D         lib/treetop2/metagrammar
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+F....
+
+1)
+'A terminal symbol correctly parses matching input prefixes at various indices' FAILED
+expected instance_of?(Treetop2::TerminalSyntaxNode) to return true, got false
+./spec/compiler/terminal_symbol_spec.rb:8:
+./spec/parser/../spec_helper.rb:62:in `parse'
+./spec/compiler/terminal_symbol_spec.rb:7:
+
+Finished in 0.062191 seconds
+
+5 examples, 1 failure
+rake aborted!
+Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec" "spec/compiler/terminal_symbol_spec.rb" "spec/parser/arithmetic_spec.rb"   failed
+
+(See full trace by running task with --trace)
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+./spec/compiler/../spec_helper.rb:49:in `metagrammar': uninitialized constant Treetop2::Metagrammar (NameError)
+	from ./spec/compiler/../spec_helper.rb:20:in `testing_expression'
+	from ./spec/compiler/terminal_symbol_spec.rb:4
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/dsl/behaviour.rb:54:in `class_eval'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/dsl/behaviour.rb:54:in `eval_behaviour'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/dsl/behaviour.rb:31:in `initialize'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/dsl/behaviour_factory.rb:36:in `new'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/dsl/behaviour_factory.rb:36:in `create'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/extensions/kernel.rb:24:in `describe'
+	from ./spec/compiler/terminal_symbol_spec.rb:3
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:85:in `load'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:85:in `load_specs'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `each'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `load_specs'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:22:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/command_line.rb:17:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec:3
+rake aborted!
+Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec" "spec/compiler/terminal_symbol_spec.rb" "spec/parser/arithmetic_spec.rb"   failed
+
+(See full trace by running task with --trace)
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+/Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/nonterminal_symbol.rb:37:in `initialize': wrong number of arguments (5 for 4) (ArgumentError)
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/nonterminal_symbol.rb:37:in `parse_at'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/nonterminal_symbol.rb:37:in `parse_at_without_caching'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/nonterminal_symbol.rb:31:in `parse_at'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/ordered_choice.rb:16:in `parse_at'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/ordered_choice.rb:15:in `each'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/ordered_choice.rb:15:in `parse_at'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/nonterminal_symbol.rb:37:in `parse_at_without_caching'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/nonterminal_symbol.rb:31:in `parse_at'
+	 ... 14 levels...
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `load_specs'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:22:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/command_line.rb:17:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec:3
+rake aborted!
+Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec" "spec/compiler/terminal_symbol_spec.rb" "spec/parser/arithmetic_spec.rb"   failed
+
+(See full trace by running task with --trace)
+Lexington:~/workspace/treetop/treetop2 pivotal$ svn st
+?      lib/treetop2/compiler.rb
+?      lib/treetop2/compiler/compiler.rb
+A  +   lib/treetop2/compiler
+M  +   lib/treetop2/compiler/metagrammar.treetop
+D      lib/treetop2/metagrammar
+D      lib/treetop2/metagrammar/metagrammar.treetop
+M      lib/treetop2.rb
+M      spec/spec_helper.rb
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+/Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/nonterminal_symbol.rb:37:in `initialize': wrong number of arguments (5 for 4) (ArgumentError)
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/nonterminal_symbol.rb:37:in `parse_at'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/nonterminal_symbol.rb:37:in `parse_at_without_caching'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/nonterminal_symbol.rb:31:in `parse_at'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/ordered_choice.rb:16:in `parse_at'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/ordered_choice.rb:15:in `each'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/ordered_choice.rb:15:in `parse_at'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/nonterminal_symbol.rb:37:in `parse_at_without_caching'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/nonterminal_symbol.rb:31:in `parse_at'
+	 ... 14 levels...
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `load_specs'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:22:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/command_line.rb:17:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec:3
+rake aborted!
+Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec" "spec/compiler/terminal_symbol_spec.rb" "spec/parser/arithmetic_spec.rb"   failed
+
+(See full trace by running task with --trace)
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+(eval):3: warning: already initialized constant Metagrammar
+F....
+
+1)
+'A terminal symbol correctly parses matching input prefixes at various indices' FAILED
+expected instance_of?(Treetop2::TerminalSyntaxNode) to return true, got false
+./spec/compiler/terminal_symbol_spec.rb:8:
+./spec/parser/../spec_helper.rb:62:in `parse'
+./spec/compiler/terminal_symbol_spec.rb:7:
+
+Finished in 0.012324 seconds
+
+5 examples, 1 failure
+rake aborted!
+Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec" "spec/compiler/terminal_symbol_spec.rb" "spec/parser/arithmetic_spec.rb"   failed
+
+(See full trace by running task with --trace)
+Lexington:~/workspace/treetop/treetop2 pivotal$ svn st
+?      lib/treetop2/compiler.rb
+?      lib/treetop2/compiler/compiler.rb
+A  +   lib/treetop2/compiler
+M  +   lib/treetop2/compiler/metagrammar.treetop
+D      lib/treetop2/metagrammar
+D      lib/treetop2/metagrammar/metagrammar.treetop
+M      lib/treetop2.rb
+M      spec/spec_helper.rb
+Lexington:~/workspace/treetop/treetop2 pivotal$ svn ci -m [Kscript svn  [K../script/svnsync 
+bash: ../script/svnsync: Text file busy
+Lexington:~/workspace/treetop/treetop2 pivotal$ cd ../
+Lexington:~/workspace/treetop pivotal$ script/svnadd
+Lexington:~/workspace/treetop pivotal$ svn st
+M      script/svnsync
+A  +   treetop2/lib/treetop2/compiler
+A      treetop2/lib/treetop2/compiler/compiler.rb
+M  +   treetop2/lib/treetop2/compiler/metagrammar.treetop
+A      treetop2/lib/treetop2/compiler.rb
+D      treetop2/lib/treetop2/metagrammar
+D      treetop2/lib/treetop2/metagrammar/metagrammar.treetop
+M      treetop2/lib/treetop2.rb
+M      treetop2/spec/spec_helper.rb
+Lexington:~/workspace/treetop pivotal$ svn ci -m "

@@ -3,13 +3,13 @@ $:.unshift(File.join(dir, *%w[.. lib]))
 require 'rubygems'
 require 'spec'
 require 'treetop2'
+
 require File.expand_path('treetop', File.join(dir, *%w[.. .. lib]))
+unless Treetop2.const_defined?(:Metagrammar)
+  load_grammar File.join(TREETOP_2_ROOT, *%w[compiler metagrammar])
+end
 
 include Treetop2
-
-unless Treetop2.const_defined?(:Metagrammar)
-  load_grammar File.join(TREETOP_2_ROOT, *%w[metagrammar metagrammar])
-end
 
 class CompilerBehaviour < Spec::DSL::Behaviour
   module Test
@@ -46,7 +46,7 @@ class CompilerBehaviour < Spec::DSL::Behaviour
     end
     
     def metagrammar
-      Treetop2::Metagrammar
+      Treetop2::Compiler::Metagrammar
     end
     
     def metagrammar_parser
