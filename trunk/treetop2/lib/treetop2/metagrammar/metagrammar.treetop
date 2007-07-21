@@ -95,11 +95,11 @@ module Treetop2
     end
 
     rule repetition_suffix
-      '+' <MetagrammarNode::Plus> / '*'
+      '+' / '*'
     end
 
     rule prefix
-      '&' <MetagrammarNode::And> / '!'
+      '&' / '!'
     end
 
     rule atomic
@@ -135,7 +135,11 @@ module Treetop2
     end
 
     rule single_quoted_string
-      "'" (!"'" ("\\\\" / "\\'" / .))* "'"
+      "'" (!"'" ("\\\\" / "\\'" / .))* "'" {
+        def proc_body
+          "'foo'"
+        end
+      }
     end
 
     rule character_class

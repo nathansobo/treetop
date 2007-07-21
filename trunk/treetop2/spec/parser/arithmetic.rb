@@ -1,8 +1,8 @@
 class Arithmetic < CompiledParser
 
   def parse(input)
-    _rt_prepare_to_parse(input)
-    return additive
+    prepare_to_parse(input)
+    return _nt_additive
   end
   
   node_classes[:additive_0] = Class.new(SequenceSyntaxNode)
@@ -22,31 +22,30 @@ class Arithmetic < CompiledParser
   
   node_classes[:additive_1] = Class.new(TerminalSyntaxNode)
   
-  def additive
-
+  def _nt_additive
     e0 = lambda do 
       start_index_0 = index
       
       r = nil
-      e1 = lambda { self.number }
-      e2 = lambda { _rt_parse_terminal('+', self.class.node_classes[:additive_1]) }
-      e3 = lambda { self.additive }
+      e1 = lambda { self._nt_number }
+      e2 = lambda { parse_terminal('+', self.class.node_classes[:additive_1]) }
+      e3 = lambda { self._nt_additive }
       
       results = []
 
       results << (r = e1.call)
-      return _rt_parse_failure(start_index_0, results) if r.failure?
+      return parse_failure(start_index_0, results) if r.failure?
 
       results << (r = e2.call)
-      return _rt_parse_failure(start_index_0, results) if r.failure?
+      return parse_failure(start_index_0, results) if r.failure?
 
       results << (r = e3.call)
-      return _rt_parse_failure(start_index_0, results) if r.failure?
+      return parse_failure(start_index_0, results) if r.failure?
 
       self.class.node_classes[:additive_0].new(input, start_index_0...index, results)
     end
     
-    e4 = lambda { self.number }
+    e4 = lambda { self._nt_number }
         
     failed_results = []
     r = e0.call
@@ -74,13 +73,13 @@ class Arithmetic < CompiledParser
   node_classes[:number_2] = Class.new(TerminalSyntaxNode)
   node_classes[:number_3] = Class.new(SequenceSyntaxNode)
   
-  def number
+  def _nt_number
     start_index_0 = index
     
-    e0 = _rt_exp[:e0] ||= lambda { _rt_parse_char_class('1-9', self.class.node_classes[:number_1]) }
-    e1 = _rt_exp[:e1] = lambda do
+    e0 = exp[:e0] ||= lambda { parse_char_class('1-9', self.class.node_classes[:number_1]) }
+    e1 = exp[:e1] = lambda do
       start_index_1 = index
-      e2 =  lambda { _rt_parse_char_class('0-9', self.class.node_classes[:number_2]) }
+      e2 =  lambda { parse_char_class('0-9', self.class.node_classes[:number_2]) }
       results = []
       while true
         results << (r = e2.call)
@@ -91,10 +90,10 @@ class Arithmetic < CompiledParser
     results = []
     
     results << (r = e0.call)
-    return _rt_parse_failure(start_index_0, results) if r.failure?
+    return parse_failure(start_index_0, results) if r.failure?
 
     results << (r = e1.call)
-    return _rt_parse_failure(start_index_0, results) if r.failure?
+    return parse_failure(start_index_0, results) if r.failure?
     
     self.class.node_classes[:number_0].new(input, start_index_0...index, results)
   end

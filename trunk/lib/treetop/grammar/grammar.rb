@@ -9,6 +9,12 @@ module Treetop
       self.builder = GrammarBuilder.new(self)
       build &block if block
     end
+    
+    def set_root(root_sym)
+      previous_root = root
+      self.root = nonterminal_symbol(root_sym)
+      previous_root
+    end
 
     def new_parser
       Parser.new(self)
