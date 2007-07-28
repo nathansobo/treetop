@@ -2,6 +2,7 @@ require "#{TREETOP_ROOT}/metagrammar/node_classes"
 
 module Treetop
   grammar Metagrammar
+  
     rule treetop_file
       (grammar / arbitrary_character)* <MetagrammarNode::TreetopFile>
     end

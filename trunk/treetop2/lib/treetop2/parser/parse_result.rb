@@ -20,8 +20,8 @@ module Treetop2
           nested_failures += result.nested_failures
         end
       end
-    
-      return nested_failures
+      
+      return nested_failures.uniq
     end
   end
 end

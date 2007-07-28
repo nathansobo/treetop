@@ -1,0 +1,1893 @@
+Script started on Fri Jul 27 17:07:46 2007
+Lexington:~/workspace/treetop pivotal$ rake
+Lexington:~/workspace/treetop pivotal$ rakecd treetop2/[8Prakecd treetop2/[8Prakecd treetop2/[8Prake[1Pirbmate .[Kscript/svnsync 
+Script started, output file is started
+Lexington:~/workspace/treetop pivotal$ cat script/svnsync 
+Script started on Wed Jul 18 20:51:10 2007
+Lexington:~/workspace/treetop/treetop2 pivotal$ script/servercd workspace/emmet/[6Pscript/server[K../script/svnsync 
+Lexington:~/workspace/treetop/treetop2 pivotal$ svn st
+?      Rakefile
+?      planning
+!      ordered choice compilation - pre lambda
+?      lib/treetop2.rb
+?      lib/treetop/metagrammar
+M      lib/treetop/parser/parse_cache.rb
+M      lib/treetop/parser/parse_failure.rb
+M      lib/treetop/parser/sequence_syntax_node.rb
+M      lib/treetop/parser/terminal_syntax_node.rb
+M      lib/treetop/parser/compiled_parser.rb
+M      lib/treetop/parser/node_cache.rb
+M      lib/treetop/parser/parse_result.rb
+M      lib/treetop/parser/syntax_node.rb
+M      lib/treetop/parser/terminal_parse_failure.rb
+!      neometagrammar_spike.txt
+!      ordered choice compilation - lambda.txt
+?      spec/compiler
+M      spec/spec_helper.rb
+M      spec/parser/arithmetic_spec.rb
+M      spec/parser/arithmetic.rb
+!      not_predicate compilation - lambda.txt
+Lexington:~/workspace/treetop/treetop2 pivotal$ svn st
+A      Rakefile
+D      ordered choice compilation - pre lambda
+?      lib/treetop2.rb
+M      lib/treetop/parser/parse_cache.rb
+M      lib/treetop/parser/parse_failure.rb
+M      lib/treetop/parser/sequence_syntax_node.rb
+M      lib/treetop/parser/terminal_syntax_node.rb
+M      lib/treetop/parser/compiled_parser.rb
+M      lib/treetop/parser/node_cache.rb
+M      lib/treetop/parser/parse_result.rb
+M      lib/treetop/parser/syntax_node.rb
+M      lib/treetop/parser/terminal_parse_failure.rb
+A      lib/treetop/metagrammar
+A      lib/treetop/metagrammar/metagrammar.treetop
+A      planning
+A      planning/ordered choice compilation - pre lambda
+A      planning/sequence compilation.txt
+A      planning/ordered choice compilation - lambda.txt
+A      planning/not_predicate compilation - lambda.txt
+D      neometagrammar_spike.txt
+!      ordered choice compilation - lambda.txt
+A      spec/compiler
+A      spec/compiler/terminal_symbol_spec.rb
+M      spec/spec_helper.rb
+M      spec/parser/arithmetic_spec.rb
+M      spec/parser/arithmetic.rb
+D      not_predicate compilation - lambda.txt
+Lexington:~/workspace/treetop/treetop2 pivotal$ cd ..
+Lexington:~/workspace/treetop pivotal$ svn st
+M      script/svnsync
+A      treetop2/Rakefile
+D      treetop2/ordered choice compilation - pre lambda
+?      treetop2/lib/treetop2.rb
+M      treetop2/lib/treetop/parser/parse_cache.rb
+M      treetop2/lib/treetop/parser/parse_failure.rb
+M      treetop2/lib/treetop/parser/sequence_syntax_node.rb
+M      treetop2/lib/treetop/parser/terminal_syntax_node.rb
+M      treetop2/lib/treetop/parser/compiled_parser.rb
+M      treetop2/lib/treetop/parser/node_cache.rb
+M      treetop2/lib/treetop/parser/parse_result.rb
+M      treetop2/lib/treetop/parser/syntax_node.rb
+M      treetop2/lib/treetop/parser/terminal_parse_failure.rb
+A      treetop2/lib/treetop/metagrammar
+A      treetop2/lib/treetop/metagrammar/metagrammar.treetop
+A      treetop2/planning
+A      treetop2/planning/ordered choice compilation - pre lambda
+A      treetop2/planning/sequence compilation.txt
+A      treetop2/planning/ordered choice compilation - lambda.txt
+A      treetop2/planning/not_predicate compilation - lambda.txt
+D      treetop2/neometagrammar_spike.txt
+!      treetop2/ordered choice compilation - lambda.txt
+A      treetop2/spec/compiler
+A      treetop2/spec/compiler/terminal_symbol_spec.rb
+M      treetop2/spec/spec_helper.rb
+M      treetop2/spec/parser/arithmetic_spec.rb
+M      treetop2/spec/parser/arithmetic.rb
+D      treetop2/not_predicate compilation - lambda.txt
+Lexington:~/workspace/treetop pivotal$ script/svna rm
+svn: invalid option: 
+Type 'svn help' for usage.
+Lexington:~/workspace/treetop pivotal$ script/svnrm  st
+bash: script/svnst: No such file or directory
+Lexington:~/workspace/treetop pivotal$ script/svnst  add
+Lexington:~/workspace/treetop pivotal$ scr   svn st
+M      script/svnsync
+A      treetop2/Rakefile
+D      treetop2/ordered choice compilation - pre lambda
+M      treetop2/lib/treetop/parser/parse_cache.rb
+M      treetop2/lib/treetop/parser/parse_failure.rb
+M      treetop2/lib/treetop/parser/sequence_syntax_node.rb
+M      treetop2/lib/treetop/parser/terminal_syntax_node.rb
+M      treetop2/lib/treetop/parser/compiled_parser.rb
+M      treetop2/lib/treetop/parser/node_cache.rb
+M      treetop2/lib/treetop/parser/parse_result.rb
+M      treetop2/lib/treetop/parser/syntax_node.rb
+M      treetop2/lib/treetop/parser/terminal_parse_failure.rb
+A      treetop2/lib/treetop/metagrammar
+A      treetop2/lib/treetop/metagrammar/metagrammar.treetop
+A      treetop2/lib/treetop2.rb
+A      treetop2/planning
+A      treetop2/planning/ordered choice compilation - pre lambda
+A      treetop2/planning/sequence compilation.txt
+A      treetop2/planning/ordered choice compilation - lambda.txt
+A      treetop2/planning/not_predicate compilation - lambda.txt
+D      treetop2/neometagrammar_spike.txt
+!      treetop2/ordered choice compilation - lambda.txt
+A      treetop2/spec/compiler
+A      treetop2/spec/compiler/terminal_symbol_spec.rb
+M      treetop2/spec/spec_helper.rb
+M      treetop2/spec/parser/arithmetic_spec.rb
+M      treetop2/spec/parser/arithmetic.rb
+D      treetop2/not_predicate compilation - lambda.txt
+Lexington:~/workspace/treetop pivotal$ svn rm "treetop2/ordered choice compilation - lambda.txt"
+D         treetop2/ordered choice compilation - lambda.txt
+Lexington:~/workspace/treetop pivotal$ sn vn st
+M      script/svnsync
+A      treetop2/Rakefile
+D      treetop2/ordered choice compilation - pre lambda
+M      treetop2/lib/treetop/parser/parse_cache.rb
+M      treetop2/lib/treetop/parser/parse_failure.rb
+M      treetop2/lib/treetop/parser/sequence_syntax_node.rb
+M      treetop2/lib/treetop/parser/terminal_syntax_node.rb
+M      treetop2/lib/treetop/parser/compiled_parser.rb
+M      treetop2/lib/treetop/parser/node_cache.rb
+M      treetop2/lib/treetop/parser/parse_result.rb
+M      treetop2/lib/treetop/parser/syntax_node.rb
+M      treetop2/lib/treetop/parser/terminal_parse_failure.rb
+A      treetop2/lib/treetop/metagrammar
+A      treetop2/lib/treetop/metagrammar/metagrammar.treetop
+A      treetop2/lib/treetop2.rb
+A      treetop2/planning
+A      treetop2/planning/ordered choice compilation - pre lambda
+A      treetop2/planning/sequence compilation.txt
+A      treetop2/planning/ordered choice compilation - lambda.txt
+A      treetop2/planning/not_predicate compilation - lambda.txt
+D      treetop2/neometagrammar_spike.txt
+D      treetop2/ordered choice compilation - lambda.txt
+A      treetop2/spec/compiler
+A      treetop2/spec/compiler/terminal_symbol_spec.rb
+M      treetop2/spec/spec_helper.rb
+M      treetop2/spec/parser/arithmetic_spec.rb
+M      treetop2/spec/parser/arithmetic.rb
+D      treetop2/not_predicate compilation - lambda.txt
+Lexington:~/workspace/treetop pivotal$ svn ci -m ""n"s" "-" "W"o"r"k"e"d" "o"u"t" "t"h"e" "t"e"s"t"i"n"g" "s"t"r"a"t"e"g"y" "a" "l"i"t"t"l"e" "m"o"r"e" "f"o"r" "t"h"e" "n"e"w" "c"o"m"p"i"l"e"r"
+nathansobo@rubyforge.org's password: 
+Sending        script/svnsync
+Adding         treetop2/Rakefile
+Adding         treetop2/lib/treetop/metagrammar
+Adding         treetop2/lib/treetop/metagrammar/metagrammar.treetop
+Sending        treetop2/lib/treetop/parser/compiled_parser.rb
+Sending        treetop2/lib/treetop/parser/node_cache.rb
+Sending        treetop2/lib/treetop/parser/parse_cache.rb
+Sending        treetop2/lib/treetop/parser/parse_failure.rb
+Sending        treetop2/lib/treetop/parser/parse_result.rb
+Sending        treetop2/lib/treetop/parser/sequence_syntax_node.rb
+Sending        treetop2/lib/treetop/parser/syntax_node.rb
+Sending        treetop2/lib/treetop/parser/terminal_parse_failure.rb
+Sending        treetop2/lib/treetop/parser/terminal_syntax_node.rb
+Adding         treetop2/lib/treetop2.rb
+Deleting       treetop2/neometagrammar_spike.txt
+Deleting       treetop2/not_predicate compilation - lambda.txt
+Deleting       treetop2/ordered choice compilation - lambda.txt
+Deleting       treetop2/ordered choice compilation - pre lambda
+Adding         treetop2/planning
+Adding         treetop2/planning/not_predicate compilation - lambda.txt
+Adding         treetop2/planning/ordered choice compilation - lambda.txt
+Adding         treetop2/planning/ordered choice compilation - pre lambda
+Adding         treetop2/planning/sequence compilation.txt
+Adding         treetop2/spec/compiler
+Adding         treetop2/spec/compiler/terminal_symbol_spec.rb
+Sending        treetop2/spec/parser/arithmetic.rb
+Sending        treetop2/spec/parser/arithmetic_spec.rb
+Sending        treetop2/spec/spec_helper.rb
+Transmitting file data .....................
+Committed revision 294.
+Lexington:~/workspace/treetop pivotal$ je v    cd ..
+Lexington:~/workspace pivotal$ cd emmet/
+Lexington:~/workspace/emmet pivotal$ ls
+README		app		config		doc		emmet.ipr	lib		public		script.tmp	test		vendor
+Rakefile	components	db		emmet.iml	emmet.iws	log		script		spec		tmp
+Lexington:~/workspace/emmet pivotal$ mongrel_re ails start
+** Starting Mongrel listening at 0.0.0.0:3000
+/usr/local/lib/ruby/gems/1.8/gems/mongrel-1.0.1/lib/mongrel/tcphack.rb:12:in `initialize_without_backlog': Address already in use - bind(2) (Errno::EADDRINUSE)
+	from /usr/local/lib/ruby/gems/1.8/gems/mongrel-1.0.1/lib/mongrel/tcphack.rb:12:in `initialize'
+	from /usr/local/lib/ruby/gems/1.8/gems/mongrel-1.0.1/lib/mongrel.rb:560:in `new'
+	from /usr/local/lib/ruby/gems/1.8/gems/mongrel-1.0.1/lib/mongrel.rb:560:in `initialize'
+	from /usr/local/lib/ruby/gems/1.8/gems/mongrel-1.0.1/lib/mongrel/configurator.rb:128:in `new'
+	from /usr/local/lib/ruby/gems/1.8/gems/mongrel-1.0.1/lib/mongrel/configurator.rb:128:in `listener'
+	from /usr/local/lib/ruby/gems/1.8/gems/mongrel-1.0.1/bin/mongrel_rails:98:in `cloaker_'
+	from /usr/local/lib/ruby/gems/1.8/gems/mongrel-1.0.1/lib/mongrel/configurator.rb:51:in `call'
+	from /usr/local/lib/ruby/gems/1.8/gems/mongrel-1.0.1/lib/mongrel/configurator.rb:51:in `initialize'
+	from /usr/local/lib/ruby/gems/1.8/gems/mongrel-1.0.1/bin/mongrel_rails:83:in `new'
+	from /usr/local/lib/ruby/gems/1.8/gems/mongrel-1.0.1/bin/mongrel_rails:83:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/mongrel-1.0.1/lib/mongrel/command.rb:211:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/mongrel-1.0.1/bin/mongrel_rails:243
+	from /usr/local/bin/mongrel_rails:16:in `load'
+	from /usr/local/bin/mongrel_rails:16
+Lexington:~/workspace/emmet pivotal$ clear
+[H[2JLexington:~/workspace/emmet pivotal$ mate .
+Lexington:~/workspace/emmet pivotal$ rake flash:c            ls
+README		app		config		doc		emmet.ipr	lib		public		script.tmp	test		vendor
+Rakefile	components	db		emmet.iml	emmet.iws	log		script		spec		tmp
+Lexington:~/workspace/emmet pivotal$ rake flash:compile
+(in /Users/pivotal/workspace/emmet)
+Lexington:~/workspace/emmet pivotal$ rake    sv [Krake
+(in /Users/pivotal/workspace/emmet)
+Migrator: max version based on upgrade files available is 3
+/usr/local/bin/ruby -Ilib:test "/usr/local/lib/ruby/gems/1.8/gems/rake-0.7.3/lib/rake/rake_test_loader.rb"  
+/usr/local/bin/ruby -Ilib:test "/usr/local/lib/ruby/gems/1.8/gems/rake-0.7.3/lib/rake/rake_test_loader.rb"  
+/usr/local/bin/ruby -Ilib:test "/usr/local/lib/ruby/gems/1.8/gems/rake-0.7.3/lib/rake/rake_test_loader.rb"  
+^C/usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:99:in `matching_file': Interrupt
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:85:in `find'
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:84:in `each'
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:84:in `find'
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:30:in `require'
+	from /usr/local/lib/ruby/gems/1.8/gems/activesupport-1.4.2/lib/active_support/dependencies.rb:495:in `require'
+	from /usr/local/lib/ruby/gems/1.8/gems/activesupport-1.4.2/lib/active_support/dependencies.rb:342:in `new_constants_in'
+	from /usr/local/lib/ruby/gems/1.8/gems/activesupport-1.4.2/lib/active_support/dependencies.rb:495:in `require'
+	from /usr/local/lib/ruby/gems/1.8/gems/activerecord-1.15.3/lib/active_record/connection_adapters/sybase_adapter.rb:22
+	 ... 41 levels...
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/option_parser.rb:154:in `parse'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/option_parser.rb:88:in `create_behaviour_runner'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/command_line.rb:14:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec:3
+rake aborted!
+Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec" "spec/controllers/admin_controller_spec.rb" "spec/controllers/directed_relationships_controller_spec.rb" "spec/controllers/images_controller_spec.rb" "spec/controllers/network_controller_spec.rb" "spec/controllers/people_controller_spec.rb" "spec/controllers/person_images_controller_spec.rb" "spec/controllers/relationship_categories_controller_spec.rb" "spec/controllers/relationship_images_controller_spec.rb" "spec/controllers/relationship_metacategories_controller_spec.rb" "spec/controllers/relationship_stories_controller_spec.rb" "spec/controllers/relationships_controller_spec.rb" "spec/controllers/stories_controller_spec.rb" "spec/controllers/tools_controller_spec.rb" "spec/helpers/application_helper_spec.rb" "spec/helpers/people_helper_spec.rb" "spec/helpers/person_images_helper_spec.rb" "spec/helpers/relationship_images_helper_spec.rb" "spec/helpers/relationships_helper_spec.rb" "spec/models/base_extension_spec.rb" "spec/models/directed_relationship_spec.rb" "spec/models/fake_flickr_spec.rb" "spec/models/fixtures/people_fixture_spec.rb" "spec/models/fixtures/relationship_categories_fixture_spec.rb" "spec/models/fixtures/relationships_fixture_spec.rb" "spec/models/fixtures/tags_fixture_spec.rb" "spec/models/image_spec.rb" "spec/models/person_spec.rb" "spec/models/relationship_category_spec.rb" "spec/models/relationship_metacategory_spec.rb" "spec/models/relationship_spec.rb" "spec/models/tag_spec.rb" "spec/views/directed_relationships/show_spec.rb" "spec/views/directed_relationships/show_xml_spec.rb" "spec/views/network/show_spec.rb" "spec/views/network/show_xml_spec.rb" "spec/views/relationship_categories/edit.rhtml_spec.rb" "spec/views/relationship_categories/index.mab_spec.rb" "spec/views/relationship_categories/new.rhtml_spec.rb" "spec/views/relationship_metacategories/edit.rhtml_spec.rb" "spec/views/relationship_metacategories/index.rhtml_spec.rb" "spec/views/relationship_metacategories/new.rhtml_spec.rb" --options "/Users/pivotal/workspace/emmet/config/../spec/spec.opts"  failed
+
+(See full trace by running task with --trace)
+Lexington:~/workspace/emmet pivotal$ r svn up
+
+Fetching external item into 'vendor/plugins/pivotal_core_bundle'
+U    vendor/plugins/pivotal_core_bundle/tasks/default.rake
+U    vendor/plugins/pivotal_core_bundle/lib/bootstrap/rake_task_manager.rb
+Updated external to revision 49432.
+
+
+Fetching external item into 'vendor/plugins/migrator'
+Updated external to revision 49432.
+
+
+Fetching external item into 'vendor/plugins/subversion_helper'
+Updated external to revision 49432.
+
+
+Fetching external item into 'vendor/plugins/capistrano_extensions'
+Updated external to revision 49432.
+
+
+Fetching external item into 'vendor/plugins/seleniumrc_fu'
+Updated external to revision 49432.
+
+
+Fetching external item into 'vendor/plugins/markaby'
+Updated external to revision 49432.
+
+
+Fetching external item into 'vendor/plugins/simple_object'
+Updated external to revision 49432.
+
+
+Fetching external item into 'vendor/plugins/asset_packager'
+Updated external to revision 49432.
+
+
+Fetching external item into 'vendor/plugins/attachment_fu'
+Updated external to revision 49432.
+
+Updated to revision 49432.
+Lexington:~/workspace/emmet pivotal$ rake
+(in /Users/pivotal/workspace/emmet)
+Migrator: max version based on upgrade files available is 3
+/usr/local/bin/ruby -Ilib:test "/usr/local/lib/ruby/gems/1.8/gems/rake-0.7.3/lib/rake/rake_test_loader.rb"  
+/usr/local/bin/ruby -Ilib:test "/usr/local/lib/ruby/gems/1.8/gems/rake-0.7.3/lib/rake/rake_test_loader.rb"  
+/usr/local/bin/ruby -Ilib:test "/usr/local/lib/ruby/gems/1.8/gems/rake-0.7.3/lib/rake/rake_test_loader.rb"  
+Migrator: max version based on upgrade files available is 3
+[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m
+
+Finished in 25.836226 seconds
+
+[32m183 examples, 0 failures[0m
+Lexington:~/workspace/emmet pivotal$ svn st
+M      app/views/network/show.mab
+X      vendor/plugins/pivotal_core_bundle
+X      vendor/plugins/simple_object
+X      vendor/plugins/seleniumrc_fu
+X      vendor/plugins/attachment_fu
+X      vendor/plugins/capistrano_extensions
+X      vendor/plugins/migrator
+X      vendor/plugins/markaby
+X      vendor/plugins/asset_packager
+X      vendor/plugins/subversion_helper
+M      lib/tasks/flash.rake
+?      public/flash/NetworkApp2.swf
+M      public/flash/WanderApp.swf
+M      public/flash/NetworkApp.swf
+
+Performing status on external item at 'vendor/plugins/pivotal_core_bundle'
+
+Performing status on external item at 'vendor/plugins/migrator'
+
+Performing status on external item at 'vendor/plugins/subversion_helper'
+
+Performing status on external item at 'vendor/plugins/capistrano_extensions'
+
+Performing status on external item at 'vendor/plugins/seleniumrc_fu'
+
+Performing status on external item at 'vendor/plugins/markaby'
+
+Performing status on external item at 'vendor/plugins/simple_object'
+
+Performing status on external item at 'vendor/plugins/asset_packager'
+
+Performing status on external item at 'vendor/plugins/attachment_fu'
+Lexington:~/workspace/emmet pivotal$ s s script/svnadd
+Lexington:~/workspace/emmet pivotal$ s svn ci -m ""r"d"/"n"s" "-" "L"a"b"e"l"s"[1P"[1P"[1P"[1P"[1P"[1P"N"e"t"w"o"r"k"A"p"."p"[1P"[1P"p"2" "u"s"e"d" "f"o"r" "n"e"w"[1P"t"w"o"r"k" "v"i"e"w" "o"n" "s"i"t"e".""
+Sending        app/views/network/show.mab
+Sending        lib/tasks/flash.rake
+Sending        public/flash/NetworkApp.swf
+Adding  (bin)  public/flash/NetworkApp2.swf
+Sending        public/flash/WanderApp.swf
+Transmitting file data .....
+Committed revision 49433.
+Lexington:~/workspace/emmet pivotal$ scr   rake deploy HOH  e EAD=true RAILS_ENV=demo
+(in /Users/pivotal/workspace/emmet)
+Using emmet-demo.pivotallabs.com as server for web role
+Using emmet-demo.pivotallabs.com as server for app role
+Using emmet-demo.pivotallabs.com as server for db role
+Looking for Project specific commands in /Users/pivotal/workspace/emmet/lib/deploy:
+  * executing task before_long_deploy
+  * executing task disable_web
+    servers: ["emmet-demo.pivotallabs.com"]
+Password: 
+  * uploading /u/apps/emmet/shared/system/maintenance.html
+ ** uploading data to emmet-demo.pivotallabs.com:/u/apps/emmet/shared/system/maintenance.html
+  * done uploading data to emmet-demo.pivotallabs.com:/u/apps/emmet/shared/system/maintenance.html
+    upload finished
+  * executing task long_deploy
+ ** transaction: start
+  * executing task update_code
+  * executing task update_code_without_tag
+  * executing "svn update /u/apps/emmet/base"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/app/models/relationship.rb
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/app/controllers/relationships_controller.rb
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/app/flash/NetworkApp/test/model/PersonTest.as
+ ** [out :: emmet-demo.pivotallabs.com] A    /u/apps/emmet/base/app/flash/NetworkApp/test/network2
+ ** [out :: emmet-demo.pivotallabs.com] A    /u/apps/emmet/base/app/flash/NetworkApp/test/network2/DirectedRelationshipViewTest.as
+ ** [out :: emmet-demo.pivotallabs.com] A    /u/apps/emmet/base/app/flash/NetworkApp/test/network2/PersonViewTest.as
+ ** [out :: emmet-demo.pivotallabs.com] A    /u/apps/emmet/base/app/flash/NetworkApp/test/network2/NetworkViewTest.as
+ ** [out :: emmet-demo.pivotallabs.com] A    /u/apps/emmet/base/app/flash/NetworkApp/test/network2/NodeTest.as
+ ** [out :: emmet-demo.pivotallabs.com] A    /u/apps/emmet/base/app/flash/NetworkApp/test/network2/TreeViewTest.as
+ ** [out :: emmet-demo.pivotallabs.com] A    /u/apps/emmet/base/app/flash/NetworkApp/test/network2/TetherTest.as
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/app/flash/NetworkApp/test/FlashAppTestCase.as
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/app/flash/NetworkApp/test/mocks/MockUrlNavigation.as
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/app/flash/NetworkApp/test/AllTests.as
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/app/flash/NetworkApp/test/util/DiscAndWedgeTest.as
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/app/flash/NetworkApp/test/util/VectorTest.as
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/app/flash/NetworkApp/.actionScriptProperties
+ ** [out :: emmet-demo.pivotallabs.com] A    /u/apps/emmet/base/app/flash/NetworkApp/NetworkApp2.as
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/app/flash/NetworkApp/com/emmet/model/Person.as
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/app/flash/NetworkApp/com/emmet/network/Node.as
+ ** [out :: emmet-demo.pivotallabs.com] A    /u/apps/emmet/base/app/flash/NetworkApp/com/emmet/network2
+ ** [out :: emmet-demo.pivotallabs.com] A    /u/apps/emmet/base/app/flash/NetworkApp/com/emmet/network2/ColoredBall.as
+ ** [out :: emmet-demo.pivotallabs.com] A    /u/apps/emmet/base/app/flash/NetworkApp/com/emmet/network2/NetworkView.as
+ ** [out :: emmet-demo.pivotallabs.com] A    /u/apps/emmet/base/app/flash/NetworkApp/com/emmet/network2/Node.as
+ ** [out :: emmet-demo.pivotallabs.com] A    /u/apps/emmet/base/app/flash/NetworkApp/com/emmet/network2/FromPersonLabelView.as
+ ** [out :: emmet-demo.pivotallabs.com] A    /u/apps/emmet/base/app/flash/NetworkApp/com/emmet/network2/World.as
+ ** [out :: emmet-demo.pivotallabs.com] A    /u/apps/emmet/base/app/flash/NetworkApp/com/emmet/network2/FuzzyLabel.as
+ ** [out :: emmet-demo.pivotallabs.com] A    /u/apps/emmet/base/app/flash/NetworkApp/com/emmet/network2/RelationshipSupergroupView.as
+ ** [out :: emmet-demo.pivotallabs.com] A    /u/apps/emmet/base/app/flash/NetworkApp/com/emmet/network2/TreeView.as
+ ** [out :: emmet-demo.pivotallabs.com] A    /u/apps/emmet/base/app/flash/NetworkApp/com/emmet/network2/Tether.as
+ ** [out :: emmet-demo.pivotallabs.com] A    /u/apps/emmet/base/app/flash/NetworkApp/com/emmet/network2/DirectedRelationshipView.as
+ ** [out :: emmet-demo.pivotallabs.com] A    /u/apps/emmet/base/app/flash/NetworkApp/com/emmet/network2/PersonView.as
+ ** [out :: emmet-demo.pivotallabs.com] A    /u/apps/emmet/base/app/flash/NetworkApp/com/emmet/network2/StationaryNode.as
+ ** [out :: emmet-demo.pivotallabs.com] A    /u/apps/emmet/base/app/flash/NetworkApp/com/emmet/network2/Portrait.as
+ ** [out :: emmet-demo.pivotallabs.com] A    /u/apps/emmet/base/app/flash/NetworkApp/com/emmet/network2/EmmetLabel.as
+ ** [out :: emmet-demo.pivotallabs.com] A    /u/apps/emmet/base/app/flash/NetworkApp/com/emmet/network2/RelationshipGroupView.as
+ ** [out :: emmet-demo.pivotallabs.com] A    /u/apps/emmet/base/app/flash/NetworkApp/com/emmet/network2/Entity.as
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/app/flash/NetworkApp/com/emmet/util/BasicLabel.as
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/app/flash/NetworkApp/com/emmet/util/Vector.as
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/app/flash/NetworkApp/com/emmet/util/Wedge.as
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/app/flash/NetworkApp/com/emmet/util/DrawableView.as
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/app/views/relationships/edit.mab
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/app/views/relationship_categories/index.mab
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/app/views/network/show.mab
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/spec/models/person_spec.rb
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/spec/models/fixtures/relationship_categories_fixture_spec.rb
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/spec/models/relationship_spec.rb
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/spec/controllers/people_controller_spec.rb
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/spec/controllers/relationships_controller_spec.rb
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/spec/controllers/relationship_categories_controller_spec.rb
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/spec/controllers/relationship_stories_controller_spec.rb
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/spec/controllers/relationship_metacategories_controller_spec.rb
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/spec/fixtures/relationship_categories.yml
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/spec/spec_helper.rb
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/spec/views/relationship_categories/index.mab_spec.rb
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/spec/views/network/show_xml_spec.rb
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/lib/tasks/flash.rake
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/public/flash/WanderApp.swf
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/public/flash/NetworkApp.swf
+ ** [out :: emmet-demo.pivotallabs.com] A    /u/apps/emmet/base/public/flash/NetworkApp2.swf
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/pivotal_core_bundle'
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/vendor/plugins/pivotal_core_bundle/tasks/default.rake
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/vendor/plugins/pivotal_core_bundle/tasks/testspec.rake
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/vendor/plugins/pivotal_core_bundle/lib/bootstrap/rake_task_manager.rb
+ ** [out :: emmet-demo.pivotallabs.com] Updated external to revision 49434.
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/migrator'
+ ** [out :: emmet-demo.pivotallabs.com] Updated external to revision 49434.
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/subversion_helper'
+ ** [out :: emmet-demo.pivotallabs.com] Updated external to revision 49434.
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/capistrano_extensions'
+ ** [out :: emmet-demo.pivotallabs.com] Updated external to revision 49434.
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/seleniumrc_fu'
+ ** [out :: emmet-demo.pivotallabs.com] Updated external to revision 49434.
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/markaby'
+ ** [out :: emmet-demo.pivotallabs.com] Updated external to revision 49434.
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/simple_object'
+ ** [out :: emmet-demo.pivotallabs.com] Updated external to revision 49434.
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/asset_packager'
+ ** [out :: emmet-demo.pivotallabs.com] U    /u/apps/emmet/base/vendor/plugins/asset_packager/lib/synthesis/asset_package_helper.rb
+ ** [out :: emmet-demo.pivotallabs.com] Updated external to revision 49434.
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/attachment_fu'
+ ** [out :: emmet-demo.pivotallabs.com] Updated external to revision 49434.
+ ** [out :: emmet-demo.pivotallabs.com] Updated to revision 49434.
+    command finished
+
+Committed revision 49435.
+  * executing "uname"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+    command finished
+  * executing "mkdir -p /u/apps/emmet/releases/20070719233129"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+    command finished
+  * executing "cd /u/apps/emmet/base; tar cf - --exclude '.svn' --exclude 'jsunit' --exclude 'system' --exclude 'log' . | ( cd /u/apps/emmet/releases/20070719233129; tar xf - )"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+    command finished
+  * executing "rm -rf /u/apps/emmet/releases/20070719233129/log /u/apps/emmet/releases/20070719233129/public/system && ln -nfs /u/apps/emmet/shared/log /u/apps/emmet/releases/20070719233129/log && ln -nfs /u/apps/emmet/shared/system /u/apps/emmet/releases/20070719233129/public/system"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+    command finished
+  * executing task backup
+  * executing task backup_mysql
+  * executing "ls -x1 /u/apps/emmet/releases | egrep '^[0-9]+$'"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+    command finished
+  * executing "mysqldump -h localhost -u root -ppassword emmet_demo > /u/apps/emmet/releases/20070716191954/dump.sql"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+    command finished
+  * executing task symlink
+  * executing "ln -nfs /u/apps/emmet/releases/20070719233129 /u/apps/emmet/current"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+    command finished
+  * executing task before_migrate
+  * executing task migrate
+  * executing "cd /u/apps/emmet/current && rake RAILS_ENV=demo  db:migrate --trace"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+ ** [out :: emmet-demo.pivotallabs.com] (in /u/apps/emmet/releases/20070719233129)
+ ** [out :: emmet-demo.pivotallabs.com] ** Invoke db:migrate (first_time)
+ ** [out :: emmet-demo.pivotallabs.com] ** Invoke environment (first_time)
+ ** [out :: emmet-demo.pivotallabs.com] ** Execute environment
+ ** [out :: emmet-demo.pivotallabs.com] Migrator: max version based on upgrade files available is 3
+ ** [out :: emmet-demo.pivotallabs.com] ** Execute db:migrate
+ ** [out :: emmet-demo.pivotallabs.com] ** Invoke db:schema:dump (first_time)
+ ** [out :: emmet-demo.pivotallabs.com] ** Invoke environment
+ ** [out :: emmet-demo.pivotallabs.com] ** Execute db:schema:dump
+    command finished
+  * executing "echo Migrate Finished."
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+ ** [out :: emmet-demo.pivotallabs.com] Migrate Finished.
+    command finished
+  * executing task cleanup
+*** no old releases to clean up
+ ** transaction: commit
+  * executing task restart
+  * executing "/etc/init.d/mongrel_cluster_emmet restart"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+ ** [out :: emmet-demo.pivotallabs.com] Stopping all mongrel_clusters...
+ ** [out :: emmet-demo.pivotallabs.com] Starting all mongrel_clusters...
+    command finished
+  * executing task after_long_deploy
+  * executing task enable_web
+  * executing "rm -f /u/apps/emmet/shared/system/maintenance.html"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+    command finished
+Lexington:~/workspace/emmet pivotal$ rake deploy HEAD=true RAILS_ENV=demo
+(in /Users/pivotal/workspace/emmet)
+Using emmet-demo.pivotallabs.com as server for web role
+Using emmet-demo.pivotallabs.com as server for app role
+Using emmet-demo.pivotallabs.com as server for db role
+Looking for Project specific commands in /Users/pivotal/workspace/emmet/lib/deploy:
+  * executing task before_long_deploy
+  * executing task disable_web
+    servers: ["emmet-demo.pivotallabs.com"]
+Password: 
+  * uploading /u/apps/emmet/shared/system/maintenance.html
+ ** uploading data to emmet-demo.pivotallabs.com:/u/apps/emmet/shared/system/maintenance.html
+  * done uploading data to emmet-demo.pivotallabs.com:/u/apps/emmet/shared/system/maintenance.html
+    upload finished
+  * executing task long_deploy
+ ** transaction: start
+  * executing task update_code
+  * executing task update_code_without_tag
+  * executing "svn update /u/apps/emmet/base"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/pivotal_core_bundle'
+ ** [out :: emmet-demo.pivotallabs.com] External at revision 49442.
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/migrator'
+ ** [out :: emmet-demo.pivotallabs.com] External at revision 49442.
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/subversion_helper'
+ ** [out :: emmet-demo.pivotallabs.com] External at revision 49442.
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/capistrano_extensions'
+ ** [out :: emmet-demo.pivotallabs.com] External at revision 49442.
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/seleniumrc_fu'
+ ** [out :: emmet-demo.pivotallabs.com] External at revision 49442.
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/markaby'
+ ** [out :: emmet-demo.pivotallabs.com] External at revision 49442.
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/simple_object'
+ ** [out :: emmet-demo.pivotallabs.com] External at revision 49442.
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/asset_packager'
+ ** [out :: emmet-demo.pivotallabs.com] External at revision 49442.
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/attachment_fu'
+ ** [out :: emmet-demo.pivotallabs.com] External at revision 49442.
+ ** [out :: emmet-demo.pivotallabs.com] At revision 49442.
+    command finished
+
+Committed revision 49443.
+  * executing "uname"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+    command finished
+  * executing "mkdir -p /u/apps/emmet/releases/20070719234816"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+    command finished
+  * executing "cd /u/apps/emmet/base; tar cf - --exclude '.svn' --exclude 'jsunit' --exclude 'system' --exclude 'log' . | ( cd /u/apps/emmet/releases/20070719234816; tar xf - )"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+    command finished
+  * executing "rm -rf /u/apps/emmet/releases/20070719234816/log /u/apps/emmet/releases/20070719234816/public/system && ln -nfs /u/apps/emmet/shared/log /u/apps/emmet/releases/20070719234816/log && ln -nfs /u/apps/emmet/shared/system /u/apps/emmet/releases/20070719234816/public/system"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+    command finished
+  * executing task backup
+  * executing task backup_mysql
+  * executing "ls -x1 /u/apps/emmet/releases | egrep '^[0-9]+$'"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+    command finished
+  * executing "mysqldump -h localhost -u root -ppassword emmet_demo > /u/apps/emmet/releases/20070719233129/dump.sql"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+    command finished
+  * executing task symlink
+  * executing "ln -nfs /u/apps/emmet/releases/20070719234816 /u/apps/emmet/current"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+    command finished
+  * executing task before_migrate
+  * executing task migrate
+  * executing "cd /u/apps/emmet/current && rake RAILS_ENV=demo  db:migrate --trace"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+ ** [out :: emmet-demo.pivotallabs.com] (in /u/apps/emmet/releases/20070719234816)
+ ** [out :: emmet-demo.pivotallabs.com] ** Invoke db:migrate (first_time)
+ ** [out :: emmet-demo.pivotallabs.com] ** Invoke environment (first_time)
+ ** [out :: emmet-demo.pivotallabs.com] ** Execute environment
+ ** [out :: emmet-demo.pivotallabs.com] Migrator: max version based on upgrade files available is 3
+ ** [out :: emmet-demo.pivotallabs.com] ** Execute db:migrate
+ ** [out :: emmet-demo.pivotallabs.com] ** Invoke db:schema:dump (first_time)
+ ** [out :: emmet-demo.pivotallabs.com] ** Invoke environment
+ ** [out :: emmet-demo.pivotallabs.com] ** Execute db:schema:dump
+    command finished
+  * executing "echo Migrate Finished."
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+ ** [out :: emmet-demo.pivotallabs.com] Migrate Finished.
+    command finished
+  * executing task cleanup
+*** no old releases to clean up
+ ** transaction: commit
+  * executing task restart
+  * executing "/etc/init.d/mongrel_cluster_emmet restart"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+ ** [out :: emmet-demo.pivotallabs.com] Stopping all mongrel_clusters...
+ ** [out :: emmet-demo.pivotallabs.com] Starting all mongrel_clusters...
+    command finished
+  * executing task after_long_deploy
+  * executing task enable_web
+  * executing "rm -f /u/apps/emmet/shared/system/maintenance.html"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+    command finished
+Lexington:~/workspace/emmet pivotal$ cd ../urba
+bash: cd: ../urba: No such file or directory
+Lexington:~/workspace/emmet pivotal$ cd ../urban
+Lexington:~/workspace/urban pivotal$ rake stats
+(in /Users/pivotal/workspace/urban)
++----------------------+-------+-------+---------+---------+-----+-------+
+| Name                 | Lines |   LOC | Classes | Methods | M/C | LOC/M |
++----------------------+-------+-------+---------+---------+-----+-------+
+| Controllers          |   320 |   268 |      25 |      27 |   1 |     7 |
+| Helpers              |   277 |   238 |       0 |      15 |   0 |    13 |
+| Models               |   310 |   254 |      14 |      47 |   3 |     3 |
+| Libraries            |    28 |    22 |       2 |       4 |   2 |     3 |
+| Components           |     0 |     0 |       0 |       0 |   0 |     0 |
+| Model specs          |     0 |     0 |       0 |       0 |   0 |     0 |
+| View specs           |     0 |     0 |       0 |       0 |   0 |     0 |
+| Controller specs     |     0 |     0 |       0 |       0 |   0 |     0 |
+| Helper specs         |     0 |     0 |       0 |       0 |   0 |     0 |
++----------------------+-------+-------+---------+---------+-----+-------+
+| Total                |   935 |   782 |      41 |      93 |   2 |     6 |
++----------------------+-------+-------+---------+---------+-----+-------+
+  Code LOC: 782     Test LOC: 0     Code to Test Ratio: 1:0.0
+
+Lexington:~/workspace/urban pivotal$ rake -T cache
+(in /Users/pivotal/workspace/urban)
+rake holeless_cache:clear    # Delete all holelessly cached pages
+rake holeless_cache:refresh  # Delete and regenerate all holelessly cached pages
+rake tmp:cache:clear         # Clears all files and directories in tmp/cache
+Lexington:~/workspace/urban pivotal$ less test/fixtures/
+.svn               browses.yml        definition_mailer  quotes.yml         subscribe_mailer   thumbs.yml         titles.yml         
+blobs.yml          dailies.yml        images.yml         sounds.yml         tags.yml           tickers.yml        
+Lexington:~/workspace/urban pivotal$ less test/fixtures/
+.svn               browses.yml        definition_mailer  quotes.yml         subscribe_mailer   thumbs.yml         titles.yml         
+blobs.yml          dailies.yml        images.yml         sounds.yml         tags.yml           tickers.yml        
+Lexington:~/workspace/urban pivotal$ less test/fixtures/
+.svn               browses.yml        definition_mailer  quotes.yml         subscribe_mailer   thumbs.yml         titles.yml         
+blobs.yml          dailies.yml        images.yml         sounds.yml         tags.yml           tickers.yml        
+Lexington:~/workspace/urban pivotal$ less test/fixtures/titles.yml 
+7[?47h[?1h=[62;1H[K---
+emo_popular: 
+  date_published: "2006-11-14"
+  thumbs_diff: "11860"
+  word: Emo
+  author: the King
+  id: "150125"
+  thumbs_up: "16441"
+  thumbs_down: "4581"
+  date_written: "2003-06-08"
+  location: ""
+titles_084: 
+  date_published: "2003-12-21"
+  thumbs_diff: "51"
+  word: cypher
+  author: the King
+  id: "406086"
+  thumbs_up: "74"
+  thumbs_down: "23"
+  date_written: "2003-12-21"
+  location: ""
+titles_089: 
+  date_published: "2004-01-03"
+  thumbs_diff: "-12"
+  word: number four year
+  author: gateway_gamer
+  id: "424883"
+  thumbs_up: "41"
+  thumbs_down: "53"
+  date_written: "2004-01-03"
+  location: ""
+titles_094: 
+  date_published: "2004-01-07"
+  thumbs_diff: "104"
+  word: new year's eve
+  author: j-hi
+  id: "431556"
+  thumbs_up: "114"
+  thumbs_down: "10"
+  date_written: "2004-01-07"
+  location: ""
+titles_101: 
+  date_published: "2004-02-10"
+  thumbs_diff: "31"
+  word: chya
+  author: Tommy aka The King of Cali
+  id: "501402"
+  thumbs_up: "34"
+  thumbs_down: "3"
+  date_written: "2004-02-10"
+  location: ""
+titles_117: 
+  date_published: "2004-04-15"
+  thumbs_diff: "-1"
+  word: Mais non, Je blague
+  author: Evan To The nevin
+  id: "614952"
+  thumbs_up: "2"
+  thumbs_down: "3"
+  date_written: "2004-04-15"
+  location: ""
+[62;1H[K[7mtest/fixtures/titles.yml [m[62;1H[62;1H[K...skipping...
+  location: California
+titles_021: 
+  date_published: "2003-04-20"
+  thumbs_diff: "-9"
+  word: car
+  author: the King
+  id: "101625"
+  thumbs_up: "4"
+  thumbs_down: "13"
+  date_written: "2003-04-20"
+  location: ""
+titles_106:
+  date_published: "2004-03-01"
+  thumbs_diff: "22"
+  word: car
+  author: the King
+  id: "534677"
+  thumbs_up: "48"
+  thumbs_down: "26"
+  date_written: "2004-03-01"
+  location: ""
+titles_027:
+  date_published: "2003-05-06"
+  thumbs_diff: "61"
+  word: car
+  author: the King
+  id: "118275"
+  thumbs_up: "99"
+  thumbs_down: "38"
+  date_written: "2003-05-06"
+  location: ""
+yesterday_car:
+  date_published: "2006-11-16"
+  thumbs_diff: "12"
+  word: car
+  author: the King
+  id: "1751292"
+  thumbs_up: "21"
+  thumbs_down: "9"
+  date_written: "2006-05-13"
+  location: Massachusetts
+two_days_ago_car:
+  date_published: "2006-11-15"
+  thumbs_diff: "2"
+  word: car
+  author: the King
+  id: "1908937"
+  thumbs_up: "3"
+  thumbs_down: "1"
+  date_written: "2006-08-09"
+  location: ny
+yesterday_freckles:
+  date_published: "2006-11-16"
+  thumbs_diff: "57"
+  word: freckles
+  author: some hardcore girl
+  id: "590980"
+  thumbs_up: "72"
+  thumbs_down: "15"
+  date_written: "2004-04-01"
+  location: ""
+[62;1H[K[7m(END) [m[62;1H[HM  date_written: "2006-08-18"
+[HM  thumbs_down: "6"
+[HM  thumbs_up: "6"
+[HM  id: "1925198"
+[HM  author: the King
+[HM  word: car
+[HM  thumbs_diff: "0"
+[HM  date_published: "2006-08-18"
+[HMtitles_250: 
+[HM  location: ""
+[HM  date_written: "2003-06-12"
+[HM  thumbs_down: "22"
+[HM  thumbs_up: "11"
+[HM  id: "153635"
+[HM  author: the King
+[HM  word: car
+[HM  thumbs_diff: "-11"
+[HM  date_published: "2003-06-12"
+[HMtitles_035: 
+[HM  location: ""
+[HM  date_written: "2002-09-22"
+[HM  thumbs_down: "27"
+[HM  thumbs_up: "21"
+[HM  id: "5086"
+[HM  author: the King
+[HM  word: car
+[HM  thumbs_diff: "-6"
+[HM  date_published: "2002-09-22"
+[HMtitles_003: 
+[HM  location: California
+[HM  date_written: "2006-08-31"
+[HM  thumbs_down: "0"
+[HM  thumbs_up: "9"
+[HM  id: "1949892"
+[HM  author: the King
+[HM  word: snowboard
+[HM  thumbs_diff: "9"
+[HM  date_published: "2006-09-01"
+[HMtitles_253: 
+[HM  location: portsmouth
+[HM  date_written: "2006-08-02"
+[HM  thumbs_down: "43"
+[HM  thumbs_up: "103"
+[HM  id: "1896114"
+[HM  author: ""
+[HM  word: Emo Girl
+[HM  thumbs_diff: "60"
+[HM  date_published: "2006-08-02"
+[HMtitles_247: 
+[HM  location: ""
+[HM  date_written: "2003-06-19"
+[HM  thumbs_down: "1"
+[HM  thumbs_up: "0"
+[HM  id: "159388"
+[HM  author: the King
+[HM  word: KungFuManchu(er)
+[HM  thumbs_diff: "-1"
+[HM  date_published: "2005-12-28"
+[HMtitles_038: 
+[HM  location: Washington D.C.
+[HM  date_written: "2006-08-01"
+[62;1H[K:[62;1H[HM  thumbs_down: "12"
+[HM  thumbs_up: "18"
+[HM  id: "1893627"
+[HM  author: gplpark92
+[HM  word: lil jon
+[HM  thumbs_diff: "6"
+[HM  date_published: "2005-12-28"
+[HMtitles_246: 
+[HM  location: Down Unda
+[HM  date_written: "2006-07-15"
+[HM  thumbs_down: "55"
+[HM  thumbs_up: "15"
+[HM  id: "1863041"
+[HM  author: Dirty Blood
+[HM  word: crip
+[HM  thumbs_diff: "-40"
+[HM  date_published: "2005-12-28"
+[HMtitles_243: 
+[HM  location: RI
+[HM  date_written: "2006-11-24"
+[HM  thumbs_down: "0"
+[HM  thumbs_up: "0"
+[HM  id: "2107770"
+[HM  author: 3moboy
+[HM  word: emo girl
+[HM  thumbs_diff: "0"
+[HM  date_published: "2005-12-28"
+[HMtitles_263: 
+[HM  location: Fortress of love
+[HM  date_written: "2006-09-04"
+[HM  thumbs_down: "13"
+[HM  thumbs_up: "36"
+[HM  id: "1955199"
+[HM  author: 3moboy
+[HM  word: Emo girl
+[HM  thumbs_diff: "23"
+[HM  date_published: "2005-12-28"
+[HMtitles_254: 
+[HM  location: hickville, ny
+[HM  date_written: "2006-08-26"
+[HM  thumbs_down: "24"
+[HM  thumbs_up: "69"
+[HM  id: "1940123"
+[HM  author: 3moboy
+[HM  word: emo girl
+[HM  thumbs_diff: "45"
+[HM  date_published: "2005-12-28"
+[HMtitles_251: 
+[HM  location: ""
+[HM  date_written: "2003-03-24"
+[HM  thumbs_down: "5"
+[HM  thumbs_up: "2"
+[HM  id: "69083"
+[HM  author: heh
+[HM  word: ace
+[HM  thumbs_diff: "-3"
+[HM  date_published: "2005-12-28"
+[HMtitles_018: 
+[HM  location: ""
+[HM  date_written: "2005-03-23"
+[HM  thumbs_down: "2750"
+[62;1H[K:[62;1H[HM  thumbs_up: "6479"
+[HM  id: "1139455"
+[HM  author: JT
+[HM  word: emo
+[HM  thumbs_diff: "3729"
+[HM  date_published: "2006-11-14"
+[HMtitles_173: 
+[HM  location: ""
+[HM  date_written: "2004-04-06"
+[HM  thumbs_down: "4039"
+[HM  thumbs_up: "8454"
+[HM  id: "598395"
+[HM  author: Lockesly
+[HM  word: Emo
+[HM  thumbs_diff: "4415"
+[HM  date_published: "2006-11-14"
+[HMtitles_113: 
+[HM  location: ""
+[HM  date_written: "2005-01-10"
+[HM  thumbs_down: "3453"
+[HM  thumbs_up: "8632"
+[HM  id: "990798"
+[HM  author: Chernorizets Hrabr
+[HM  word: emo
+[HM  thumbs_diff: "5179"
+[HM  date_published: "2006-11-14"
+[HMtitles_157: 
+[HM  location: ""
+[HM  date_written: "2004-07-30"
+[HM  thumbs_down: "2493"
+[HM  thumbs_up: "8092"
+[HM  id: "776537"
+[HM  author: Pureblarney
+[HM  word: Emo
+[HM  thumbs_diff: "5599"
+[HM  date_published: "2006-11-14"
+[HMtitles_136: 
+[HM  location: ""
+[HM  date_written: "2004-06-13"
+[HM  thumbs_down: "1"
+[HM  thumbs_up: "10"
+[HM  id: "716647"
+[HM  author: Anupama
+[HM  word: Anupama
+[HM  thumbs_diff: "9"
+[HM  date_published: "2004-06-13"
+[HMtitles_127: 
+[HM  location: ""
+[HM  date_written: "2004-04-15"
+[HM  thumbs_down: "3"
+[HM  thumbs_up: "2"
+[HM  id: "614952"
+[HM  author: Evan To The nevin
+[HM  word: Mais non, Je blague
+[HM  thumbs_diff: "-1"
+[HM  date_published: "2004-04-15"
+[HMtitles_117: 
+[HM  location: ""
+[HM  date_written: "2004-02-10"
+[HM  thumbs_down: "3"
+[HM  thumbs_up: "34"
+[62;1H[K:[62;1H[HM  id: "501402"
+[HM  author: Tommy aka The King of Cali
+[HM  word: chya
+[HM  thumbs_diff: "31"
+[HM  date_published: "2004-02-10"
+[HMtitles_101: 
+[HM  location: ""
+[HM  date_written: "2004-01-07"
+[HM  thumbs_down: "10"
+[HM  thumbs_up: "114"
+[HM  id: "431556"
+[HM  author: j-hi
+[HM  word: new year's eve
+[HM  thumbs_diff: "104"
+[HM  date_published: "2004-01-07"
+[HMtitles_094: 
+[HM  location: ""
+[HM  date_written: "2004-01-03"
+[HM  thumbs_down: "53"
+[HM  thumbs_up: "41"
+[HM  id: "424883"
+[HM  author: gateway_gamer
+[HM  word: number four year
+[HM  thumbs_diff: "-12"
+[HM  date_published: "2004-01-03"
+[HMtitles_089: 
+[HM  location: ""
+[HM  date_written: "2003-12-21"
+[HM  thumbs_down: "23"
+[HM  thumbs_up: "74"
+[HM  id: "406086"
+[HM  author: the King
+[HM  word: cypher
+[HM  thumbs_diff: "51"
+[HM  date_published: "2003-12-21"
+[HMtitles_084: 
+[HM  location: ""
+[HM  date_written: "2003-06-08"
+[HM  thumbs_down: "4581"
+[HM  thumbs_up: "16441"
+[HM  id: "150125"
+[HM  author: the King
+[HM  word: Emo
+[HM  thumbs_diff: "11860"
+[HM  date_published: "2006-11-14"
+[HMemo_popular: 
+[HM---
+[62;1H[K:[62;1H[62;1H[K:[62;1H[62;1H[K:[62;1H[K[?1l>[2J[?47l8Lexington:~/workspace/urban pivotal$ cd ../
+Lexington:~/workspace pivotal$ cd ../em     cd emmet/
+bash: cd: cd: No such file or directory
+Lexington:~/workspace pivotal$ ls
+bringlight	ccgman		cpr		flickr		neo		peoplesmd_other	rgm		spongefish	tools		treetop		urban
+bringo		communitywalk	emmet		focused_test.rb	peoplesmd	progress.patch	socialitis	temp		tracker2	tt.patch	whitelabel
+Lexington:~/workspace pivotal$ cd emmet/
+Lexington:~/workspace/emmet pivotal$ rake d      sv  rk ake DE  deploy HEAD=true L RAILS_ENV=demo
+(in /Users/pivotal/workspace/emmet)
+Using emmet-demo.pivotallabs.com as server for web role
+Using emmet-demo.pivotallabs.com as server for app role
+Using emmet-demo.pivotallabs.com as server for db role
+Looking for Project specific commands in /Users/pivotal/workspace/emmet/lib/deploy:
+  * executing task before_long_deploy
+  * executing task disable_web
+    servers: ["emmet-demo.pivotallabs.com"]
+Password: 
+  * uploading /u/apps/emmet/shared/system/maintenance.html
+ ** uploading data to emmet-demo.pivotallabs.com:/u/apps/emmet/shared/system/maintenance.html
+  * done uploading data to emmet-demo.pivotallabs.com:/u/apps/emmet/shared/system/maintenance.html
+    upload finished
+  * executing task long_deploy
+ ** transaction: start
+  * executing task update_code
+  * executing task update_code_without_tag
+  * executing "svn update /u/apps/emmet/base"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/pivotal_core_bundle'
+ ** [out :: emmet-demo.pivotallabs.com] External at revision 49466.
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/migrator'
+ ** [out :: emmet-demo.pivotallabs.com] External at revision 49466.
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/subversion_helper'
+ ** [out :: emmet-demo.pivotallabs.com] External at revision 49466.
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/capistrano_extensions'
+ ** [out :: emmet-demo.pivotallabs.com] External at revision 49466.
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/seleniumrc_fu'
+ ** [out :: emmet-demo.pivotallabs.com] External at revision 49466.
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/markaby'
+ ** [out :: emmet-demo.pivotallabs.com] External at revision 49466.
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/simple_object'
+ ** [out :: emmet-demo.pivotallabs.com] External at revision 49466.
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/asset_packager'
+ ** [out :: emmet-demo.pivotallabs.com] External at revision 49466.
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] 
+ ** [out :: emmet-demo.pivotallabs.com] Fetching external item into '/u/apps/emmet/base/vendor/plugins/attachment_fu'
+ ** [out :: emmet-demo.pivotallabs.com] External at revision 49466.
+ ** [out :: emmet-demo.pivotallabs.com] At revision 49466.
+    command finished
+
+Committed revision 49467.
+  * executing "uname"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+    command finished
+  * executing "mkdir -p /u/apps/emmet/releases/20070720164453"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+    command finished
+  * executing "cd /u/apps/emmet/base; tar cf - --exclude '.svn' --exclude 'jsunit' --exclude 'system' --exclude 'log' . | ( cd /u/apps/emmet/releases/20070720164453; tar xf - )"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+    command finished
+  * executing "rm -rf /u/apps/emmet/releases/20070720164453/log /u/apps/emmet/releases/20070720164453/public/system && ln -nfs /u/apps/emmet/shared/log /u/apps/emmet/releases/20070720164453/log && ln -nfs /u/apps/emmet/shared/system /u/apps/emmet/releases/20070720164453/public/system"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+    command finished
+  * executing task backup
+  * executing task backup_mysql
+  * executing "ls -x1 /u/apps/emmet/releases | egrep '^[0-9]+$'"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+    command finished
+  * executing "mysqldump -h localhost -u root -ppassword emmet_demo > /u/apps/emmet/releases/20070719234816/dump.sql"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+    command finished
+  * executing task symlink
+  * executing "ln -nfs /u/apps/emmet/releases/20070720164453 /u/apps/emmet/current"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+    command finished
+  * executing task before_migrate
+  * executing task migrate
+  * executing "cd /u/apps/emmet/current && rake RAILS_ENV=demo  db:migrate --trace"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+ ** [out :: emmet-demo.pivotallabs.com] (in /u/apps/emmet/releases/20070720164453)
+ ** [out :: emmet-demo.pivotallabs.com] ** Invoke db:migrate (first_time)
+ ** [out :: emmet-demo.pivotallabs.com] ** Invoke environment (first_time)
+ ** [out :: emmet-demo.pivotallabs.com] ** Execute environment
+ ** [out :: emmet-demo.pivotallabs.com] Migrator: max version based on upgrade files available is 3
+ ** [out :: emmet-demo.pivotallabs.com] ** Execute db:migrate
+ ** [out :: emmet-demo.pivotallabs.com] ** Invoke db:schema:dump (first_time)
+ ** [out :: emmet-demo.pivotallabs.com] ** Invoke environment
+ ** [out :: emmet-demo.pivotallabs.com] ** Execute db:schema:dump
+    command finished
+  * executing "echo Migrate Finished."
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+ ** [out :: emmet-demo.pivotallabs.com] Migrate Finished.
+    command finished
+  * executing task cleanup
+*** no old releases to clean up
+ ** transaction: commit
+  * executing task restart
+  * executing "/etc/init.d/mongrel_cluster_emmet restart"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+ ** [out :: emmet-demo.pivotallabs.com] Stopping all mongrel_clusters...
+ ** [out :: emmet-demo.pivotallabs.com] Starting all mongrel_clusters...
+    command finished
+  * executing task after_long_deploy
+  * executing task enable_web
+  * executing "rm -f /u/apps/emmet/shared/system/maintenance.html"
+    servers: ["emmet-demo.pivotallabs.com"]
+    [emmet-demo.pivotallabs.com] executing command
+    command finished
+Lexington:~/workspace/emmet pivotal$ cd ../w 
+.DS_Store        ccgman           emmet            neo              progress.patch   spongefish       tracker2         urban            
+bringlight       communitywalk    flickr           peoplesmd        rgm              temp             treetop          whitelabel       
+bringo           cpr              focused_test.rb  peoplesmd_other  socialitis       tools            tt.patch         
+Lexington:~/workspace/emmet pivotal$ cd ../treetop/
+Lexington:~/workspace/treetop pivotal$ mate .
+Lexington:~/workspace/treetop pivotal$ mate /usr/lor cal/lib/ruby/gems/1.8/gems/rspec-1.0.5/
+Lexington:~/workspace/treetop pivotal$ mate em  ../emmet/vendor/plugins/rspec_on_rails/
+Lexington:~/workspace/treetop pivotal$ mate ../emmet/vendor/plugins/rspec_on_rails/                              spec/spec_helper.rb 
+Lexington:~/workspace/treetop pivotal$ rake
+(in /Users/pivotal/workspace/treetop)
+........................................................................................................................................................................................................................................................................
+
+Finished in 1.375466 seconds
+
+264 examples, 0 failures
+Lexington:~/workspace/treetop pivotal$ cd treetop2/
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+./spec/parser/../../../lib/treetop.rb:1: warning: already initialized constant OPTIMIZE
+./spec/parser/../../../lib/treetop.rb:2: warning: already initialized constant TREETOP_ROOT
+./spec/parser/../../../lib/treetop/utilities/metagrammar_bootstrapper.rb:4: warning: already initialized constant METAGRAMMAR_TREETOP_FILE_PATH
+./spec/parser/../../../lib/treetop/utilities/metagrammar_bootstrapper.rb:5: warning: already initialized constant NEOMETAGRAMMAR_TREETOP_FILE_PATH
+./spec/parser/../../../lib/treetop/utilities/metagrammar_bootstrapper.rb:6: warning: already initialized constant METAGRAMMAR_DIRECTORY
+/usr/local/lib/ruby/gems/1.8/gems/RubyInline-3.6.3/lib/inline.rb:307:in `load': require on /Users/pivotal/.ruby_inline/Inline_Treetop__ParseResult_93cb.bundle failed (LoadError)
+	from /usr/local/lib/ruby/gems/1.8/gems/RubyInline-3.6.3/lib/inline.rb:661:in `inline'
+	from ./spec/parser/../../../lib/treetop/parser/parse_result.rb:28
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `gem_original_require'
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `require'
+	from ./spec/parser/../../../lib/treetop/parser.rb:3
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `gem_original_require'
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `require'
+	from ./spec/parser/../../../lib/treetop.rb:8
+	 ... 9 levels...
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `load_specs'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:22:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/command_line.rb:17:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec:3
+rake aborted!
+Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec" "spec/compiler/terminal_symbol_spec.rb" "spec/parser/arithmetic_spec.rb"   failed
+
+(See full trace by running task with --trace)
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:85:in `load': ./spec/compiler/terminal_symbol_spec.rb:29: syntax error, unexpected kEND, expecting $end (SyntaxError)
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:85:in `load_specs'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `each'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `load_specs'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:22:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/command_line.rb:17:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec:3
+rake aborted!
+Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec" "spec/compiler/terminal_symbol_spec.rb" "spec/parser/arithmetic_spec.rb"   failed
+
+(See full trace by running task with --trace)
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+./spec/parser/../../../lib/treetop.rb:1: warning: already initialized constant OPTIMIZE
+./spec/parser/../../../lib/treetop.rb:2: warning: already initialized constant TREETOP_ROOT
+./spec/parser/../../../lib/treetop/utilities/metagrammar_bootstrapper.rb:4: warning: already initialized constant METAGRAMMAR_TREETOP_FILE_PATH
+./spec/parser/../../../lib/treetop/utilities/metagrammar_bootstrapper.rb:5: warning: already initialized constant NEOMETAGRAMMAR_TREETOP_FILE_PATH
+./spec/parser/../../../lib/treetop/utilities/metagrammar_bootstrapper.rb:6: warning: already initialized constant METAGRAMMAR_DIRECTORY
+/usr/local/lib/ruby/gems/1.8/gems/RubyInline-3.6.3/lib/inline.rb:307:in `load': require on /Users/pivotal/.ruby_inline/Inline_Treetop__ParseResult_93cb.bundle failed (LoadError)
+	from /usr/local/lib/ruby/gems/1.8/gems/RubyInline-3.6.3/lib/inline.rb:661:in `inline'
+	from ./spec/parser/../../../lib/treetop/parser/parse_result.rb:28
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `gem_original_require'
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `require'
+	from ./spec/parser/../../../lib/treetop/parser.rb:3
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `gem_original_require'
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `require'
+	from ./spec/parser/../../../lib/treetop.rb:8
+	 ... 9 levels...
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `load_specs'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:22:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/command_line.rb:17:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec:3
+rake aborted!
+Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec" "spec/compiler/terminal_symbol_spec.rb" "spec/parser/arithmetic_spec.rb"   failed
+
+(See full trace by running task with --trace)
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/dsl/behaviour_eval.rb:137:in `method_missing': undefined method `load_grammar' for #<Spec::DSL::EvalModule:0x346480> (NoMethodError)
+	from ./spec/compiler/../spec_helper.rb:14:in `testing_expression'
+	from ./spec/compiler/terminal_symbol_spec.rb:4
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/dsl/behaviour.rb:54:in `class_eval'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/dsl/behaviour.rb:54:in `eval_behaviour'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/dsl/behaviour.rb:31:in `initialize'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/dsl/behaviour_factory.rb:36:in `new'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/dsl/behaviour_factory.rb:36:in `create'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/extensions/kernel.rb:24:in `describe'
+	from ./spec/compiler/terminal_symbol_spec.rb:3
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:85:in `load'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:85:in `load_specs'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `each'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `load_specs'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:22:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/command_line.rb:17:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec:3
+rake aborted!
+Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec" "spec/compiler/terminal_symbol_spec.rb" "spec/parser/arithmetic_spec.rb"   failed
+
+(See full trace by running task with --trace)
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+./spec/compiler/../spec_helper.rb:9: uninitialized constant Treetop2 (NameError)
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `gem_original_require'
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `require'
+	from ./spec/compiler/terminal_symbol_spec.rb:1
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:85:in `load'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:85:in `load_specs'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `each'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `load_specs'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:22:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/command_line.rb:17:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec:3
+rake aborted!
+Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec" "spec/compiler/terminal_symbol_spec.rb" "spec/parser/arithmetic_spec.rb"   failed
+
+(See full trace by running task with --trace)
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+./spec/parser/../../../lib/treetop.rb:1: warning: already initialized constant OPTIMIZE
+./spec/parser/../../../lib/treetop.rb:2: warning: already initialized constant TREETOP_ROOT
+./spec/parser/../../../lib/treetop/utilities/metagrammar_bootstrapper.rb:4: warning: already initialized constant METAGRAMMAR_TREETOP_FILE_PATH
+./spec/parser/../../../lib/treetop/utilities/metagrammar_bootstrapper.rb:5: warning: already initialized constant NEOMETAGRAMMAR_TREETOP_FILE_PATH
+./spec/parser/../../../lib/treetop/utilities/metagrammar_bootstrapper.rb:6: warning: already initialized constant METAGRAMMAR_DIRECTORY
+/usr/local/lib/ruby/gems/1.8/gems/RubyInline-3.6.3/lib/inline.rb:307:in `load': require on /Users/pivotal/.ruby_inline/Inline_Treetop__ParseResult_93cb.bundle failed (LoadError)
+	from /usr/local/lib/ruby/gems/1.8/gems/RubyInline-3.6.3/lib/inline.rb:661:in `inline'
+	from ./spec/parser/../../../lib/treetop/parser/parse_result.rb:28
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `gem_original_require'
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `require'
+	from ./spec/parser/../../../lib/treetop/parser.rb:3
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `gem_original_require'
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `require'
+	from ./spec/parser/../../../lib/treetop.rb:8
+	 ... 9 levels...
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `load_specs'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:22:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/command_line.rb:17:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec:3
+rake aborted!
+Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec" "spec/compiler/terminal_symbol_spec.rb" "spec/parser/arithmetic_spec.rb"   failed
+
+(See full trace by running task with --trace)
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+/usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `gem_original_require'
+/usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `require'
+./spec/compiler/../spec_helper.rb:7
+/usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `gem_original_require'
+/usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `require'
+./spec/compiler/terminal_symbol_spec.rb:1
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:85:in `load'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:85:in `load_specs'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `each'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `load_specs'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:22:in `run'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/command_line.rb:17:in `run'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec:3
+/usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `gem_original_require'
+/usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `require'
+./spec/parser/../spec_helper.rb:7
+/usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `gem_original_require'
+/usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `require'
+./spec/parser/arithmetic_spec.rb:2
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:85:in `load'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:85:in `load_specs'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `each'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `load_specs'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:22:in `run'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/command_line.rb:17:in `run'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec:3
+./spec/parser/../../../lib/treetop.rb:3: warning: already initialized constant OPTIMIZE
+./spec/parser/../../../lib/treetop.rb:4: warning: already initialized constant TREETOP_ROOT
+./spec/parser/../../../lib/treetop/utilities/metagrammar_bootstrapper.rb:4: warning: already initialized constant METAGRAMMAR_TREETOP_FILE_PATH
+./spec/parser/../../../lib/treetop/utilities/metagrammar_bootstrapper.rb:5: warning: already initialized constant NEOMETAGRAMMAR_TREETOP_FILE_PATH
+./spec/parser/../../../lib/treetop/utilities/metagrammar_bootstrapper.rb:6: warning: already initialized constant METAGRAMMAR_DIRECTORY
+/usr/local/lib/ruby/gems/1.8/gems/RubyInline-3.6.3/lib/inline.rb:307:in `load': require on /Users/pivotal/.ruby_inline/Inline_Treetop__ParseResult_93cb.bundle failed (LoadError)
+	from /usr/local/lib/ruby/gems/1.8/gems/RubyInline-3.6.3/lib/inline.rb:661:in `inline'
+	from ./spec/parser/../../../lib/treetop/parser/parse_result.rb:28
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `gem_original_require'
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `require'
+	from ./spec/parser/../../../lib/treetop/parser.rb:3
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `gem_original_require'
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `require'
+	from ./spec/parser/../../../lib/treetop.rb:10
+	 ... 9 levels...
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `load_specs'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:22:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/command_line.rb:17:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec:3
+rake aborted!
+Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec" "spec/compiler/terminal_symbol_spec.rb" "spec/parser/arithmetic_spec.rb"   failed
+
+(See full trace by running task with --trace)
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+EVALUATING
+/usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `gem_original_require'
+/usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `require'
+./spec/compiler/../spec_helper.rb:7
+/usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `gem_original_require'
+/usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `require'
+./spec/compiler/terminal_symbol_spec.rb:1
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:85:in `load'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:85:in `load_specs'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `each'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `load_specs'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:22:in `run'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/command_line.rb:17:in `run'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec:3
+EVALUATING
+/usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `gem_original_require'
+/usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `require'
+./spec/parser/../spec_helper.rb:7
+/usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `gem_original_require'
+/usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `require'
+./spec/parser/arithmetic_spec.rb:2
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:85:in `load'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:85:in `load_specs'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `each'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `load_specs'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:22:in `run'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/command_line.rb:17:in `run'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec:3
+./spec/parser/../../../lib/treetop.rb:4: warning: already initialized constant OPTIMIZE
+./spec/parser/../../../lib/treetop.rb:5: warning: already initialized constant TREETOP_ROOT
+./spec/parser/../../../lib/treetop/utilities/metagrammar_bootstrapper.rb:4: warning: already initialized constant METAGRAMMAR_TREETOP_FILE_PATH
+./spec/parser/../../../lib/treetop/utilities/metagrammar_bootstrapper.rb:5: warning: already initialized constant NEOMETAGRAMMAR_TREETOP_FILE_PATH
+./spec/parser/../../../lib/treetop/utilities/metagrammar_bootstrapper.rb:6: warning: already initialized constant METAGRAMMAR_DIRECTORY
+/usr/local/lib/ruby/gems/1.8/gems/RubyInline-3.6.3/lib/inline.rb:307:in `load': require on /Users/pivotal/.ruby_inline/Inline_Treetop__ParseResult_93cb.bundle failed (LoadError)
+	from /usr/local/lib/ruby/gems/1.8/gems/RubyInline-3.6.3/lib/inline.rb:661:in `inline'
+	from ./spec/parser/../../../lib/treetop/parser/parse_result.rb:28
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `gem_original_require'
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `require'
+	from ./spec/parser/../../../lib/treetop/parser.rb:3
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `gem_original_require'
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `require'
+	from ./spec/parser/../../../lib/treetop.rb:11
+	 ... 9 levels...
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `load_specs'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:22:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/command_line.rb:17:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec:3
+rake aborted!
+Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec" "spec/compiler/terminal_symbol_spec.rb" "spec/parser/arithmetic_spec.rb"   failed
+
+(See full trace by running task with --trace)
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+./spec/compiler/../spec_helper.rb:7:in `expand_path': wrong number of arguments (5 for 2) (ArgumentError)
+	from ./spec/compiler/../spec_helper.rb:7
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `gem_original_require'
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `require'
+	from ./spec/compiler/terminal_symbol_spec.rb:1
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:85:in `load'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:85:in `load_specs'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `each'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `load_specs'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:22:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/command_line.rb:17:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec:3
+rake aborted!
+Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec" "spec/compiler/terminal_symbol_spec.rb" "spec/parser/arithmetic_spec.rb"   failed
+
+(See full trace by running task with --trace)
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+EVALUATING
+/usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `gem_original_require'
+/usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `require'
+./spec/compiler/../spec_helper.rb:7
+/usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `gem_original_require'
+/usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `require'
+./spec/compiler/terminal_symbol_spec.rb:1
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:85:in `load'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:85:in `load_specs'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `each'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `load_specs'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:22:in `run'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/command_line.rb:17:in `run'
+/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec:3
+*....
+
+Finished in 0.013017 seconds
+
+5 examples, 0 failures, 1 not implemented
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+(eval):2: warning: already initialized constant Metagrammar
+*....
+
+Finished in 0.06102 seconds
+
+5 examples, 0 failures, 1 not implemented
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+./spec/compiler/../spec_helper.rb:41:in `metagrammar': uninitialized constant Treetop2::Metagrammar (NameError)
+	from ./spec/compiler/../spec_helper.rb:18:in `testing_expression'
+	from ./spec/compiler/terminal_symbol_spec.rb:4
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/dsl/behaviour.rb:54:in `class_eval'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/dsl/behaviour.rb:54:in `eval_behaviour'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/dsl/behaviour.rb:31:in `initialize'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/dsl/behaviour_factory.rb:36:in `new'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/dsl/behaviour_factory.rb:36:in `create'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/extensions/kernel.rb:24:in `describe'
+	from ./spec/compiler/terminal_symbol_spec.rb:3
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:85:in `load'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:85:in `load_specs'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `each'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `load_specs'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:22:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/command_line.rb:17:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec:3
+rake aborted!
+Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec" "spec/compiler/terminal_symbol_spec.rb" "spec/parser/arithmetic_spec.rb"   failed
+
+(See full trace by running task with --trace)
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+./spec/compiler/../spec_helper.rb:45:in `metagrammar_parser': uninitialized constant Treetop2::Metagrammar (NameError)
+	from ./spec/compiler/../spec_helper.rb:24:in `setup_test_parser'
+	from ./spec/compiler/../spec_helper.rb:19:in `testing_expression'
+	from ./spec/compiler/terminal_symbol_spec.rb:4
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/dsl/behaviour.rb:54:in `class_eval'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/dsl/behaviour.rb:54:in `eval_behaviour'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/dsl/behaviour.rb:31:in `initialize'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/dsl/behaviour_factory.rb:36:in `new'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/dsl/behaviour_factory.rb:36:in `create'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/extensions/kernel.rb:24:in `describe'
+	from ./spec/compiler/terminal_symbol_spec.rb:3
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:85:in `load'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:85:in `load_specs'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `each'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `load_specs'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:22:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/command_line.rb:17:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec:3
+rake aborted!
+Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec" "spec/compiler/terminal_symbol_spec.rb" "spec/parser/arithmetic_spec.rb"   failed
+
+(See full trace by running task with --trace)
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+(eval):2: warning: already initialized constant Metagrammar2
+*....
+
+Finished in 0.061326 seconds
+
+5 examples, 0 failures, 1 not implemented
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+*....
+
+Finished in 0.061095 seconds
+
+5 examples, 0 failures, 1 not implemented
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+*....
+
+Finished in 0.061177 seconds
+
+5 examples, 0 failures, 1 not implemented
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+F....
+
+1)
+NameError in 'A terminal symbol correctly parses matching input prefixes at various indices'
+undefined local variable or method `foo' for #<CompilerBehaviour::Test::TestParser:0x14ff03c>
+(eval):9:in `_nt_test_expression'
+(eval):5:in `parse'
+./spec/parser/../spec_helper.rb:61:in `parse'
+./spec/compiler/terminal_symbol_spec.rb:7:
+
+Finished in 0.0607420000000001 seconds
+
+5 examples, 1 failure
+rake aborted!
+Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec" "spec/compiler/terminal_symbol_spec.rb" "spec/parser/arithmetic_spec.rb"   failed
+
+(See full trace by running task with --trace)
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+F....
+
+1)
+NameError in 'A terminal symbol correctly parses matching input prefixes at various indices'
+undefined local variable or method `foo' for #<CompilerBehaviour::Test::TestParser:0x14ff050>
+(eval):9:in `_nt_test_expression'
+(eval):5:in `parse'
+./spec/parser/../spec_helper.rb:61:in `parse'
+./spec/compiler/terminal_symbol_spec.rb:7:
+
+Finished in 0.060826 seconds
+
+5 examples, 1 failure
+rake aborted!
+Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec" "spec/compiler/terminal_symbol_spec.rb" "spec/parser/arithmetic_spec.rb"   failed
+
+(See full trace by running task with --trace)
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+F....
+
+1)
+'A terminal symbol correctly parses matching input prefixes at various indices' FAILED
+expected instance_of?(Treetop2::TerminalSyntaxNode) to return true, got false
+./spec/compiler/terminal_symbol_spec.rb:8:
+./spec/parser/../spec_helper.rb:62:in `parse'
+./spec/compiler/terminal_symbol_spec.rb:7:
+
+Finished in 0.061193 seconds
+
+5 examples, 1 failure
+rake aborted!
+Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec" "spec/compiler/terminal_symbol_spec.rb" "spec/parser/arithmetic_spec.rb"   failed
+
+(See full trace by running task with --trace)
+Lexington:~/workspace/treetop/treetop2 pivotal$ cd ..
+Lexington:~/workspace/treetop pivotal$ svn st
+M      script/svnsync
+M      treetop2/Rakefile
+?      treetop2/lib/treetop2
+!      treetop2/lib/treetop
+!      treetop2/lib/treetop.rb
+M      treetop2/lib/treetop2.rb
+M      treetop2/spec/compiler/terminal_symbol_spec.rb
+M      treetop2/spec/spec_helper.rb
+M      treetop2/spec/parser/arithmetic.rb
+M      lib/treetop/grammar/grammar.rb
+Lexington:~/workspace/treetop pivotal$ script/svnsync 
+bash: script/svnsync: Text file busy
+Lexington:~/workspace/treetop pivotal$ script/svnsync script/svnsync  script/svnsync
+bash: script/svnsync: Text file busy
+Lexington:~/workspace/treetop pivotal$ script/svnsync    rm
+Lexington:~/workspace/treetop pivotal$ script/svnrm  add
+svn: warning: 'treetop2/lib/treetop2' is already under version control
+Lexington:~/workspace/treetop pivotal$ svn st
+M      script/svnsync
+M      treetop2/Rakefile
+?      treetop2/lib/treetop2
+D      treetop2/lib/treetop
+D      treetop2/lib/treetop.rb
+M      treetop2/lib/treetop2.rb
+M      treetop2/spec/compiler/terminal_symbol_spec.rb
+M      treetop2/spec/spec_helper.rb
+M      treetop2/spec/parser/arithmetic.rb
+M      lib/treetop/grammar/grammar.rb
+Lexington:~/workspace/treetop pivotal$ cd treetop2/lib/treetop2
+Lexington:~/workspace/treetop/treetop2/lib/treetop2 pivotal$ ls
+metagrammar	parser		parser.rb
+Lexington:~/workspace/treetop/treetop2/lib/treetop2 pivotal$ rm ~ -rf .svn/
+Lexington:~/workspace/treetop/treetop2/lib/treetop2 pivotal$ cd ..
+Lexington:~/workspace/treetop/treetop2/lib pivotal$ cd ..rm -rf .svn/[Kr  cd..
+bash: cd..: command not found
+Lexington:~/workspace/treetop/treetop2/lib pivotal$ cd ..
+Lexington:~/workspace/treetop/treetop2 pivotal$ cd ..
+Lexington:~/workspace/treetop pivotal$ svn st
+M      script/svnsync
+M      treetop2/Rakefile
+?      treetop2/lib/treetop2
+D      treetop2/lib/treetop
+D      treetop2/lib/treetop.rb
+M      treetop2/lib/treetop2.rb
+M      treetop2/spec/compiler/terminal_symbol_spec.rb
+M      treetop2/spec/spec_helper.rb
+M      treetop2/spec/parser/arithmetic.rb
+M      lib/treetop/grammar/grammar.rb
+Lexington:~/workspace/treetop pivotal$ script/svnadd
+svn: warning: 'treetop2/lib/treetop2/metagrammar' is already under version control
+Lexington:~/workspace/treetop pivotal$ cd treetop2/lib/treetop2
+Lexington:~/workspace/treetop/treetop2/lib/treetop2 pivotal$ cd metagrammar/
+Lexington:~/workspace/treetop/treetop2/lib/treetop2/metagrammar pivotal$ rm -rf .svn
+Lexington:~/workspace/treetop/treetop2/lib/treetop2/metagrammar pivotal$ ls
+metagrammar.treetop
+Lexington:~/workspace/treetop/treetop2/lib/treetop2/metagrammar pivotal$ cd ..
+Lexington:~/workspace/treetop/treetop2/lib/treetop2 pivotal$ ls
+metagrammar	parser		parser.rb
+Lexington:~/workspace/treetop/treetop2/lib/treetop2 pivotal$ cd parser
+Lexington:~/workspace/treetop/treetop2/lib/treetop2/parser pivotal$ rm -rf - .svn
+Lexington:~/workspace/treetop/treetop2/lib/treetop2/parser pivotal$ cd ..
+Lexington:~/workspace/treetop/treetop2/lib/treetop2 pivotal$ cd ..
+Lexington:~/workspace/treetop/treetop2/lib pivotal$ cd ..
+Lexington:~/workspace/treetop/treetop2 pivotal$ cd ..
+Lexington:~/workspace/treetop pivotal$ script/svnadd
+Lexington:~/workspace/treetop pivotal$ ls
+README		Rakefile	examples	lib		performance	pkg		script		spec		spec_pairer.rb	treetop2
+Lexington:~/workspace/treetop pivotal$ svn st
+M      script/svnsync
+M      treetop2/Rakefile
+D      treetop2/lib/treetop
+D      treetop2/lib/treetop.rb
+A      treetop2/lib/treetop2
+A      treetop2/lib/treetop2/parser
+A      treetop2/lib/treetop2/parser/parse_cache.rb
+A      treetop2/lib/treetop2/parser/parse_failure.rb
+A      treetop2/lib/treetop2/parser/sequence_syntax_node.rb
+A      treetop2/lib/treetop2/parser/terminal_syntax_node.rb
+A      treetop2/lib/treetop2/parser/compiled_parser.rb
+A      treetop2/lib/treetop2/parser/node_cache.rb
+A      treetop2/lib/treetop2/parser/parse_result.rb
+A      treetop2/lib/treetop2/parser/syntax_node.rb
+A      treetop2/lib/treetop2/parser/terminal_parse_failure.rb
+A      treetop2/lib/treetop2/metagrammar
+A      treetop2/lib/treetop2/metagrammar/metagrammar.treetop
+A      treetop2/lib/treetop2/parser.rb
+M      treetop2/lib/treetop2.rb
+M      treetop2/spec/compiler/terminal_symbol_spec.rb
+M      treetop2/spec/spec_helper.rb
+M      treetop2/spec/parser/arithmetic.rb
+M      lib/treetop/grammar/grammar.rb
+Lexington:~/workspace/treetop pivotal$ rake
+(in /Users/pivotal/workspace/treetop)
+........................................................................................................................................................................................................................................................................
+
+Finished in 1.379835 seconds
+
+264 examples, 0 failures
+Lexington:~/workspace/treetop pivotal$ cd treetop2/
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+F....
+
+1)
+'A terminal symbol correctly parses matching input prefixes at various indices' FAILED
+expected instance_of?(Treetop2::TerminalSyntaxNode) to return true, got false
+./spec/compiler/terminal_symbol_spec.rb:8:
+./spec/parser/../spec_helper.rb:62:in `parse'
+./spec/compiler/terminal_symbol_spec.rb:7:
+
+Finished in 0.060766 seconds
+
+5 examples, 1 failure
+rake aborted!
+Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec" "spec/compiler/terminal_symbol_spec.rb" "spec/parser/arithmetic_spec.rb"   failed
+
+(See full trace by running task with --trace)
+Lexington:~/workspace/treetop/treetop2 pivotal$ cd ..
+Lexington:~/workspace/treetop pivotal$ svn ci -m ""n"s" "-" "M"[1P"S"t"a"r"t"e"d" "[1P"[1P"[1P"[1P"[1P"[1P"[1P"[1P"I"m"p"l"e"m"n"e"t"[1P"[1P"[1P"[1P"n"t"e"d" "s"k"e"t"c"h"y" "t"e"s"t"i"n"g" "s"t"a"[1P"r"a"t"e"g"y" "p"l"a"n"s"e[4hm[4l[4he[4lnted sketchy testing strategy plans"[1P[1P[1P[1P[1P[1P[1P[1Ptesting strategy plans""," "b"e"g"i"n"n"i"n"g" "t"o" "t"e"s"t" "c"o"m"p"i"l"a"t"i"o"n" "o"f" "t"e"r"m"i"n"a"l" "s"y"m"b"o"l"
+nathansobo@rubyforge.org's password: 
+Sending        lib/treetop/grammar/grammar.rb
+Sending        script/svnsync
+Sending        treetop2/Rakefile
+Deleting       treetop2/lib/treetop
+Deleting       treetop2/lib/treetop.rb
+Adding         treetop2/lib/treetop2
+Adding         treetop2/lib/treetop2/metagrammar
+Adding         treetop2/lib/treetop2/metagrammar/metagrammar.treetop
+Adding         treetop2/lib/treetop2/parser
+Adding         treetop2/lib/treetop2/parser/compiled_parser.rb
+Adding         treetop2/lib/treetop2/parser/node_cache.rb
+Adding         treetop2/lib/treetop2/parser/parse_cache.rb
+Adding         treetop2/lib/treetop2/parser/parse_failure.rb
+Adding         treetop2/lib/treetop2/parser/parse_result.rb
+Adding         treetop2/lib/treetop2/parser/sequence_syntax_node.rb
+Adding         treetop2/lib/treetop2/parser/syntax_node.rb
+Adding         treetop2/lib/treetop2/parser/terminal_parse_failure.rb
+Adding         treetop2/lib/treetop2/parser/terminal_syntax_node.rb
+Adding         treetop2/lib/treetop2/parser.rb
+Sending        treetop2/lib/treetop2.rb
+Sending        treetop2/spec/compiler/terminal_symbol_spec.rb
+Sending        treetop2/spec/parser/arithmetic.rb
+Sending        treetop2/spec/spec_helper.rb
+Transmitting file data ..................
+Committed revision 295.
+Lexington:~/workspace/treetop pivotal$ cd  cd treetop2/
+Lexington:~/workspace/treetop/treetop2 pivotal$ mate .
+Lexington:~/workspace/treetop/treetop2 pivotal$ cd tr  [Kcd    svn mv lib/meta    treetop2/metagrammar/  lib/treetop2/compiler
+A         lib/treetop2/compiler
+D         lib/treetop2/metagrammar/metagrammar.treetop
+D         lib/treetop2/metagrammar
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+F....
+
+1)
+'A terminal symbol correctly parses matching input prefixes at various indices' FAILED
+expected instance_of?(Treetop2::TerminalSyntaxNode) to return true, got false
+./spec/compiler/terminal_symbol_spec.rb:8:
+./spec/parser/../spec_helper.rb:62:in `parse'
+./spec/compiler/terminal_symbol_spec.rb:7:
+
+Finished in 0.062191 seconds
+
+5 examples, 1 failure
+rake aborted!
+Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec" "spec/compiler/terminal_symbol_spec.rb" "spec/parser/arithmetic_spec.rb"   failed
+
+(See full trace by running task with --trace)
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+./spec/compiler/../spec_helper.rb:49:in `metagrammar': uninitialized constant Treetop2::Metagrammar (NameError)
+	from ./spec/compiler/../spec_helper.rb:20:in `testing_expression'
+	from ./spec/compiler/terminal_symbol_spec.rb:4
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/dsl/behaviour.rb:54:in `class_eval'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/dsl/behaviour.rb:54:in `eval_behaviour'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/dsl/behaviour.rb:31:in `initialize'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/dsl/behaviour_factory.rb:36:in `new'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/dsl/behaviour_factory.rb:36:in `create'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/extensions/kernel.rb:24:in `describe'
+	from ./spec/compiler/terminal_symbol_spec.rb:3
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:85:in `load'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:85:in `load_specs'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `each'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `load_specs'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:22:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/command_line.rb:17:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec:3
+rake aborted!
+Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec" "spec/compiler/terminal_symbol_spec.rb" "spec/parser/arithmetic_spec.rb"   failed
+
+(See full trace by running task with --trace)
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+/Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/nonterminal_symbol.rb:37:in `initialize': wrong number of arguments (5 for 4) (ArgumentError)
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/nonterminal_symbol.rb:37:in `parse_at'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/nonterminal_symbol.rb:37:in `parse_at_without_caching'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/nonterminal_symbol.rb:31:in `parse_at'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/ordered_choice.rb:16:in `parse_at'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/ordered_choice.rb:15:in `each'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/ordered_choice.rb:15:in `parse_at'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/nonterminal_symbol.rb:37:in `parse_at_without_caching'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/nonterminal_symbol.rb:31:in `parse_at'
+	 ... 14 levels...
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `load_specs'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:22:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/command_line.rb:17:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec:3
+rake aborted!
+Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec" "spec/compiler/terminal_symbol_spec.rb" "spec/parser/arithmetic_spec.rb"   failed
+
+(See full trace by running task with --trace)
+Lexington:~/workspace/treetop/treetop2 pivotal$ svn st
+?      lib/treetop2/compiler.rb
+?      lib/treetop2/compiler/compiler.rb
+A  +   lib/treetop2/compiler
+M  +   lib/treetop2/compiler/metagrammar.treetop
+D      lib/treetop2/metagrammar
+D      lib/treetop2/metagrammar/metagrammar.treetop
+M      lib/treetop2.rb
+M      spec/spec_helper.rb
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+/Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/nonterminal_symbol.rb:37:in `initialize': wrong number of arguments (5 for 4) (ArgumentError)
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/nonterminal_symbol.rb:37:in `parse_at'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/nonterminal_symbol.rb:37:in `parse_at_without_caching'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/nonterminal_symbol.rb:31:in `parse_at'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/ordered_choice.rb:16:in `parse_at'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/ordered_choice.rb:15:in `each'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/ordered_choice.rb:15:in `parse_at'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/nonterminal_symbol.rb:37:in `parse_at_without_caching'
+	from /Users/pivotal/workspace/treetop/lib/treetop/grammar/parsing_expressions/nonterminal_symbol.rb:31:in `parse_at'
+	 ... 14 levels...
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:84:in `load_specs'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/behaviour_runner.rb:22:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib/spec/runner/command_line.rb:17:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec:3
+rake aborted!
+Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec" "spec/compiler/terminal_symbol_spec.rb" "spec/parser/arithmetic_spec.rb"   failed
+
+(See full trace by running task with --trace)
+Lexington:~/workspace/treetop/treetop2 pivotal$ rake
+(in /Users/pivotal/workspace/treetop/treetop2)
+(eval):3: warning: already initialized constant Metagrammar
+F....
+
+1)
+'A terminal symbol correctly parses matching input prefixes at various indices' FAILED
+expected instance_of?(Treetop2::TerminalSyntaxNode) to return true, got false
+./spec/compiler/terminal_symbol_spec.rb:8:
+./spec/parser/../spec_helper.rb:62:in `parse'
+./spec/compiler/terminal_symbol_spec.rb:7:
+
+Finished in 0.012324 seconds
+
+5 examples, 1 failure
+rake aborted!
+Command ruby -I"/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/lib" "/usr/local/lib/ruby/gems/1.8/gems/rspec-1.0.5/bin/spec" "spec/compiler/terminal_symbol_spec.rb" "spec/parser/arithmetic_spec.rb"   failed
+
+(See full trace by running task with --trace)
+Lexington:~/workspace/treetop/treetop2 pivotal$ svn st
+?      lib/treetop2/compiler.rb
+?      lib/treetop2/compiler/compiler.rb
+A  +   lib/treetop2/compiler
+M  +   lib/treetop2/compiler/metagrammar.treetop
+D      lib/treetop2/metagrammar
+D      lib/treetop2/metagrammar/metagrammar.treetop
+M      lib/treetop2.rb
+M      spec/spec_helper.rb
+Lexington:~/workspace/treetop/treetop2 pivotal$ svn ci -m treetop2/lib/treetop2/compiler
+A      treetop2/lib/treetop2/compiler/compiler.rb
+M  +   treetop2/lib/treetop2/compiler/metagrammar.treetop
+A      treetop2/lib/treetop2/compiler.rb
+D      treetop2/lib/treetop2/metagrammar
+D      treetop2/lib/treetop2/metagrammar/metagrammar.treetop
+M      treetop2/lib/treetop2.rb
+M      treetop2/spec/spec_helper.rb
+Lexington:~/workspace/treetop pivotal$ svn ci -m "Lexington:~/workspace/treetop pivotal$ rm svnsync s[4hs[4l[4hc[4l[4hr[4l[4hi[4l[4hpt/[4l
+Lexington:~/workspace/treetop pivotal$ script/svnadd
+Lexington:~/workspace/treetop pivotal$ script/svnadd   rm
+Lexington:~/workspace/treetop pivotal$ svn st
+D      script/svnsync
+M      treetop2/lib/treetop2/parser s[4hs[4l[4hc[4l[4hr[4l[4hi[4l[4hpt/[4l
+Lexington:~/workspace/treetop pivotal$ script/svnadd
+Lexington:~/workspace/treetop pivotal$ script/svnadd   rm
+Lexington:~/workspace/treetop pivotal$ svn st
+D      script/svnsync
+M      treetop2/lib/treetop2/parser/sequence_syntax_node.rb
+M      treetop2/lib/treetop2/parser/compiled_parser.rb
+M      treetop2/lib/treetop2/parser/parse_result.rb
+M      treetop2/lib/treetop2/parser/terminal_parse_failure.rb
+A      treetop2/spec/compilation_target
+A      treetop2/spec/compilation_target/foo_spec.rb
+A      treetop2/spec/compilation_target/foo.rb
+D      treetop2/spec/parser/arithmetic_spec.rb
+A      treetop2/spec/parser/terminal_parse_failure_spec.rb
+D      treetop2/spec/parser/arithmetic.rb
+M      lib/treetop/metagrammar/metagrammar.treetop
+A      started
+Lexington:~/workspace/treetop pivotal$ svn ci -m ""n"s" "[4h/[4l[4hz[4l[4he[4l[4hn[4l[4hs[4l[4hp[4l[4hi[4l[4hd[4l[4he[4l[4hr[4l  "[4h-[4l  "[4hB[4l[4he[4l[4ht[4l[4ht[4l[4he[4l[4hr[4l  "[4ht[4l[4ha[4l[4hr[4l[4hg[4l[4he[4l[4ht[4lr[4h/[4l[4hn[4l[4hk[4l - Better target " t"a"r"

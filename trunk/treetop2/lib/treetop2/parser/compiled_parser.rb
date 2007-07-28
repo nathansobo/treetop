@@ -1,6 +1,9 @@
 module Treetop2
   class CompiledParser
-        
+    protected
+    attr_writer :index
+    
+    public        
     attr_reader :input, :index
     
     def self.node_classes
@@ -55,5 +58,6 @@ module Treetop2
     def terminal_parse_failure(expected_string)
       TerminalParseFailure.new(index, expected_string)
     end
+    
   end
 end
