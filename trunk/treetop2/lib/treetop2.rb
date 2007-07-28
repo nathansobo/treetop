@@ -1,3 +1,8 @@
-TREETOP_2_ROOT = File.join(File.dirname(__FILE__), 'treetop2')
+dir = File.dirname(__FILE__)
+
+require File.expand_path('treetop', File.join(dir, *%w[.. .. lib]))
+TREETOP_2_ROOT = File.join(dir, 'treetop2')
 require File.join(TREETOP_2_ROOT, "parser")
 require File.join(TREETOP_2_ROOT, "compiler")
+require 'rubygems'
+require 'facet/string/tab.rb'

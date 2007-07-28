@@ -44,7 +44,19 @@ module Treetop2
       end
 
       rule sequence
-        head_element:blockless_primary (space blockless_primary)+ node_class_expression trailing_block
+        blockless_primary (space blockless_primary)+ node_class_expression trailing_block <Sequence> {
+          def head_element
+            elements[0]
+          end
+          
+          def tail_elements
+            elements[1].elements.map {|element_with_space| element_with_space.elements[1] }
+          end
+          
+          def sequence_elements
+            [head_element] + tail_elements
+          end
+        }
       end
 
       rule alternative
@@ -66,7 +78,11 @@ module Treetop2
       end
     
       rule labelless_primary
-        instantiator_primary node_class_expression trailing_block
+        instantiator_primary node_class_expression trailing_block {
+          def compile(lexical_address, address_space)
+            instantiator_primary.compile(lexical_address, address_space)
+          end
+        }
         /
         propagator_primary
       end

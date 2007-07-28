@@ -4,7 +4,6 @@ require 'spec'
 
 $:.unshift(File.join(dir, *%w[.. lib]))
 
-require File.expand_path('treetop', File.join(dir, *%w[.. .. lib]))
 require 'treetop2'
 
 unless Treetop2::Compiler.const_defined?(:Metagrammar)
@@ -39,7 +38,7 @@ class CompilerBehaviour < Spec::DSL::Behaviour
     end
     
     def setup_test_parser(expression_to_test)
-      previous_root = metagrammar.set_root(:terminal)
+      previous_root = metagrammar.set_root(:parsing_expression)
       expression_node = metagrammar_parser.parse(expression_to_test)
       metagrammar.set_root(previous_root)
 
@@ -47,6 +46,8 @@ class CompilerBehaviour < Spec::DSL::Behaviour
         raise "#{expression_to_test} cannot be parsed by the metagrammar."
       end
       
+      address_space = Compiler::LexicalAddressSpace.new
+      lexical_address = address_space.next_address
       Test.module_eval %{
         class TestParser < CompiledParser
           attr_accessor :test_index
@@ -63,8 +64,8 @@ class CompilerBehaviour < Spec::DSL::Behaviour
           end
           
           def _nt_test_expression
-            #{expression_node.compile('r0')}
-            return r0
+            #{expression_node.compile(lexical_address, address_space)}
+            return r#{lexical_address}
           end
         end
       }
