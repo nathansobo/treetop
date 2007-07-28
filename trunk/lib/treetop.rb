@@ -1,4 +1,4 @@
-OPTIMIZE = true
+OPTIMIZE = false
 TREETOP_ROOT = File.join(File.dirname(__FILE__), 'treetop')
 
 require "rubygems"
