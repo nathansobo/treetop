@@ -1,10 +1,12 @@
 dir = File.dirname(__FILE__)
-$:.unshift(File.join(dir, *%w[.. lib]))
 require 'rubygems'
 require 'spec'
-require 'treetop2'
+
+$:.unshift(File.join(dir, *%w[.. lib]))
 
 require File.expand_path('treetop', File.join(dir, *%w[.. .. lib]))
+require 'treetop2'
+
 unless Treetop2.const_defined?(:Metagrammar)
   load_grammar File.join(TREETOP_2_ROOT, *%w[compiler metagrammar])
 end
@@ -17,6 +19,8 @@ class CompilerBehaviour < Spec::DSL::Behaviour
 
   module BehaviorEvalModuleMethods    
     def testing_expression(expression_to_test)
+      
+      
       previous_root = metagrammar.set_root(:terminal)      
       setup_test_parser(expression_to_test)
       metagrammar.set_root(previous_root)
@@ -31,13 +35,22 @@ class CompilerBehaviour < Spec::DSL::Behaviour
       
       Test.module_eval %{
         class TestParser < CompiledParser
+          attr_accessor :test_index
+          
           def parse(input)
             prepare_to_parse(input)
             return _nt_test_expression
           end
           
+          def prepare_to_parse(input)
+            self.class.clear_subexpression_procs
+            @input = input
+            @index = test_index || 0
+          end
+          
           def _nt_test_expression
-            #{expression_node.proc_body}
+            #{expression_node.compile('r0')}
+            return r0
           end
         end
       }
@@ -57,7 +70,7 @@ class CompilerBehaviour < Spec::DSL::Behaviour
   module BehaviorEvalInstanceMethods
     def parse(input, options = {})
       test_parser = Test::TestParser.new
-      test_parser.instance_eval { @index = options[:at_index] || 0 }
+      test_parser.test_index = options[:at_index] || 0
       result = test_parser.parse(input)
       yield result if block_given?
       result

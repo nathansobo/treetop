@@ -49,6 +49,16 @@ module Treetop2
       end
     end
     
+    def parse_anything(node_class=TerminalSyntaxNode)
+      if index < input.length
+        result = node_class.new(input, index...(index + 1))
+        @index += 1
+        result
+      else
+        terminal_parse_failure("any character")
+      end
+    end
+    
     def parse_failure(start_index, nested_results)
       failure_index = index
       @index = start_index

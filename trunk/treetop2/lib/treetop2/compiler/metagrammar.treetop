@@ -136,11 +136,7 @@ module Treetop2
       end
 
       rule single_quoted_string
-        "'" (!"'" ("\\\\" / "\\'" / .))* "'" {
-          def proc_body
-            "'foo'"
-          end
-        }
+        "'" (!"'" ("\\\\" / "\\'" / .))* "'" <TerminalExpression>
       end
 
       rule character_class
@@ -148,7 +144,7 @@ module Treetop2
       end
 
       rule anything_symbol
-        '.'
+        '.' <AnythingSymbol>
       end
     
       rule node_class_expression
