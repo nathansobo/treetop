@@ -140,7 +140,7 @@ module Treetop2
       end
 
       rule character_class
-        '[' (!']' ('\]'/.))+ ']'
+        '[' (!']' ('\]'/.))+ ']' <CharacterClass>
       end
 
       rule anything_symbol

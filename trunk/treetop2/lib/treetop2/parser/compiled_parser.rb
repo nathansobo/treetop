@@ -28,8 +28,7 @@ module Treetop2
       @index = 0
     end
  
-    def parse_char_class(char_class_string, node_class)
-      char_class_re = /[#{char_class_string}]/
+    def parse_char_class(char_class_re, char_class_string, node_class=TerminalSyntaxNode)
       if input.index(char_class_re, index) == index
         result = node_class.new(input, index...(index + 1))
         @index += 1
