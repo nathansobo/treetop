@@ -69,7 +69,7 @@ class TestParser < CompiledParser
   end
 end
 }      
-      puts test_parser_code     
+      #puts test_parser_code     
       Test.module_eval(test_parser_code)
     end
     
