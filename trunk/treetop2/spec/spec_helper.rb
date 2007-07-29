@@ -48,27 +48,29 @@ class CompilerBehaviour < Spec::DSL::Behaviour
       
       address_space = Compiler::LexicalAddressSpace.new
       lexical_address = address_space.next_address
-      Test.module_eval %{
-        class TestParser < CompiledParser
-          attr_accessor :test_index
+      test_parser_code = %{
+class TestParser < CompiledParser
+  attr_accessor :test_index
           
-          def parse(input)
-            prepare_to_parse(input)
-            return _nt_test_expression
-          end
+  def parse(input)
+    prepare_to_parse(input)
+    return _nt_test_expression
+  end
           
-          def prepare_to_parse(input)
-            self.class.clear_subexpression_procs
-            @input = input
-            @index = test_index || 0
-          end
+  def prepare_to_parse(input)
+    self.class.clear_subexpression_procs
+    @input = input
+    @index = test_index || 0
+  end
           
-          def _nt_test_expression
-            #{expression_node.compile(lexical_address, address_space)}
-            return r#{lexical_address}
-          end
-        end
-      }
+  def _nt_test_expression
+#{expression_node.compile(lexical_address, address_space, 2)}
+    return r#{lexical_address}
+  end
+end
+}      
+      #puts test_parser_code     
+      Test.module_eval(test_parser_code)
     end
     
     def teardown_test_parser

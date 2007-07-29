@@ -79,8 +79,8 @@ module Treetop2
     
       rule labelless_primary
         instantiator_primary node_class_expression trailing_block {
-          def compile(lexical_address, address_space)
-            instantiator_primary.compile(lexical_address, address_space)
+          def compile(lexical_address, address_space, level = 0)
+            instantiator_primary.compile(lexical_address, address_space, level)
           end
         }
         /
@@ -148,7 +148,7 @@ module Treetop2
       end
 
       rule double_quoted_string
-        '"' (!'"' ("\\\\" / '\"' / .))* '"'
+        '"' (!'"' ("\\\\" / '\"' / .))* '"' <TerminalExpression>
       end
 
       rule single_quoted_string
