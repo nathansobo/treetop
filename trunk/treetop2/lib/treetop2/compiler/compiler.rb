@@ -45,8 +45,7 @@ module Treetop2
         result_var = "r#{result_address}"
         
         elements.first.compile(result_address, builder)
-        builder << "#{results_accumulator_var} << #{result_var}"
-        
+        builder.accumulate results_accumulator_var, result_var
         if elements.size > 1          
           builder.if_ "#{result_var}.success?" do
             compile_sequence_elements(elements[1..-1], results_accumulator_var, builder)
@@ -70,7 +69,7 @@ module Treetop2
         alternative_result_var = "r#{alternative_result_address}"
         
         alternatives.first.compile(alternative_result_address, builder)
-        builder << "#{nested_results_accumulator} << #{alternative_result_var}"
+        builder.accumulate nested_results_accumulator, alternative_result_var
         
         builder.if__ "#{alternative_result_var}.success?" do
           builder.assign choice_result_var, alternative_result_var

@@ -28,6 +28,10 @@ module Treetop2
         end
       end
       
+      def accumulate(left, right)
+        self << "#{left} << #{right}"
+      end
+      
       def if__(condition, &block)
         self << "if #{condition}"
         indented(&block)
