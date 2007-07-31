@@ -40,7 +40,19 @@ module Treetop2
       end
 
       rule choice
-        head_alternative:alternative (space? '/' space? alternative)+
+        alternative (space? '/' space? alternative)+ <Choice> {
+          def head_alternative
+            elements[0]
+          end
+          
+          def tail_alternatives
+            elements[1].elements.map {|alternative_with_slash| alternative_with_slash.elements[3]}
+          end
+          
+          def alternatives
+            [head_alternative] + tail_alternatives
+          end
+        }
       end
 
       rule sequence

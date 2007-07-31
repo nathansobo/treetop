@@ -20,7 +20,7 @@ module Treetop2
     
     class CharacterClass < ::Treetop::SequenceSyntaxNode
       def compile(lexical_address, address_space, level = 0)
-        indent(level) + "r#{lexical_address} = parse_char_class(/#{text_value}/, '#{elements[1].text_value.gsub(/'$/, "\\'")}')\n"
+        indent(level) + "r#{lexical_address} = parse_char_class(/#{text_value}/, '#{elements[1].text_value.gsub(/'$/, "\\\\'")}')\n"
       end
     end
     
@@ -53,6 +53,39 @@ module Treetop2
         end
         
         return ruby
+      end
+    end
+    
+    class Choice < Treetop::SequenceSyntaxNode
+      def compile(lexical_address, address_space, level = 0)
+        result_var = "r#{lexical_address}"
+        start_index_var = "i#{lexical_address}"
+        nested_results_accumulator = "nr#{lexical_address}"
+        
+        ruby = indent(level) + "#{nested_results_accumulator}, #{start_index_var} = [], index\n"
+        ruby << compile_alternatives(alternatives, result_var, start_index_var, nested_results_accumulator, address_space, level)
+        return ruby
+      end
+      
+      def compile_alternatives(alternatives, choice_result_var, choice_start_index, nested_results_accumulator, address_space, level)
+        alternative_result_address = address_space.next_address
+        alternative_result_var = "r#{alternative_result_address}"
+        
+        ruby = alternatives.first.compile(alternative_result_address, address_space, level)
+        ruby << indent(level) << "#{nested_results_accumulator} << #{alternative_result_var}\n"
+        
+        ruby << indent(level) << "if (#{alternative_result_var}.success?)\n"
+        ruby << indent(level + 1) << "#{choice_result_var} = #{alternative_result_var}\n"
+        ruby << indent(level) << "else\n"
+        
+        if alternatives.size == 1
+          ruby << indent(level + 1) << "self.index = #{choice_start_index}\n"
+          ruby << indent(level + 1) << "#{choice_result_var} = ParseFailure.new(#{choice_start_index}, #{nested_results_accumulator})\n"
+        else
+          ruby << compile_alternatives(alternatives[1..-1], choice_result_var, choice_start_index, nested_results_accumulator, address_space, level + 1)
+        end
+        
+        ruby << indent(level) << "end\n"
       end
     end
   end
