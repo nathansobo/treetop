@@ -1,11 +1,5 @@
 module Treetop2
   module Compiler
-    module Indent
-      def indent(level)
-        "  " * level
-      end
-    end
-    
     class TerminalExpression < ::Treetop::SequenceSyntaxNode
       def compile(lexical_address, builder)
         builder.assign "r#{lexical_address}", "parse_terminal(#{text_value})"
@@ -85,8 +79,4 @@ module Treetop2
       end
     end
   end
-end
-
-class Treetop::SyntaxNode
-  include Treetop2::Compiler::Indent
 end
