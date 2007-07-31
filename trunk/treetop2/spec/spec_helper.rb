@@ -46,8 +46,12 @@ class CompilerBehaviour < Spec::DSL::Behaviour
         raise "#{expression_to_test} cannot be parsed by the metagrammar."
       end
       
-      address_space = Compiler::LexicalAddressSpace.new
-      lexical_address = address_space.next_address
+      builder = Compiler::RubyBuilder.new
+      lexical_address = builder.next_address
+      
+      builder.in(2)
+      expression_node.compile(lexical_address, builder)
+      
       test_parser_code = %{
 class TestParser < CompiledParser
   attr_accessor :test_index
@@ -64,7 +68,7 @@ class TestParser < CompiledParser
   end
           
   def _nt_test_expression
-#{expression_node.compile(lexical_address, address_space, 2)}
+#{builder.ruby}
     return r#{lexical_address}
   end
 end

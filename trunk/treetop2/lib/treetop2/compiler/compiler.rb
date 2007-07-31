@@ -7,85 +7,94 @@ module Treetop2
     end
     
     class TerminalExpression < ::Treetop::SequenceSyntaxNode
-      def compile(lexical_address, address_space, level = 0)
-        indent(level) + "r#{lexical_address} = parse_terminal(#{text_value})\n"
+      def compile(lexical_address, builder)
+        builder << "r#{lexical_address} = parse_terminal(#{text_value})"
       end
     end
     
     class AnythingSymbol < ::Treetop::TerminalSyntaxNode
-      def compile(lexical_address, address_space, level = 0)
-        indent(level) + "r#{lexical_address} = parse_anything\n"
+      def compile(lexical_address, builder)
+        builder << "r#{lexical_address} = parse_anything"
       end
     end
     
     class CharacterClass < ::Treetop::SequenceSyntaxNode
-      def compile(lexical_address, address_space, level = 0)
-        indent(level) + "r#{lexical_address} = parse_char_class(/#{text_value}/, '#{elements[1].text_value.gsub(/'$/, "\\\\'")}')\n"
+      def compile(lexical_address, builder)
+        builder << "r#{lexical_address} = parse_char_class(/#{text_value}/, '#{elements[1].text_value.gsub(/'$/, "\\\\'")}')"
       end
     end
     
     class Sequence < ::Treetop::SequenceSyntaxNode
-      def compile(lexical_address, address_space, level = 0)
+      def compile(lexical_address, builder)
         result_var = "r#{lexical_address}"
         results_accumulator_var = "s#{lexical_address}"
         start_index_var = "i#{lexical_address}"
         
-        ruby = indent(level) + "#{results_accumulator_var}, #{start_index_var} = [], index\n"        
-        ruby << compile_sequence_elements(sequence_elements, results_accumulator_var, address_space, level)        
-        ruby << indent(level) << "if #{results_accumulator_var}.last.success?\n"
-        ruby << indent(level + 1) << "#{result_var} = SequenceSyntaxNode.new(input, #{start_index_var}...index, #{results_accumulator_var})\n"
-        ruby << indent(level) << "else\n"
-        ruby << indent(level + 1) << "#{result_var} = ParseFailure.new(#{start_index_var}, #{results_accumulator_var})\n"
-        ruby << indent(level) << "end\n"
+        builder << "#{results_accumulator_var}, #{start_index_var} = [], index"
+        compile_sequence_elements(sequence_elements, results_accumulator_var, builder)
+        builder << "if #{results_accumulator_var}.last.success?"
+        builder.indented do
+          builder << "#{result_var} = SequenceSyntaxNode.new(input, #{start_index_var}...index, #{results_accumulator_var})"
+        end 
+        builder << "else"
+        builder.indented do
+          builder << "#{result_var} = ParseFailure.new(#{start_index_var}, #{results_accumulator_var})"
+        end
+        builder << "end"
       end
               
-      def compile_sequence_elements(elements, results_accumulator_var, address_space, level)
-        result_address = address_space.next_address
+      def compile_sequence_elements(elements, results_accumulator_var, builder)
+        result_address = builder.next_address
         result_var = "r#{result_address}"
         
-        ruby = elements.first.compile(result_address, address_space, level)
-        ruby << indent(level) << "#{results_accumulator_var} << #{result_var}\n"
+        elements.first.compile(result_address, builder)
+        builder << "#{results_accumulator_var} << #{result_var}"
         
-        if elements.size > 1
-          ruby << indent(level) << "if #{result_var}.success?\n"
-          ruby << compile_sequence_elements(elements[1..-1], results_accumulator_var, address_space, level + 1)
-          ruby << indent(level) << "end\n"
+        if elements.size > 1          
+          builder << "if #{result_var}.success?"
+          builder.indented do
+            compile_sequence_elements(elements[1..-1], results_accumulator_var, builder)
+          end          
+          builder << "end"
         end
-        
-        return ruby
       end
     end
     
     class Choice < Treetop::SequenceSyntaxNode
-      def compile(lexical_address, address_space, level = 0)
+      def compile(lexical_address, builder)
         result_var = "r#{lexical_address}"
         start_index_var = "i#{lexical_address}"
         nested_results_accumulator = "nr#{lexical_address}"
         
-        ruby = indent(level) + "#{nested_results_accumulator}, #{start_index_var} = [], index\n"
-        ruby << compile_alternatives(alternatives, result_var, start_index_var, nested_results_accumulator, address_space, level)
-        return ruby
+        builder << "#{nested_results_accumulator}, #{start_index_var} = [], index"
+        compile_alternatives(alternatives, result_var, start_index_var, nested_results_accumulator, builder)
       end
       
-      def compile_alternatives(alternatives, choice_result_var, choice_start_index, nested_results_accumulator, address_space, level)
-        alternative_result_address = address_space.next_address
+      def compile_alternatives(alternatives, choice_result_var, choice_start_index, nested_results_accumulator, builder)
+        alternative_result_address = builder.next_address
         alternative_result_var = "r#{alternative_result_address}"
         
-        ruby = alternatives.first.compile(alternative_result_address, address_space, level)
-        ruby << indent(level) << "#{nested_results_accumulator} << #{alternative_result_var}\n"
+        alternatives.first.compile(alternative_result_address, builder)
+        builder << "#{nested_results_accumulator} << #{alternative_result_var}"
         
-        ruby << indent(level) << "if (#{alternative_result_var}.success?)\n"
-        ruby << indent(level + 1) << "#{choice_result_var} = #{alternative_result_var}\n"
-        ruby << indent(level) << "else\n"
+        builder << "if (#{alternative_result_var}.success?)"
+        builder.indented do
+          builder << "#{choice_result_var} = #{alternative_result_var}"
+        end
+        builder << "else"
         
         if alternatives.size == 1
-          ruby << indent(level + 1) << "self.index = #{choice_start_index}\n"
-          ruby << indent(level + 1) << "#{choice_result_var} = ParseFailure.new(#{choice_start_index}, #{nested_results_accumulator})\n"
+          builder.indented do
+            builder << "self.index = #{choice_start_index}"
+            builder << "#{choice_result_var} = ParseFailure.new(#{choice_start_index}, #{nested_results_accumulator})"
+          end
         else
-          ruby << compile_alternatives(alternatives[1..-1], choice_result_var, choice_start_index, nested_results_accumulator, address_space, level + 1)
+          builder.indented do
+            compile_alternatives(alternatives[1..-1], choice_result_var, choice_start_index, nested_results_accumulator, builder)
+          end
         end
         
-        ruby << indent(level) << "end\n"
+        builder << "end"
       end
     end
   end

@@ -27,31 +27,3 @@ describe "A terminal symbol" do
     parse(" foo", :at_index =>  0).should be_failure
   end
 end
-
-# describe "A terminal symbol followed by a Ruby block with a method in it" do
-# 
-#   test_expression "'foo' { def a_method; end }"
-# 
-#   
-#   it "returns a node that responds to that method" do
-#     result = parse('foo')
-#     result.should respond_to(:a_method)
-#   end
-# end
-# 
-# describe "A terminal symbol followed by a node class declaration" do
-#   before do
-#     ::Test = Module.new
-#     ::Test::NodeClass = Class.new(TerminalSyntaxNode)
-#     test_expression "'foo' <Test::NodeClass>"
-#   end
-#   
-#   after do
-#     Object.send(:const_remove, :Test)
-#   end
-#   
-#   it "returns a node with that class upon parsing successfully" do
-#     result = parse('foo')
-#     result.class.should == ::Test::NodeClass
-#   end
-# end
