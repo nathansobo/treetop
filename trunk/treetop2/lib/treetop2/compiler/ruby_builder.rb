@@ -14,6 +14,21 @@ module Treetop2
         ruby << indent << ruby_line << "\n"
       end
       
+      def indented(depth = 1)
+        self.in(depth)
+        yield
+        self.out(depth)
+      end
+      
+      def assign(left, right)
+        if left.instance_of? Array
+          self << "#{left.join(', ')} = #{right.join(', ')}"
+        else
+          self << "#{left} = #{right}"
+        end
+      end
+      
+      
       def in(depth = 1)
         @level += depth
         self
@@ -24,11 +39,6 @@ module Treetop2
         self
       end
       
-      def indented
-        self.in
-        yield
-        self.out
-      end
 
       def next_address
         address_space.next_address

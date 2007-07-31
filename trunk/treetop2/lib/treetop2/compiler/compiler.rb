@@ -8,19 +8,19 @@ module Treetop2
     
     class TerminalExpression < ::Treetop::SequenceSyntaxNode
       def compile(lexical_address, builder)
-        builder << "r#{lexical_address} = parse_terminal(#{text_value})"
+        builder.assign "r#{lexical_address}", "parse_terminal(#{text_value})"
       end
     end
     
     class AnythingSymbol < ::Treetop::TerminalSyntaxNode
       def compile(lexical_address, builder)
-        builder << "r#{lexical_address} = parse_anything"
+        builder.assign "r#{lexical_address}", 'parse_anything'
       end
     end
     
     class CharacterClass < ::Treetop::SequenceSyntaxNode
       def compile(lexical_address, builder)
-        builder << "r#{lexical_address} = parse_char_class(/#{text_value}/, '#{elements[1].text_value.gsub(/'$/, "\\\\'")}')"
+        builder.assign "r#{lexical_address}", "parse_char_class(/#{text_value}/, '#{elements[1].text_value.gsub(/'$/, "\\\\'")}')"
       end
     end
     
@@ -30,15 +30,15 @@ module Treetop2
         results_accumulator_var = "s#{lexical_address}"
         start_index_var = "i#{lexical_address}"
         
-        builder << "#{results_accumulator_var}, #{start_index_var} = [], index"
+        builder.assign [results_accumulator_var, start_index_var], ['[]', 'index']
         compile_sequence_elements(sequence_elements, results_accumulator_var, builder)
         builder << "if #{results_accumulator_var}.last.success?"
         builder.indented do
-          builder << "#{result_var} = SequenceSyntaxNode.new(input, #{start_index_var}...index, #{results_accumulator_var})"
+          builder.assign result_var, "SequenceSyntaxNode.new(input, #{start_index_var}...index, #{results_accumulator_var})"
         end 
         builder << "else"
         builder.indented do
-          builder << "#{result_var} = ParseFailure.new(#{start_index_var}, #{results_accumulator_var})"
+          builder.assign result_var, "ParseFailure.new(#{start_index_var}, #{results_accumulator_var})"
         end
         builder << "end"
       end
@@ -66,7 +66,7 @@ module Treetop2
         start_index_var = "i#{lexical_address}"
         nested_results_accumulator = "nr#{lexical_address}"
         
-        builder << "#{nested_results_accumulator}, #{start_index_var} = [], index"
+        builder.assign [nested_results_accumulator, start_index_var], ['[]', 'index']
         compile_alternatives(alternatives, result_var, start_index_var, nested_results_accumulator, builder)
       end
       
@@ -79,14 +79,14 @@ module Treetop2
         
         builder << "if (#{alternative_result_var}.success?)"
         builder.indented do
-          builder << "#{choice_result_var} = #{alternative_result_var}"
+          builder.assign choice_result_var, alternative_result_var
         end
         builder << "else"
         
         if alternatives.size == 1
           builder.indented do
-            builder << "self.index = #{choice_start_index}"
-            builder << "#{choice_result_var} = ParseFailure.new(#{choice_start_index}, #{nested_results_accumulator})"
+            builder.assign 'self.index', choice_start_index
+            builder.assign choice_result_var, "ParseFailure.new(#{choice_start_index}, #{nested_results_accumulator})"
           end
         else
           builder.indented do
