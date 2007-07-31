@@ -28,6 +28,21 @@ module Treetop2
         end
       end
       
+      def if__(condition, &block)
+        self << "if #{condition}"
+        indented(&block)
+      end
+      
+      def if_(condition, &block)
+        if__(condition, &block)
+        self << 'end'
+      end
+      
+      def else_(&block)
+        self << 'else'
+        indented(&block)
+        self << 'end'
+      end
       
       def in(depth = 1)
         @level += depth

@@ -32,15 +32,12 @@ module Treetop2
         
         builder.assign [results_accumulator_var, start_index_var], ['[]', 'index']
         compile_sequence_elements(sequence_elements, results_accumulator_var, builder)
-        builder << "if #{results_accumulator_var}.last.success?"
-        builder.indented do
+        builder.if__ "#{results_accumulator_var}.last.success?" do
           builder.assign result_var, "SequenceSyntaxNode.new(input, #{start_index_var}...index, #{results_accumulator_var})"
-        end 
-        builder << "else"
-        builder.indented do
+        end        
+        builder.else_ do
           builder.assign result_var, "ParseFailure.new(#{start_index_var}, #{results_accumulator_var})"
         end
-        builder << "end"
       end
               
       def compile_sequence_elements(elements, results_accumulator_var, builder)
@@ -51,11 +48,9 @@ module Treetop2
         builder << "#{results_accumulator_var} << #{result_var}"
         
         if elements.size > 1          
-          builder << "if #{result_var}.success?"
-          builder.indented do
+          builder.if_ "#{result_var}.success?" do
             compile_sequence_elements(elements[1..-1], results_accumulator_var, builder)
-          end          
-          builder << "end"
+          end
         end
       end
     end
@@ -77,24 +72,17 @@ module Treetop2
         alternatives.first.compile(alternative_result_address, builder)
         builder << "#{nested_results_accumulator} << #{alternative_result_var}"
         
-        builder << "if (#{alternative_result_var}.success?)"
-        builder.indented do
+        builder.if__ "#{alternative_result_var}.success?" do
           builder.assign choice_result_var, alternative_result_var
         end
-        builder << "else"
-        
-        if alternatives.size == 1
-          builder.indented do
+        builder.else_ do
+          if alternatives.size == 1
             builder.assign 'self.index', choice_start_index
             builder.assign choice_result_var, "ParseFailure.new(#{choice_start_index}, #{nested_results_accumulator})"
-          end
-        else
-          builder.indented do
+          else
             compile_alternatives(alternatives[1..-1], choice_result_var, choice_start_index, nested_results_accumulator, builder)
           end
         end
-        
-        builder << "end"
       end
     end
   end
