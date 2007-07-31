@@ -28,6 +28,10 @@ module Treetop2
         end
       end
       
+      def assign_result(lexical_address, right)
+        assign("r#{lexical_address}", right)
+      end
+      
       def accumulate(left, right)
         self << "#{left} << #{right}"
       end

@@ -2,35 +2,34 @@ module Treetop2
   module Compiler
     class TerminalExpression < ::Treetop::SequenceSyntaxNode
       def compile(lexical_address, builder)
-        builder.assign "r#{lexical_address}", "parse_terminal(#{text_value})"
+        builder.assign_result lexical_address, "parse_terminal(#{text_value})"
       end
     end
     
     class AnythingSymbol < ::Treetop::TerminalSyntaxNode
       def compile(lexical_address, builder)
-        builder.assign "r#{lexical_address}", 'parse_anything'
+        builder.assign_result lexical_address, 'parse_anything'
       end
     end
     
     class CharacterClass < ::Treetop::SequenceSyntaxNode
       def compile(lexical_address, builder)
-        builder.assign "r#{lexical_address}", "parse_char_class(/#{text_value}/, '#{elements[1].text_value.gsub(/'$/, "\\\\'")}')"
+        builder.assign_result lexical_address, "parse_char_class(/#{text_value}/, '#{elements[1].text_value.gsub(/'$/, "\\\\'")}')"
       end
     end
     
     class Sequence < ::Treetop::SequenceSyntaxNode
       def compile(lexical_address, builder)
-        result_var = "r#{lexical_address}"
         results_accumulator_var = "s#{lexical_address}"
         start_index_var = "i#{lexical_address}"
         
         builder.assign [results_accumulator_var, start_index_var], ['[]', 'index']
         compile_sequence_elements(sequence_elements, results_accumulator_var, builder)
         builder.if__ "#{results_accumulator_var}.last.success?" do
-          builder.assign result_var, "SequenceSyntaxNode.new(input, #{start_index_var}...index, #{results_accumulator_var})"
+          builder.assign_result lexical_address, "SequenceSyntaxNode.new(input, #{start_index_var}...index, #{results_accumulator_var})"
         end        
         builder.else_ do
-          builder.assign result_var, "ParseFailure.new(#{start_index_var}, #{results_accumulator_var})"
+          builder.assign_result lexical_address, "ParseFailure.new(#{start_index_var}, #{results_accumulator_var})"
         end
       end
               
