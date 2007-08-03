@@ -32,6 +32,10 @@ module Treetop2
         assign("r#{lexical_address}", right)
       end
       
+      def reset_index(start_index_var)
+        assign("self.index", start_index_var)
+      end
+      
       def accumulate(left, right)
         self << "#{left} << #{right}"
       end

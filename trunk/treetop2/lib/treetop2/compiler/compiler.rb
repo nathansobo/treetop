@@ -1,6 +1,5 @@
 module Treetop2
   module Compiler
-    
     class ParenthesizedExpression < ::Treetop::SequenceSyntaxNode
       def compile(lexical_address, builder)
         elements[2].compile(lexical_address, builder)
@@ -37,7 +36,7 @@ module Treetop2
           builder.assign_result lexical_address, "SequenceSyntaxNode.new(input, #{start_index_var}...index, #{results_accumulator_var})"
         end        
         builder.else_ do
-          builder.assign 'self.index', start_index_var
+          builder.reset_index(start_index_var)
           builder.assign_result lexical_address, "ParseFailure.new(#{start_index_var}, #{results_accumulator_var})"
         end
         builder.end_comment(self)
@@ -82,7 +81,7 @@ module Treetop2
         end
         builder.else_ do
           if alternatives.size == 1
-            builder.assign 'self.index', choice_start_index
+            builder.reset_index(choice_start_index)
             builder.assign choice_result_var, "ParseFailure.new(#{choice_start_index}, #{nested_results_accumulator})"
           else
             compile_alternatives(alternatives[1..-1], choice_result_var, choice_start_index, nested_results_accumulator, builder)
@@ -92,32 +91,53 @@ module Treetop2
       end
     end
     
-    class ZeroOrMore < ::Treetop::TerminalSyntaxNode
+    class Repetition < ::Treetop::TerminalSyntaxNode
       def compile(lexical_address, parent_expression, builder)
-        result_var = "r#{lexical_address}"
-        results_accumulator_var = "s#{lexical_address}"
-        nested_results_accumulator_var = "nr#{lexical_address}"
-        start_index_var = "i#{lexical_address}"
+        @result_var = "r#{lexical_address}"
+        @results_accumulator_var = "s#{lexical_address}"
+        @nested_results_accumulator_var = "nr#{lexical_address}"
+        @start_index_var = "i#{lexical_address}"
                 
         repeated_expression = parent_expression.atomic
         repeated_expression_address = builder.next_address
         repeated_expression_result_var = "r#{repeated_expression_address}"
         
-        builder.begin_comment(parent_expression)
-        builder.assign [results_accumulator_var, nested_results_accumulator_var, start_index_var], ['[]', '[]', 'index']
+        builder.assign [@results_accumulator_var, @nested_results_accumulator_var, @start_index_var], ['[]', '[]', 'index']
         builder << "loop do"
         builder.indented do
           repeated_expression.compile(repeated_expression_address, builder)
-          builder.accumulate nested_results_accumulator_var, repeated_expression_result_var
+          builder.accumulate @nested_results_accumulator_var, repeated_expression_result_var
           builder.if__ "#{repeated_expression_result_var}.success?" do
-            builder.accumulate results_accumulator_var, repeated_expression_result_var
+            builder.accumulate @results_accumulator_var, repeated_expression_result_var
           end
           builder.else_ do
             builder << "break"
           end
         end
         builder << "end"
-        builder.assign result_var, "SequenceSyntaxNode.new(input, #{start_index_var}...index, #{results_accumulator_var}, #{nested_results_accumulator_var})"
+      end
+    end
+    
+    class ZeroOrMore < Repetition
+      def compile(lexical_address, parent_expression, builder)
+        builder.begin_comment(parent_expression)
+        super
+        builder.assign @result_var, "SequenceSyntaxNode.new(input, #{@start_index_var}...index, #{@results_accumulator_var}, #{@nested_results_accumulator_var})"
+        builder.end_comment(parent_expression)
+      end
+    end
+    
+    class OneOrMore < Repetition
+      def compile(lexical_address, parent_expression, builder)
+        builder.begin_comment(parent_expression)
+        super
+        builder.if__ "#{@results_accumulator_var}.empty?" do
+          builder.reset_index @start_index_var
+          builder.assign_result lexical_address, "ParseFailure.new(#{@start_index_var}, #{@nested_results_accumulator_var})"
+        end
+        builder.else_ do
+          builder.assign_result lexical_address, "SequenceSyntaxNode.new(input, #{@start_index_var}...index, #{@results_accumulator_var}, #{@nested_results_accumulator_var})"
+        end
         builder.end_comment(parent_expression)
       end
     end

@@ -128,7 +128,7 @@ module Treetop2
       end
 
       rule repetition_suffix
-        '+' / '*' <ZeroOrMore>
+        '+' <OneOrMore> / '*' <ZeroOrMore>
       end
 
       rule prefix
