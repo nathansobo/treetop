@@ -103,18 +103,16 @@ module Treetop2
         repeated_expression_result_var = "r#{repeated_expression_address}"
         
         builder.assign [@results_accumulator_var, @nested_results_accumulator_var, @start_index_var], ['[]', '[]', 'index']
-        builder << "loop do"
-        builder.indented do
+        builder.loop do
           repeated_expression.compile(repeated_expression_address, builder)
           builder.accumulate @nested_results_accumulator_var, repeated_expression_result_var
           builder.if__ "#{repeated_expression_result_var}.success?" do
             builder.accumulate @results_accumulator_var, repeated_expression_result_var
           end
           builder.else_ do
-            builder << "break"
+            builder.break
           end
         end
-        builder << "end"
       end
     end
     

@@ -56,6 +56,16 @@ module Treetop2
         self << 'end'
       end
       
+      def loop(&block)
+        self << 'loop do'
+        indented(&block)
+        self << 'end'
+      end
+      
+      def break
+        self << 'break'
+      end
+      
       def in(depth = 1)
         @level += depth
         self
