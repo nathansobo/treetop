@@ -25,32 +25,30 @@ module Treetop2
     end
     
     class Sequence < ::Treetop::SequenceSyntaxNode
+      include ParsingExpressionGenerator
+      
       def compile(lexical_address, builder)
-        results_accumulator_var = "s#{lexical_address}"
-        start_index_var = "i#{lexical_address}"
-        
+        super        
         builder.begin_comment(self)
-        builder.assign [results_accumulator_var, start_index_var], ['[]', 'index']
-        compile_sequence_elements(sequence_elements, results_accumulator_var, builder)
-        builder.if__ "#{results_accumulator_var}.last.success?" do
-          builder.assign_result lexical_address, "SequenceSyntaxNode.new(input, #{start_index_var}...index, #{results_accumulator_var})"
+        use_vars :result, :start_index, :accumulator, :nested_results
+        compile_sequence_elements(sequence_elements)
+        builder.if__ "#{accumulator_var}.last.success?" do
+          assign_result "SequenceSyntaxNode.new(input, #{start_index_var}...index, #{accumulator_var})"
         end        
         builder.else_ do
-          builder.reset_index(start_index_var)
-          builder.assign_result lexical_address, "ParseFailure.new(#{start_index_var}, #{results_accumulator_var})"
+          reset_index
+          assign_result "ParseFailure.new(#{start_index_var}, #{accumulator_var})"
         end
         builder.end_comment(self)
       end
               
-      def compile_sequence_elements(elements, results_accumulator_var, builder)
-        result_address = builder.next_address
-        result_var = "r#{result_address}"
-        
-        elements.first.compile(result_address, builder)
-        builder.accumulate results_accumulator_var, result_var
+      def compile_sequence_elements(elements)
+        obtain_new_subexpression_address
+        elements.first.compile(subexpression_address, builder)
+        accumulate_subexpression_result
         if elements.size > 1          
-          builder.if_ "#{result_var}.success?" do
-            compile_sequence_elements(elements[1..-1], results_accumulator_var, builder)
+          builder.if_ subexpression_success? do
+            compile_sequence_elements(elements[1..-1])
           end
         end
       end
@@ -86,7 +84,6 @@ module Treetop2
       end
     end
     
-  
     
     class Repetition < ::Treetop::TerminalSyntaxNode
       include ParsingExpressionGenerator
