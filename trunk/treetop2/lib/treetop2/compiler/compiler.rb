@@ -16,7 +16,7 @@ module Treetop2
       end
     end
     
-    class TerminalExpression < ::Treetop::SequenceSyntaxNode
+    class Terminal < ::Treetop::SequenceSyntaxNode
       include ParsingExpressionGenerator
       
       def compile(address, builder)
