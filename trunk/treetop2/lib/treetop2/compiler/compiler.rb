@@ -57,36 +57,31 @@ module Treetop2
     end
     
     class Choice < ::Treetop::SequenceSyntaxNode
+      include ParsingExpressionGenerator
+      
       def compile(lexical_address, builder)
-        result_var = "r#{lexical_address}"
-        start_index_var = "i#{lexical_address}"
-        nested_results_accumulator = "nr#{lexical_address}"
-        
+        super
         builder.begin_comment(self)
-        builder.assign [nested_results_accumulator, start_index_var], ['[]', 'index']
-        compile_alternatives(alternatives, result_var, start_index_var, nested_results_accumulator, builder)
+        use_vars :result, :start_index, :nested_results
+        compile_alternatives(alternatives)
         builder.end_comment(self)
       end
       
-      def compile_alternatives(alternatives, choice_result_var, choice_start_index, nested_results_accumulator, builder)
-        alternative_result_address = builder.next_address
-        alternative_result_var = "r#{alternative_result_address}"
-        
-        alternatives.first.compile(alternative_result_address, builder)
-        builder.accumulate nested_results_accumulator, alternative_result_var
-        
-        builder.if__ "#{alternative_result_var}.success?" do
-          builder.assign choice_result_var, alternative_result_var
-          builder << "#{choice_result_var}.update_nested_results(#{nested_results_accumulator})"
+      def compile_alternatives(alternatives)
+        obtain_new_subexpression_address
+        alternatives.first.compile(subexpression_address, builder)
+        accumulate_nested_result
+        builder.if__ subexpression_success? do
+          assign_result subexpression_result_var
+          builder << "#{subexpression_result_var}.update_nested_results(#{nested_results_var})"
         end
         builder.else_ do
           if alternatives.size == 1
-            builder.reset_index(choice_start_index)
-            builder.assign choice_result_var, "ParseFailure.new(#{choice_start_index}, #{nested_results_accumulator})"
+            reset_index
+            assign_result "ParseFailure.new(#{start_index_var}, #{nested_results_var})"
           else
-            compile_alternatives(alternatives[1..-1], choice_result_var, choice_start_index, nested_results_accumulator, builder)
+            compile_alternatives(alternatives[1..-1])
           end
-          
         end
       end
     end

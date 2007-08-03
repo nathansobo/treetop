@@ -97,8 +97,6 @@ module Treetop2
       def on_one_line(expression)
         expression.text_value.tr("\n", ' ')
       end
-      
-      
     end
   end
 end
