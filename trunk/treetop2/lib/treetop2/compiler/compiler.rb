@@ -156,27 +156,48 @@ module Treetop2
       end
     end
     
-    class AndPredicate < ::Treetop::TerminalSyntaxNode
+    class Predicate < ::Treetop::TerminalSyntaxNode
       include ParsingExpressionGenerator
-      
+
       def compile(address, parent_expression, builder)
         super(address, builder)
         builder.begin_comment(parent_expression)
         use_vars :result, :start_index
         obtain_new_subexpression_address
         parent_expression.predicated_expression.compile(subexpression_address, builder)
-        
-        builder.if__ subexpression_success? do
-          reset_index
-          assign_result epsilon_node
-        end
-        builder.else_ do
-          assign_result "ParseFailure.new(#{start_index_var}, #{subexpression_result_var}.nested_failures)"
-        end
+        builder.if__(subexpression_success?) { when_success }
+        builder.else_ { when_failure }
         builder.end_comment(parent_expression)
+      end
+      
+      def assign_failure
+        assign_result "ParseFailure.new(#{start_index_var}, #{subexpression_result_var}.nested_failures)"
+      end
+      
+      def assign_success
+        reset_index
+        assign_result epsilon_node
       end
     end
     
+    class AndPredicate < Predicate
+      def when_success
+        assign_success
+      end
+
+      def when_failure
+        assign_failure
+      end
+    end
     
+    class NotPredicate < Predicate
+      def when_success
+        assign_failure
+      end
+      
+      def when_failure
+        assign_success
+      end
+    end
   end
 end

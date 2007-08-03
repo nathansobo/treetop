@@ -136,7 +136,7 @@ module Treetop2
       end
 
       rule prefix
-        '&' <AndPredicate> / '!'
+        '&' <AndPredicate> / '!' <NotPredicate>
       end
 
       rule atomic
