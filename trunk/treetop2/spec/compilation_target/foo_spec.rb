@@ -44,4 +44,10 @@ describe "An instance of a hand-built Bar parser" do
     nested_failure.index.should == 2
     nested_failure.expected_string.should == 'd'
   end
+  
+  it "parses the optional expression or epsilon" do
+    @parser.root = :optional    
+    @parser.parse('foo').should be_success
+    @parser.parse('').should be_success
+  end
 end

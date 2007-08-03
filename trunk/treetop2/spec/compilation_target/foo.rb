@@ -1,19 +1,25 @@
 class Bar < CompiledParser
   
+  attr_accessor :root
+  
+  def initialize
+    self.root = :foo
+  end
+  
   def parse(input)
     prepare_to_parse(input)
-    return self._nt_foo
+    return self.send("_nt_#{root}".to_sym)
   end
   
   # parsing expression:
   # 'a' ('b' 'c' / 'b' 'd')+ 'e' 
 
   # lexical address assignment for results
-  # 'a' ('b' 'c' / 'b' 'd')+ 'e' 
+  # 'a' ('b' 'c' / 'b' 'd')+ 'e'
   #       5   6     8   9     10
   #         4         7
   #              3
-  #  1           2    
+  #  1           2
   #              0
   def _nt_foo
     s0, i0 = [], index
@@ -110,6 +116,15 @@ class Bar < CompiledParser
       # end of the sequence... r0 has a value
       
       return r0
+    end
+  end
+  
+  def _nt_optional
+    r1 = parse_terminal('foo')
+    if r1.success?
+      r0 = r1
+    else
+      r0 = SyntaxNode.new(input, index...index, r1.nested_failures)
     end
   end
 end

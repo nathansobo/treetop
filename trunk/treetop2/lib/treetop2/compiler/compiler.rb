@@ -28,13 +28,13 @@ module Treetop2
       include ParsingExpressionGenerator
       
       def compile(lexical_address, builder)
-        super        
+        super
         builder.begin_comment(self)
         use_vars :result, :start_index, :accumulator, :nested_results
         compile_sequence_elements(sequence_elements)
         builder.if__ "#{accumulator_var}.last.success?" do
           assign_result "SequenceSyntaxNode.new(input, #{start_index_var}...index, #{accumulator_var})"
-        end        
+        end
         builder.else_ do
           reset_index
           assign_result "ParseFailure.new(#{start_index_var}, #{accumulator_var})"
@@ -46,7 +46,7 @@ module Treetop2
         obtain_new_subexpression_address
         elements.first.compile(subexpression_address, builder)
         accumulate_subexpression_result
-        if elements.size > 1          
+        if elements.size > 1
           builder.if_ subexpression_success? do
             compile_sequence_elements(elements[1..-1])
           end
