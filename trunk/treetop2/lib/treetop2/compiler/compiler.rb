@@ -129,5 +129,27 @@ module Treetop2
         builder.end_comment(parent_expression)
       end
     end
+    
+    class Optional < ::Treetop::SequenceSyntaxNode
+      include ParsingExpressionGenerator
+      
+      def compile(address, builder)
+        super
+        use_vars :result
+        obtain_new_subexpression_address
+        optional_expression.compile(subexpression_address, builder)
+        
+        builder.if__ subexpression_success? do
+          assign_result subexpression_result_var
+        end
+        builder.else_ do
+          assign_result "SyntaxNode.new(input, index...index, #{subexpression_result_var}.nested_failures)"
+        end
+      end
+      
+      def optional_expression
+        elements[0]
+      end
+    end
   end
 end

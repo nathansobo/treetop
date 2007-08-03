@@ -65,7 +65,11 @@ module Treetop2
             right << init_value(symbol)
           end
         end
-        left.join(', ') + ' = ' + right.join(', ')
+        if left.empty?
+          ""
+        else
+          left.join(', ') + ' = ' + right.join(', ')
+        end
       end
     
       def var(var_symbol)

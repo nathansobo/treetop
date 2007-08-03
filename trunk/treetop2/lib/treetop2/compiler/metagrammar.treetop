@@ -90,13 +90,13 @@ module Treetop2
       end
     
       rule labelless_primary
+        propagator_primary
+        /
         instantiator_primary node_class_expression trailing_block {
           def compile(lexical_address, builder)
             instantiator_primary.compile(lexical_address, builder)
           end
         }
-        /
-        propagator_primary
       end
 
       rule blockless_primary
@@ -122,7 +122,7 @@ module Treetop2
       rule propagator_primary
         prefix (instantiator_primary / atomic)
         /
-        (instantiator_primary / atomic) '?'
+        (instantiator_primary / atomic) '?' <Optional>
         /
         atomic_propagator
       end

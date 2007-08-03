@@ -11,6 +11,7 @@ module Treetop2
       end
       
       def <<(ruby_line)
+        return if ruby_line.blank?
         ruby << indent << ruby_line << "\n"
       end
       
