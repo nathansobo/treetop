@@ -17,20 +17,29 @@ module Treetop2
     end
     
     class TerminalExpression < ::Treetop::SequenceSyntaxNode
+      include ParsingExpressionGenerator
+      
       def compile(address, builder)
-        builder.assign_result address, "parse_terminal(#{text_value})"
+        super
+        assign_result "parse_terminal(#{text_value})"
       end
     end
     
     class AnythingSymbol < ::Treetop::TerminalSyntaxNode
+      include ParsingExpressionGenerator
+      
       def compile(address, builder)
-        builder.assign_result address, 'parse_anything'
+        super
+        assign_result 'parse_anything'
       end
     end
     
     class CharacterClass < ::Treetop::SequenceSyntaxNode
+      include ParsingExpressionGenerator
+
       def compile(address, builder)
-        builder.assign_result address, "parse_char_class(/#{text_value}/, '#{elements[1].text_value.gsub(/'$/, "\\\\'")}')"
+        super
+        assign_result "parse_char_class(/#{text_value}/, '#{elements[1].text_value.gsub(/'$/, "\\\\'")}')"
       end
     end
     
@@ -51,7 +60,7 @@ module Treetop2
         end
         builder.end_comment(self)
       end
-              
+      
       def compile_sequence_elements(elements)
         obtain_new_subexpression_address
         elements.first.compile(subexpression_address, builder)
