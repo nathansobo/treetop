@@ -62,17 +62,27 @@ module Treetop2
         self
       end
       
-
       def next_address
         address_space.next_address
       end
-        
+      
+      def begin_comment(expression)
+        self << "# begin #{on_one_line(expression)}"
+      end
+      
+      def end_comment(expression)
+        self << "# end #{on_one_line(expression)}"
+      end
+      
       protected
       
       def indent
         "  " * level
       end
       
+      def on_one_line(expression)
+        expression.text_value.tr("\n", ' ')
+      end
       
       
     end

@@ -32,7 +32,7 @@ describe "A choice between terminal symbols" do
 end
 
 describe "A choice between sequences" do
-  testing_expression '"foo" "bar" "baz" / "bing" "bang" "boom"'
+  testing_expression "'foo' 'bar' 'baz'\n/\n'bing' 'bang' 'boom'"
 
   it "successfully parses input matching any of the alternatives" do
     parse('foobarbaz').should be_success
