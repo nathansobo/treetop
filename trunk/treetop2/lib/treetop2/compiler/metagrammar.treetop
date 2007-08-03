@@ -120,7 +120,11 @@ module Treetop2
       end
 
       rule propagator_primary
-        prefix (instantiator_primary / atomic)
+        prefix predicated_expression:(instantiator_primary / atomic) {
+          def compile(address, builder)
+            prefix.compile(address, self, builder)
+          end
+        }
         /
         (instantiator_primary / atomic) '?' <Optional>
         /
@@ -132,7 +136,7 @@ module Treetop2
       end
 
       rule prefix
-        '&' / '!'
+        '&' <AndPredicate> / '!'
       end
 
       rule atomic
