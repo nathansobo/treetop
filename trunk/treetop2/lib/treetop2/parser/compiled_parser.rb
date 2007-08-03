@@ -5,6 +5,11 @@ module Treetop2
     
     public        
     attr_reader :input, :index
+
+    def parse(input)
+      prepare_to_parse(input)
+      return root
+    end
     
     def self.node_classes
       @node_classes ||= Hash.new

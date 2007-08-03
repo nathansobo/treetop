@@ -1,5 +1,53 @@
 module Treetop2
   module Compiler
+    
+    class TreetopFile < ::Treetop::SequenceSyntaxNode
+      def compile
+        (elements.map {|elt| elt.compile}).join
+      end
+    end
+    
+    class Grammar < ::Treetop::SequenceSyntaxNode
+      def compile
+        builder = RubyBuilder.new
+        
+        builder << "class #{grammar_name.text_value} < Treetop2::CompiledParser"
+        builder.indented do
+          parsing_rule_sequence.compile(builder)
+        end
+        builder << "end"
+      end
+    end
+    
+    class ParsingRuleSequence < ::Treetop::SequenceSyntaxNode
+      def compile(builder)
+        builder << "def root"
+        builder.indented do
+          builder << rules.first.method_name
+        end
+        builder << "end"
+        
+        rules.each { |rule| rule.compile(builder) }
+      end
+    end
+
+    class ParsingRule < ::Treetop::SequenceSyntaxNode
+      def compile(builder)
+        builder.reset_addresses
+        expression_address = builder.next_address
+        builder << "def #{method_name}"
+        builder.indented do
+          parsing_expression.compile(expression_address, builder)
+          builder << "return r#{expression_address}"
+        end
+        builder << "end"
+      end
+      
+      def method_name
+        "_nt_#{nonterminal.text_value}"
+      end
+    end
+    
     class ParenthesizedExpression < ::Treetop::SequenceSyntaxNode
       def compile(address, builder)
         elements[2].compile(address, builder)

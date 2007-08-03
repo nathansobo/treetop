@@ -73,6 +73,10 @@ module Treetop2
         address_space.next_address
       end
       
+      def reset_addresses
+        address_space.reset_addresses
+      end
+      
       protected
       
       def indent

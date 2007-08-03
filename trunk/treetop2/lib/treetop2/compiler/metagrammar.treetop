@@ -2,29 +2,45 @@ module Treetop2
   module Compiler
     grammar Metagrammar
       rule treetop_file
-        (grammar / arbitrary_character)*
+        (grammar / arbitrary_character)* <TreetopFile>
       end
 
       rule arbitrary_character
-        .
+        . {
+          def compile
+            text_value
+          end
+        }
       end
 
       rule grammar
-        'grammar' space grammar_name parsing_rule_sequence space? 'end'
+        'grammar' space grammar_name space parsing_rule_sequence space? 'end' <Grammar>
       end
 
       rule grammar_name
-        ([A-Z] alphanumeric_char*) space
+        ([A-Z] alphanumeric_char*)
       end
 
       rule parsing_rule_sequence
-        head_rule:parsing_rule tail_rules:(space parsing_rule)*
+        parsing_rule (space parsing_rule)* <ParsingRuleSequence> {
+          def rules
+            [head_rule] + tail_rules
+          end
+          
+          def head_rule
+            elements[0]
+          end
+          
+          def tail_rules
+            elements[1].elements.map { |rule_with_space| rule_with_space.elements[1] }
+          end
+        }
         /
         ''
       end
 
       rule parsing_rule
-        'rule' space nonterminal space parsing_expression space 'end'
+        'rule' space nonterminal space parsing_expression space 'end' <ParsingRule>
       end
 
       rule parsing_expression

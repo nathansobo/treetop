@@ -26,15 +26,43 @@ class CompilerBehaviour < Spec::DSL::Behaviour
         teardown_test_parser
       end
     end
+    
+    def testing_grammar(grammar_to_test)
+      prepend_before(:all) do        
+        setup_test_parser_for_grammar(grammar_to_test)
+      end
+      
+      append_after(:all) do
+        teardown_test_parser
+      end
+    end
   end
   
   module BehaviorEvalInstanceMethods
     def parse(input, options = {})
-      test_parser = Test::TestParser.new
-      test_parser.test_index = options[:at_index] || 0
+      test_parser = @parser_class_under_test.new
+      test_parser.test_index = options[:at_index] if options[:at_index]
       result = test_parser.parse(input)
       yield result if block_given?
       result
+    end
+    
+    def setup_test_parser_for_grammar(grammar_to_test)
+      
+      previous_root = metagrammar.set_root(:grammar)
+      grammar_node = metagrammar_parser.parse(grammar_to_test)
+      metagrammar.set_root(previous_root)
+      
+      if grammar_node.failure?
+        raise "#{grammar_to_test} cannot be parsed by the metagrammar."
+      end
+      
+      test_parser_code = grammar_node.compile
+      #puts test_parser_code
+      Test.module_eval(test_parser_code)
+      
+      @parser_class_under_test_const = grammar_node.grammar_name.text_value.to_sym
+      @parser_class_under_test = Test.const_get(@parser_class_under_test_const)
     end
     
     def setup_test_parser(expression_to_test)
@@ -75,11 +103,14 @@ end
 }      
       #puts test_parser_code     
       Test.module_eval(test_parser_code)
+      @parser_class_under_test = Test::TestParser
+      @parser_class_under_test_const = :TestParser
     end
     
     def teardown_test_parser
-      Test.module_eval do
-        remove_const :TestParser
+      const = @parser_class_under_test_const
+      Test.class_eval do
+        remove_const const
       end
     end
     
