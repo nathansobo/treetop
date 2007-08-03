@@ -29,14 +29,6 @@ module Treetop2
         end
       end
       
-      def assign_result(lexical_address, right)
-        assign("r#{lexical_address}", right)
-      end
-      
-      def reset_index(start_index_var)
-        assign("self.index", start_index_var)
-      end
-      
       def accumulate(left, right)
         self << "#{left} << #{right}"
       end
@@ -81,22 +73,10 @@ module Treetop2
         address_space.next_address
       end
       
-      def begin_comment(expression)
-        self << "# begin #{on_one_line(expression)}"
-      end
-      
-      def end_comment(expression)
-        self << "# end #{on_one_line(expression)}"
-      end
-      
       protected
       
       def indent
         "  " * level
-      end
-      
-      def on_one_line(expression)
-        expression.text_value.tr("\n", ' ')
       end
     end
   end

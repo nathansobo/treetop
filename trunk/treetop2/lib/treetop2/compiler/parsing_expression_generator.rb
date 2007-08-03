@@ -93,6 +93,18 @@ module Treetop2
         else nil
         end
       end
+      
+      def begin_comment(expression)
+        builder << "# begin #{on_one_line(expression)}"
+      end
+      
+      def end_comment(expression)
+        builder << "# end #{on_one_line(expression)}"
+      end
+      
+      def on_one_line(expression)
+        expression.text_value.tr("\n", ' ')
+      end
     end
   end
 end

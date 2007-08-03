@@ -48,7 +48,7 @@ module Treetop2
       
       def compile(address, builder)
         super
-        builder.begin_comment(self)
+        begin_comment(self)
         use_vars :result, :start_index, :accumulator, :nested_results
         compile_sequence_elements(sequence_elements)
         builder.if__ "#{accumulator_var}.last.success?" do
@@ -58,7 +58,7 @@ module Treetop2
           reset_index
           assign_result "ParseFailure.new(#{start_index_var}, #{accumulator_var})"
         end
-        builder.end_comment(self)
+        end_comment(self)
       end
       
       def compile_sequence_elements(elements)
@@ -78,10 +78,10 @@ module Treetop2
       
       def compile(address, builder)
         super
-        builder.begin_comment(self)
+        begin_comment(self)
         use_vars :result, :start_index, :nested_results
         compile_alternatives(alternatives)
-        builder.end_comment(self)
+        end_comment(self)
       end
       
       def compile_alternatives(alternatives)
@@ -107,8 +107,10 @@ module Treetop2
     class Repetition < ::Treetop::TerminalSyntaxNode
       include ParsingExpressionGenerator
       
-      def compile(address, repeated_expression, builder)
-        super(address, builder)
+      def compile(address, parent_expression, builder)
+        super(address, builder)        
+        repeated_expression = parent_expression.atomic
+        begin_comment(parent_expression)
         use_vars :result, :accumulator, :nested_results, :start_index
 
         builder.loop do
@@ -131,17 +133,15 @@ module Treetop2
     
     class ZeroOrMore < Repetition
       def compile(address, parent_expression, builder)
-        builder.begin_comment(parent_expression)
-        super(address, parent_expression.atomic, builder)
+        super(address, parent_expression, builder)
         assign_result sequence_node
-        builder.end_comment(parent_expression)
+        end_comment(parent_expression)
       end
     end
     
     class OneOrMore < Repetition
       def compile(address, parent_expression, builder)
-        builder.begin_comment(parent_expression)
-        super(address, parent_expression.atomic, builder)
+        super(address, parent_expression, builder)
         builder.if__ "#{accumulator_var}.empty?" do
           reset_index
           assign_result "ParseFailure.new(#{start_index_var}, #{nested_results_var})"
@@ -149,7 +149,7 @@ module Treetop2
         builder.else_ do
           assign_result sequence_node
         end
-        builder.end_comment(parent_expression)
+        end_comment(parent_expression)
       end
     end
     
@@ -180,13 +180,13 @@ module Treetop2
 
       def compile(address, parent_expression, builder)
         super(address, builder)
-        builder.begin_comment(parent_expression)
+        begin_comment(parent_expression)
         use_vars :result, :start_index
         obtain_new_subexpression_address
         parent_expression.predicated_expression.compile(subexpression_address, builder)
         builder.if__(subexpression_success?) { when_success }
         builder.else_ { when_failure }
-        builder.end_comment(parent_expression)
+        end_comment(parent_expression)
       end
       
       def assign_failure
