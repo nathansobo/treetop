@@ -1,33 +1,33 @@
 module Treetop2
   module Compiler
     class ParenthesizedExpression < ::Treetop::SequenceSyntaxNode
-      def compile(lexical_address, builder)
-        elements[2].compile(lexical_address, builder)
+      def compile(address, builder)
+        elements[2].compile(address, builder)
       end
     end
     
     class TerminalExpression < ::Treetop::SequenceSyntaxNode
-      def compile(lexical_address, builder)
-        builder.assign_result lexical_address, "parse_terminal(#{text_value})"
+      def compile(address, builder)
+        builder.assign_result address, "parse_terminal(#{text_value})"
       end
     end
     
     class AnythingSymbol < ::Treetop::TerminalSyntaxNode
-      def compile(lexical_address, builder)
-        builder.assign_result lexical_address, 'parse_anything'
+      def compile(address, builder)
+        builder.assign_result address, 'parse_anything'
       end
     end
     
     class CharacterClass < ::Treetop::SequenceSyntaxNode
-      def compile(lexical_address, builder)
-        builder.assign_result lexical_address, "parse_char_class(/#{text_value}/, '#{elements[1].text_value.gsub(/'$/, "\\\\'")}')"
+      def compile(address, builder)
+        builder.assign_result address, "parse_char_class(/#{text_value}/, '#{elements[1].text_value.gsub(/'$/, "\\\\'")}')"
       end
     end
     
     class Sequence < ::Treetop::SequenceSyntaxNode
       include ParsingExpressionGenerator
       
-      def compile(lexical_address, builder)
+      def compile(address, builder)
         super
         builder.begin_comment(self)
         use_vars :result, :start_index, :accumulator, :nested_results
@@ -57,7 +57,7 @@ module Treetop2
     class Choice < ::Treetop::SequenceSyntaxNode
       include ParsingExpressionGenerator
       
-      def compile(lexical_address, builder)
+      def compile(address, builder)
         super
         builder.begin_comment(self)
         use_vars :result, :start_index, :nested_results
@@ -107,18 +107,18 @@ module Treetop2
     end
     
     class ZeroOrMore < Repetition
-      def compile(lexical_address, parent_expression, builder)
+      def compile(address, parent_expression, builder)
         builder.begin_comment(parent_expression)
-        super(lexical_address, parent_expression.atomic, builder)
+        super(address, parent_expression.atomic, builder)
         assign_result "SequenceSyntaxNode.new(input, #{start_index_var}...index, #{accumulator_var}, #{nested_results_var})"
         builder.end_comment(parent_expression)
       end
     end
     
     class OneOrMore < Repetition
-      def compile(lexical_address, parent_expression, builder)
+      def compile(address, parent_expression, builder)
         builder.begin_comment(parent_expression)
-        super(lexical_address, parent_expression.atomic, builder)
+        super(address, parent_expression.atomic, builder)
         builder.if__ "#{accumulator_var}.empty?" do
           reset_index
           assign_result "ParseFailure.new(#{start_index_var}, #{nested_results_var})"
