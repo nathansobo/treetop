@@ -110,7 +110,11 @@ module Treetop2
       end
 
       rule instantiator_primary
-        atomic repetition_suffix
+        atomic repetition_suffix {
+          def compile(lexical_address, builder)
+            repetition_suffix.compile(lexical_address, self, builder)
+          end
+        }
         /
         atomic_instantiator
       end
@@ -124,7 +128,7 @@ module Treetop2
       end
 
       rule repetition_suffix
-        '+' / '*'
+        '+' / '*' <ZeroOrMore>
       end
 
       rule prefix
@@ -144,7 +148,7 @@ module Treetop2
       end
   
       rule parenthesized_instantiator
-        '(' space? instantiator space? ')'
+        '(' space? instantiator space? ')' <ParenthesizedExpression>
       end
   
       rule parenthesized_propagator

@@ -3,7 +3,7 @@ module Treetop2
     attr_reader :elements
     
     def initialize(input, interval, elements, nested_results=elements)
-      super(input, interval, elements)
+      super(input, interval, nested_results)
       @elements = elements
     end
     

@@ -1,5 +1,12 @@
 module Treetop2
   module Compiler
+    
+    class ParenthesizedExpression < ::Treetop::SequenceSyntaxNode
+      def compile(lexical_address, builder)
+        elements[2].compile(lexical_address, builder)
+      end
+    end
+    
     class TerminalExpression < ::Treetop::SequenceSyntaxNode
       def compile(lexical_address, builder)
         builder.assign_result lexical_address, "parse_terminal(#{text_value})"
@@ -30,6 +37,7 @@ module Treetop2
           builder.assign_result lexical_address, "SequenceSyntaxNode.new(input, #{start_index_var}...index, #{results_accumulator_var})"
         end        
         builder.else_ do
+          builder.assign 'self.index', start_index_var
           builder.assign_result lexical_address, "ParseFailure.new(#{start_index_var}, #{results_accumulator_var})"
         end
         builder.end_comment(self)
@@ -49,7 +57,7 @@ module Treetop2
       end
     end
     
-    class Choice < Treetop::SequenceSyntaxNode
+    class Choice < ::Treetop::SequenceSyntaxNode
       def compile(lexical_address, builder)
         result_var = "r#{lexical_address}"
         start_index_var = "i#{lexical_address}"
@@ -81,6 +89,36 @@ module Treetop2
           end
           
         end
+      end
+    end
+    
+    class ZeroOrMore < ::Treetop::TerminalSyntaxNode
+      def compile(lexical_address, parent_expression, builder)
+        result_var = "r#{lexical_address}"
+        results_accumulator_var = "s#{lexical_address}"
+        nested_results_accumulator_var = "nr#{lexical_address}"
+        start_index_var = "i#{lexical_address}"
+                
+        repeated_expression = parent_expression.atomic
+        repeated_expression_address = builder.next_address
+        repeated_expression_result_var = "r#{repeated_expression_address}"
+        
+        builder.begin_comment(parent_expression)
+        builder.assign [results_accumulator_var, nested_results_accumulator_var, start_index_var], ['[]', '[]', 'index']
+        builder << "loop do"
+        builder.indented do
+          repeated_expression.compile(repeated_expression_address, builder)
+          builder.accumulate nested_results_accumulator_var, repeated_expression_result_var
+          builder.if__ "#{repeated_expression_result_var}.success?" do
+            builder.accumulate results_accumulator_var, repeated_expression_result_var
+          end
+          builder.else_ do
+            builder << "break"
+          end
+        end
+        builder << "end"
+        builder.assign result_var, "SequenceSyntaxNode.new(input, #{start_index_var}...index, #{results_accumulator_var}, #{nested_results_accumulator_var})"
+        builder.end_comment(parent_expression)
       end
     end
   end
