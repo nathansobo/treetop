@@ -6,6 +6,16 @@ module Treetop2
       end
     end
     
+    class Nonterminal < ::Treetop::SequenceSyntaxNode
+      include ParsingExpressionGenerator
+      
+      def compile(address, builder)
+        super
+        use_vars :result
+        assign_result "self.send(:_nt_#{text_value})"
+      end
+    end
+    
     class TerminalExpression < ::Treetop::SequenceSyntaxNode
       def compile(address, builder)
         builder.assign_result address, "parse_terminal(#{text_value})"

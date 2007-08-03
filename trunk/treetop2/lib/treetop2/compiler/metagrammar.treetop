@@ -160,7 +160,7 @@ module Treetop2
       end
 
       rule nonterminal
-        !keyword_inside_grammar (alpha_char alphanumeric_char*)
+        !keyword_inside_grammar (alpha_char alphanumeric_char*) <Nonterminal>
       end
 
       rule terminal
