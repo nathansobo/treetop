@@ -8,7 +8,7 @@ module Treetop2
       @interval = interval
     end
     
-    def update_nested_failures(nested_results)
+    def update_nested_results(nested_results)
       new_nested_failures = collect_nested_failures_at_maximum_index(nested_results)
       
       return if new_nested_failures.empty?

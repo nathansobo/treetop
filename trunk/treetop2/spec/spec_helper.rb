@@ -55,7 +55,7 @@ class CompilerBehaviour < Spec::DSL::Behaviour
       test_parser_code = %{
 class TestParser < CompiledParser
   attr_accessor :test_index
-          
+  
   def parse(input)
     prepare_to_parse(input)
     return _nt_test_expression
