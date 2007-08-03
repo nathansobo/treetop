@@ -104,13 +104,17 @@ module Treetop2
           end
         end
       end
+      
+      def sequence_node
+        "SequenceSyntaxNode.new(input, #{start_index_var}...index, #{accumulator_var}, #{nested_results_var})"
+      end
     end
     
     class ZeroOrMore < Repetition
       def compile(address, parent_expression, builder)
         builder.begin_comment(parent_expression)
         super(address, parent_expression.atomic, builder)
-        assign_result "SequenceSyntaxNode.new(input, #{start_index_var}...index, #{accumulator_var}, #{nested_results_var})"
+        assign_result sequence_node
         builder.end_comment(parent_expression)
       end
     end
@@ -124,7 +128,7 @@ module Treetop2
           assign_result "ParseFailure.new(#{start_index_var}, #{nested_results_var})"
         end
         builder.else_ do
-          assign_result "SequenceSyntaxNode.new(input, #{start_index_var}...index, #{accumulator_var}, #{nested_results_var})"
+          assign_result sequence_node
         end
         builder.end_comment(parent_expression)
       end
@@ -143,7 +147,7 @@ module Treetop2
           assign_result subexpression_result_var
         end
         builder.else_ do
-          assign_result "SyntaxNode.new(input, index...index, #{subexpression_result_var}.nested_failures)"
+          assign_result epsilon_node
         end
       end
       
@@ -164,7 +168,7 @@ module Treetop2
         
         builder.if__ subexpression_success? do
           reset_index
-          assign_result "SyntaxNode.new(input, index...index, #{subexpression_result_var}.nested_failures)"
+          assign_result epsilon_node
         end
         builder.else_ do
           assign_result "ParseFailure.new(#{start_index_var}, #{subexpression_result_var}.nested_failures)"

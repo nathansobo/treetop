@@ -56,6 +56,10 @@ module Treetop2
       def reset_index
         builder.assign 'self.index', start_index_var
       end
+      
+      def epsilon_node
+        "SyntaxNode.new(input, index...index, #{subexpression_result_var}.nested_failures)"
+      end
     
       def var_initialization
         left, right = [], []
