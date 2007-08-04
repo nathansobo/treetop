@@ -29,7 +29,6 @@ class CompilerBehaviour < Spec::DSL::Behaviour
   end
   
   module BehaviorEvalInstanceMethods
-    
     attr_reader :parser_class_under_test
     
     def parse(input, options = {})
