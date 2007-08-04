@@ -13,17 +13,14 @@ end
 include Treetop2
 
 class CompilerBehaviour < Spec::DSL::Behaviour
-  module Test
-  end
 
-  module BehaviorEvalModuleMethods    
+  module BehaviorEvalModuleMethods
+    
+    
+    
     def testing_expression(expression_to_test)
       prepend_before(:all) do        
         setup_test_parser(expression_to_test)
-      end
-      
-      append_after(:all) do
-        teardown_test_parser
       end
     end
     
@@ -31,20 +28,31 @@ class CompilerBehaviour < Spec::DSL::Behaviour
       prepend_before(:all) do        
         setup_test_parser_for_grammar(grammar_to_test)
       end
-      
-      append_after(:all) do
-        teardown_test_parser
-      end
     end
   end
   
   module BehaviorEvalInstanceMethods
+    
+    attr_reader :parser_class_under_test
+    
+    def test_module
+      @test_module ||= Module.new
+    end
+    
     def parse(input, options = {})
-      test_parser = @parser_class_under_test.new
+      test_parser = new_test_parser
       test_parser.test_index = options[:at_index] if options[:at_index]
       result = test_parser.parse(input)
       yield result if block_given?
       result
+    end
+    
+    def new_test_parser
+      parser_class_under_test.new
+    end
+    
+    def teardown_test_module
+      @test_module = nil
     end
     
     def setup_test_parser_for_grammar(grammar_to_test)
@@ -55,14 +63,11 @@ class CompilerBehaviour < Spec::DSL::Behaviour
       
       if grammar_node.failure?
         raise "#{grammar_to_test} cannot be parsed by the metagrammar."
-      end
-      
+      end      
       test_parser_code = grammar_node.compile
       #puts test_parser_code
-      Test.module_eval(test_parser_code)
-      
-      @parser_class_under_test_const = grammar_node.grammar_name.text_value.to_sym
-      @parser_class_under_test = Test.const_get(@parser_class_under_test_const)
+      test_module.module_eval(test_parser_code)
+      @parser_class_under_test = test_module.const_get(grammar_node.grammar_name.text_value.to_sym)
     end
     
     def setup_test_parser(expression_to_test)
@@ -102,17 +107,10 @@ class TestParser < CompiledParser
 end
 }      
       #puts test_parser_code     
-      Test.module_eval(test_parser_code)
-      @parser_class_under_test = Test::TestParser
-      @parser_class_under_test_const = :TestParser
+      test_module.module_eval(test_parser_code)
+      @parser_class_under_test = test_module.const_get(:TestParser)
     end
     
-    def teardown_test_parser
-      const = @parser_class_under_test_const
-      Test.class_eval do
-        remove_const const
-      end
-    end
     
     def metagrammar
       Treetop2::Compiler::Metagrammar
@@ -124,6 +122,7 @@ end
   end
   
   def before_eval
+    append_after { teardown_test_module }
     @eval_module.extend BehaviorEvalModuleMethods
     include BehaviorEvalInstanceMethods
   end
