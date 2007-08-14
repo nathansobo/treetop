@@ -34,3 +34,19 @@ describe "Zero or more of a sequence" do
     end
   end
 end
+
+describe "Zero or more of a terminal symbol followed by a node class declaration" do
+  testing_expression '"foo"* <NodeClass>'
+
+  it "parses successfully" do
+    
+  end
+end
+
+describe "Zero or more of a choice followed by a node class declaration" do
+  testing_expression '("foo" / "bar")* <NodeClass>'
+
+  it "parses successfully" do
+    
+  end
+end

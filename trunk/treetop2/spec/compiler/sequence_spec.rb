@@ -30,3 +30,12 @@ describe "A sequence of terminal symbols" do
     end
   end
 end
+
+describe "A sequence of terminal symbols followed by a node class declaration" do
+
+  testing_expression '"foo" "bar" "baz" <NodeClass>'
+  
+  it "parses successfully" do
+    # nothing for now
+  end
+end
