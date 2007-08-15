@@ -36,7 +36,7 @@ describe "Zero or more of a sequence" do
 end
 
 describe "Zero or more of a choice" do
-  testing_expression '("a")*'
+  testing_expression '(a / b)*'
 
   it "parses successfully" do
     
