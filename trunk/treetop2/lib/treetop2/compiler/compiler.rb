@@ -201,14 +201,14 @@ module Treetop2
       end
     end
     
-    class Optional < ::Treetop::SequenceSyntaxNode
+    class Optional < ::Treetop::TerminalSyntaxNode
       include ParsingExpressionGenerator
       
-      def compile(address, builder)
-        super
+      def compile(address, parent, builder)
+        super(address, builder)
         use_vars :result
         obtain_new_subexpression_address
-        optional_expression.compile(subexpression_address, builder)
+        parent.optional_expression.compile(subexpression_address, builder)
         
         builder.if__ subexpression_success? do
           assign_result subexpression_result_var
