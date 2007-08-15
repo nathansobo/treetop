@@ -8,7 +8,8 @@ describe "The result of the metagrammar parsing its own source" do
     end
   end
 
-  it "is successful" do
+  it "is successful and has a grammar element" do
     @result.should be_success
+    (@result.elements.any? {|element| element.is_a?(Treetop2::Compiler::Grammar) }).should be_true
   end
 end
