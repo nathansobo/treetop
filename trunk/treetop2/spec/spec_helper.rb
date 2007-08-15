@@ -6,8 +6,9 @@ $:.unshift(File.join(dir, *%w[.. lib]))
 
 require 'treetop2'
 
-
-METAGRAMMAR_PATH = File.join(TREETOP_2_ROOT, 'compiler', 'metagrammar.treetop')
+unless Object.const_defined?(:METAGRAMMAR_PATH)
+  METAGRAMMAR_PATH = File.join(TREETOP_2_ROOT, 'compiler', 'metagrammar.treetop')
+end
 
 unless Treetop2::Compiler.const_defined?(:Metagrammar)
   load_grammar METAGRAMMAR_PATH
