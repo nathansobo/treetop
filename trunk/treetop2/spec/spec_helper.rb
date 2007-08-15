@@ -95,6 +95,15 @@ end
       previous_root = metagrammar.set_root(root) if root
       node = metagrammar_parser.parse(input)
       metagrammar.set_root(previous_root) if root
+      
+      
+      # if node.failure?
+      #   node.nested_failures.each do |nf|
+      #     puts nf.index
+      #     puts nf.expression
+      #   end
+      # end
+      
       raise "#{input} cannot be parsed by the metagrammar." if node.failure? 
       node
     end

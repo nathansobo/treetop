@@ -72,7 +72,7 @@ module Treetop2
       end
 
       rule sequence
-        blockless_primary (space blockless_primary)+ node_class_expression trailing_block <Sequence> {
+        sequence_primary (space sequence_primary)+ node_class_declarations <Sequence> {
           def head_element
             elements[0]
           end
@@ -92,39 +92,19 @@ module Treetop2
       end
 
       rule primary
-        label labelless_primary
-        /
-        labelless_primary
-      end
-
-      rule label
-        (alpha_char alphanumeric_char*) ':' {
-          def to_ruby
-            ".labeled_as(:#{elements[0].text_value})"
-          end
-        }
-      end
-    
-      rule labelless_primary
         propagator_primary
         /
-        instantiator_primary node_class_expression trailing_block {
+        instantiator_primary node_class_declarations {
           def compile(lexical_address, builder)
             instantiator_primary.compile(lexical_address, builder)
           end
         }
       end
 
-      rule blockless_primary
-        label (labelless_blockless_primary)
-        /
-        labelless_blockless_primary
-      end
-    
-      rule labelless_blockless_primary
+      rule sequence_primary
         instantiator_primary / propagator_primary
       end
-
+    
       rule instantiator_primary
         atomic repetition_suffix {
           def compile(lexical_address, builder)
@@ -145,6 +125,10 @@ module Treetop2
         (instantiator_primary / atomic) '?' <Optional>
         /
         atomic_propagator
+      end
+      
+      rule node_class_declarations
+        node_class_expression trailing_block
       end
 
       rule repetition_suffix
