@@ -6,8 +6,11 @@ $:.unshift(File.join(dir, *%w[.. lib]))
 
 require 'treetop2'
 
+
+METAGRAMMAR_PATH = File.join(TREETOP_2_ROOT, 'compiler', 'metagrammar.treetop')
+
 unless Treetop2::Compiler.const_defined?(:Metagrammar)
-  load_grammar File.join(TREETOP_2_ROOT, *%w[compiler metagrammar])
+  load_grammar METAGRAMMAR_PATH
 end
 
 include Treetop2
@@ -91,19 +94,10 @@ end
 }
     end
     
-    def parse_with_metagrammar(input, root = nil)
+    def parse_with_metagrammar(input, root)
       previous_root = metagrammar.set_root(root) if root
       node = metagrammar_parser.parse(input)
       metagrammar.set_root(previous_root) if root
-      
-      
-      # if node.failure?
-      #   node.nested_failures.each do |nf|
-      #     puts nf.index
-      #     puts nf.expression
-      #   end
-      # end
-      
       raise "#{input} cannot be parsed by the metagrammar." if node.failure? 
       node
     end

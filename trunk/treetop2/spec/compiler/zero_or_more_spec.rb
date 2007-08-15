@@ -36,18 +36,9 @@ describe "Zero or more of a sequence" do
 end
 
 describe "Zero or more of a choice" do
-  testing_expression '(a / b)*'
+  testing_expression '("a" / "b")*'
 
-  it "parses successfully" do
-    
-  end
-end
-
-
-describe "Zero or more of a terminal symbol followed by a node class declaration" do
-  testing_expression '"foo"* <NodeClass>'
-
-  it "parses successfully" do
-    
+  it "successfully parses matching input" do
+    parse('abba').should be_success
   end
 end
