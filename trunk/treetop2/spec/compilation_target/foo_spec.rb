@@ -6,11 +6,13 @@ require "#{dir}/foo"
 describe "An instance of a hand-built Bar parser" do
   
   setup do
-    @parser = Bar.new
+    @parser = Foo.new
   end
   
-  it "can parse matching input" do
-    @parser.parse('abce').should be_success
+  it "can parse matching input, associating it with the correct node class" do
+    result = @parser.parse('abce')
+    result.should be_success
+    result.should be_an_instance_of(Foo::Bar)
   end
   
   it "can parse matching input that exercises foo's positive closure" do

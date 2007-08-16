@@ -1,4 +1,9 @@
-class Bar < CompiledParser
+class Foo < CompiledParser
+  
+  class Bar < Treetop2::SequenceSyntaxNode
+    
+  end
+  
   
   attr_accessor :root
   
@@ -108,7 +113,7 @@ class Bar < CompiledParser
       end
     
       if s0.last.success?
-        r0 = SequenceSyntaxNode.new(input, i0...index, s0)
+        r0 = Bar.new(input, i0...index, s0)
       else
         self.index = i0
         r0 = ParseFailure.new(i0, s0)
