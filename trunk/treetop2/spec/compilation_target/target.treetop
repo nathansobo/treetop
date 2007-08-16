@@ -1,4 +1,4 @@
-module Test
+module Target
   class Bar < Treetop2::Parser::SequenceSyntaxNode
     
   end

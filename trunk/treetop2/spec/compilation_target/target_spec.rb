@@ -1,18 +1,18 @@
 dir = File.dirname(__FILE__)
 require "#{dir}/../spec_helper"
 
-require "#{dir}/foo"
+require "#{dir}/target"
 
 describe "An instance of a hand-built Bar parser" do
   
   setup do
-    @parser = Foo.new
+    @parser = Target.new
   end
   
   it "can parse matching input, associating it with the correct node class" do
     result = @parser.parse('abce')
     result.should be_success
-    result.should be_an_instance_of(Foo::Bar)
+    result.should be_an_instance_of(Target::Bar)
   end
   
   it "can parse matching input that exercises foo's positive closure" do

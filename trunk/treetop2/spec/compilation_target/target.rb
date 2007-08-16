@@ -1,4 +1,4 @@
-class Foo < Treetop2::Parser::CompiledParser
+class Target < Treetop2::Parser::CompiledParser
   include Treetop2::Parser
   
   class Bar < SequenceSyntaxNode
