@@ -140,7 +140,11 @@ module Treetop2
       end
           
       rule node_class_declarations
-        node_class_expression trailing_block
+        node_class_expression trailing_block {
+          def node_class
+            node_class_expression.node_class
+          end
+        }
       end
 
       rule repetition_suffix
@@ -188,9 +192,17 @@ module Treetop2
       end
     
       rule node_class_expression
-        space '<' (!'>' .)+ '>'
+        space '<' (!'>' .)+ '>' {
+          def node_class
+            elements[2].text_value
+          end
+        }
         /
-        ''
+        '' {
+          def node_class
+            nil
+          end
+        }
       end
   
       rule trailing_block

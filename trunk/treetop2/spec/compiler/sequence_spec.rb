@@ -35,7 +35,18 @@ describe "A sequence of terminal symbols followed by a node class declaration" d
 
   testing_expression '"foo" "bar" "baz" <NodeClass>'
   
-  it "parses successfully" do
-    # nothing for now
+  before do
+    test_module.module_eval do
+      class NodeClass < Treetop2::Parser::SequenceSyntaxNode
+      end
+    end
+  end
+  
+  it "returns an instance of the declared node class upon parsing matching input" do
+    expected_node_class = test_module.const_get(:NodeClass)
+    
+    parse('foobarbaz') do |result|
+      result.should be_an_instance_of(expected_node_class)
+    end
   end
 end
