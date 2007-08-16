@@ -6,7 +6,7 @@ describe "A sequence of terminal symbols" do
   it "parses matching input successfully" do
     parse('foobarbaz') do |result|
       result.should be_success
-      result.should be_an_instance_of(SequenceSyntaxNode)
+      result.should be_an_instance_of(Parser::SequenceSyntaxNode)
       (result.elements.map {|elt| elt.text_value}).join.should == 'foobarbaz'
     end
   end
@@ -14,7 +14,7 @@ describe "A sequence of terminal symbols" do
   it "parses matching input at a non-zero index successfully" do
     parse('---foobarbaz', :at_index => 3) do |result|
       result.should be_success
-      result.should be_an_instance_of(SequenceSyntaxNode)
+      result.should be_an_instance_of(Parser::SequenceSyntaxNode)
       (result.elements.map {|elt| elt.text_value}).join.should == 'foobarbaz'
     end
   end

@@ -1,6 +1,7 @@
-class Foo < CompiledParser
+class Foo < Treetop2::Parser::CompiledParser
+  include Treetop2::Parser
   
-  class Bar < Treetop2::SequenceSyntaxNode
+  class Bar < SequenceSyntaxNode
     
   end
   

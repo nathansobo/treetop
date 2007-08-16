@@ -73,7 +73,8 @@ class CompilerBehaviour < Spec::DSL::Behaviour
       builder.in(2)
       expression_node.compile(lexical_address, builder)
       %{
-class TestParser < CompiledParser
+class TestParser < Treetop2::Parser::CompiledParser
+  include Treetop2::Parser
   attr_accessor :test_index
 
   def parse(input)

@@ -1,12 +1,14 @@
 module Treetop2
-  class TerminalSyntaxNode < SyntaxNode
+  module Parser
+    class TerminalSyntaxNode < SyntaxNode
 
-    def initialize(input, interval)
-      super(input, interval, [])
-    end
+      def initialize(input, interval)
+        super(input, interval, [])
+      end
 
-    def epsilon?
-      text_value.eql? ""
+      def epsilon?
+        text_value.eql? ""
+      end
     end
   end
 end

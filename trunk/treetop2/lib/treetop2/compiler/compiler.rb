@@ -11,8 +11,9 @@ module Treetop2
       def compile
         builder = RubyBuilder.new
         
-        builder << "class #{grammar_name.text_value} < Treetop2::CompiledParser"
+        builder << "class #{grammar_name.text_value} < Treetop2::Parser::CompiledParser"
         builder.indented do
+          builder << "include Treetop2::Parser"
           parsing_rule_sequence.compile(builder)
         end
         builder << "end"
