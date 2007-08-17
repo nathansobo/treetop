@@ -5,12 +5,12 @@ require 'rake'
 require 'spec/rake/spectask'
 Gem::manage_gems
 require 'rake/gempackagetask'
+require 'rake/testtask'
 
-task :default => :spec
+task :default => :test
 
-@spec_files = FileList['spec/**/*_spec.rb']
-Spec::Rake::SpecTask.new(:spec) do |t|
-  t.spec_files = @spec_files
+Rake::TestTask.new do |t|
+  t.pattern = 'test/**/*test.rb'
 end
 
 gemspec = Gem::Specification.new do |s|
