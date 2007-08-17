@@ -86,7 +86,7 @@ module Treetop2
       rule primary
         prefix atomic {
           def compile(address, builder)
-            prefix.compile(address, self, builder)
+            prefix.compile(address, builder, self)
           end
           
           def predicated_expression
@@ -96,7 +96,7 @@ module Treetop2
         /
         atomic suffix node_class_declarations {
           def compile(address, builder)
-            suffix.compile(address, self, builder)
+            suffix.compile(address, builder, self)
           end
           
           def optional_expression
@@ -118,7 +118,7 @@ module Treetop2
       rule sequence_primary
         prefix atomic {
           def compile(lexical_address, builder)
-            prefix.compile(lexical_address, self, builder)
+            prefix.compile(lexical_address, builder, self)
           end
           
           def predicated_expression
@@ -128,7 +128,7 @@ module Treetop2
         /
         atomic suffix {
           def compile(lexical_address, builder)
-            suffix.compile(lexical_address, self, builder)
+            suffix.compile(lexical_address, builder, self)
           end
           
           def node_class

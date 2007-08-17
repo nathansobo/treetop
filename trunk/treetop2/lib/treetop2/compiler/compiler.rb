@@ -181,7 +181,7 @@ module Treetop2
     end
     
     class ZeroOrMore < Repetition
-      def compile(address, parent_expression, builder)
+      def compile(address, builder, parent_expression)
         super(address, parent_expression, builder)
         assign_result sequence_node(parent_expression.node_class)
         end_comment(parent_expression)
@@ -189,7 +189,7 @@ module Treetop2
     end
     
     class OneOrMore < Repetition
-      def compile(address, parent_expression, builder)
+      def compile(address, builder, parent_expression)
         super(address, parent_expression, builder)
         builder.if__ "#{accumulator_var}.empty?" do
           reset_index
@@ -205,11 +205,11 @@ module Treetop2
     class Optional < ::Treetop::TerminalSyntaxNode
       include ParsingExpressionGenerator
       
-      def compile(address, parent, builder)
+      def compile(address, builder, parent_expression)
         super(address, builder)
         use_vars :result
         obtain_new_subexpression_address
-        parent.optional_expression.compile(subexpression_address, builder)
+        parent_expression.optional_expression.compile(subexpression_address, builder)
         
         builder.if__ subexpression_success? do
           assign_result subexpression_result_var
@@ -227,7 +227,7 @@ module Treetop2
     class Predicate < ::Treetop::TerminalSyntaxNode
       include ParsingExpressionGenerator
 
-      def compile(address, parent_expression, builder)
+      def compile(address, builder, parent_expression)
         super(address, builder)
         begin_comment(parent_expression)
         use_vars :result, :start_index
