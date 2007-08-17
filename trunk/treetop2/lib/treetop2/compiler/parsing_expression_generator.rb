@@ -8,6 +8,11 @@ module Treetop2
         @builder = builder
         @parent_expression = parent_expression
       end
+      
+      def node_class
+        return nil unless parent_expression
+        parent_expression.node_class
+      end
     
       def use_vars(*var_symbols)
         @var_symbols = var_symbols

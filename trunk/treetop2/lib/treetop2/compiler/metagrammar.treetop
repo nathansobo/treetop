@@ -110,7 +110,11 @@ module Treetop2
         /
         atomic node_class_declarations {
           def compile(address, builder)
-            atomic.compile(address, builder)
+            atomic.compile(address, builder, self)
+          end
+          
+          def node_class
+            node_class_declarations.node_class
           end
         }
       end
