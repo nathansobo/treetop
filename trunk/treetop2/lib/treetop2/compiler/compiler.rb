@@ -50,7 +50,7 @@ module Treetop2
     end
     
     class ParenthesizedExpression < ::Treetop::SequenceSyntaxNode
-      def compile(address, builder)
+      def compile(address, builder, parent_expression = nil)
         elements[2].compile(address, builder)
       end
     end
@@ -58,7 +58,7 @@ module Treetop2
     class Nonterminal < ::Treetop::SequenceSyntaxNode
       include ParsingExpressionGenerator
       
-      def compile(address, builder)
+      def compile(address, builder, parent_expression = nil)
         super
         use_vars :result
         assign_result "self.send(:_nt_#{text_value})"
@@ -68,7 +68,7 @@ module Treetop2
     class Terminal < ::Treetop::SequenceSyntaxNode
       include ParsingExpressionGenerator
       
-      def compile(address, builder)
+      def compile(address, builder, parent_expression = nil)
         super
         assign_result "parse_terminal(#{text_value})"
       end
@@ -77,7 +77,7 @@ module Treetop2
     class AnythingSymbol < ::Treetop::TerminalSyntaxNode
       include ParsingExpressionGenerator
       
-      def compile(address, builder)
+      def compile(address, builder, parent_expression = nil)
         super
         assign_result 'parse_anything'
       end
@@ -86,7 +86,7 @@ module Treetop2
     class CharacterClass < ::Treetop::SequenceSyntaxNode
       include ParsingExpressionGenerator
 
-      def compile(address, builder)
+      def compile(address, builder, parent_expression = nil)
         super
         assign_result "parse_char_class(/#{text_value}/, '#{elements[1].text_value.gsub(/'$/, "\\\\'")}')"
       end
@@ -95,7 +95,7 @@ module Treetop2
     class Sequence < ::Treetop::SequenceSyntaxNode
       include ParsingExpressionGenerator
       
-      def compile(address, builder)
+      def compile(address, builder, parent_expression = nil)
         super
         begin_comment(self)
         use_vars :result, :start_index, :accumulator, :nested_results
@@ -125,7 +125,7 @@ module Treetop2
     class Choice < ::Treetop::SequenceSyntaxNode
       include ParsingExpressionGenerator
       
-      def compile(address, builder)
+      def compile(address, builder, parent_expression = nil)
         super
         begin_comment(self)
         use_vars :result, :start_index, :nested_results
@@ -156,8 +156,8 @@ module Treetop2
     class Repetition < ::Treetop::TerminalSyntaxNode
       include ParsingExpressionGenerator
       
-      def compile(address, parent_expression, builder)
-        super(address, builder)        
+      def compile(address, builder, parent_expression)
+        super
         repeated_expression = parent_expression.atomic
         begin_comment(parent_expression)
         use_vars :result, :accumulator, :nested_results, :start_index
@@ -182,7 +182,7 @@ module Treetop2
     
     class ZeroOrMore < Repetition
       def compile(address, builder, parent_expression)
-        super(address, parent_expression, builder)
+        super
         assign_result sequence_node(parent_expression.node_class)
         end_comment(parent_expression)
       end
@@ -190,7 +190,7 @@ module Treetop2
     
     class OneOrMore < Repetition
       def compile(address, builder, parent_expression)
-        super(address, parent_expression, builder)
+        super
         builder.if__ "#{accumulator_var}.empty?" do
           reset_index
           assign_result "ParseFailure.new(#{start_index_var}, #{nested_results_var})"
@@ -206,7 +206,7 @@ module Treetop2
       include ParsingExpressionGenerator
       
       def compile(address, builder, parent_expression)
-        super(address, builder)
+        super
         use_vars :result
         obtain_new_subexpression_address
         parent_expression.optional_expression.compile(subexpression_address, builder)
@@ -228,7 +228,7 @@ module Treetop2
       include ParsingExpressionGenerator
 
       def compile(address, builder, parent_expression)
-        super(address, builder)
+        super
         begin_comment(parent_expression)
         use_vars :result, :start_index
         obtain_new_subexpression_address
