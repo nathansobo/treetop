@@ -176,27 +176,27 @@ module Treetop2
       end
       
       def sequence_node(node_class)
-        "#{node_class || 'SequenceSyntaxNode'}.new(input, #{start_index_var}...index, #{accumulator_var}, #{nested_results_var})"
+        "#{node_class}.new(input, #{start_index_var}...index, #{accumulator_var}, #{nested_results_var})"
       end
     end
     
     class ZeroOrMore < Repetition
-      def compile(address, parent_expression, node_class, builder)
+      def compile(address, parent_expression, builder)
         super(address, parent_expression, builder)
-        assign_result sequence_node(node_class)
+        assign_result sequence_node(parent_expression.node_class)
         end_comment(parent_expression)
       end
     end
     
     class OneOrMore < Repetition
-      def compile(address, parent_expression, node_class, builder)
+      def compile(address, parent_expression, builder)
         super(address, parent_expression, builder)
         builder.if__ "#{accumulator_var}.empty?" do
           reset_index
           assign_result "ParseFailure.new(#{start_index_var}, #{nested_results_var})"
         end
         builder.else_ do
-          assign_result sequence_node(node_class)
+          assign_result sequence_node(parent_expression.node_class)
         end
         end_comment(parent_expression)
       end
@@ -205,7 +205,7 @@ module Treetop2
     class Optional < ::Treetop::TerminalSyntaxNode
       include ParsingExpressionGenerator
       
-      def compile(address, parent, ignored_node_class, builder)
+      def compile(address, parent, builder)
         super(address, builder)
         use_vars :result
         obtain_new_subexpression_address

@@ -96,11 +96,15 @@ module Treetop2
         /
         atomic suffix node_class_declarations {
           def compile(address, builder)
-            suffix.compile(address, self, node_class_declarations.node_class, builder)
+            suffix.compile(address, self, builder)
           end
           
           def optional_expression
             elements[0]
+          end
+          
+          def node_class
+            node_class_declarations.node_class || 'SequenceSyntaxNode'
           end
         }
         /
@@ -124,7 +128,11 @@ module Treetop2
         /
         atomic suffix {
           def compile(lexical_address, builder)
-            suffix.compile(lexical_address, self, nil, builder)
+            suffix.compile(lexical_address, self, builder)
+          end
+          
+          def node_class
+            'SequenceSyntaxNode'
           end
         }
         /
