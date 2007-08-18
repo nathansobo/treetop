@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), '..', 'test_helper')
 
-describe "Zero or more of a terminal symbol with a node class declaration", :extend => CompilerTestCase do
+class ZeroOrMoreOfATerminalWithNodeClassDeclarationTest < CompilerTestCase
   
   class Foo < Treetop2::Parser::SequenceSyntaxNode
   end

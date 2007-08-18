@@ -1,14 +1,17 @@
 dir = File.dirname(__FILE__)
 require "#{dir}/../test_helper"
 
-describe "An anything symbol (.)", :extend => CompilerTestCase do
+class AnythingSymbolFollowedByNodeClassDeclarationTest < CompilerTestCase  
+  class Foo < Treetop2::Parser::TerminalSyntaxNode
+  end
   
-  testing_expression '.'
+  testing_expression '. <Foo>'
   
-  it "matches any single character in a big range" do
+  it "matches any single character in a big range, returning an instance of the declared node class" do
     (33..127).each do |digit|
       parse(digit.chr) do |result|
         result.should be_success
+        result.should be_an_instance_of(Foo)
         result.interval.should == (0...1)
       end
     end
