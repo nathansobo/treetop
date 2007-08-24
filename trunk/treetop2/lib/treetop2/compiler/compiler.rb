@@ -197,15 +197,20 @@ module Treetop2
         end
       end
       
-      def sequence_node(node_class)
-        "#{node_class}.new(input, #{start_index_var}...index, #{accumulator_var}, #{nested_results_var})"
+      def inline_module_name
+        parent_expression.inline_module_name
+      end
+      
+      def assign_and_extend_result
+        assign_result "#{node_class}.new(input, #{start_index_var}...index, #{accumulator_var}, #{nested_results_var})"
+        builder << "#{result_var}.extend(#{inline_module_name})" if inline_module_name
       end
     end
     
     class ZeroOrMore < Repetition
       def compile(address, builder, parent_expression)
         super
-        assign_result sequence_node(parent_expression.node_class)
+        assign_and_extend_result
         end_comment(parent_expression)
       end
     end
@@ -218,7 +223,7 @@ module Treetop2
           assign_result "ParseFailure.new(#{start_index_var}, #{nested_results_var})"
         end
         builder.else_ do
-          assign_result sequence_node(parent_expression.node_class)
+          assign_and_extend_result
         end
         end_comment(parent_expression)
       end
