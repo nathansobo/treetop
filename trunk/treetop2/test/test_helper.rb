@@ -19,7 +19,7 @@ class CompilerTestCase < Screw::Unit::TestCase
     def testing_expression(expression_to_test)
       rule_node = parse_with_metagrammar("rule test_expression\n" + expression_to_test + "\nend", :parsing_rule)
       test_parser_code = generate_test_parser_for_expression(rule_node)
-      puts test_parser_code
+      #puts test_parser_code
       class_eval(test_parser_code)
       self.parser_class_under_test = const_get(:TestParser)
     end
