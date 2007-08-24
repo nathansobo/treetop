@@ -49,7 +49,6 @@ class CompilerTestCase < Screw::Unit::TestCase
           end
 
           def prepare_to_parse(input)
-            self.class.clear_subexpression_procs
             @input = input
             @index = test_index || 0
           end

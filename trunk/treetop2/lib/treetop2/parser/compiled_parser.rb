@@ -11,25 +11,8 @@ module Treetop2
         prepare_to_parse(input)
         return root
       end
-    
-      def self.node_classes
-        @node_classes ||= Hash.new
-      end
-    
-      def self.subexpression_procs
-        @subexpression_procs
-      end
-    
-      def self.clear_subexpression_procs
-        @subexpression_procs = Hash.new
-      end
-    
-      def exp
-        self.class.subexpression_procs
-      end
-    
+        
       def prepare_to_parse(input)
-        self.class.clear_subexpression_procs
         @input = input
         @index = 0
       end
@@ -65,12 +48,6 @@ module Treetop2
         else
           terminal_parse_failure("any character")
         end
-      end
-    
-      def parse_failure(start_index, nested_results)
-        failure_index = index
-        @index = start_index
-        ParseFailure.new(failure_index, nested_results)
       end
     
       def terminal_parse_failure(expected_string)
