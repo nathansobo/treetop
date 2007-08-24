@@ -14,9 +14,9 @@ module Treetop2
         parent_expression.node_class
       end
       
-      def inline_module
+      def inline_module_name
         return nil unless parent_expression
-        parent_expression.inline_module
+        parent_expression.inline_module_name
       end
     
       def use_vars(*var_symbols)

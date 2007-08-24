@@ -105,7 +105,7 @@ module Treetop2
             atomic.inline_module_nodes
           end
           
-          def inline_module
+          def inline_module_name
             nil
           end
         }
@@ -127,8 +127,8 @@ module Treetop2
             node_class_declarations.inline_module_nodes
           end
           
-          def inline_module
-            node_class_declarations.inline_module
+          def inline_module_name
+            node_class_declarations.inline_module_name
           end
         }
         /
@@ -145,8 +145,8 @@ module Treetop2
             node_class_declarations.inline_module_nodes
           end
           
-          def inline_module
-            node_class_declarations.inline_module
+          def inline_module_name
+            node_class_declarations.inline_module_name
           end
         }
       end
@@ -165,7 +165,7 @@ module Treetop2
             atomic.inline_module_nodes
           end
           
-          def inline_module
+          def inline_module_name
             nil
           end
         }
@@ -183,7 +183,7 @@ module Treetop2
             atomic.inline_module_nodes
           end
           
-          def inline_module
+          def inline_module_name
             nil
           end
         }
@@ -213,7 +213,7 @@ module Treetop2
             trailing_block.inline_module_node
           end
           
-          def inline_module
+          def inline_module_name
             inline_module_node.module_name if inline_module_node
           end
         }
@@ -307,7 +307,7 @@ module Treetop2
             block
           end
           
-          def inline_module
+          def inline_module_name
             inline_module_node.module_name
           end
         }
@@ -321,7 +321,7 @@ module Treetop2
             nil 
           end
           
-          def inline_module
+          def inline_module_name
             nil
           end
         }

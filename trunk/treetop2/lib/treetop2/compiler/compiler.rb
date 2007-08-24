@@ -81,7 +81,7 @@ module Treetop2
       
       def compile(address, builder, parent_expression = nil)
         super
-        assign_result "parse_terminal(#{text_value}, #{node_class || 'TerminalSyntaxNode'}#{', ' + inline_module if inline_module})"
+        assign_result "parse_terminal(#{text_value}, #{node_class || 'TerminalSyntaxNode'}#{', ' + inline_module_name if inline_module_name})"
       end
     end
     
