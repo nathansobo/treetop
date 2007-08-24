@@ -1,15 +1,21 @@
 require File.join(File.dirname(__FILE__), '..', 'test_helper')
 
-class CharacterClassFollowedByNodeClassDeclarationTest < CompilerTestCase
+class CharacterClassTest < CompilerTestCase
   class Foo < Treetop2::Parser::SyntaxNode
   end
 
-  testing_expression "[A-Z] <Foo>"
+  testing_expression "[A-Z] <Foo> { def a_method; end }"
 
-  it "matches single characters within that range, returning instances of the declared node class" do
-    parse('A').should be_an_instance_of(Foo)
-    parse('N').should be_an_instance_of(Foo)
-    parse('Z').should be_an_instance_of(Foo)
+  it "matches single characters within that range, returning instances of the declared node class that respond to the method defined in the inline module" do
+    result = parse('A')
+    result.should be_an_instance_of(Foo)
+    result.should respond_to(:a_method)
+    result = parse('N')
+    result.should be_an_instance_of(Foo)
+    result.should respond_to(:a_method)
+    result = parse('Z')
+    result.should be_an_instance_of(Foo)
+    result.should respond_to(:a_method)
   end
   
   it "does not match single characters outside of that range" do

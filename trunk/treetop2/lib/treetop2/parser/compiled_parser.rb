@@ -37,6 +37,7 @@ module Treetop2
       def parse_char_class(char_class_re, char_class_string, node_class = SyntaxNode, inline_module = nil)
         if input.index(char_class_re, index) == index
           result = node_class.new(input, index...(index + 1))
+          result.extend(inline_module) if inline_module
           @index += 1
           result
         else
