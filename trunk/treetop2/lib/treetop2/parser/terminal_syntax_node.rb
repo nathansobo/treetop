@@ -6,9 +6,7 @@ module Treetop2
         super(input, interval, [])
       end
 
-      def epsilon?
-        text_value.eql? ""
-      end
+      
     end
   end
 end

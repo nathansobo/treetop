@@ -2,7 +2,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../test_helper"
 
 class AnythingSymbolFollowedByNodeClassDeclarationTest < CompilerTestCase  
-  class Foo < Treetop2::Parser::TerminalSyntaxNode
+  class Foo < Treetop2::Parser::SyntaxNode
   end
   
   testing_expression '. <Foo>'

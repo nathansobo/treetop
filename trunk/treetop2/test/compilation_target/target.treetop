@@ -1,5 +1,5 @@
 module Target
-  class Bar < Treetop2::Parser::SequenceSyntaxNode
+  class Bar < Treetop2::Parser::SyntaxNode
     
   end
 

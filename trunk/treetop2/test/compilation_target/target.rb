@@ -2,7 +2,7 @@ class Target < Treetop2::Parser::CompiledParser
   include Treetop2::Parser
   
   
-  class Bar < SequenceSyntaxNode
+  class Bar < SyntaxNode
     
   end
   
@@ -57,7 +57,7 @@ class Target < Treetop2::Parser::CompiledParser
         end
           
         if s4.last.success?
-          r4 = SequenceSyntaxNode.new(input, i4...index, s4)
+          r4 = SyntaxNode.new(input, i4...index, s4)
         else
           self.index = i4
           r4 = ParseFailure.new(i4, s4)
@@ -80,7 +80,7 @@ class Target < Treetop2::Parser::CompiledParser
           end
           
           if s7.last.success?
-            r7 = SequenceSyntaxNode.new(input, i7...index, s7)
+            r7 = SyntaxNode.new(input, i7...index, s7)
           else
             self.index = i7
             r7 = ParseFailure.new(i7, s7)
@@ -110,7 +110,7 @@ class Target < Treetop2::Parser::CompiledParser
         self.index = i2
         r2 = ParseFailure.new(i2, nr2)
       else
-        r2 = SequenceSyntaxNode.new(input, i2...index, s2, nr2)
+        r2 = SyntaxNode.new(input, i2...index, s2, nr2)
       end      
       # end + closure; results in r2
       

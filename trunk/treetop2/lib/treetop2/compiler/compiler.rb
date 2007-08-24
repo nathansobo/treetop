@@ -81,7 +81,7 @@ module Treetop2
       
       def compile(address, builder, parent_expression = nil)
         super
-        assign_result "parse_terminal(#{text_value}, #{node_class || 'TerminalSyntaxNode'}#{', ' + inline_module_name if inline_module_name})"
+        assign_result "parse_terminal(#{text_value}, #{node_class || 'SyntaxNode'}#{', ' + inline_module_name if inline_module_name})"
       end
     end
     
@@ -90,7 +90,7 @@ module Treetop2
       
       def compile(address, builder, parent_expression = nil)
         super
-        assign_result "parse_anything(#{node_class || 'TerminalSyntaxNode'})"
+        assign_result "parse_anything(#{node_class || 'SyntaxNode'})"
       end
     end
     
@@ -99,7 +99,7 @@ module Treetop2
 
       def compile(address, builder, parent_expression = nil)
         super
-        assign_result "parse_char_class(/#{text_value}/, '#{elements[1].text_value.gsub(/'$/, "\\\\'")}', #{node_class || 'TerminalSyntaxNode'})"
+        assign_result "parse_char_class(/#{text_value}/, '#{elements[1].text_value.gsub(/'$/, "\\\\'")}', #{node_class || 'SyntaxNode'})"
       end
     end
     
@@ -112,7 +112,7 @@ module Treetop2
         use_vars :result, :start_index, :accumulator, :nested_results
         compile_sequence_elements(sequence_elements)
         builder.if__ "#{accumulator_var}.last.success?" do
-          assign_result "(#{node_class_declarations.node_class || 'SequenceSyntaxNode'}).new(input, #{start_index_var}...index, #{accumulator_var})"
+          assign_result "(#{node_class_declarations.node_class || 'SyntaxNode'}).new(input, #{start_index_var}...index, #{accumulator_var})"
         end
         builder.else_ do
           reset_index

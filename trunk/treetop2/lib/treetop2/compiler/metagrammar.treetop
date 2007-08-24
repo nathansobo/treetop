@@ -120,7 +120,7 @@ module Treetop2
           end
           
           def node_class
-            node_class_declarations.node_class || 'SequenceSyntaxNode'
+            node_class_declarations.node_class || 'SyntaxNode'
           end
           
           def inline_modules
@@ -176,7 +176,7 @@ module Treetop2
           end
           
           def node_class
-            'SequenceSyntaxNode'
+            'SyntaxNode'
           end
           
           def inline_modules

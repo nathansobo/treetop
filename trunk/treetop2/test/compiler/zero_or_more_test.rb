@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__), '..', 'test_helper')
 
 class ZeroOrMoreOfATerminalWithNodeClassDeclarationTest < CompilerTestCase
   
-  class Foo < Treetop2::Parser::SequenceSyntaxNode
+  class Foo < Treetop2::Parser::SyntaxNode
   end
 
   testing_expression '"foo"* <Foo>'

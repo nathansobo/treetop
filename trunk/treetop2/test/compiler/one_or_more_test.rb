@@ -3,7 +3,7 @@ require File.join(File.dirname(__FILE__), '..', 'test_helper')
 class OneOrMoreOfTerminalWithNodeClassDeclarationTest < CompilerTestCase
   testing_expression '"foo"+ <Foo>'
 
-  class Foo < Treetop2::Parser::SequenceSyntaxNode
+  class Foo < Treetop2::Parser::SyntaxNode
   end
 
   it "fails to parse epsilon with a nested failure" do

@@ -6,7 +6,7 @@ describe "A sequence of terminals", :extend => CompilerTestCase do
   it "parses matching input successfully" do
     parse('foobarbaz') do |result|
       result.should be_success
-      result.should be_an_instance_of(Parser::SequenceSyntaxNode)
+      result.should be_nonterminal
       (result.elements.map {|elt| elt.text_value}).should == ['foo', 'bar', 'baz']
     end
   end
@@ -14,7 +14,7 @@ describe "A sequence of terminals", :extend => CompilerTestCase do
   it "parses matching input at a non-zero index successfully" do
     parse('---foobarbaz', :at_index => 3) do |result|
       result.should be_success
-      result.should be_an_instance_of(Parser::SequenceSyntaxNode)
+      result.should be_nonterminal
       (result.elements.map {|elt| elt.text_value}).join.should == 'foobarbaz'
     end
   end
@@ -32,7 +32,7 @@ describe "A sequence of terminals", :extend => CompilerTestCase do
 end
 
 describe "A sequence of terminal symbols followed by a node class declaration", :extend => CompilerTestCase do
-  class NodeClass < Treetop2::Parser::SequenceSyntaxNode
+  class NodeClass < Treetop2::Parser::SyntaxNode
   end
 
   testing_expression '"foo" "bar" "baz" <NodeClass>'
