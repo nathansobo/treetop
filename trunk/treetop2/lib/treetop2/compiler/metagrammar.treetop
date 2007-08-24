@@ -60,6 +60,10 @@ module Treetop2
           def alternatives
             [head_alternative] + tail_alternatives
           end
+          
+          def inline_module_nodes
+            (alternatives.map {|alt| alt.inline_module_nodes }).flatten
+          end
         }
       end
 
@@ -75,6 +79,10 @@ module Treetop2
           
           def sequence_elements
             [head_element] + tail_elements
+          end
+          
+          def inline_module_nodes
+            (sequence_elements.map {|elt| elt.inline_module_nodes}).flatten + node_class_declarations.inline_module_nodes
           end
         }
       end
@@ -92,6 +100,14 @@ module Treetop2
           def predicated_expression
             atomic
           end
+          
+          def inline_module_nodes
+            atomic.inline_module_nodes
+          end
+          
+          def inline_module
+            nil
+          end
         }
         /
         atomic suffix node_class_declarations {
@@ -106,6 +122,14 @@ module Treetop2
           def node_class
             node_class_declarations.node_class || 'SequenceSyntaxNode'
           end
+          
+          def inline_module_nodes
+            node_class_declarations.inline_module_nodes
+          end
+          
+          def inline_module
+            node_class_declarations.inline_module
+          end
         }
         /
         atomic node_class_declarations {
@@ -115,6 +139,14 @@ module Treetop2
           
           def node_class
             node_class_declarations.node_class
+          end
+          
+          def inline_module_nodes
+            node_class_declarations.inline_module_nodes
+          end
+          
+          def inline_module
+            node_class_declarations.inline_module
           end
         }
       end
@@ -128,6 +160,14 @@ module Treetop2
           def predicated_expression
             elements[1]
           end
+          
+          def inline_module_nodes
+            atomic.inline_module_nodes
+          end
+          
+          def inline_module
+            nil
+          end
         }
         /
         atomic suffix {
@@ -137,6 +177,14 @@ module Treetop2
           
           def node_class
             'SequenceSyntaxNode'
+          end
+          
+          def inline_module_nodes
+            atomic.inline_module_nodes
+          end
+          
+          def inline_module
+            nil
           end
         }
         /
@@ -155,6 +203,18 @@ module Treetop2
         node_class_expression trailing_block {
           def node_class
             node_class_expression.node_class
+          end
+          
+          def inline_module_nodes
+            trailing_block.inline_module_nodes
+          end
+          
+          def inline_module_node
+            trailing_block.inline_module_node
+          end
+          
+          def inline_module
+            inline_module_node.module_name if inline_module_node
           end
         }
       end
@@ -176,7 +236,11 @@ module Treetop2
       end
   
       rule parenthesized_expression
-        '(' space? parsing_expression space? ')' <ParenthesizedExpression>
+        '(' space? parsing_expression space? ')' <ParenthesizedExpression> {
+          def inline_module_nodes
+            parsing_expression.inline_module_nodes
+          end
+        }
       end
   
       rule nonterminal
@@ -188,19 +252,35 @@ module Treetop2
       end
 
       rule double_quoted_string
-        '"' (!'"' ("\\\\" / '\"' / .))* '"' <Terminal>
+        '"' (!'"' ("\\\\" / '\"' / .))* '"' <Terminal> {
+          def inline_module_nodes
+            []
+          end
+        }
       end
 
       rule single_quoted_string
-        "'" (!"'" ("\\\\" / "\\'" / .))* "'" <Terminal>
+        "'" (!"'" ("\\\\" / "\\'" / .))* "'" <Terminal> {
+          def inline_module_nodes
+            []
+          end
+        }
       end
 
       rule character_class
-        '[' (!']' ('\]'/.))+ ']' <CharacterClass>
+        '[' (!']' ('\]'/.))+ ']' <CharacterClass> {
+          def inline_module_nodes
+            []
+          end
+        }
       end
 
       rule anything_symbol
-        '.' <AnythingSymbol>
+        '.' <AnythingSymbol> {
+          def inline_module_nodes
+            []
+          end
+        }
       end
     
       rule node_class_expression
@@ -218,13 +298,37 @@ module Treetop2
       end
   
       rule trailing_block
-        space block
+        space block {
+          def inline_module_nodes
+            [inline_module_node]
+          end
+          
+          def inline_module_node
+            block
+          end
+          
+          def inline_module
+            inline_module_node.module_name
+          end
+        }
         /
-        ''
+        '' {
+          def inline_module_nodes
+            []
+          end
+          
+          def inline_module_node
+            nil 
+          end
+          
+          def inline_module
+            nil
+          end
+        }
       end
 
       rule block
-        '{' (block / ![{}] .)* '}'
+        '{' (block / ![{}] .)* '}' <InlineModule>
       end
 
       rule keyword_inside_grammar

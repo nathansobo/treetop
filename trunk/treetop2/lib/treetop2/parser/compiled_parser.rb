@@ -44,9 +44,10 @@ module Treetop2
         end
       end
     
-      def parse_terminal(terminal_string, node_class=TerminalSyntaxNode)
+      def parse_terminal(terminal_string, node_class=TerminalSyntaxNode, inline_module=nil)
         if input.index(terminal_string, index) == index
           result = node_class.new(input, index...(index + terminal_string.length))
+          result.extend(inline_module) if inline_module
           @index += terminal_string.length
           result
         else

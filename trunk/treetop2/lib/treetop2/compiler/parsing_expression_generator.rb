@@ -13,6 +13,11 @@ module Treetop2
         return nil unless parent_expression
         parent_expression.node_class
       end
+      
+      def inline_module
+        return nil unless parent_expression
+        parent_expression.inline_module
+      end
     
       def use_vars(*var_symbols)
         @var_symbols = var_symbols

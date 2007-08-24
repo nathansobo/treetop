@@ -17,9 +17,9 @@ class CompilerTestCase < Screw::Unit::TestCase
     attr_accessor :parser_class_under_test
     
     def testing_expression(expression_to_test)
-      expression_node = parse_with_metagrammar(expression_to_test, :parsing_expression)
-      test_parser_code = generate_test_parser_for_expression(expression_node)
-      #puts test_parser_code
+      rule_node = parse_with_metagrammar("rule test_expression\n" + expression_to_test + "\nend", :parsing_rule)
+      test_parser_code = generate_test_parser_for_expression(rule_node)
+      puts test_parser_code
       class_eval(test_parser_code)
       self.parser_class_under_test = const_get(:TestParser)
     end
@@ -36,7 +36,7 @@ class CompilerTestCase < Screw::Unit::TestCase
     def generate_test_parser_for_expression(expression_node)
       builder = Compiler::RubyBuilder.new
       address = builder.next_address
-      expression_node.compile(address, builder)
+      expression_node.compile(builder)
       %{
         class TestParser < Treetop2::Parser::CompiledParser
           include Treetop2::Parser
@@ -53,10 +53,7 @@ class CompilerTestCase < Screw::Unit::TestCase
             @index = test_index || 0
           end
 
-          def _nt_test_expression
-            #{builder.ruby.tabrestto(12)}
-            return r#{address}
-          end
+          #{builder.ruby.tabrestto(10)}
         end
       }.tabto(0)
     end

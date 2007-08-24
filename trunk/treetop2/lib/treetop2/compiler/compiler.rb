@@ -34,6 +34,7 @@ module Treetop2
 
     class ParsingRule < ::Treetop::SequenceSyntaxNode
       def compile(builder)
+        compile_inline_module_declarations(builder)
         builder.reset_addresses
         expression_address = builder.next_address
         builder << "def #{method_name}"
@@ -44,8 +45,18 @@ module Treetop2
         builder << "end"
       end
       
+      def compile_inline_module_declarations(builder)
+        parsing_expression.inline_module_nodes.each_with_index do |inline_module_node, i|
+          inline_module_node.compile(i, self, builder)
+        end
+      end
+      
       def method_name
-        "_nt_#{nonterminal.text_value}"
+        "_nt_#{name}"
+      end
+      
+      def name
+        nonterminal.text_value
       end
     end
     
@@ -70,7 +81,7 @@ module Treetop2
       
       def compile(address, builder, parent_expression = nil)
         super
-        assign_result "parse_terminal(#{text_value}, #{node_class || 'TerminalSyntaxNode'})"
+        assign_result "parse_terminal(#{text_value}, #{node_class || 'TerminalSyntaxNode'}#{', ' + inline_module if inline_module})"
       end
     end
     
@@ -265,6 +276,23 @@ module Treetop2
       
       def when_failure
         assign_success
+      end
+    end
+    
+    class InlineModule < ::Treetop::SequenceSyntaxNode
+      attr_reader :module_name
+      
+      def compile(index, rule, builder)
+        @module_name = "#{rule.name.camelize}#{index}"
+        builder << "module #{module_name}"
+        builder.indented do
+          builder << ruby_code
+        end
+        builder << "end"
+      end
+      
+      def ruby_code
+        elements[1].text_value
       end
     end
   end
