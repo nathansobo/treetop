@@ -17,6 +17,14 @@ module Treetop2
         return nil unless parent_expression
         parent_expression.inline_module_name
       end
+      
+      def optional_arg(arg)
+        if arg
+          ", #{arg}"
+        else
+          ''
+        end
+      end
     
       def use_vars(*var_symbols)
         @var_symbols = var_symbols
