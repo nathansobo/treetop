@@ -10,8 +10,7 @@ module Treetop2
       end
       
       def node_class
-        return nil unless parent_expression
-        parent_expression.node_class
+        parent_expression && parent_expression.node_class || 'SyntaxNode'
       end
       
       def inline_module_name

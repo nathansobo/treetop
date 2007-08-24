@@ -92,7 +92,7 @@ module Treetop2
       
       def compile(address, builder, parent_expression = nil)
         super
-        assign_result "parse_terminal(#{text_value}, #{node_class || 'SyntaxNode'}#{', ' + inline_module_name if inline_module_name})"
+        assign_result "parse_terminal(#{text_value}, #{node_class}#{', ' + inline_module_name if inline_module_name})"
       end
     end
     
@@ -102,7 +102,7 @@ module Treetop2
       
       def compile(address, builder, parent_expression = nil)
         super
-        assign_result "parse_anything(#{node_class || 'SyntaxNode'}#{inline_module_argument})"
+        assign_result "parse_anything(#{node_class}#{inline_module_argument})"
       end
       
       def inline_module_argument
@@ -116,7 +116,7 @@ module Treetop2
       
       def compile(address, builder, parent_expression = nil)
         super
-        assign_result "parse_char_class(/#{text_value}/, '#{elements[1].text_value.gsub(/'$/, "\\\\'")}', #{node_class || 'SyntaxNode'})"
+        assign_result "parse_char_class(/#{text_value}/, '#{elements[1].text_value.gsub(/'$/, "\\\\'")}', #{node_class})"
       end
     end
     
