@@ -1,6 +1,6 @@
 module Treetop2
   module Compiler
-    module ParsingExpressionGenerator
+    module ParsingExpression
       attr_reader :address, :builder, :subexpression_address, :var_symbols, :parent_expression
     
       def compile(address, builder, parent_expression)

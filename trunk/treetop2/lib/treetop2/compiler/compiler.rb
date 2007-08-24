@@ -76,7 +76,7 @@ module Treetop2
     end
     
     class Nonterminal < ::Treetop::SequenceSyntaxNode
-      include ParsingExpressionGenerator
+      include ParsingExpression
       include AtomicExpression
       
       def compile(address, builder, parent_expression = nil)
@@ -87,7 +87,7 @@ module Treetop2
     end
     
     class Terminal < ::Treetop::SequenceSyntaxNode
-      include ParsingExpressionGenerator
+      include ParsingExpression
       include AtomicExpression
       
       def compile(address, builder, parent_expression = nil)
@@ -97,7 +97,7 @@ module Treetop2
     end
     
     class AnythingSymbol < ::Treetop::TerminalSyntaxNode
-      include ParsingExpressionGenerator
+      include ParsingExpression
       include AtomicExpression
       
       def compile(address, builder, parent_expression = nil)
@@ -111,7 +111,7 @@ module Treetop2
     end
     
     class CharacterClass < ::Treetop::SequenceSyntaxNode
-      include ParsingExpressionGenerator
+      include ParsingExpression
       include AtomicExpression
       
       def compile(address, builder, parent_expression = nil)
@@ -121,7 +121,7 @@ module Treetop2
     end
     
     class Sequence < ::Treetop::SequenceSyntaxNode
-      include ParsingExpressionGenerator
+      include ParsingExpression
       
       def compile(address, builder, parent_expression = nil)
         super
@@ -151,7 +151,7 @@ module Treetop2
     end
     
     class Choice < ::Treetop::SequenceSyntaxNode
-      include ParsingExpressionGenerator
+      include ParsingExpression
       
       def compile(address, builder, parent_expression = nil)
         super
@@ -182,7 +182,7 @@ module Treetop2
     
     
     class Repetition < ::Treetop::TerminalSyntaxNode
-      include ParsingExpressionGenerator
+      include ParsingExpression
       
       def compile(address, builder, parent_expression)
         super
@@ -231,7 +231,7 @@ module Treetop2
     end
     
     class Optional < ::Treetop::TerminalSyntaxNode
-      include ParsingExpressionGenerator
+      include ParsingExpression
       
       def compile(address, builder, parent_expression)
         super
@@ -253,7 +253,7 @@ module Treetop2
     end
     
     class Predicate < ::Treetop::TerminalSyntaxNode
-      include ParsingExpressionGenerator
+      include ParsingExpression
 
       def compile(address, builder, parent_expression)
         super
