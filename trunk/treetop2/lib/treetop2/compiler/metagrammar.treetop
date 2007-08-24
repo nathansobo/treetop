@@ -124,7 +124,7 @@ module Treetop2
           end
           
           def inline_modules
-            node_class_declarations.inline_modules
+            atomic.inline_modules + node_class_declarations.inline_modules
           end
           
           def inline_module_name
@@ -142,7 +142,7 @@ module Treetop2
           end
           
           def inline_modules
-            node_class_declarations.inline_modules
+            atomic.inline_modules + node_class_declarations.inline_modules
           end
           
           def inline_module_name
@@ -200,17 +200,17 @@ module Treetop2
       end
           
       rule node_class_declarations
-        node_class_expression trailing_block {
+        node_class_expression trailing_inline_module {
           def node_class
             node_class_expression.node_class
           end
           
           def inline_modules
-            trailing_block.inline_modules
+            trailing_inline_module.inline_modules
           end
           
           def inline_module
-            trailing_block.inline_module
+            trailing_inline_module.inline_module
           end
           
           def inline_module_name
@@ -281,16 +281,12 @@ module Treetop2
         }
       end
   
-      rule trailing_block
-        space block {
+      rule trailing_inline_module
+        space inline_module {
           def inline_modules
             [inline_module]
           end
-          
-          def inline_module
-            block
-          end
-          
+                    
           def inline_module_name
             inline_module.module_name
           end
@@ -311,8 +307,8 @@ module Treetop2
         }
       end
 
-      rule block
-        '{' (block / ![{}] .)* '}' <InlineModule>
+      rule inline_module
+        '{' (inline_module / ![{}] .)* '}' <InlineModule>
       end
 
       rule keyword_inside_grammar
