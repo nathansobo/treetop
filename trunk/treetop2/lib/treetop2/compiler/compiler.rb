@@ -122,7 +122,7 @@ module Treetop2
         use_vars :result, :start_index, :accumulator, :nested_results
         compile_sequence_elements(sequence_elements)
         builder.if__ "#{accumulator_var}.last.success?" do
-          assign_result "(#{node_class_declarations.node_class || 'SyntaxNode'}).new(input, #{start_index_var}...index, #{accumulator_var})"
+          assign_result "(#{node_class_declarations.node_class}).new(input, #{start_index_var}...index, #{accumulator_var})"
         end
         builder.else_ do
           reset_index
