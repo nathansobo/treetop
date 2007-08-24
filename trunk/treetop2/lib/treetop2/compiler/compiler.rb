@@ -1,6 +1,15 @@
 module Treetop2
   module Compiler
     
+    
+    module AtomicExpression
+      def inline_modules
+        []
+      end
+    end
+    
+    
+    
     class TreetopFile < ::Treetop::SequenceSyntaxNode
       def compile
         (elements.map {|elt| elt.compile}).join
@@ -68,6 +77,7 @@ module Treetop2
     
     class Nonterminal < ::Treetop::SequenceSyntaxNode
       include ParsingExpressionGenerator
+      include AtomicExpression
       
       def compile(address, builder, parent_expression = nil)
         super
@@ -78,6 +88,7 @@ module Treetop2
     
     class Terminal < ::Treetop::SequenceSyntaxNode
       include ParsingExpressionGenerator
+      include AtomicExpression
       
       def compile(address, builder, parent_expression = nil)
         super
@@ -87,6 +98,7 @@ module Treetop2
     
     class AnythingSymbol < ::Treetop::TerminalSyntaxNode
       include ParsingExpressionGenerator
+      include AtomicExpression
       
       def compile(address, builder, parent_expression = nil)
         super
@@ -96,7 +108,8 @@ module Treetop2
     
     class CharacterClass < ::Treetop::SequenceSyntaxNode
       include ParsingExpressionGenerator
-
+      include AtomicExpression
+      
       def compile(address, builder, parent_expression = nil)
         super
         assign_result "parse_char_class(/#{text_value}/, '#{elements[1].text_value.gsub(/'$/, "\\\\'")}', #{node_class || 'SyntaxNode'})"

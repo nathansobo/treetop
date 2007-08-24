@@ -252,35 +252,19 @@ module Treetop2
       end
 
       rule double_quoted_string
-        '"' (!'"' ("\\\\" / '\"' / .))* '"' <Terminal> {
-          def inline_modules
-            []
-          end
-        }
+        '"' (!'"' ("\\\\" / '\"' / .))* '"' <Terminal>
       end
 
       rule single_quoted_string
-        "'" (!"'" ("\\\\" / "\\'" / .))* "'" <Terminal> {
-          def inline_modules
-            []
-          end
-        }
+        "'" (!"'" ("\\\\" / "\\'" / .))* "'" <Terminal>
       end
 
       rule character_class
-        '[' (!']' ('\]'/.))+ ']' <CharacterClass> {
-          def inline_modules
-            []
-          end
-        }
+        '[' (!']' ('\]'/.))+ ']' <CharacterClass>
       end
 
       rule anything_symbol
-        '.' <AnythingSymbol> {
-          def inline_modules
-            []
-          end
-        }
+        '.' <AnythingSymbol>
       end
     
       rule node_class_expression
