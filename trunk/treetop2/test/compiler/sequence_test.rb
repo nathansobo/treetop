@@ -1,12 +1,17 @@
 require File.join(File.dirname(__FILE__), '..', 'test_helper')
  
-describe "A sequence of terminals", :extend => CompilerTestCase do
-  testing_expression '"foo" "bar" "baz"'
+class SequenceTest < CompilerTestCase
+
+  class Foo < Treetop2::Parser::SyntaxNode
+  end
+
+  testing_expression '"foo" "bar" "baz" <Foo> { def a_method; end }'
   
-  it "parses matching input successfully" do
+  it "parses matching input successfully, returning an instance of the declared node class that responds to a method defined in the inline block" do
     parse('foobarbaz') do |result|
       result.should be_success
-      result.should be_nonterminal
+      result.should be_an_instance_of(Foo)
+      result.should respond_to(:a_method)
       (result.elements.map {|elt| elt.text_value}).should == ['foo', 'bar', 'baz']
     end
   end
@@ -27,19 +32,6 @@ describe "A sequence of terminals", :extend => CompilerTestCase do
       nested_failure = result.nested_failures.first
       nested_failure.index.should == 6
       nested_failure.expected_string.should == 'bar'
-    end
-  end
-end
-
-describe "A sequence of terminal symbols followed by a node class declaration", :extend => CompilerTestCase do
-  class NodeClass < Treetop2::Parser::SyntaxNode
-  end
-
-  testing_expression '"foo" "bar" "baz" <NodeClass>'
-  
-  it "returns an instance of the declared node class upon parsing matching input" do
-    parse('foobarbaz') do |result|
-      result.should be_an_instance_of(NodeClass)
     end
   end
 end

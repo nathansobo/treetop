@@ -123,6 +123,7 @@ module Treetop2
         compile_sequence_elements(sequence_elements)
         builder.if__ "#{accumulator_var}.last.success?" do
           assign_result "(#{node_class_declarations.node_class}).new(input, #{start_index_var}...index, #{accumulator_var})"
+          builder << "#{result_var}.extend(#{inline_module_name})" if inline_module_name
         end
         builder.else_ do
           reset_index

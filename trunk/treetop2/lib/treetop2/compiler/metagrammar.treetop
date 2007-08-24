@@ -84,6 +84,10 @@ module Treetop2
           def inline_modules
             (sequence_elements.map {|elt| elt.inline_modules}).flatten + node_class_declarations.inline_modules
           end
+          
+          def inline_module_name
+            node_class_declarations.inline_module_name
+          end
         }
       end
 
