@@ -9,10 +9,11 @@ describe "An instance of a hand-built Bar parser" do
     @parser = Target.new
   end
   
-  it "can parse matching input, associating it with the correct node class" do
+  it "can parse matching input, associating it with the correct node class and that can respond to methods from the inlined module" do
     result = @parser.parse('abce')
     result.should be_success
     result.should be_an_instance_of(Target::Bar)
+    result.foo.should == 'foo'
   end
   
   it "can parse matching input that exercises foo's positive closure" do

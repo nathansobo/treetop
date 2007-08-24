@@ -1,12 +1,6 @@
 class Target < Treetop2::Parser::CompiledParser
   include Treetop2::Parser
   
-  module FooInlineModule
-    def foo
-      'foo'
-    end
-  end
-  
   
   class Bar < SequenceSyntaxNode
     
@@ -22,6 +16,13 @@ class Target < Treetop2::Parser::CompiledParser
   def parse(input)
     prepare_to_parse(input)
     return self.send("_nt_#{root}".to_sym)
+  end
+  
+
+  module FooInlineModule
+    def foo
+      'foo'
+    end
   end
   
   # parsing expression:
@@ -127,6 +128,8 @@ class Target < Treetop2::Parser::CompiledParser
         r0 = ParseFailure.new(i0, s0)
       end
       # end of the sequence... r0 has a value
+      
+      r0.extend(FooInlineModule)
       
       return r0
     end
