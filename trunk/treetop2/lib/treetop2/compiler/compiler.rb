@@ -46,8 +46,8 @@ module Treetop2
       end
       
       def compile_inline_module_declarations(builder)
-        parsing_expression.inline_module_nodes.each_with_index do |inline_module_node, i|
-          inline_module_node.compile(i, self, builder)
+        parsing_expression.inline_modules.each_with_index do |inline_module, i|
+          inline_module.compile(i, self, builder)
         end
       end
       

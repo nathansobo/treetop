@@ -61,8 +61,8 @@ module Treetop2
             [head_alternative] + tail_alternatives
           end
           
-          def inline_module_nodes
-            (alternatives.map {|alt| alt.inline_module_nodes }).flatten
+          def inline_modules
+            (alternatives.map {|alt| alt.inline_modules }).flatten
           end
         }
       end
@@ -81,8 +81,8 @@ module Treetop2
             [head_element] + tail_elements
           end
           
-          def inline_module_nodes
-            (sequence_elements.map {|elt| elt.inline_module_nodes}).flatten + node_class_declarations.inline_module_nodes
+          def inline_modules
+            (sequence_elements.map {|elt| elt.inline_modules}).flatten + node_class_declarations.inline_modules
           end
         }
       end
@@ -101,8 +101,8 @@ module Treetop2
             atomic
           end
           
-          def inline_module_nodes
-            atomic.inline_module_nodes
+          def inline_modules
+            atomic.inline_modules
           end
           
           def inline_module_name
@@ -123,8 +123,8 @@ module Treetop2
             node_class_declarations.node_class || 'SequenceSyntaxNode'
           end
           
-          def inline_module_nodes
-            node_class_declarations.inline_module_nodes
+          def inline_modules
+            node_class_declarations.inline_modules
           end
           
           def inline_module_name
@@ -141,8 +141,8 @@ module Treetop2
             node_class_declarations.node_class
           end
           
-          def inline_module_nodes
-            node_class_declarations.inline_module_nodes
+          def inline_modules
+            node_class_declarations.inline_modules
           end
           
           def inline_module_name
@@ -161,8 +161,8 @@ module Treetop2
             elements[1]
           end
           
-          def inline_module_nodes
-            atomic.inline_module_nodes
+          def inline_modules
+            atomic.inline_modules
           end
           
           def inline_module_name
@@ -179,8 +179,8 @@ module Treetop2
             'SequenceSyntaxNode'
           end
           
-          def inline_module_nodes
-            atomic.inline_module_nodes
+          def inline_modules
+            atomic.inline_modules
           end
           
           def inline_module_name
@@ -205,16 +205,16 @@ module Treetop2
             node_class_expression.node_class
           end
           
-          def inline_module_nodes
-            trailing_block.inline_module_nodes
+          def inline_modules
+            trailing_block.inline_modules
           end
           
-          def inline_module_node
-            trailing_block.inline_module_node
+          def inline_module
+            trailing_block.inline_module
           end
           
           def inline_module_name
-            inline_module_node.module_name if inline_module_node
+            inline_module.module_name if inline_module
           end
         }
       end
@@ -237,8 +237,8 @@ module Treetop2
   
       rule parenthesized_expression
         '(' space? parsing_expression space? ')' <ParenthesizedExpression> {
-          def inline_module_nodes
-            parsing_expression.inline_module_nodes
+          def inline_modules
+            parsing_expression.inline_modules
           end
         }
       end
@@ -253,7 +253,7 @@ module Treetop2
 
       rule double_quoted_string
         '"' (!'"' ("\\\\" / '\"' / .))* '"' <Terminal> {
-          def inline_module_nodes
+          def inline_modules
             []
           end
         }
@@ -261,7 +261,7 @@ module Treetop2
 
       rule single_quoted_string
         "'" (!"'" ("\\\\" / "\\'" / .))* "'" <Terminal> {
-          def inline_module_nodes
+          def inline_modules
             []
           end
         }
@@ -269,7 +269,7 @@ module Treetop2
 
       rule character_class
         '[' (!']' ('\]'/.))+ ']' <CharacterClass> {
-          def inline_module_nodes
+          def inline_modules
             []
           end
         }
@@ -277,7 +277,7 @@ module Treetop2
 
       rule anything_symbol
         '.' <AnythingSymbol> {
-          def inline_module_nodes
+          def inline_modules
             []
           end
         }
@@ -299,25 +299,25 @@ module Treetop2
   
       rule trailing_block
         space block {
-          def inline_module_nodes
-            [inline_module_node]
+          def inline_modules
+            [inline_module]
           end
           
-          def inline_module_node
+          def inline_module
             block
           end
           
           def inline_module_name
-            inline_module_node.module_name
+            inline_module.module_name
           end
         }
         /
         '' {
-          def inline_module_nodes
+          def inline_modules
             []
           end
           
-          def inline_module_node
+          def inline_module
             nil 
           end
           
