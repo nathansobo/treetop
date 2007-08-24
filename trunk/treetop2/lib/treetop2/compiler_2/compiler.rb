@@ -1,5 +1,5 @@
 module Treetop2
-  module Compiler
+  module Compiler2
     
     module AtomicExpression
       def inline_modules
@@ -7,13 +7,13 @@ module Treetop2
       end
     end
     
-    class TreetopFile < ::Treetop::SequenceSyntaxNode
+    class TreetopFile < Parser::SyntaxNode
       def compile
         (elements.map {|elt| elt.compile}).join
       end
     end
     
-    class Grammar < ::Treetop::SequenceSyntaxNode
+    class Grammar < Parser::SyntaxNode
       def compile
         builder = RubyBuilder.new
         
@@ -26,7 +26,7 @@ module Treetop2
       end
     end
     
-    class ParsingRuleSequence < ::Treetop::SequenceSyntaxNode
+    class ParsingRuleSequence < Parser::SyntaxNode
       def compile(builder)
         builder << "def root"
         builder.indented do
@@ -38,7 +38,7 @@ module Treetop2
       end
     end
 
-    class ParsingRule < ::Treetop::SequenceSyntaxNode
+    class ParsingRule < Parser::SyntaxNode
       def compile(builder)
         compile_inline_module_declarations(builder)
         builder.reset_addresses
@@ -66,13 +66,13 @@ module Treetop2
       end
     end
     
-    class ParenthesizedExpression < ::Treetop::SequenceSyntaxNode
+    class ParenthesizedExpression < Parser::SyntaxNode
       def compile(address, builder, parent_expression = nil)
         elements[2].compile(address, builder)
       end
     end
     
-    class Nonterminal < ::Treetop::SequenceSyntaxNode
+    class Nonterminal < Parser::SyntaxNode
       include ParsingExpression
       include AtomicExpression
       
@@ -83,7 +83,7 @@ module Treetop2
       end
     end
     
-    class Terminal < ::Treetop::SequenceSyntaxNode
+    class Terminal < Parser::SyntaxNode
       include ParsingExpression
       include AtomicExpression
       
@@ -93,7 +93,7 @@ module Treetop2
       end
     end
     
-    class AnythingSymbol < ::Treetop::TerminalSyntaxNode
+    class AnythingSymbol < Parser::SyntaxNode
       include ParsingExpression
       include AtomicExpression
       
@@ -103,7 +103,7 @@ module Treetop2
       end
     end
     
-    class CharacterClass < ::Treetop::SequenceSyntaxNode
+    class CharacterClass < Parser::SyntaxNode
       include ParsingExpression
       include AtomicExpression
       
@@ -113,7 +113,7 @@ module Treetop2
       end
     end
     
-    class Sequence < ::Treetop::SequenceSyntaxNode
+    class Sequence < Parser::SyntaxNode
       include ParsingExpression
       
       def compile(address, builder, parent_expression = nil)
@@ -144,7 +144,7 @@ module Treetop2
       end
     end
     
-    class Choice < ::Treetop::SequenceSyntaxNode
+    class Choice < Parser::SyntaxNode
       include ParsingExpression
       
       def compile(address, builder, parent_expression = nil)
@@ -175,7 +175,7 @@ module Treetop2
     end
     
     
-    class Repetition < ::Treetop::TerminalSyntaxNode
+    class Repetition < Parser::SyntaxNode
       include ParsingExpression
       
       def compile(address, builder, parent_expression)
@@ -229,7 +229,7 @@ module Treetop2
       end
     end
     
-    class Optional < ::Treetop::TerminalSyntaxNode
+    class Optional < Parser::SyntaxNode
       include ParsingExpression
       
       def compile(address, builder, parent_expression)
@@ -247,7 +247,7 @@ module Treetop2
       end
     end
     
-    class Predicate < ::Treetop::TerminalSyntaxNode
+    class Predicate < Parser::SyntaxNode
       include ParsingExpression
 
       def compile(address, builder, parent_expression)
@@ -291,7 +291,7 @@ module Treetop2
       end
     end
     
-    class InlineModule < ::Treetop::SequenceSyntaxNode
+    class InlineModule < Parser::SyntaxNode
       attr_reader :module_name
       
       def compile(index, rule, builder)

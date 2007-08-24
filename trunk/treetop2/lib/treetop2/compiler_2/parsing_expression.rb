@@ -1,5 +1,5 @@
 module Treetop2
-  module Compiler
+  module Compiler2
     module ParsingExpression
       attr_reader :address, :builder, :subexpression_address, :var_symbols, :parent_expression
     
@@ -113,11 +113,11 @@ module Treetop2
       end
       
       def begin_comment(expression)
-        #builder << "# begin #{on_one_line(expression)}"
+        builder << "# begin #{on_one_line(expression)}"
       end
       
       def end_comment(expression)
-        #builder << "# end #{on_one_line(expression)}"
+        builder << "# end #{on_one_line(expression)}"
       end
       
       def on_one_line(expression)

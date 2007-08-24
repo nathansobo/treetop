@@ -7,6 +7,7 @@ require 'facet/string/tab'
 
 unless Object.const_defined?(:METAGRAMMAR_PATH)
   METAGRAMMAR_PATH = File.join(TREETOP_2_ROOT, 'compiler', 'metagrammar.treetop')
+  METAGRAMMAR_2_PATH = File.join(TREETOP_2_ROOT, 'compiler_2', 'metagrammar.treetop')
   load_grammar METAGRAMMAR_PATH
 end
 
