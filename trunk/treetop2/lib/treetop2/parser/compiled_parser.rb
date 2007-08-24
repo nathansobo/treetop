@@ -34,7 +34,7 @@ module Treetop2
         @index = 0
       end
  
-      def parse_char_class(char_class_re, char_class_string, node_class=SyntaxNode)
+      def parse_char_class(char_class_re, char_class_string, node_class = SyntaxNode, inline_module = nil)
         if input.index(char_class_re, index) == index
           result = node_class.new(input, index...(index + 1))
           @index += 1
@@ -44,7 +44,7 @@ module Treetop2
         end
       end
     
-      def parse_terminal(terminal_string, node_class=SyntaxNode, inline_module=nil)
+      def parse_terminal(terminal_string, node_class = SyntaxNode, inline_module = nil)
         if input.index(terminal_string, index) == index
           result = node_class.new(input, index...(index + terminal_string.length))
           result.extend(inline_module) if inline_module
@@ -55,9 +55,10 @@ module Treetop2
         end
       end
     
-      def parse_anything(node_class=SyntaxNode)
+      def parse_anything(node_class = SyntaxNode, inline_module = nil)
         if index < input.length
           result = node_class.new(input, index...(index + 1))
+          result.extend(inline_module) if inline_module
           @index += 1
           result
         else
