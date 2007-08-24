@@ -1,12 +1,20 @@
 require File.join(File.dirname(__FILE__), '..', 'test_helper')
 
 describe "A choice between terminal symbols", :extend => CompilerTestCase do
-  testing_expression '"foo" / "bar" / "baz"'
+  testing_expression '"foo" { def foo_method; end } / "bar" { def bar_method; end } / "baz" { def baz_method; end }'
 
-  it "successfully parses input matching any of the alternatives" do
-    parse('foo').should be_success
-    parse('bar').should be_success
-    parse('baz').should be_success
+  it "successfully parses input matching any of the alternatives, returning a node that responds to methods defined in its respective inline module" do
+    result = parse('foo')
+    result.should be_success
+    result.should respond_to(:foo_method)
+    
+    result = parse('bar')
+    result.should be_success
+    result.should respond_to(:bar_method)
+    
+    result = parse('baz')
+    result.should be_success
+    result.should respond_to(:baz_method)
   end
   
   it "attaches the nested failure of the first terminal to a successful parsing of input matching the second" do
