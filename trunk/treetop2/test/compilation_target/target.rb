@@ -1,6 +1,13 @@
 class Target < Treetop2::Parser::CompiledParser
   include Treetop2::Parser
   
+  module FooInlineModule
+    def foo
+      'foo'
+    end
+  end
+  
+  
   class Bar < SequenceSyntaxNode
     
   end

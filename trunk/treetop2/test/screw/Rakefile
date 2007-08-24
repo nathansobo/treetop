@@ -1,0 +1,16 @@
+spec = Gem::Specification.new do |s| 
+  s.name = "Screw::Unit"
+  s.version = "0.0.1"
+  s.author = "Nathan Sobo"
+  s.email = "nathansobo@gmail.com"
+  s.homepage = "http://screwunit.rubyforge.org"
+  s.platform = Gem::Platform::RUBY
+  s.summary = "RSpec-style syntactic sugar that is backward compatible with Test::Unit"
+  s.files = FileList["{unit}/**/*"].to_a
+  s.require_path = "lib"
+  s.autorequire = "name"
+  s.test_files = FileList["{test}/**/*test.rb"].to_a
+  s.has_rdoc = true
+  s.extra_rdoc_files = ["README"]
+  s.add_dependency("dependency", ">= 0.x.x")
+end
