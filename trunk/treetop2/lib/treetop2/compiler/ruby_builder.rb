@@ -21,6 +21,22 @@ module Treetop2
         self.out(depth)
       end
       
+      def newline
+        self << ''
+      end
+      
+      def class_declaration(name, &block)
+        self << "class #{name}"
+        indented(&block)
+        self << "end"
+      end
+      
+      def method_declaration(name, &block)
+        self << "def #{name}"
+        indented(&block)
+        self << "end"
+      end
+      
       def assign(left, right)
         if left.instance_of? Array
           self << "#{left.join(', ')} = #{right.join(', ')}"

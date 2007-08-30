@@ -58,6 +58,16 @@ module Treetop2
       def break
         self << 'break'
       end
+            
+      def next_address
+        address_space.next_address
+      end
+      
+      def reset_addresses
+        address_space.reset_addresses
+      end
+      
+      protected
       
       def in(depth = 1)
         @level += depth
@@ -68,16 +78,6 @@ module Treetop2
         @level -= depth
         self
       end
-      
-      def next_address
-        address_space.next_address
-      end
-      
-      def reset_addresses
-        address_space.reset_addresses
-      end
-      
-      protected
       
       def indent
         "  " * level

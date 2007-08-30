@@ -15,26 +15,25 @@ module Treetop2
     
     class Grammar < ::Treetop::SequenceSyntaxNode
       def compile
-        builder = RubyBuilder.new
-        
-        builder << "class #{grammar_name.text_value} < ::Treetop2::Parser::CompiledParser"
-        builder.indented do
+        builder = RubyBuilder.new        
+        builder.class_declaration "#{grammar_name.text_value} < ::Treetop2::Parser::CompiledParser" do
           builder << "include ::Treetop2::Parser"
           parsing_rule_sequence.compile(builder)
         end
-        builder << "end"
       end
     end
     
     class ParsingRuleSequence < ::Treetop::SequenceSyntaxNode
       def compile(builder)
-        builder << "def root"
-        builder.indented do
+        builder.method_declaration("root") do
           builder << rules.first.method_name
+          builder.newline
         end
-        builder << "end"
         
-        rules.each { |rule| rule.compile(builder) }
+        rules.each do |rule|
+          rule.compile(builder)
+          builder.newline
+        end
       end
     end
 
@@ -43,17 +42,17 @@ module Treetop2
         compile_inline_module_declarations(builder)
         builder.reset_addresses
         expression_address = builder.next_address
-        builder << "def #{method_name}"
-        builder.indented do
+                
+        builder.method_declaration(method_name) do
           parsing_expression.compile(expression_address, builder)
           builder << "return r#{expression_address}"
         end
-        builder << "end"
       end
       
       def compile_inline_module_declarations(builder)
         parsing_expression.inline_modules.each_with_index do |inline_module, i|
           inline_module.compile(i, self, builder)
+          builder.newline
         end
       end
       
@@ -79,7 +78,7 @@ module Treetop2
       def compile(address, builder, parent_expression = nil)
         super
         use_vars :result
-        assign_result "self.send(:_nt_#{text_value})"
+        assign_result "_nt_#{text_value}"
       end
     end
     
