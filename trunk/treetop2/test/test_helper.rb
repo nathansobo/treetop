@@ -26,7 +26,7 @@ class CompilerTestCase < Screw::Unit::TestCase
     end
     
     def testing_grammar(grammar_to_test)
-      grammar_node = parse_with_metagrammar(grammar_to_test, :grammar)
+      grammar_node = parse_with_metagrammar(grammar_to_test.strip, :grammar)
       test_parser_code = grammar_node.compile
       #puts test_parser_code
       class_eval(test_parser_code)
@@ -41,18 +41,17 @@ class CompilerTestCase < Screw::Unit::TestCase
       %{
         class TestParser < Treetop2::Parser::CompiledParser
           include Treetop2::Parser
+          
           attr_accessor :test_index
-
-          def parse(input)
-            prepare_to_parse(input)
-            return _nt_test_expression
+          
+          def root
+            _nt_test_expression
           end
-
-          def prepare_to_parse(input)
-            @input = input
-            @index = test_index || 0
+          
+          def reset_index
+            @index = @test_index || 0
           end
-
+          
           #{builder.ruby.tabrestto(10)}
         end
       }.tabto(0)

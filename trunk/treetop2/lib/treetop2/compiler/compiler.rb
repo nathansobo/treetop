@@ -42,10 +42,21 @@ module Treetop2
         compile_inline_module_declarations(builder)
         builder.reset_addresses
         expression_address = builder.next_address
-                
+        result_var = "r#{expression_address}"
+        
         builder.method_declaration(method_name) do
+          builder.assign 'start_index', 'index'
+          builder.assign 'cached', "node_cache[:#{name}][index]"
+          builder << "return cached if cached"
+          builder.newline
+          
           parsing_expression.compile(expression_address, builder)
-          builder << "return r#{expression_address}"
+          
+          builder.newline
+          builder.assign "node_cache[:#{name}][start_index]", result_var
+          builder.newline
+          
+          builder << "return #{result_var}"
         end
       end
       

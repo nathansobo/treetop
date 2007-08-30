@@ -1,22 +1,28 @@
 module Treetop2
   module Parser
     class CompiledParser
-      protected
-      attr_writer :index
-    
-      public        
       attr_reader :input, :index
 
       def parse(input)
         prepare_to_parse(input)
         return root
       end
-        
+      
+      protected
+      
+      attr_reader :node_cache
+      attr_writer :index
+              
       def prepare_to_parse(input)
         @input = input
+        reset_index
+        @node_cache = Hash.new {|hash, key| hash[key] = Hash.new}
+      end
+      
+      def reset_index
         @index = 0
       end
- 
+      
       def parse_char_class(char_class_re, char_class_string, node_class = SyntaxNode, inline_module = nil)
         if input.index(char_class_re, index) == index
           result = node_class.new(input, index...(index + 1))
