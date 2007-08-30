@@ -8,20 +8,6 @@ class CircularCompilationTest < CompilerTestCase
     end
   end
 
-#   test "tab to" do
-# puts    %{
-#       
-#       asoetnuh
-#       aoeunth
-#        aoesutnh
-#           aoesutnhao
-#           
-#       naosetuh
-#       
-#       
-#     }.tabto(5)
-#   end
-
   it "can generate a metagrammar that can parse its own source" do
     ruby_code = @result.compile
 #    puts ruby_code
