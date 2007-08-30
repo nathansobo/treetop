@@ -15,7 +15,11 @@ module Treetop2
     
     class Grammar < ::Treetop::SequenceSyntaxNode
       def compile
-        builder = RubyBuilder.new        
+        builder = RubyBuilder.new
+        
+        
+        builder.in(input.column_of(interval.begin))
+        
         builder.class_declaration "#{grammar_name.text_value} < ::Treetop2::Parser::CompiledParser" do
           builder << "include ::Treetop2::Parser"
           parsing_rule_sequence.compile(builder)

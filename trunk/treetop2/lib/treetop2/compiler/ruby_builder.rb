@@ -12,18 +12,19 @@ module Treetop2
       
       def <<(ruby_line)
         return if ruby_line.blank?
-        ruby << indent << ruby_line << "\n"
+        ruby << ruby_line.tabto(level) << "\n"
+      end
+
+      def newline
+        ruby << indent << "\n"
       end
       
-      def indented(depth = 1)
+      def indented(depth = 2)
         self.in(depth)
         yield
         self.out(depth)
       end
       
-      def newline
-        self << ''
-      end
       
       def class_declaration(name, &block)
         self << "class #{name}"
@@ -75,12 +76,12 @@ module Treetop2
         self << 'break'
       end
       
-      def in(depth = 1)
+      def in(depth = 2)
         @level += depth
         self
       end
       
-      def out(depth = 1)
+      def out(depth = 2)
         @level -= depth
         self
       end
@@ -96,7 +97,7 @@ module Treetop2
       protected
       
       def indent
-        "  " * level
+        " " * level
       end
     end
   end

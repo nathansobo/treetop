@@ -8,13 +8,27 @@ class CircularCompilationTest < CompilerTestCase
     end
   end
 
+#   test "tab to" do
+# puts    %{
+#       
+#       asoetnuh
+#       aoeunth
+#        aoesutnh
+#           aoesutnhao
+#           
+#       naosetuh
+#       
+#       
+#     }.tabto(5)
+#   end
+
   it "can generate a metagrammar that can parse its own source" do
     ruby_code = @result.compile
-    #puts ruby_code
+#    puts ruby_code
     Object.class_eval(ruby_code)
     new_parser = ::Treetop2::Compiler2::Metagrammar.new
-
-
+  
+  
     File.open(METAGRAMMAR_2_PATH, 'r') do |metagrammar_file|
       input = metagrammar_file.read
       
@@ -23,7 +37,7 @@ class CircularCompilationTest < CompilerTestCase
           @result = new_parser.parse(input)
       #   end
       # end
-
+  
       @result.should be_success
     end
   end
