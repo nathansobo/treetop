@@ -15,13 +15,11 @@ module Treetop2
     
     class Grammar < ::Treetop::SequenceSyntaxNode
       def compile
-        builder = RubyBuilder.new
-        
-        
-        builder.in(input.column_of(interval.begin))
-        
+        builder = RubyBuilder.new                        
         builder.class_declaration "#{grammar_name.text_value} < ::Treetop2::Parser::CompiledParser" do
+          builder.in(input.column_of(interval.begin))
           builder << "include ::Treetop2::Parser"
+          builder.newline
           parsing_rule_sequence.compile(builder)
         end
       end
@@ -31,8 +29,8 @@ module Treetop2
       def compile(builder)
         builder.method_declaration("root") do
           builder << rules.first.method_name
-          builder.newline
         end
+        builder.newline
         
         rules.each do |rule|
           rule.compile(builder)
@@ -312,7 +310,7 @@ module Treetop2
         @module_name = "#{rule.name.camelize}#{index}"
         builder << "module #{module_name}"
         builder.indented do
-          builder << ruby_code
+          builder << ruby_code.gsub(/\A\n/, '').rstrip
         end
         builder << "end"
       end

@@ -10,7 +10,7 @@ module Treetop2
         @ruby = ""
       end
       
-      def <<(ruby_line)
+      def <<(ruby_line)              
         return if ruby_line.blank?
         ruby << ruby_line.tabto(level) << "\n"
       end

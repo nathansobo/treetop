@@ -10,7 +10,7 @@ class CircularCompilationTest < CompilerTestCase
 
   it "can generate a metagrammar that can parse its own source" do
     ruby_code = @result.compile
-#    puts ruby_code
+    #puts ruby_code
     Object.class_eval(ruby_code)
     new_parser = ::Treetop2::Compiler2::Metagrammar.new
   
