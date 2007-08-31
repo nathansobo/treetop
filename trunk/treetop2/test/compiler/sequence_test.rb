@@ -37,3 +37,26 @@ class SequenceOfTerminalsTest < CompilerTestCase
     end
   end  
 end
+
+class SequenceOfNonterminalsTest < CompilerTestCase
+
+  testing_grammar %{
+    grammar TestGrammar
+      rule sequence
+        foo bar baz
+      end
+      
+      rule foo 'foo' end
+      rule bar 'bar' end
+      rule baz 'baz' end
+    end
+  }
+  
+  test "accessors for nonterminals are automatically defined" do
+    parse('foobarbaz') do |result|
+      result.foo.text_value.should == 'foo'
+      result.bar.text_value.should == 'bar'
+      result.baz.text_value.should == 'baz'
+    end
+  end
+end

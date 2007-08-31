@@ -168,7 +168,13 @@ module Treetop2
           end
           
           def label_name
-            label.name
+            if label.name
+              label.name
+            elsif sequence_primary.instance_of?(Nonterminal)
+              sequence_primary.text_value
+            else
+              nil
+            end
           end
         }
       end

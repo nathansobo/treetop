@@ -312,11 +312,19 @@ module Treetop2
       end
     end
     
-    class InlineModule < ::Treetop::SequenceSyntaxNode
+    module InlineModuleMixin
       attr_reader :module_name
       
       def compile(index, rule, builder)
         @module_name = "#{rule.name.camelize}#{index}"
+      end
+    end
+    
+    class InlineModule < ::Treetop::SequenceSyntaxNode
+      include InlineModuleMixin
+      
+      def compile(index, rule, builder)
+        super
         builder.module_declaration(module_name) do
           builder << ruby_code.gsub(/\A\n/, '').rstrip
         end
@@ -328,14 +336,15 @@ module Treetop2
     end
     
     class SequenceElementAccessorModule
-      attr_reader :module_name, :sequence_elements
+      include InlineModuleMixin   
+      attr_reader :sequence_elements
       
       def initialize(sequence_elements)
         @sequence_elements = sequence_elements
       end
       
       def compile(index, rule, builder)
-        @module_name = "#{rule.name.camelize}#{index}"
+        super
         builder.module_declaration(module_name) do
           sequence_elements.each_with_index do |element, index|
             if element.label_name
