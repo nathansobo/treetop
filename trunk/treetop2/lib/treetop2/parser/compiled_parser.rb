@@ -57,7 +57,7 @@ module Treetop2
       end
     
       def terminal_parse_failure(expected_string)
-        TerminalParseFailure.new(index, expected_string)
+        TerminalParseFailure.new(input, index, expected_string)
       end
     end
   end

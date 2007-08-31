@@ -4,8 +4,7 @@ module Treetop2
       attr_reader :input, :interval
       
       def initialize(input, interval, elements = nil, nested_results = elements)
-        super(nested_results || [])
-        @input = input
+        super(input, nested_results || [])
         @interval = interval
         @elements = elements
       end

@@ -1,9 +1,10 @@
 module Treetop2
   module Parser
     class ParseResult
-      attr_reader :nested_failures
+      attr_reader :input, :nested_failures
     
-      def initialize(nested_results = [])
+      def initialize(input, nested_results = [])
+        @input = input
         @nested_failures = collect_nested_failures_at_maximum_index(nested_results)
       end
     

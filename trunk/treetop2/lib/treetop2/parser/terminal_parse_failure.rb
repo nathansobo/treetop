@@ -3,8 +3,8 @@ module Treetop2
     class TerminalParseFailure < ParseFailure
       attr_reader :expected_string
 
-      def initialize(index, expected_string)
-        super(index)
+      def initialize(input, index, expected_string)
+        super(input, index)
         @expected_string = expected_string      
       end
 
@@ -13,7 +13,7 @@ module Treetop2
       end
     
       def to_s
-        "String matching #{expected_string} expected at position #{index}."
+        "String matching #{expected_string} expected at #{index}." # line #{input.line_of(index)}, column #{input.column_of(index)}."
       end
     
       def ==(other_failure)

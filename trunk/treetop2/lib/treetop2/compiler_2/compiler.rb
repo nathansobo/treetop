@@ -1,6 +1,5 @@
 module Treetop2
-  module Compiler2
-    
+  module Compiler2    
     module AtomicExpression
       def inline_modules
         []
@@ -15,26 +14,27 @@ module Treetop2
     
     class Grammar < Parser::SyntaxNode
       def compile
-        builder = RubyBuilder.new
-        
-        builder << "class #{grammar_name.text_value} < ::Treetop2::Parser::CompiledParser"
-        builder.indented do
+        builder = RubyBuilder.new                        
+        builder.class_declaration "#{grammar_name.text_value} < ::Treetop2::Parser::CompiledParser" do
+          builder.in(input.column_of(interval.begin))
           builder << "include ::Treetop2::Parser"
+          builder.newline
           parsing_rule_sequence.compile(builder)
         end
-        builder << "end"
       end
     end
     
     class ParsingRuleSequence < Parser::SyntaxNode
       def compile(builder)
-        builder << "def root"
-        builder.indented do
+        builder.method_declaration("root") do
           builder << rules.first.method_name
         end
-        builder << "end"
+        builder.newline
         
-        rules.each { |rule| rule.compile(builder) }
+        rules.each do |rule|
+          rule.compile(builder)
+          builder.newline
+        end
       end
     end
 
@@ -43,17 +43,28 @@ module Treetop2
         compile_inline_module_declarations(builder)
         builder.reset_addresses
         expression_address = builder.next_address
-        builder << "def #{method_name}"
-        builder.indented do
+        result_var = "r#{expression_address}"
+        
+        builder.method_declaration(method_name) do
+          builder.assign 'start_index', 'index'
+          builder.assign 'cached', "node_cache[:#{name}][index]"
+          builder << "return cached if cached"
+          builder.newline
+          
           parsing_expression.compile(expression_address, builder)
-          builder << "return r#{expression_address}"
+          
+          builder.newline
+          builder.assign "node_cache[:#{name}][start_index]", result_var
+          builder.newline
+          
+          builder << "return #{result_var}"
         end
-        builder << "end"
       end
       
       def compile_inline_module_declarations(builder)
         parsing_expression.inline_modules.each_with_index do |inline_module, i|
           inline_module.compile(i, self, builder)
+          builder.newline
         end
       end
       
@@ -79,7 +90,7 @@ module Treetop2
       def compile(address, builder, parent_expression = nil)
         super
         use_vars :result
-        assign_result "self.send(:_nt_#{text_value})"
+        assign_result "_nt_#{text_value}"
       end
     end
     
@@ -123,6 +134,7 @@ module Treetop2
         compile_sequence_elements(sequence_elements)
         builder.if__ "#{accumulator_var}.last.success?" do
           assign_result "(#{node_class_declarations.node_class}).new(input, #{start_index_var}...index, #{accumulator_var})"
+          builder << "#{result_var}.extend(#{sequence_element_accessor_module_name})" if sequence_element_accessor_module_name
           builder << "#{result_var}.extend(#{inline_module_name})" if inline_module_name
         end
         builder.else_ do
@@ -141,6 +153,14 @@ module Treetop2
             compile_sequence_elements(elements[1..-1])
           end
         end
+      end
+      
+      def sequence_element_accessor_module
+        @sequence_element_accessor_module ||= SequenceElementAccessorModule.new(sequence_elements)
+      end
+      
+      def sequence_element_accessor_module_name
+        sequence_element_accessor_module.module_name
       end
     end
     
@@ -291,20 +311,49 @@ module Treetop2
       end
     end
     
-    class InlineModule < Parser::SyntaxNode
+    module InlineModuleMixin
       attr_reader :module_name
       
       def compile(index, rule, builder)
         @module_name = "#{rule.name.camelize}#{index}"
-        builder << "module #{module_name}"
-        builder.indented do
-          builder << ruby_code
+      end
+    end
+    
+    class InlineModule < Parser::SyntaxNode
+      include InlineModuleMixin
+      
+      def compile(index, rule, builder)
+        super
+        builder.module_declaration(module_name) do
+          builder << ruby_code.gsub(/\A\n/, '').rstrip
         end
-        builder << "end"
       end
       
       def ruby_code
         elements[1].text_value
+      end
+    end
+    
+    class SequenceElementAccessorModule
+      include InlineModuleMixin   
+      attr_reader :sequence_elements
+      
+      def initialize(sequence_elements)
+        @sequence_elements = sequence_elements
+      end
+      
+      def compile(index, rule, builder)
+        super
+        builder.module_declaration(module_name) do
+          sequence_elements.each_with_index do |element, index|
+            if element.label_name
+              builder.method_declaration(element.label_name) do
+                builder << "elements[#{index}]"
+              end
+              builder.newline unless index == sequence_elements.size - 1
+            end
+          end
+        end
       end
     end
   end

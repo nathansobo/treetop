@@ -140,7 +140,7 @@ module Treetop2
         end
         builder.else_ do
           reset_index
-          assign_result "ParseFailure.new(#{start_index_var}, #{accumulator_var})"
+          assign_failure start_index_var, accumulator_var
         end
         end_comment(self)
       end
@@ -187,7 +187,7 @@ module Treetop2
         builder.else_ do
           if alternatives.size == 1
             reset_index
-            assign_result "ParseFailure.new(#{start_index_var}, #{nested_results_var})"
+            assign_failure start_index_var, nested_results_var
           else
             compile_alternatives(alternatives[1..-1])
           end
@@ -241,7 +241,7 @@ module Treetop2
         super
         builder.if__ "#{accumulator_var}.empty?" do
           reset_index
-          assign_result "ParseFailure.new(#{start_index_var}, #{nested_results_var})"
+          assign_failure start_index_var, nested_results_var
         end
         builder.else_ do
           assign_and_extend_result
@@ -283,7 +283,7 @@ module Treetop2
       end
       
       def assign_failure
-        assign_result "ParseFailure.new(#{start_index_var}, #{subexpression_result_var}.nested_failures)"
+        super(start_index_var, "#{subexpression_result_var}.nested_failures")
       end
       
       def assign_success

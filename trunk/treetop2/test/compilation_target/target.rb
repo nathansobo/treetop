@@ -60,7 +60,7 @@ class Target < Treetop2::Parser::CompiledParser
           r4 = SyntaxNode.new(input, i4...index, s4)
         else
           self.index = i4
-          r4 = ParseFailure.new(i4, s4)
+          r4 = ParseFailure.new(input, i4, s4)
         end
         # end 'b' 'c'; result in r4
         
@@ -83,7 +83,7 @@ class Target < Treetop2::Parser::CompiledParser
             r7 = SyntaxNode.new(input, i7...index, s7)
           else
             self.index = i7
-            r7 = ParseFailure.new(i7, s7)
+            r7 = ParseFailure.new(input, i7, s7)
           end
           # end 'b' 'c'; result in r7
           
@@ -93,7 +93,7 @@ class Target < Treetop2::Parser::CompiledParser
             r3 = r7
           else          
             self.index = i3
-            r3 = ParseFailure.new(i3, nr3)
+            r3 = ParseFailure.new(input, i3, nr3)
           end
         end                
         # end ('b' 'c' / 'b' 'd'); result in r3 
@@ -108,7 +108,7 @@ class Target < Treetop2::Parser::CompiledParser
       # s2 has intermediate results of the + closure
       if s2.empty?
         self.index = i2
-        r2 = ParseFailure.new(i2, nr2)
+        r2 = ParseFailure.new(input, i2, nr2)
       else
         r2 = SyntaxNode.new(input, i2...index, s2, nr2)
       end      
@@ -125,7 +125,7 @@ class Target < Treetop2::Parser::CompiledParser
         r0 = Bar.new(input, i0...index, s0)
       else
         self.index = i0
-        r0 = ParseFailure.new(i0, s0)
+        r0 = ParseFailure.new(input, i0, s0)
       end
       # end of the sequence... r0 has a value
       

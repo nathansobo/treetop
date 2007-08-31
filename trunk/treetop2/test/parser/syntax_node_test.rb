@@ -26,8 +26,9 @@ describe "A new terminal syntax node" do
 end
 
 describe "A new nonterminal syntax node" do
-  def setup    
-    @nested_results = [Parser::TerminalParseFailure.new(1, 'foo')]
+  def setup
+    @input = 'test input'
+    @nested_results = [Parser::TerminalParseFailure.new(@input, 1, 'foo')]
     @elements = Parser::SyntaxNode.new('input', 0...3)
     @node = Parser::SyntaxNode.new('input', 0...3, @elements, @nested_results)
   end
