@@ -1,22 +1,24 @@
 require File.join(File.dirname(__FILE__), '..', 'test_helper')
  
-class SequenceTest < CompilerTestCase
+class SequenceOfTerminalsTest < CompilerTestCase
 
   class Foo < Treetop2::Parser::SyntaxNode
   end
 
-  testing_expression '"foo" "bar" "baz" <Foo> { def a_method; end }'
+  testing_expression 'foo:"foo" bar:"bar" baz:"baz" <Foo> { def a_method; end }'
   
-  it "parses matching input successfully, returning an instance of the declared node class that responds to a method defined in the inline block" do
+  test "successful result is an instance of the declared node class with element accessor methods and the method from the inline module" do
     parse('foobarbaz') do |result|
       result.should be_success
-      result.should be_an_instance_of(Foo)
+      result.should be_an_instance_of(Foo)      
       result.should respond_to(:a_method)
-      (result.elements.map {|elt| elt.text_value}).should == ['foo', 'bar', 'baz']
+      result.foo.text_value.should == 'foo'
+      result.bar.text_value.should == 'bar'
+      result.baz.text_value.should == 'baz'
     end
   end
-  
-  it "parses matching input at a non-zero index successfully" do
+    
+  test "matching at a non-zero index" do
     parse('---foobarbaz', :at_index => 3) do |result|
       result.should be_success
       result.should be_nonterminal
@@ -24,7 +26,7 @@ class SequenceTest < CompilerTestCase
     end
   end
   
-  it "fails to parse non-matching input with a nested failure at the first terminal that did not match" do
+  test "non-matching input fails with a nested failure at the first terminal that did not match" do
     parse('---foobazbaz', :at_index => 3) do |result|
       result.should be_failure
       result.index.should == 3
@@ -33,5 +35,5 @@ class SequenceTest < CompilerTestCase
       nested_failure.index.should == 6
       nested_failure.expected_string.should == 'bar'
     end
-  end
+  end  
 end

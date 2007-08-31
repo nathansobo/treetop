@@ -68,7 +68,7 @@ module Treetop2
       end
 
       rule sequence
-        sequence_primary (space sequence_primary)+ node_class_declarations <Sequence> {
+        labeled_sequence_primary (space labeled_sequence_primary)+ node_class_declarations <Sequence> {
           def head_element
             elements[0]
           end
@@ -82,7 +82,9 @@ module Treetop2
           end
           
           def inline_modules
-            (sequence_elements.map {|elt| elt.inline_modules}).flatten + node_class_declarations.inline_modules
+            (sequence_elements.map {|elt| elt.inline_modules}).flatten +
+            node_class_declarations.inline_modules +
+            [sequence_element_accessor_module]
           end
           
           def inline_module_name
@@ -151,6 +153,36 @@ module Treetop2
           
           def inline_module_name
             node_class_declarations.inline_module_name
+          end
+        }
+      end
+
+      rule labeled_sequence_primary
+        label sequence_primary {
+          def compile(lexical_address, builder)
+            sequence_primary.compile(lexical_address, builder)
+          end
+          
+          def inline_modules
+            sequence_primary.inline_modules
+          end
+          
+          def label_name
+            label.name
+          end
+        }
+      end
+      
+      rule label
+        (alpha_char alphanumeric_char*) ':' {
+          def name
+            elements[0].text_value
+          end
+        }
+        /
+        '' {
+          def name
+            nil
           end
         }
       end

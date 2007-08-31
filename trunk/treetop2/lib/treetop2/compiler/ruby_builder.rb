@@ -24,10 +24,15 @@ module Treetop2
         yield
         self.out(depth)
       end
-      
-      
+            
       def class_declaration(name, &block)
         self << "class #{name}"
+        indented(&block)
+        self << "end"
+      end
+      
+      def module_declaration(name, &block)
+        self << "module #{name}"
         indented(&block)
         self << "end"
       end

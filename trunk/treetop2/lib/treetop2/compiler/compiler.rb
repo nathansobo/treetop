@@ -135,6 +135,7 @@ module Treetop2
         compile_sequence_elements(sequence_elements)
         builder.if__ "#{accumulator_var}.last.success?" do
           assign_result "(#{node_class_declarations.node_class}).new(input, #{start_index_var}...index, #{accumulator_var})"
+          builder << "#{result_var}.extend(#{sequence_element_accessor_module_name})" if sequence_element_accessor_module_name
           builder << "#{result_var}.extend(#{inline_module_name})" if inline_module_name
         end
         builder.else_ do
@@ -153,6 +154,14 @@ module Treetop2
             compile_sequence_elements(elements[1..-1])
           end
         end
+      end
+      
+      def sequence_element_accessor_module
+        @sequence_element_accessor_module ||= SequenceElementAccessorModule.new(sequence_elements)
+      end
+      
+      def sequence_element_accessor_module_name
+        sequence_element_accessor_module.module_name
       end
     end
     
@@ -308,15 +317,35 @@ module Treetop2
       
       def compile(index, rule, builder)
         @module_name = "#{rule.name.camelize}#{index}"
-        builder << "module #{module_name}"
-        builder.indented do
+        builder.module_declaration(module_name) do
           builder << ruby_code.gsub(/\A\n/, '').rstrip
         end
-        builder << "end"
       end
       
       def ruby_code
         elements[1].text_value
+      end
+    end
+    
+    class SequenceElementAccessorModule
+      attr_reader :module_name, :sequence_elements
+      
+      def initialize(sequence_elements)
+        @sequence_elements = sequence_elements
+      end
+      
+      def compile(index, rule, builder)
+        @module_name = "#{rule.name.camelize}#{index}"
+        builder.module_declaration(module_name) do
+          sequence_elements.each_with_index do |element, index|
+            if element.label_name
+              builder.method_declaration(element.label_name) do
+                builder << "elements[#{index}]"
+              end
+              builder.newline unless index == sequence_elements.size - 1
+            end
+          end
+        end
       end
     end
   end
