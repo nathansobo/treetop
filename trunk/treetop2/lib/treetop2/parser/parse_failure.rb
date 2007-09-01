@@ -7,6 +7,14 @@ module Treetop2
         super(input, nested_results)
         @index = index
       end
+      
+      def line
+        input.line_of(index)
+      end
+      
+      def column
+        input.column_of(index)
+      end
     
       def success?
         false

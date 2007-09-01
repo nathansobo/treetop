@@ -78,6 +78,10 @@ module Treetop2
       def epsilon_node
         "SyntaxNode.new(input, index...index, #{subexpression_result_var}.nested_failures)"
       end
+      
+      def assign_failure(start_index_var, nested_results_var)
+        assign_result("ParseFailure.new(input, #{start_index_var}, #{nested_results_var})")
+      end
     
       def var_initialization
         left, right = [], []
@@ -113,11 +117,11 @@ module Treetop2
       end
       
       def begin_comment(expression)
-        builder << "# begin #{on_one_line(expression)}"
+        #builder << "# begin #{on_one_line(expression)}"
       end
       
       def end_comment(expression)
-        builder << "# end #{on_one_line(expression)}"
+        #builder << "# end #{on_one_line(expression)}"
       end
       
       def on_one_line(expression)

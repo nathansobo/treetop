@@ -49,7 +49,10 @@ module Treetop2
         builder.method_declaration(method_name) do
           builder.assign 'start_index', 'index'
           builder.assign 'cached', "node_cache[:#{name}][index]"
-          builder << "return cached if cached"
+          builder.if_ 'cached' do
+            builder << '@index = cached.interval.end'
+            builder << 'return cached'
+          end
           builder.newline
           
           parsing_expression.compile(expression_address, builder)

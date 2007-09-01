@@ -25,6 +25,6 @@ class ParsingRuleTest < CompilerTestCase
     
     parser.instance_eval { @index = 0 }
     parser._nt_bar.should equal(cached_node)
-    
+    parser.index.should == cached_node.interval.end
   end
 end

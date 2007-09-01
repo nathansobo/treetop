@@ -10,15 +10,37 @@ module Treetop2
         @ruby = ""
       end
       
-      def <<(ruby_line)
+      def <<(ruby_line)              
         return if ruby_line.blank?
-        ruby << indent << ruby_line << "\n"
+        ruby << ruby_line.tabto(level) << "\n"
+      end
+
+      def newline
+        ruby << indent << "\n"
       end
       
-      def indented(depth = 1)
+      def indented(depth = 2)
         self.in(depth)
         yield
         self.out(depth)
+      end
+            
+      def class_declaration(name, &block)
+        self << "class #{name}"
+        indented(&block)
+        self << "end"
+      end
+      
+      def module_declaration(name, &block)
+        self << "module #{name}"
+        indented(&block)
+        self << "end"
+      end
+      
+      def method_declaration(name, &block)
+        self << "def #{name}"
+        indented(&block)
+        self << "end"
       end
       
       def assign(left, right)
@@ -58,7 +80,17 @@ module Treetop2
       def break
         self << 'break'
       end
-            
+      
+      def in(depth = 2)
+        @level += depth
+        self
+      end
+      
+      def out(depth = 2)
+        @level -= depth
+        self
+      end
+      
       def next_address
         address_space.next_address
       end
@@ -69,18 +101,8 @@ module Treetop2
       
       protected
       
-      def in(depth = 1)
-        @level += depth
-        self
-      end
-      
-      def out(depth = 1)
-        @level -= depth
-        self
-      end
-      
       def indent
-        "  " * level
+        " " * level
       end
     end
   end

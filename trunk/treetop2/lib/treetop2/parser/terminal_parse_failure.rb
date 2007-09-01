@@ -11,9 +11,9 @@ module Treetop2
       def nested_failures
         [self]
       end
-    
+      
       def to_s
-        "String matching #{expected_string} expected at #{index}." # line #{input.line_of(index)}, column #{input.column_of(index)}."
+        "String matching #{expected_string} expected at line #{line}, column #{column} (index #{index})."
       end
     
       def ==(other_failure)
