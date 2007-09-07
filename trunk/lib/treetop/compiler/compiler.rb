@@ -19,8 +19,6 @@ module Treetop
         builder = RubyBuilder.new                        
         builder.class_declaration "#{grammar_name.text_value} < ::Treetop::Runtime::CompiledParser" do
           builder.in(input.column_of(interval.begin))
-          builder << "include ::Treetop::Runtime"
-          builder.newline
           parsing_rule_sequence.compile(builder)
         end
       end

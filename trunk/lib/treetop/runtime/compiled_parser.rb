@@ -1,6 +1,8 @@
 module Treetop
   module Runtime
     class CompiledParser
+      include Treetop::Runtime
+      
       attr_reader :input, :index
 
       def parse(input)

@@ -1,7 +1,4 @@
 class Target < Treetop::Runtime::CompiledParser
-  include Treetop::Runtime
-  
-  
   class Bar < SyntaxNode
     
   end
