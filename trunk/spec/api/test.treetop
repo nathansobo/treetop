@@ -1,5 +1,0 @@
-grammar Test
-	rule foo
-		'bar'
-	end
-end
