@@ -5,10 +5,8 @@ require 'treetop2'
 require 'rubygems'
 require 'facet/string/tab'
 
-unless Object.const_defined?(:METAGRAMMAR_PATH)
-  METAGRAMMAR_PATH = File.join(TREETOP_2_ROOT, 'compiler', 'metagrammar.treetop')
+unless Object.const_defined?(:METAGRAMMAR_2_PATH)
   METAGRAMMAR_2_PATH = File.join(TREETOP_2_ROOT, 'compiler_2', 'metagrammar.treetop')
-  load_grammar METAGRAMMAR_PATH
 end
 
 include Treetop2
@@ -34,7 +32,7 @@ class CompilerTestCase < Screw::Unit::TestCase
     end
 
     def generate_test_parser_for_expression(expression_node)
-      builder = Compiler::RubyBuilder.new
+      builder = Compiler2::RubyBuilder.new
       address = builder.next_address
       expression_node.compile(builder)
       %{

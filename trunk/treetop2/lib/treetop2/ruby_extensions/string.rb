@@ -12,4 +12,8 @@ class String
   def line_of(index)
     self[0...index].count("\n") + 1
   end
+  
+  def blank?
+    self == ""
+  end
 end
