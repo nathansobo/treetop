@@ -1,3 +1,7 @@
+require 'rubygems'
+require 'facet/string/tab'
+require 'facet/string/camelize'
+
 dir = File.dirname(__FILE__)
 
 TREETOP_ROOT = File.join(dir, 'treetop')

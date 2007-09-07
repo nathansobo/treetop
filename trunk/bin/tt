@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + "/../lib"))
+require 'treetop'
+
+treetop_files = ARGV
+if treetop_files.nil?
+  puts "Usage: tt foo.treetop bar.treetop"
+  exit
+end
+
+compiler = Treetop::Compiler::GrammarCompiler.new
+treetop_files.each do |treetop_file_path|
+  compiler.compile(treetop_file_path)
+end
+

@@ -2,7 +2,7 @@ dir = File.dirname(__FILE__)
 require 'rubygems'
 require 'spec/expectations'
 require 'spec/matchers'
-require 'facet/string/camelize'
+
 require File.join(dir, 'unit', 'util')
 require File.join(dir, 'unit', 'assertion_failed_error')
 require File.join(dir, 'unit', 'assertions')
