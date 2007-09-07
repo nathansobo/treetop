@@ -12,6 +12,9 @@ class GrammarCompilerTest < Screw::Unit::TestCase
   
   def teardown
     delete_target_files
+    Object.class_eval do
+      remove_const(:Test) if const_defined?(:Test)
+    end
   end
   
   test "compilation of a single file to a default file name" do
@@ -33,6 +36,18 @@ class GrammarCompilerTest < Screw::Unit::TestCase
   test "compilation of a single file without writing it to an output file" do
     @compiler.ruby_source(@source_path).should_not be_nil
   end
+
+  test "load_grammar compiles and evaluates source grammar with extension" do    
+    load_grammar @source_path
+    Test::Grammar.new.parse('foo').should be_success
+  end
+
+  test "load_grammar compiles and evaluates source grammar with no extension" do
+    path_without_extension = @source_path.gsub(/\.treetop\Z/, '')
+    load_grammar path_without_extension
+    Test::Grammar.new.parse('foo').should be_success
+  end
+  
   
   def delete_target_files
     File.delete(@target_path) if File.exists?(@target_path)
