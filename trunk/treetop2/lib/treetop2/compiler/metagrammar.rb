@@ -1,5 +1,5 @@
 module Treetop2
-  module Compiler2
+  module Compiler
     class Metagrammar < ::Treetop2::Parser::CompiledParser
       include ::Treetop2::Parser
   

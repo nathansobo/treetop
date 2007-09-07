@@ -1,5 +1,5 @@
 module Treetop2
-  module Compiler2
+  module Compiler
     class RubyBuilder
       
       attr_reader :level, :address_space, :ruby

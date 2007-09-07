@@ -1,5 +1,5 @@
 module Treetop2
-  module Compiler2
+  module Compiler
     module AtomicExpression
       def inline_modules
         []

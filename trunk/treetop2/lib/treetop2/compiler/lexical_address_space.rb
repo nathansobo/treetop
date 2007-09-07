@@ -1,5 +1,5 @@
 module Treetop2
-  module Compiler2
+  module Compiler
     class LexicalAddressSpace
       def initialize
         reset_addresses

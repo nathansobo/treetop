@@ -6,7 +6,7 @@ require 'rubygems'
 require 'facet/string/tab'
 
 unless Object.const_defined?(:METAGRAMMAR_2_PATH)
-  METAGRAMMAR_2_PATH = File.join(TREETOP_2_ROOT, 'compiler_2', 'metagrammar.treetop')
+  METAGRAMMAR_2_PATH = File.join(TREETOP_2_ROOT, 'compiler', 'metagrammar.treetop')
 end
 
 include Treetop2
@@ -32,7 +32,7 @@ class CompilerTestCase < Screw::Unit::TestCase
     end
 
     def generate_test_parser_for_expression(expression_node)
-      builder = Compiler2::RubyBuilder.new
+      builder = Compiler::RubyBuilder.new
       address = builder.next_address
       expression_node.compile(builder)
       %{
@@ -55,7 +55,7 @@ class CompilerTestCase < Screw::Unit::TestCase
     end
 
     def parse_with_metagrammar_2(input, root)
-      parser = Treetop2::Compiler2::Metagrammar.new
+      parser = Treetop2::Compiler::Metagrammar.new
       parser.send(:prepare_to_parse, input)
       node = parser.send("_nt_#{root}".to_sym)
       raise "#{input} cannot be parsed by the metagrammar." if node.failure? 
