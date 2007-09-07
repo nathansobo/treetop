@@ -1,4 +1,4 @@
-module Treetop2
+module Treetop
   module Compiler
     class RubyBuilder
       

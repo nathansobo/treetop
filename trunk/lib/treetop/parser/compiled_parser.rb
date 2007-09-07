@@ -1,4 +1,4 @@
-module Treetop2
+module Treetop
   module Parser
     class CompiledParser
       attr_reader :input, :index

@@ -1,4 +1,4 @@
-module Treetop2
+module Treetop
   module Compiler
     module ParsingExpression
       attr_reader :address, :builder, :subexpression_address, :var_symbols, :parent_expression

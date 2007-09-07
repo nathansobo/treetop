@@ -1,5 +1,5 @@
-class Target < Treetop2::Parser::CompiledParser
-  include Treetop2::Parser
+class Target < Treetop::Parser::CompiledParser
+  include Treetop::Parser
   
   
   class Bar < SyntaxNode

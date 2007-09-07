@@ -1,4 +1,4 @@
-module Treetop2
+module Treetop
   module Parser
     class ParseFailure < ParseResult
       attr_reader :index

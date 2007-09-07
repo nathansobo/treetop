@@ -1,4 +1,4 @@
-module Treetop2
+module Treetop
   module Compiler
     module AtomicExpression
       def inline_modules
@@ -17,9 +17,9 @@ module Treetop2
 
       def compile
         builder = RubyBuilder.new                        
-        builder.class_declaration "#{grammar_name.text_value} < ::Treetop2::Parser::CompiledParser" do
+        builder.class_declaration "#{grammar_name.text_value} < ::Treetop::Parser::CompiledParser" do
           builder.in(input.column_of(interval.begin))
-          builder << "include ::Treetop2::Parser"
+          builder << "include ::Treetop::Parser"
           builder.newline
           parsing_rule_sequence.compile(builder)
         end

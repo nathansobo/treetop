@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', 'test_helper')
 
 class TerminalSymbolTest < CompilerTestCase
-  class Foo < Treetop2::Parser::SyntaxNode
+  class Foo < Treetop::Parser::SyntaxNode
   end
 
   testing_expression_2 "'foo' <Foo> { def a_method; end }"
