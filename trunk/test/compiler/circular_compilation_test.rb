@@ -9,9 +9,11 @@ class CircularCompilationTest < CompilerTestCase
       result.should be_success
             
       Treetop::Compiler.send(:remove_const, :Metagrammar)
-      Object.class_eval(result.compile)
+      parser_code = result.compile
+      Object.class_eval(parser_code)
       
-      Treetop::Compiler::Metagrammar.new.parse(input).should be_success
+      r = Treetop::Compiler::Metagrammar.new.parse(input)
+      r.should be_success
     end
   end
 end

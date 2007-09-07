@@ -2,13 +2,17 @@ module Treetop
   module Compiler
     grammar Metagrammar
       rule treetop_file
-        (grammar / arbitrary_character)* <TreetopFile>
-      end
-
-      rule arbitrary_character
-        . {
+        prefix:space? module_or_grammar:(module_declaration / grammar) suffix:space? {
           def compile
-            text_value
+            prefix.text_value + module_or_grammar.compile + suffix.text_value
+          end
+        }
+      end
+      
+      rule module_declaration
+        prefix:('module' space [A-Z] alphanumeric_char* space) module_contents:(module_declaration / grammar) suffix:(space 'end') {
+          def compile
+            prefix.text_value + module_contents.compile + suffix.text_value
           end
         }
       end
