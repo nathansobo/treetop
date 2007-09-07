@@ -1,5 +1,5 @@
 module Treetop
-  module Parser
+  module Runtime
     class CompiledParser
       attr_reader :input, :index
 

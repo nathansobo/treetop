@@ -1,5 +1,5 @@
 module Treetop
-  module Parser
+  module Runtime
     class TerminalSyntaxNode < SyntaxNode
 
       def initialize(input, interval)

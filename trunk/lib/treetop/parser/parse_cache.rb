@@ -1,5 +1,5 @@
 module Treetop
-  module Parser
+  module Runtime
     class ParseCache
       attr_reader :node_caches
     

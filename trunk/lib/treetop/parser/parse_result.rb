@@ -1,5 +1,5 @@
 module Treetop
-  module Parser
+  module Runtime
     class ParseResult
       attr_reader :input, :nested_failures
     

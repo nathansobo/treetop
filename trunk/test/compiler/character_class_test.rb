@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', 'test_helper')
 
 class CharacterClassTest < CompilerTestCase
-  class Foo < Treetop::Parser::SyntaxNode
+  class Foo < Treetop::Runtime::SyntaxNode
   end
 
   testing_expression_2 "[A-Z] <Foo> { def a_method; end }"

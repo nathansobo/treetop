@@ -1,5 +1,5 @@
 module Treetop
-  module Parser
+  module Runtime
     class SyntaxNode < ParseResult
       attr_reader :input, :interval
       

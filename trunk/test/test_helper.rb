@@ -34,8 +34,8 @@ class CompilerTestCase < Screw::Unit::TestCase
       address = builder.next_address
       expression_node.compile(builder)
       %{
-        class TestParser < Treetop::Parser::CompiledParser
-          include Treetop::Parser
+        class TestParser < Treetop::Runtime::CompiledParser
+          include Treetop::Runtime
           
           attr_accessor :test_index
           

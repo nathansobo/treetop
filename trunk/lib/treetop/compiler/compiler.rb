@@ -6,27 +6,27 @@ module Treetop
       end
     end
     
-    class TreetopFile < Parser::SyntaxNode
+    class TreetopFile < Runtime::SyntaxNode
 
       def compile
         (elements.map {|elt| elt.compile}).join
       end
     end
     
-    class Grammar < Parser::SyntaxNode
+    class Grammar < Runtime::SyntaxNode
 
       def compile
         builder = RubyBuilder.new                        
-        builder.class_declaration "#{grammar_name.text_value} < ::Treetop::Parser::CompiledParser" do
+        builder.class_declaration "#{grammar_name.text_value} < ::Treetop::Runtime::CompiledParser" do
           builder.in(input.column_of(interval.begin))
-          builder << "include ::Treetop::Parser"
+          builder << "include ::Treetop::Runtime"
           builder.newline
           parsing_rule_sequence.compile(builder)
         end
       end
     end
     
-    class ParsingRuleSequence < Parser::SyntaxNode
+    class ParsingRuleSequence < Runtime::SyntaxNode
 
       def compile(builder)
         builder.method_declaration("root") do
@@ -41,7 +41,7 @@ module Treetop
       end
     end
 
-    class ParsingRule < Parser::SyntaxNode
+    class ParsingRule < Runtime::SyntaxNode
 
       def compile(builder)
         compile_inline_module_declarations(builder)
@@ -84,14 +84,14 @@ module Treetop
       end
     end
     
-    class ParenthesizedExpression < Parser::SyntaxNode
+    class ParenthesizedExpression < Runtime::SyntaxNode
 
       def compile(address, builder, parent_expression = nil)
         elements[2].compile(address, builder)
       end
     end
     
-    class Nonterminal < Parser::SyntaxNode
+    class Nonterminal < Runtime::SyntaxNode
 
       include ParsingExpression
       include AtomicExpression
@@ -103,7 +103,7 @@ module Treetop
       end
     end
     
-    class Terminal < Parser::SyntaxNode
+    class Terminal < Runtime::SyntaxNode
 
       include ParsingExpression
       include AtomicExpression
@@ -114,7 +114,7 @@ module Treetop
       end
     end
     
-    class AnythingSymbol < Parser::SyntaxNode
+    class AnythingSymbol < Runtime::SyntaxNode
 
       include ParsingExpression
       include AtomicExpression
@@ -125,7 +125,7 @@ module Treetop
       end
     end
     
-    class CharacterClass < Parser::SyntaxNode
+    class CharacterClass < Runtime::SyntaxNode
 
       include ParsingExpression
       include AtomicExpression
@@ -136,7 +136,7 @@ module Treetop
       end
     end
     
-    class Sequence < Parser::SyntaxNode
+    class Sequence < Runtime::SyntaxNode
 
       include ParsingExpression
       
@@ -177,7 +177,7 @@ module Treetop
       end
     end
     
-    class Choice < Parser::SyntaxNode
+    class Choice < Runtime::SyntaxNode
 
       include ParsingExpression
       
@@ -209,7 +209,7 @@ module Treetop
     end
     
     
-    class Repetition < Parser::SyntaxNode
+    class Repetition < Runtime::SyntaxNode
 
       include ParsingExpression
       
@@ -264,7 +264,7 @@ module Treetop
       end
     end
     
-    class Optional < Parser::SyntaxNode
+    class Optional < Runtime::SyntaxNode
 
       include ParsingExpression
       
@@ -283,7 +283,7 @@ module Treetop
       end
     end
     
-    class Predicate < Parser::SyntaxNode
+    class Predicate < Runtime::SyntaxNode
 
       include ParsingExpression
 
@@ -336,7 +336,7 @@ module Treetop
       end
     end
     
-    class InlineModule < Parser::SyntaxNode
+    class InlineModule < Runtime::SyntaxNode
 
       include InlineModuleMixin
       

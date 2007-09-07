@@ -4,19 +4,19 @@ require "#{dir}/../test_helper"
 describe "A terminal parse failure" do
   def setup
     @input = "test input"
-    @failure = Parser::TerminalParseFailure.new(@input, 1, "foo")
+    @failure = Runtime::TerminalParseFailure.new(@input, 1, "foo")
   end
   
   it "is == to a parse failure at the same index expecting the same string" do
-    @failure.should == Parser::TerminalParseFailure.new(@input, 1, "foo")
+    @failure.should == Runtime::TerminalParseFailure.new(@input, 1, "foo")
   end
   
   it "is eql to a parse failure at the same index expecting the same string" do
-    @failure.should eql(Parser::TerminalParseFailure.new(@input, 1, "foo"))
-    @failure.hash.should == Parser::TerminalParseFailure.new(@input, 1, "foo").hash
+    @failure.should eql(Runtime::TerminalParseFailure.new(@input, 1, "foo"))
+    @failure.hash.should == Runtime::TerminalParseFailure.new(@input, 1, "foo").hash
   end
   
   it "is considered identical to another failure with the same index and expected string in an array" do        
-    [Parser::TerminalParseFailure.new(@input, 1, "foo"), Parser::TerminalParseFailure.new(@input, 1, "foo")].uniq.size.should == 1
+    [Runtime::TerminalParseFailure.new(@input, 1, "foo"), Runtime::TerminalParseFailure.new(@input, 1, "foo")].uniq.size.should == 1
   end
 end

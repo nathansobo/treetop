@@ -95,7 +95,7 @@ module Screw
       def process_args(args = ARGV)
         begin
           options.order!(args) {|arg| @to_run << arg}
-        rescue OptionParser::ParseError => e
+        rescue OptionRuntime::ParseError => e
           puts e
           puts options
           $! = nil

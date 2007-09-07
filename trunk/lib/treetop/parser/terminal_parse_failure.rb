@@ -1,5 +1,5 @@
 module Treetop
-  module Parser
+  module Runtime
     class TerminalParseFailure < ParseFailure
       attr_reader :expected_string
 

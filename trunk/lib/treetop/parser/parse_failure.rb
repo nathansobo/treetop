@@ -1,5 +1,5 @@
 module Treetop
-  module Parser
+  module Runtime
     class ParseFailure < ParseResult
       attr_reader :index
     

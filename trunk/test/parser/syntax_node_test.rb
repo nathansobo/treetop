@@ -4,7 +4,7 @@ require "#{dir}/../test_helper"
 describe "A new terminal syntax node" do
   
   def setup
-    @node = Parser::SyntaxNode.new("input", 0...3)
+    @node = Runtime::SyntaxNode.new("input", 0...3)
   end
   
   it "reports itself as terminal" do
@@ -28,9 +28,9 @@ end
 describe "A new nonterminal syntax node" do
   def setup
     @input = 'test input'
-    @nested_results = [Parser::TerminalParseFailure.new(@input, 1, 'foo')]
-    @elements = Parser::SyntaxNode.new('input', 0...3)
-    @node = Parser::SyntaxNode.new('input', 0...3, @elements, @nested_results)
+    @nested_results = [Runtime::TerminalParseFailure.new(@input, 1, 'foo')]
+    @elements = Runtime::SyntaxNode.new('input', 0...3)
+    @node = Runtime::SyntaxNode.new('input', 0...3, @elements, @nested_results)
   end
 
   it "reports itself as nonterminal" do
