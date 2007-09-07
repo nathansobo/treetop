@@ -4,7 +4,7 @@ class CharacterClassTest < CompilerTestCase
   class Foo < Treetop2::Parser::SyntaxNode
   end
 
-  testing_expression "[A-Z] <Foo> { def a_method; end }"
+  testing_expression_2 "[A-Z] <Foo> { def a_method; end }"
 
   it "matches single characters within that range, returning instances of the declared node class that respond to the method defined in the inline module" do
     result = parse('A')
@@ -33,7 +33,7 @@ class CharacterClassTest < CompilerTestCase
 end
 
 describe "A character class containing quotes", :extend => CompilerTestCase do
-  testing_expression "[\"']"
+  testing_expression_2 "[\"']"
   
   it "matches a quote" do
     parse("'").should be_success

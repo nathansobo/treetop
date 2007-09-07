@@ -1,5 +1,5 @@
 module Treetop2
-  module Compiler2    
+  module Compiler2
     module AtomicExpression
       def inline_modules
         []
@@ -7,12 +7,14 @@ module Treetop2
     end
     
     class TreetopFile < Parser::SyntaxNode
+
       def compile
         (elements.map {|elt| elt.compile}).join
       end
     end
     
     class Grammar < Parser::SyntaxNode
+
       def compile
         builder = RubyBuilder.new                        
         builder.class_declaration "#{grammar_name.text_value} < ::Treetop2::Parser::CompiledParser" do
@@ -25,6 +27,7 @@ module Treetop2
     end
     
     class ParsingRuleSequence < Parser::SyntaxNode
+
       def compile(builder)
         builder.method_declaration("root") do
           builder << rules.first.method_name
@@ -39,6 +42,7 @@ module Treetop2
     end
 
     class ParsingRule < Parser::SyntaxNode
+
       def compile(builder)
         compile_inline_module_declarations(builder)
         builder.reset_addresses
@@ -48,7 +52,10 @@ module Treetop2
         builder.method_declaration(method_name) do
           builder.assign 'start_index', 'index'
           builder.assign 'cached', "node_cache[:#{name}][index]"
-          builder << "return cached if cached"
+          builder.if_ 'cached' do
+            builder << '@index = cached.interval.end'
+            builder << 'return cached'
+          end
           builder.newline
           
           parsing_expression.compile(expression_address, builder)
@@ -78,12 +85,14 @@ module Treetop2
     end
     
     class ParenthesizedExpression < Parser::SyntaxNode
+
       def compile(address, builder, parent_expression = nil)
         elements[2].compile(address, builder)
       end
     end
     
     class Nonterminal < Parser::SyntaxNode
+
       include ParsingExpression
       include AtomicExpression
       
@@ -95,6 +104,7 @@ module Treetop2
     end
     
     class Terminal < Parser::SyntaxNode
+
       include ParsingExpression
       include AtomicExpression
       
@@ -105,6 +115,7 @@ module Treetop2
     end
     
     class AnythingSymbol < Parser::SyntaxNode
+
       include ParsingExpression
       include AtomicExpression
       
@@ -115,6 +126,7 @@ module Treetop2
     end
     
     class CharacterClass < Parser::SyntaxNode
+
       include ParsingExpression
       include AtomicExpression
       
@@ -125,6 +137,7 @@ module Treetop2
     end
     
     class Sequence < Parser::SyntaxNode
+
       include ParsingExpression
       
       def compile(address, builder, parent_expression = nil)
@@ -139,7 +152,7 @@ module Treetop2
         end
         builder.else_ do
           reset_index
-          assign_result "ParseFailure.new(#{start_index_var}, #{accumulator_var})"
+          assign_failure start_index_var, accumulator_var
         end
         end_comment(self)
       end
@@ -165,6 +178,7 @@ module Treetop2
     end
     
     class Choice < Parser::SyntaxNode
+
       include ParsingExpression
       
       def compile(address, builder, parent_expression = nil)
@@ -186,7 +200,7 @@ module Treetop2
         builder.else_ do
           if alternatives.size == 1
             reset_index
-            assign_result "ParseFailure.new(#{start_index_var}, #{nested_results_var})"
+            assign_failure start_index_var, nested_results_var
           else
             compile_alternatives(alternatives[1..-1])
           end
@@ -196,6 +210,7 @@ module Treetop2
     
     
     class Repetition < Parser::SyntaxNode
+
       include ParsingExpression
       
       def compile(address, builder, parent_expression)
@@ -240,7 +255,7 @@ module Treetop2
         super
         builder.if__ "#{accumulator_var}.empty?" do
           reset_index
-          assign_result "ParseFailure.new(#{start_index_var}, #{nested_results_var})"
+          assign_failure start_index_var, nested_results_var
         end
         builder.else_ do
           assign_and_extend_result
@@ -250,6 +265,7 @@ module Treetop2
     end
     
     class Optional < Parser::SyntaxNode
+
       include ParsingExpression
       
       def compile(address, builder, parent_expression)
@@ -268,6 +284,7 @@ module Treetop2
     end
     
     class Predicate < Parser::SyntaxNode
+
       include ParsingExpression
 
       def compile(address, builder, parent_expression)
@@ -282,7 +299,7 @@ module Treetop2
       end
       
       def assign_failure
-        assign_result "ParseFailure.new(#{start_index_var}, #{subexpression_result_var}.nested_failures)"
+        super(start_index_var, "#{subexpression_result_var}.nested_failures")
       end
       
       def assign_success
@@ -320,6 +337,7 @@ module Treetop2
     end
     
     class InlineModule < Parser::SyntaxNode
+
       include InlineModuleMixin
       
       def compile(index, rule, builder)

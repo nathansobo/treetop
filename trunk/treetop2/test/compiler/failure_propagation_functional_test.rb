@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', 'test_helper')
 
 describe "An expression for braces surrounding zero or more letters followed by semicolons", :extend => CompilerTestCase do
-  testing_expression "'{' ([a-z] ';')* '}'"
+  testing_expression_2 "'{' ([a-z] ';')* '}'"
   
   it "parses matching input successfully" do
     parse('{a;b;c;}').should be_success

@@ -17,22 +17,21 @@ class CompilerTestCase < Screw::Unit::TestCase
   class << self
     attr_accessor :parser_class_under_test
     
-    def testing_expression(expression_to_test)
-      rule_node = parse_with_metagrammar("rule test_expression\n" + expression_to_test + "\nend", :parsing_rule)
+    def testing_expression_2(expression_to_test)
+      rule_node = parse_with_metagrammar_2("rule test_expression\n" + expression_to_test + "\nend", :parsing_rule)
       test_parser_code = generate_test_parser_for_expression(rule_node)
       #puts test_parser_code
       class_eval(test_parser_code)
       self.parser_class_under_test = const_get(:TestParser)
     end
-    
-    def testing_grammar(grammar_to_test)
-      grammar_node = parse_with_metagrammar(grammar_to_test.strip, :grammar)
+
+    def testing_grammar_2(grammar_to_test)
+      grammar_node = parse_with_metagrammar_2(grammar_to_test.strip, :grammar)
       test_parser_code = grammar_node.compile
-      #puts test_parser_code
+      # puts test_parser_code
       class_eval(test_parser_code)
       self.parser_class_under_test = const_get(grammar_node.grammar_name.text_value.to_sym)
     end
-    
 
     def generate_test_parser_for_expression(expression_node)
       builder = Compiler::RubyBuilder.new
@@ -57,25 +56,18 @@ class CompilerTestCase < Screw::Unit::TestCase
       }.tabto(0)
     end
 
-    def parse_with_metagrammar(input, root)
-      previous_root = metagrammar.set_root(root)
-      node = metagrammar_parser.parse(input)
-      metagrammar.set_root(previous_root)
+    def parse_with_metagrammar_2(input, root)
+      parser = Treetop2::Compiler2::Metagrammar.new
+      parser.send(:prepare_to_parse, input)
+      node = parser.send("_nt_#{root}".to_sym)
       raise "#{input} cannot be parsed by the metagrammar." if node.failure? 
       node
     end
 
-    def metagrammar
-      Treetop2::Compiler::Metagrammar
-    end
-
-    def metagrammar_parser
-      @metagrammar_parser ||= metagrammar.new_parser
-    end
   end
   
-  def parse_with_metagrammar(input, root)
-    self.class.parse_with_metagrammar(input, root)
+  def parse_with_metagrammar_2(input, root)
+    self.class.parse_with_metagrammar_2(input, root)
   end
   
   def parser_class_under_test

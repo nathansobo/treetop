@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', 'test_helper')
 
 describe "A !-predicated terminal symbol", :extend => CompilerTestCase do
-  testing_expression '!"foo"'
+  testing_expression_2 '!"foo"'
   
   it "fails to parse input matching the terminal symbol" do
     parse('foo').should be_failure
@@ -9,7 +9,7 @@ describe "A !-predicated terminal symbol", :extend => CompilerTestCase do
 end
 
 describe "A sequence of a terminal and an and another !-predicated terminal", :extend => CompilerTestCase do
-  testing_expression '"foo" !"bar"'
+  testing_expression_2 '"foo" !"bar"'
 
   it "fails to match input matching both terminals" do
     parse('foobar').should be_failure

@@ -3,7 +3,6 @@ require 'benchmark'
 
 class CircularCompilationTest < CompilerTestCase
   test "the generated metagrammar parser can parse the treetop file whence it came" do
-    parser = Compiler2::Metagrammar.new
     File.open(METAGRAMMAR_2_PATH, 'r') do |file|
       input = file.read
       
@@ -13,7 +12,7 @@ class CircularCompilationTest < CompilerTestCase
       #   end
       # end
       
-      result = parser.parse(input)
+      result = parse_with_metagrammar_2(input, :grammar)
       result.should be_success
       lambda { result.compile }.should_not raise_error
     end

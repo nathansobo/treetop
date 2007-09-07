@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', 'test_helper')
 
 class OneOrMoreOfTerminalTest < CompilerTestCase
-  testing_expression '"foo"+ <Foo> { def a_method; end }'
+  testing_expression_2 '"foo"+ <Foo> { def a_method; end }'
 
   class Foo < Treetop2::Parser::SyntaxNode
   end

@@ -4,7 +4,7 @@ class TerminalSymbolTest < CompilerTestCase
   class Foo < Treetop2::Parser::SyntaxNode
   end
 
-  testing_expression "'foo' <Foo> { def a_method; end }"
+  testing_expression_2 "'foo' <Foo> { def a_method; end }"
 
   it "correctly parses matching input prefixes at various indices, returning an instance of the declared class that can respond to methods defined in the inline module" do
     parse "foo", :at_index => 0 do |result|

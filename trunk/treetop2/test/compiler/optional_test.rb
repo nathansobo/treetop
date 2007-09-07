@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', 'test_helper')
 
 describe "An optional terminal symbol", :extend => CompilerTestCase do
-  testing_expression '"foo"?'
+  testing_expression_2 '"foo"?'
   
   it "parses input matching the terminal" do
     parse('foo').should be_success
