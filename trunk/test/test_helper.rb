@@ -1,7 +1,7 @@
 dir = File.dirname(__FILE__)
 $:.unshift(File.join(dir, *%w[.. lib]))
 require File.expand_path(File.join(dir, 'screw', 'unit'))
-require 'treetop2'
+require 'treetop'
 require 'rubygems'
 require 'facet/string/tab'
 
