@@ -18,24 +18,24 @@ module Treetop
       end
 
       rule grammar
-        'grammar' space grammar_name space parsing_rule_sequence space? 'end' <Grammar>
+        'grammar' space grammar_name space declaration_sequence space? 'end' <Grammar>
       end
 
       rule grammar_name
         ([A-Z] alphanumeric_char*)
       end
 
-      rule parsing_rule_sequence
-        parsing_rule (space parsing_rule)* <ParsingRuleSequence> {
-          def rules
-            [head_rule] + tail_rules
+      rule declaration_sequence
+        parsing_rule (space parsing_rule)* <DeclarationSequence> {
+          def declarations
+            [head_declaration] + tail_declarations
           end
       
-          def head_rule
+          def head_declaration
             elements[0]
           end
       
-          def tail_rules
+          def tail_declarations
             elements[1].elements.map { |rule_with_space| rule_with_space.elements[1] }
           end
         }

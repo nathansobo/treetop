@@ -19,8 +19,12 @@ module Treetop
         builder = RubyBuilder.new                        
         builder.class_declaration "#{grammar_name.text_value} < ::Treetop::Runtime::CompiledParser" do
           builder.in(input.column_of(interval.begin))
-          parsing_rule_sequence.compile(builder)
+          declaration_sequence.compile(builder)
         end
+      end
+      
+      def declaration_sequence
+        parsing_rule_sequence
       end
     end
     
@@ -36,6 +40,25 @@ module Treetop
           rule.compile(builder)
           builder.newline
         end
+      end
+    end
+    
+    class DeclarationSequence < Runtime::SyntaxNode
+
+      def compile(builder)
+        builder.method_declaration("root") do
+          builder << rules.first.method_name
+        end
+        builder.newline
+        
+        declarations.each do |declaration|
+          declaration.compile(builder)
+          builder.newline
+        end
+      end
+      
+      def rules
+        declarations.select { |declaration| declaration.instance_of?(ParsingRule) }
       end
     end
 

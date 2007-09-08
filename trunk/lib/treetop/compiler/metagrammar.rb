@@ -231,7 +231,7 @@ module Treetop
            elements[3]
          end
          
-         def parsing_rule_sequence
+         def declaration_sequence
            elements[4]
          end
          
@@ -258,7 +258,7 @@ module Treetop
                r4 = _nt_space
                s0 << r4
                if r4.success?
-                 r5 = _nt_parsing_rule_sequence
+                 r5 = _nt_declaration_sequence
                  s0 << r5
                  if r5.success?
                    r7 = _nt_space
@@ -331,7 +331,7 @@ module Treetop
          return r0
        end
        
-       module ParsingRuleSequence0
+       module DeclarationSequence0
          def space
            elements[0]
          end
@@ -341,30 +341,30 @@ module Treetop
          end
        end
        
-       module ParsingRuleSequence1
-         def rules
-           [head_rule] + tail_rules
+       module DeclarationSequence1
+         def declarations
+           [head_declaration] + tail_declarations
          end
      
-         def head_rule
+         def head_declaration
            elements[0]
          end
      
-         def tail_rules
+         def tail_declarations
            elements[1].elements.map { |rule_with_space| rule_with_space.elements[1] }
          end
        end
        
-       module ParsingRuleSequence2
+       module DeclarationSequence2
          def parsing_rule
            elements[0]
          end
          
        end
        
-       def _nt_parsing_rule_sequence
+       def _nt_declaration_sequence
          start_index = index
-         cached = node_cache[:parsing_rule_sequence][index]
+         cached = node_cache[:declaration_sequence][index]
          if cached
            @index = cached.interval.end
            return cached
@@ -386,7 +386,7 @@ module Treetop
              end
              if s4.last.success?
                r4 = (SyntaxNode).new(input, i4...index, s4)
-               r4.extend(ParsingRuleSequence0)
+               r4.extend(DeclarationSequence0)
              else
                self.index = i4
                r4 = ParseFailure.new(input, i4, s4)
@@ -402,9 +402,9 @@ module Treetop
            s1 << r3
          end
          if s1.last.success?
-           r1 = (ParsingRuleSequence).new(input, i1...index, s1)
-           r1.extend(ParsingRuleSequence2)
-           r1.extend(ParsingRuleSequence1)
+           r1 = (DeclarationSequence).new(input, i1...index, s1)
+           r1.extend(DeclarationSequence2)
+           r1.extend(DeclarationSequence1)
          else
            self.index = i1
            r1 = ParseFailure.new(input, i1, s1)
@@ -425,7 +425,7 @@ module Treetop
            end
          end
          
-         node_cache[:parsing_rule_sequence][start_index] = r0
+         node_cache[:declaration_sequence][start_index] = r0
          
          return r0
        end
@@ -2334,6 +2334,8 @@ module Treetop
          
          return r0
        end
+       
      end
+
   end
 end
