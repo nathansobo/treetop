@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__), '..', 'test_helper')
 
 class ParsingRuleTest < CompilerTestCase
 
-  testing_grammar_2 %{
+  testing_grammar %{
     grammar Foo
       rule bar
         "baz"

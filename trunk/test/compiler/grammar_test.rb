@@ -4,7 +4,7 @@ class GrammarTest < CompilerTestCase
   module Bar
   end
 
-  testing_grammar_2 %{
+  testing_grammar %{
     grammar Foo
       include Bar
     

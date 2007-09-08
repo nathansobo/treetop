@@ -12,13 +12,11 @@ unless Object.const_defined?(:METAGRAMMAR_PATH)
   Object.class_eval(fresh_metagrammar_source)
 end
 
-
-
 class CompilerTestCase < Screw::Unit::TestCase
   class << self
     attr_accessor :parser_class_under_test
     
-    def testing_expression_2(expression_to_test)
+    def testing_expression(expression_to_test)
       rule_node = parse_with_metagrammar_2("rule test_expression\n" + expression_to_test + "\nend", :parsing_rule)
       test_parser_code = generate_test_parser_for_expression(rule_node)
       #puts test_parser_code
@@ -26,7 +24,7 @@ class CompilerTestCase < Screw::Unit::TestCase
       self.parser_class_under_test = const_get(:TestParser)
     end
 
-    def testing_grammar_2(grammar_to_test)
+    def testing_grammar(grammar_to_test)
       grammar_node = parse_with_metagrammar_2(grammar_to_test.strip, :grammar)
       test_parser_code = grammar_node.compile
       # puts test_parser_code

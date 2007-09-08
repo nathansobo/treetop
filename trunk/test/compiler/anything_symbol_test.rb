@@ -5,7 +5,7 @@ class AnythingSymbolTest < CompilerTestCase
   class Foo < Treetop::Runtime::SyntaxNode
   end
   
-  testing_expression_2 '. <Foo> { def a_method; end }'
+  testing_expression '. <Foo> { def a_method; end }'
   
   it "matches any single character in a big range, returning an instance of the declared node class that responds to methods defined in the inline module" do
     (33..127).each do |digit|

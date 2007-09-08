@@ -5,7 +5,7 @@ class SequenceOfTerminalsTest < CompilerTestCase
   class Foo < Treetop::Runtime::SyntaxNode
   end
 
-  testing_expression_2 'foo:"foo" bar:"bar" baz:"baz" <Foo> { def a_method; end }'
+  testing_expression 'foo:"foo" bar:"bar" baz:"baz" <Foo> { def a_method; end }'
   
   test "successful result is an instance of the declared node class with element accessor methods and the method from the inline module" do
     parse('foobarbaz') do |result|
@@ -40,7 +40,7 @@ end
 
 class SequenceOfNonterminalsTest < CompilerTestCase
 
-  testing_grammar_2 %{
+  testing_grammar %{
     grammar TestGrammar
       rule sequence
         foo bar baz

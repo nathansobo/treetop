@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', 'test_helper')
 
 describe "An &-predicated terminal symbol", :extend => CompilerTestCase do
-  testing_expression_2 '&"foo"'
+  testing_expression '&"foo"'
   
   it "successfully parses input matching the terminal symbol, returning an epsilon syntax node" do
     parse('foo') do |result|
@@ -12,7 +12,7 @@ describe "An &-predicated terminal symbol", :extend => CompilerTestCase do
 end
 
 describe "A sequence of a terminal and an and another &-predicated terminal", :extend => CompilerTestCase do
-  testing_expression_2 '"foo" &"bar"'
+  testing_expression '"foo" &"bar"'
 
   it "matches input matching both terminals, but only consumes the first" do
     parse('foobar') do |result|

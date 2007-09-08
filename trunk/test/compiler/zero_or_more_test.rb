@@ -5,7 +5,7 @@ class ZeroOrMoreOfATerminalWithNodeClassDeclarationTest < CompilerTestCase
   class Foo < Treetop::Runtime::SyntaxNode
   end
 
-  testing_expression_2 '"foo"* <Foo> { def a_method; end }'
+  testing_expression '"foo"* <Foo> { def a_method; end }'
   
   it "successfully parses epsilon, returning an instance declared node class with a nested failure" do
     parse('') do |result|
@@ -32,7 +32,7 @@ class ZeroOrMoreOfATerminalWithNodeClassDeclarationTest < CompilerTestCase
 end
 
 describe "Zero or more of a sequence", :extend => CompilerTestCase do
-  testing_expression_2 '("foo" "bar")*'
+  testing_expression '("foo" "bar")*'
   
   it "resets the index appropriately following partially matcing input" do
     parse('foobarfoo') do |result|
@@ -43,7 +43,7 @@ describe "Zero or more of a sequence", :extend => CompilerTestCase do
 end
 
 describe "Zero or more of a choice", :extend => CompilerTestCase do
-  testing_expression_2 '("a" / "b")*'
+  testing_expression '("a" / "b")*'
 
   it "successfully parses matching input" do
     parse('abba').should be_success

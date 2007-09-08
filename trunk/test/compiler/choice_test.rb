@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', 'test_helper')
 
 describe "A choice between terminal symbols", :extend => CompilerTestCase do
-  testing_expression_2 '"foo" { def foo_method; end } / "bar" { def bar_method; end } / "baz" { def baz_method; end }'
+  testing_expression '"foo" { def foo_method; end } / "bar" { def bar_method; end } / "baz" { def baz_method; end }'
 
   it "successfully parses input matching any of the alternatives, returning a node that responds to methods defined in its respective inline module" do
     result = parse('foo')
@@ -40,7 +40,7 @@ describe "A choice between terminal symbols", :extend => CompilerTestCase do
 end
 
 describe "A choice between sequences", :extend => CompilerTestCase do
-  testing_expression_2 "'foo' 'bar' 'baz'\n/\n'bing' 'bang' 'boom'"
+  testing_expression "'foo' 'bar' 'baz'\n/\n'bing' 'bang' 'boom'"
 
   it "successfully parses input matching any of the alternatives" do
     parse('foobarbaz').should be_success
