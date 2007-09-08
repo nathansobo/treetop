@@ -61,7 +61,7 @@ class CompilerTestCase < Screw::Unit::TestCase
       parser = Treetop::Compiler::Metagrammar.new
       parser.send(:prepare_to_parse, input)
       node = parser.send("_nt_#{root}".to_sym)
-      raise "#{input} cannot be parsed by the metagrammar." if node.failure? 
+      raise "#{input} cannot be parsed by the metagrammar: #{node.nested_failures.map {|f| f.to_s}.join("\n")}" if node.failure? 
       node
     end
 

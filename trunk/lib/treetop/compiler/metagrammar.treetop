@@ -48,7 +48,7 @@ module Treetop
       end
       
       rule include_declaration
-        'include' space string {
+        'include' space [A-Z] alphanumeric_char* {
           def compile(builder)
             builder << text_value
           end
@@ -306,13 +306,9 @@ module Treetop
       end
 
       rule terminal
-        string / character_class / anything_symbol
+        single_quoted_string / double_quoted_string / character_class / anything_symbol
       end
       
-      rule string
-        single_quoted_string / double_quoted_string
-      end
-
       rule double_quoted_string
         '"' (!'"' ("\\\\" / '\"' / .))* '"' <Terminal>
       end

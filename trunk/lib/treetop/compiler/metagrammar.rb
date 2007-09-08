@@ -336,7 +336,7 @@ module Treetop
            elements[0]
          end
          
-         def parsing_rule
+         def declaration
            elements[1]
          end
        end
@@ -356,7 +356,7 @@ module Treetop
        end
        
        module DeclarationSequence2
-         def parsing_rule
+         def declaration
            elements[0]
          end
          
@@ -372,7 +372,7 @@ module Treetop
          
          i0, nr0 = index, []
          i1, s1, nr1 = index, [], []
-         r2 = _nt_parsing_rule
+         r2 = _nt_declaration
          s1 << r2
          if r2.success?
            s3, nr3, i3 = [], [], index
@@ -381,7 +381,7 @@ module Treetop
              r5 = _nt_space
              s4 << r5
              if r5.success?
-               r6 = _nt_parsing_rule
+               r6 = _nt_declaration
                s4 << r6
              end
              if s4.last.success?
@@ -426,6 +426,97 @@ module Treetop
          end
          
          node_cache[:declaration_sequence][start_index] = r0
+         
+         return r0
+       end
+       
+       def _nt_declaration
+         start_index = index
+         cached = node_cache[:declaration][index]
+         if cached
+           @index = cached.interval.end
+           return cached
+         end
+         
+         i0, nr0 = index, []
+         r1 = _nt_parsing_rule
+         nr0 << r1
+         if r1.success?
+           r0 = r1
+           r1.update_nested_results(nr0)
+         else
+           r2 = _nt_include_declaration
+           nr0 << r2
+           if r2.success?
+             r0 = r2
+             r2.update_nested_results(nr0)
+           else
+             self.index = i0
+             r0 = ParseFailure.new(input, i0, nr0)
+           end
+         end
+         
+         node_cache[:declaration][start_index] = r0
+         
+         return r0
+       end
+       
+       module IncludeDeclaration0
+         def compile(builder)
+           builder << text_value
+         end
+       end
+       
+       module IncludeDeclaration1
+         def space
+           elements[1]
+         end
+         
+       end
+       
+       def _nt_include_declaration
+         start_index = index
+         cached = node_cache[:include_declaration][index]
+         if cached
+           @index = cached.interval.end
+           return cached
+         end
+         
+         i0, s0, nr0 = index, [], []
+         r1 = parse_terminal('include', SyntaxNode)
+         s0 << r1
+         if r1.success?
+           r2 = _nt_space
+           s0 << r2
+           if r2.success?
+             r3 = parse_char_class(/[A-Z]/, 'A-Z', SyntaxNode)
+             s0 << r3
+             if r3.success?
+               s4, nr4, i4 = [], [], index
+               loop do
+                 r5 = _nt_alphanumeric_char
+                 nr4 << r5
+                 if r5.success?
+                   s4 << r5
+                 else
+                   break
+                 end
+               end
+               r4 = SyntaxNode.new(input, i4...index, s4, nr4)
+               s0 << r4
+             end
+           end
+         end
+         if s0.last.success?
+           r0 = (SyntaxNode).new(input, i0...index, s0)
+           r0.extend(IncludeDeclaration1)
+           r0.extend(IncludeDeclaration0)
+         else
+           self.index = i0
+           r0 = ParseFailure.new(input, i0, s0)
+         end
+         
+         node_cache[:include_declaration][start_index] = r0
          
          return r0
        end
