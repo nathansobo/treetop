@@ -52,10 +52,12 @@ module Treetop
     class DeclarationSequence < Runtime::SyntaxNode
 
       def compile(builder)
-        builder.method_declaration("root") do
-          builder << rules.first.method_name
+        unless rules.empty?
+          builder.method_declaration("root") do
+            builder << rules.first.method_name
+          end
+          builder.newline
         end
-        builder.newline
         
         declarations.each do |declaration|
           declaration.compile(builder)
@@ -126,7 +128,7 @@ module Treetop
       def compile(address, builder, parent_expression = nil)
         super
         use_vars :result
-        assign_result "_nt_#{text_value}"
+        assign_result text_value == 'super' ? 'super' : "_nt_#{text_value}"
       end
     end
     

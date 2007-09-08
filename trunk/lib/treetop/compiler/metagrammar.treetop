@@ -40,7 +40,10 @@ module Treetop
           end
         }
         /
-        ''
+        '' {
+          def compile(builder)
+          end
+        }
       end
       
       rule declaration
