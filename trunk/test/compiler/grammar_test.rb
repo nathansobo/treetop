@@ -4,7 +4,8 @@ class GrammarTest < CompilerTestCase
   module Bar
   end
 
-  testing_grammar_2 %{grammar Foo
+  testing_grammar_2 %{
+    grammar Foo
       include Bar
     
       rule foo
@@ -18,7 +19,8 @@ class GrammarTest < CompilerTestCase
       rule baz
         'baz' 'baz'
       end
-    end}
+    end
+  }
   
   it "parses matching input" do
     parse('barbar').should be_success
