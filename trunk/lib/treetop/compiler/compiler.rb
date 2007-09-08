@@ -14,13 +14,23 @@ module Treetop
     end
     
     class Grammar < Runtime::SyntaxNode
-
       def compile
-        builder = RubyBuilder.new                        
-        builder.class_declaration "#{grammar_name.text_value} < ::Treetop::Runtime::CompiledParser" do
+        builder = RubyBuilder.new
+        
+        builder.module_declaration "#{grammar_name.text_value}" do
           builder.in(input.column_of(interval.begin))
           declaration_sequence.compile(builder)
+          builder << "include ::Treetop::Runtime"
         end
+        builder.newline
+        builder.class_declaration "#{parser_name} < ::Treetop::Runtime::CompiledParser" do
+          builder.in(input.column_of(interval.begin))
+          builder << "include #{grammar_name.text_value}"
+        end
+      end
+      
+      def parser_name
+        grammar_name.text_value + 'Parser'
       end
     end
     

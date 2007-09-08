@@ -29,7 +29,7 @@ class CompilerTestCase < Screw::Unit::TestCase
       test_parser_code = grammar_node.compile
       # puts test_parser_code
       class_eval(test_parser_code)
-      self.parser_class_under_test = const_get(grammar_node.grammar_name.text_value.to_sym)
+      self.parser_class_under_test = const_get(grammar_node.parser_name.to_sym)
     end
 
     def generate_test_parser_for_expression(expression_node)
@@ -56,7 +56,7 @@ class CompilerTestCase < Screw::Unit::TestCase
     end
 
     def parse_with_metagrammar_2(input, root)
-      parser = Treetop::Compiler::Metagrammar.new
+      parser = Treetop::Compiler::MetagrammarParser.new
       parser.send(:prepare_to_parse, input)
       node = parser.send("_nt_#{root}".to_sym)
       raise "#{input} cannot be parsed by the metagrammar: #{node.nested_failures.map {|f| f.to_s}.join("\n")}" if node.failure? 

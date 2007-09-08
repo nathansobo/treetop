@@ -9,7 +9,7 @@ module Treetop
       
       def ruby_source(source_path)
         File.open(source_path) do |source_file|
-          result = Metagrammar.new.parse(source_file.read)
+          result = MetagrammarParser.new.parse(source_file.read)
           if result.failure?
             raise RuntimeError.new(result.nested_failures.map {|failure| failure.to_s}.join("\n"))
           end

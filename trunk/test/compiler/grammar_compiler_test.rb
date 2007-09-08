@@ -22,7 +22,7 @@ class GrammarCompilerTest < Screw::Unit::TestCase
     @compiler.compile(@source_path)
     assert File.exists?(@target_path)
     require @target_path
-    Test::Grammar.new.parse('foo').should be_success
+    Test::GrammarParser.new.parse('foo').should be_success
   end
   
   test "compilation of a single file to an explicit file name" do
@@ -30,7 +30,7 @@ class GrammarCompilerTest < Screw::Unit::TestCase
     @compiler.compile(@source_path, @alternate_target_path)
     assert File.exists?(@alternate_target_path)
     require @alternate_target_path
-    Test::Grammar.new.parse('foo').should be_success
+    Test::GrammarParser.new.parse('foo').should be_success
   end
   
   test "compilation of a single file without writing it to an output file" do
@@ -39,13 +39,13 @@ class GrammarCompilerTest < Screw::Unit::TestCase
 
   test "load_grammar compiles and evaluates source grammar with extension" do    
     load_grammar @source_path
-    Test::Grammar.new.parse('foo').should be_success
+    Test::GrammarParser.new.parse('foo').should be_success
   end
 
   test "load_grammar compiles and evaluates source grammar with no extension" do
     path_without_extension = @source_path.gsub(/\.treetop\Z/, '')
     load_grammar path_without_extension
-    Test::Grammar.new.parse('foo').should be_success
+    Test::GrammarParser.new.parse('foo').should be_success
   end
   
   

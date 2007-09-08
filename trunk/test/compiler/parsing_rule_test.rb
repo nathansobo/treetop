@@ -11,7 +11,7 @@ class ParsingRuleTest < CompilerTestCase
   }
 
   test "node cache storage and retrieval" do
-    parser = Foo.new
+    parser = FooParser.new
     parser.send(:prepare_to_parse, 'baz')
     node_cache = parser.send(:node_cache)
     
