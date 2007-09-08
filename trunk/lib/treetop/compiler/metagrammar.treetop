@@ -26,7 +26,7 @@ module Treetop
       end
 
       rule declaration_sequence
-        parsing_rule (space parsing_rule)* <DeclarationSequence> {
+        declaration (space declaration)* <DeclarationSequence> {
           def declarations
             [head_declaration] + tail_declarations
           end
@@ -41,6 +41,18 @@ module Treetop
         }
         /
         ''
+      end
+      
+      rule declaration
+        parsing_rule / include_declaration
+      end
+      
+      rule include_declaration
+        'include' space string {
+          def compile(builder)
+            builder << text_value
+          end
+        }
       end
 
       rule parsing_rule
@@ -294,7 +306,11 @@ module Treetop
       end
 
       rule terminal
-        single_quoted_string / double_quoted_string / character_class / anything_symbol
+        string / character_class / anything_symbol
+      end
+      
+      rule string
+        single_quoted_string / double_quoted_string
       end
 
       rule double_quoted_string

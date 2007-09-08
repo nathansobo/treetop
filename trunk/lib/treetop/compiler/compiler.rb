@@ -22,10 +22,6 @@ module Treetop
           declaration_sequence.compile(builder)
         end
       end
-      
-      def declaration_sequence
-        parsing_rule_sequence
-      end
     end
     
     class ParsingRuleSequence < Runtime::SyntaxNode
