@@ -3,11 +3,16 @@ $:.unshift(File.join(dir, *%w[.. lib]))
 require File.expand_path(File.join(dir, 'screw', 'unit'))
 require 'treetop'
 
-unless Object.const_defined?(:METAGRAMMAR_2_PATH)
-  METAGRAMMAR_2_PATH = File.join(TREETOP_ROOT, 'compiler', 'metagrammar.treetop')
+include Treetop
+
+unless Object.const_defined?(:METAGRAMMAR_PATH)
+  METAGRAMMAR_PATH = File.join(TREETOP_ROOT, 'compiler', 'metagrammar.treetop')
+  fresh_metagrammar_source = Compiler::GrammarCompiler.new.ruby_source(METAGRAMMAR_PATH)
+  Compiler.send(:remove_const, :Metagrammar)
+  Object.class_eval(fresh_metagrammar_source)
 end
 
-include Treetop
+
 
 class CompilerTestCase < Screw::Unit::TestCase
   class << self
