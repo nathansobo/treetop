@@ -10,6 +10,7 @@ class CircularCompilationTest < CompilerTestCase
             
       Treetop::Compiler.send(:remove_const, :Metagrammar)
       parser_code = result.compile
+      
       Object.class_eval(parser_code)
       
       r = Treetop::Compiler::MetagrammarParser.new.parse(input)

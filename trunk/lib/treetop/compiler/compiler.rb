@@ -7,7 +7,6 @@ module Treetop
     end
     
     class TreetopFile < Runtime::SyntaxNode
-
       def compile
         (elements.map {|elt| elt.compile}).join
       end
@@ -18,15 +17,19 @@ module Treetop
         builder = RubyBuilder.new
         
         builder.module_declaration "#{grammar_name.text_value}" do
-          builder.in(input.column_of(interval.begin))
-          declaration_sequence.compile(builder)
+          builder.in(indent_level) # account for initial indentation of grammar declaration
           builder << "include ::Treetop::Runtime"
+          builder.newline
+          declaration_sequence.compile(builder)
         end
         builder.newline
         builder.class_declaration "#{parser_name} < ::Treetop::Runtime::CompiledParser" do
-          builder.in(input.column_of(interval.begin))
           builder << "include #{grammar_name.text_value}"
         end
+      end
+      
+      def indent_level
+        input.column_of(interval.begin) - 1
       end
       
       def parser_name
@@ -114,14 +117,12 @@ module Treetop
     end
     
     class ParenthesizedExpression < Runtime::SyntaxNode
-
       def compile(address, builder, parent_expression = nil)
         elements[2].compile(address, builder)
       end
     end
     
     class Nonterminal < Runtime::SyntaxNode
-
       include ParsingExpression
       include AtomicExpression
       
@@ -133,7 +134,6 @@ module Treetop
     end
     
     class Terminal < Runtime::SyntaxNode
-
       include ParsingExpression
       include AtomicExpression
       
@@ -144,7 +144,6 @@ module Treetop
     end
     
     class AnythingSymbol < Runtime::SyntaxNode
-
       include ParsingExpression
       include AtomicExpression
       
@@ -155,7 +154,6 @@ module Treetop
     end
     
     class CharacterClass < Runtime::SyntaxNode
-
       include ParsingExpression
       include AtomicExpression
       

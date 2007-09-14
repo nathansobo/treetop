@@ -43,7 +43,11 @@ class SequenceOfNonterminalsTest < CompilerTestCase
   testing_grammar %{
     grammar TestGrammar
       rule sequence
-        foo bar baz
+        foo bar baz {
+          def baz
+            'override' + super.text_value
+          end
+        }
       end
       
       rule foo 'foo' end
@@ -52,11 +56,13 @@ class SequenceOfNonterminalsTest < CompilerTestCase
     end
   }
   
-  test "accessors for nonterminals are automatically defined" do
+  test "accessors for nonterminals are automatically defined and can be overridden in the inline block" do
     parse('foobarbaz') do |result|
       result.foo.text_value.should == 'foo'
       result.bar.text_value.should == 'bar'
-      result.baz.text_value.should == 'baz'
+      result.baz.should == 'overridebaz'
     end
+    
+    
   end
 end

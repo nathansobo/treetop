@@ -26,17 +26,13 @@ module Treetop
       end
 
       rule declaration_sequence
-        declaration (space declaration)* <DeclarationSequence> {
+        head:declaration tail:(space declaration)* <DeclarationSequence> {
           def declarations
-            [head_declaration] + tail_declarations
+            [head] + tail
           end
       
-          def head_declaration
-            elements[0]
-          end
-      
-          def tail_declarations
-            elements[1].elements.map { |rule_with_space| rule_with_space.elements[1] }
+          def tail
+            super.elements.map { |elt| elt.declaration }
           end
         }
         /
@@ -67,19 +63,15 @@ module Treetop
       end
 
       rule choice
-        alternative (space? '/' space? alternative)+ <Choice> {
-          def head_alternative
-            elements[0]
-          end
-      
-          def tail_alternatives
-            elements[1].elements.map {|alternative_with_slash| alternative_with_slash.elements[3]}
-          end
-      
+        head:alternative tail:(space? '/' space? alternative)+ <Choice> {
           def alternatives
-            [head_alternative] + tail_alternatives
+            [head] + tail
           end
-      
+          
+          def tail
+            super.elements.map {|elt| elt.alternative}
+          end
+          
           def inline_modules
             (alternatives.map {|alt| alt.inline_modules }).flatten
           end
@@ -87,23 +79,19 @@ module Treetop
       end
 
       rule sequence
-        labeled_sequence_primary (space labeled_sequence_primary)+ node_class_declarations <Sequence> {
-          def head_element
-            elements[0]
-          end
-      
-          def tail_elements
-            elements[1].elements.map {|element_with_space| element_with_space.elements[1] }
-          end
-      
+        head:labeled_sequence_primary tail:(space labeled_sequence_primary)+ node_class_declarations <Sequence> {
           def sequence_elements
-            [head_element] + tail_elements
+            [head] + tail
+          end
+    
+          def tail
+            super.elements.map {|elt| elt.labeled_sequence_primary }
           end
       
           def inline_modules
             (sequence_elements.map {|elt| elt.inline_modules}).flatten +
-            node_class_declarations.inline_modules +
-            [sequence_element_accessor_module]
+            [sequence_element_accessor_module] +
+            node_class_declarations.inline_modules
           end
       
           def inline_module_name
@@ -141,7 +129,7 @@ module Treetop
           end
       
           def optional_expression
-            elements[0]
+            atomic
           end
       
           def node_class
