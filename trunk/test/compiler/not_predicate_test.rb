@@ -25,3 +25,11 @@ describe "A sequence of a terminal and an and another !-predicated terminal", :e
     end
   end
 end
+
+describe "A !-predicated sequence", :extend => CompilerTestCase do
+  testing_expression '!("a" "b" "c")'
+
+  it "fails to parse matching input" do
+    parse('abc').should be_failure
+  end
+end
