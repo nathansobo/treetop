@@ -27,6 +27,10 @@ class GrammarTest < CompilerTestCase
     parse('bazbaz').should be_success
   end
   
+  it "fails if it does not parse all input" do
+    parse('barbarbazbaz').should be_failure
+  end
+  
   it "mixes in included modules" do
     Foo.ancestors.should include(Bar)
   end

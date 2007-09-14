@@ -8,12 +8,6 @@ module Treetop
       end
       
       module TreetopFile0
-        def compile
-          prefix.text_value + module_or_grammar.compile + suffix.text_value
-        end
-      end
-      
-      module TreetopFile1
         def prefix
           elements[0]
         end
@@ -24,6 +18,12 @@ module Treetop
         
         def suffix
           elements[2]
+        end
+      end
+      
+      module TreetopFile1
+        def compile
+          prefix.text_value + module_or_grammar.compile + suffix.text_value
         end
       end
       
@@ -74,8 +74,8 @@ module Treetop
         end
         if s0.last.success?
           r0 = (SyntaxNode).new(input, i0...index, s0)
-          r0.extend(TreetopFile1)
           r0.extend(TreetopFile0)
+          r0.extend(TreetopFile1)
         else
           self.index = i0
           r0 = ParseFailure.new(input, i0, s0)
@@ -104,12 +104,6 @@ module Treetop
       end
       
       module ModuleDeclaration2
-        def compile
-          prefix.text_value + module_contents.compile + suffix.text_value
-        end
-      end
-      
-      module ModuleDeclaration3
         def prefix
           elements[0]
         end
@@ -120,6 +114,12 @@ module Treetop
         
         def suffix
           elements[2]
+        end
+      end
+      
+      module ModuleDeclaration3
+        def compile
+          prefix.text_value + module_contents.compile + suffix.text_value
         end
       end
       
@@ -208,8 +208,8 @@ module Treetop
         end
         if s0.last.success?
           r0 = (SyntaxNode).new(input, i0...index, s0)
-          r0.extend(ModuleDeclaration3)
           r0.extend(ModuleDeclaration2)
+          r0.extend(ModuleDeclaration3)
         else
           self.index = i0
           r0 = ParseFailure.new(input, i0, s0)
@@ -344,22 +344,22 @@ module Treetop
       end
       
       module DeclarationSequence1
-        def declarations
-          [head] + tail
-        end
-    
-        def tail
-          super.elements.map { |elt| elt.declaration }
-        end
-      end
-      
-      module DeclarationSequence2
         def head
           elements[0]
         end
         
         def tail
           elements[1]
+        end
+      end
+      
+      module DeclarationSequence2
+        def declarations
+          [head] + tail
+        end
+    
+        def tail
+          super.elements.map { |elt| elt.declaration }
         end
       end
       
@@ -409,8 +409,8 @@ module Treetop
         end
         if s1.last.success?
           r1 = (DeclarationSequence).new(input, i1...index, s1)
-          r1.extend(DeclarationSequence2)
           r1.extend(DeclarationSequence1)
+          r1.extend(DeclarationSequence2)
         else
           self.index = i1
           r1 = ParseFailure.new(input, i1, s1)
@@ -468,16 +468,16 @@ module Treetop
       end
       
       module IncludeDeclaration0
-        def compile(builder)
-          builder << text_value
-        end
-      end
-      
-      module IncludeDeclaration1
         def space
           elements[1]
         end
         
+      end
+      
+      module IncludeDeclaration1
+        def compile(builder)
+          builder << text_value
+        end
       end
       
       def _nt_include_declaration
@@ -515,8 +515,8 @@ module Treetop
         end
         if s0.last.success?
           r0 = (SyntaxNode).new(input, i0...index, s0)
-          r0.extend(IncludeDeclaration1)
           r0.extend(IncludeDeclaration0)
+          r0.extend(IncludeDeclaration1)
         else
           self.index = i0
           r0 = ParseFailure.new(input, i0, s0)
@@ -643,6 +643,16 @@ module Treetop
       end
       
       module Choice1
+        def head
+          elements[0]
+        end
+        
+        def tail
+          elements[1]
+        end
+      end
+      
+      module Choice2
         def alternatives
           [head] + tail
         end
@@ -653,16 +663,6 @@ module Treetop
         
         def inline_modules
           (alternatives.map {|alt| alt.inline_modules }).flatten
-        end
-      end
-      
-      module Choice2
-        def head
-          elements[0]
-        end
-        
-        def tail
-          elements[1]
         end
       end
       
@@ -729,8 +729,8 @@ module Treetop
         end
         if s0.last.success?
           r0 = (Choice).new(input, i0...index, s0)
-          r0.extend(Choice2)
           r0.extend(Choice1)
+          r0.extend(Choice2)
         else
           self.index = i0
           r0 = ParseFailure.new(input, i0, s0)
@@ -752,6 +752,20 @@ module Treetop
       end
       
       module Sequence1
+        def head
+          elements[0]
+        end
+        
+        def tail
+          elements[1]
+        end
+        
+        def node_class_declarations
+          elements[2]
+        end
+      end
+      
+      module Sequence2
         def sequence_elements
           [head] + tail
         end
@@ -768,20 +782,6 @@ module Treetop
     
         def inline_module_name
           node_class_declarations.inline_module_name
-        end
-      end
-      
-      module Sequence2
-        def head
-          elements[0]
-        end
-        
-        def tail
-          elements[1]
-        end
-        
-        def node_class_declarations
-          elements[2]
         end
       end
       
@@ -834,8 +834,8 @@ module Treetop
         end
         if s0.last.success?
           r0 = (Sequence).new(input, i0...index, s0)
-          r0.extend(Sequence2)
           r0.extend(Sequence1)
+          r0.extend(Sequence2)
         else
           self.index = i0
           r0 = ParseFailure.new(input, i0, s0)
@@ -878,6 +878,16 @@ module Treetop
       end
       
       module Primary0
+        def prefix
+          elements[0]
+        end
+        
+        def atomic
+          elements[1]
+        end
+      end
+      
+      module Primary1
         def compile(address, builder)
           prefix.compile(address, builder, self)
         end
@@ -895,17 +905,21 @@ module Treetop
         end
       end
       
-      module Primary1
-        def prefix
+      module Primary2
+        def atomic
           elements[0]
         end
         
-        def atomic
+        def suffix
           elements[1]
+        end
+        
+        def node_class_declarations
+          elements[2]
         end
       end
       
-      module Primary2
+      module Primary3
         def compile(address, builder)
           suffix.compile(address, builder, self)
         end
@@ -927,21 +941,17 @@ module Treetop
         end
       end
       
-      module Primary3
+      module Primary4
         def atomic
           elements[0]
         end
         
-        def suffix
-          elements[1]
-        end
-        
         def node_class_declarations
-          elements[2]
+          elements[1]
         end
       end
       
-      module Primary4
+      module Primary5
         def compile(address, builder)
           atomic.compile(address, builder, self)
         end
@@ -956,16 +966,6 @@ module Treetop
     
         def inline_module_name
           node_class_declarations.inline_module_name
-        end
-      end
-      
-      module Primary5
-        def atomic
-          elements[0]
-        end
-        
-        def node_class_declarations
-          elements[1]
         end
       end
       
@@ -987,8 +987,8 @@ module Treetop
         end
         if s1.last.success?
           r1 = (SyntaxNode).new(input, i1...index, s1)
-          r1.extend(Primary1)
           r1.extend(Primary0)
+          r1.extend(Primary1)
         else
           self.index = i1
           r1 = ParseFailure.new(input, i1, s1)
@@ -1011,8 +1011,8 @@ module Treetop
           end
           if s4.last.success?
             r4 = (SyntaxNode).new(input, i4...index, s4)
-            r4.extend(Primary3)
             r4.extend(Primary2)
+            r4.extend(Primary3)
           else
             self.index = i4
             r4 = ParseFailure.new(input, i4, s4)
@@ -1031,8 +1031,8 @@ module Treetop
             end
             if s8.last.success?
               r8 = (SyntaxNode).new(input, i8...index, s8)
-              r8.extend(Primary5)
               r8.extend(Primary4)
+              r8.extend(Primary5)
             else
               self.index = i8
               r8 = ParseFailure.new(input, i8, s8)
@@ -1054,6 +1054,16 @@ module Treetop
       end
       
       module LabeledSequencePrimary0
+        def label
+          elements[0]
+        end
+        
+        def sequence_primary
+          elements[1]
+        end
+      end
+      
+      module LabeledSequencePrimary1
         def compile(lexical_address, builder)
           sequence_primary.compile(lexical_address, builder)
         end
@@ -1070,16 +1080,6 @@ module Treetop
           else
             nil
           end
-        end
-      end
-      
-      module LabeledSequencePrimary1
-        def label
-          elements[0]
-        end
-        
-        def sequence_primary
-          elements[1]
         end
       end
       
@@ -1100,8 +1100,8 @@ module Treetop
         end
         if s0.last.success?
           r0 = (SyntaxNode).new(input, i0...index, s0)
-          r0.extend(LabeledSequencePrimary1)
           r0.extend(LabeledSequencePrimary0)
+          r0.extend(LabeledSequencePrimary1)
         else
           self.index = i0
           r0 = ParseFailure.new(input, i0, s0)
@@ -1120,12 +1120,12 @@ module Treetop
       end
       
       module Label1
-        def name
-          elements[0].text_value
-        end
       end
       
       module Label2
+        def name
+          elements[0].text_value
+        end
       end
       
       module Label3
@@ -1175,8 +1175,8 @@ module Treetop
         end
         if s1.last.success?
           r1 = (SyntaxNode).new(input, i1...index, s1)
-          r1.extend(Label2)
           r1.extend(Label1)
+          r1.extend(Label2)
         else
           self.index = i1
           r1 = ParseFailure.new(input, i1, s1)
@@ -1203,6 +1203,16 @@ module Treetop
       end
       
       module SequencePrimary0
+        def prefix
+          elements[0]
+        end
+        
+        def atomic
+          elements[1]
+        end
+      end
+      
+      module SequencePrimary1
         def compile(lexical_address, builder)
           prefix.compile(lexical_address, builder, self)
         end
@@ -1220,17 +1230,17 @@ module Treetop
         end
       end
       
-      module SequencePrimary1
-        def prefix
+      module SequencePrimary2
+        def atomic
           elements[0]
         end
         
-        def atomic
+        def suffix
           elements[1]
         end
       end
       
-      module SequencePrimary2
+      module SequencePrimary3
         def compile(lexical_address, builder)
           suffix.compile(lexical_address, builder, self)
         end
@@ -1245,16 +1255,6 @@ module Treetop
     
         def inline_module_name
           nil
-        end
-      end
-      
-      module SequencePrimary3
-        def atomic
-          elements[0]
-        end
-        
-        def suffix
-          elements[1]
         end
       end
       
@@ -1276,8 +1276,8 @@ module Treetop
         end
         if s1.last.success?
           r1 = (SyntaxNode).new(input, i1...index, s1)
-          r1.extend(SequencePrimary1)
           r1.extend(SequencePrimary0)
+          r1.extend(SequencePrimary1)
         else
           self.index = i1
           r1 = ParseFailure.new(input, i1, s1)
@@ -1296,8 +1296,8 @@ module Treetop
           end
           if s4.last.success?
             r4 = (SyntaxNode).new(input, i4...index, s4)
-            r4.extend(SequencePrimary3)
             r4.extend(SequencePrimary2)
+            r4.extend(SequencePrimary3)
           else
             self.index = i4
             r4 = ParseFailure.new(input, i4, s4)
@@ -1371,6 +1371,16 @@ module Treetop
       end
       
       module NodeClassDeclarations0
+        def node_class_expression
+          elements[0]
+        end
+        
+        def trailing_inline_module
+          elements[1]
+        end
+      end
+      
+      module NodeClassDeclarations1
         def node_class
           node_class_expression.node_class
         end
@@ -1385,16 +1395,6 @@ module Treetop
     
         def inline_module_name
           inline_module.module_name if inline_module
-        end
-      end
-      
-      module NodeClassDeclarations1
-        def node_class_expression
-          elements[0]
-        end
-        
-        def trailing_inline_module
-          elements[1]
         end
       end
       
@@ -1415,8 +1415,8 @@ module Treetop
         end
         if s0.last.success?
           r0 = (SyntaxNode).new(input, i0...index, s0)
-          r0.extend(NodeClassDeclarations1)
           r0.extend(NodeClassDeclarations0)
+          r0.extend(NodeClassDeclarations1)
         else
           self.index = i0
           r0 = ParseFailure.new(input, i0, s0)
@@ -1528,16 +1528,16 @@ module Treetop
       end
       
       module ParenthesizedExpression0
-        def inline_modules
-          parsing_expression.inline_modules
-        end
-      end
-      
-      module ParenthesizedExpression1
         def parsing_expression
           elements[2]
         end
         
+      end
+      
+      module ParenthesizedExpression1
+        def inline_modules
+          parsing_expression.inline_modules
+        end
       end
       
       def _nt_parenthesized_expression
@@ -1579,8 +1579,8 @@ module Treetop
         end
         if s0.last.success?
           r0 = (ParenthesizedExpression).new(input, i0...index, s0)
-          r0.extend(ParenthesizedExpression1)
           r0.extend(ParenthesizedExpression0)
+          r0.extend(ParenthesizedExpression1)
         else
           self.index = i0
           r0 = ParseFailure.new(input, i0, s0)
@@ -1994,16 +1994,16 @@ module Treetop
       end
       
       module NodeClassExpression1
-        def node_class
-          elements[2].text_value
-        end
-      end
-      
-      module NodeClassExpression2
         def space
           elements[0]
         end
         
+      end
+      
+      module NodeClassExpression2
+        def node_class
+          elements[2].text_value
+        end
       end
       
       module NodeClassExpression3
@@ -2073,8 +2073,8 @@ module Treetop
         end
         if s1.last.success?
           r1 = (SyntaxNode).new(input, i1...index, s1)
-          r1.extend(NodeClassExpression2)
           r1.extend(NodeClassExpression1)
+          r1.extend(NodeClassExpression2)
         else
           self.index = i1
           r1 = ParseFailure.new(input, i1, s1)
@@ -2101,22 +2101,22 @@ module Treetop
       end
       
       module TrailingInlineModule0
-        def inline_modules
-          [inline_module]
-        end
-              
-        def inline_module_name
-          inline_module.module_name
-        end
-      end
-      
-      module TrailingInlineModule1
         def space
           elements[0]
         end
         
         def inline_module
           elements[1]
+        end
+      end
+      
+      module TrailingInlineModule1
+        def inline_modules
+          [inline_module]
+        end
+              
+        def inline_module_name
+          inline_module.module_name
         end
       end
       
@@ -2152,8 +2152,8 @@ module Treetop
         end
         if s1.last.success?
           r1 = (SyntaxNode).new(input, i1...index, s1)
-          r1.extend(TrailingInlineModule1)
           r1.extend(TrailingInlineModule0)
+          r1.extend(TrailingInlineModule1)
         else
           self.index = i1
           r1 = ParseFailure.new(input, i1, s1)
