@@ -14,26 +14,22 @@ Rake::TestTask.new do |t|
 end
 
 gemspec = Gem::Specification.new do |s|
-  s.name = "Treetop"
-  s.version = "0.1.0"
+  s.name = "treetop"
+  s.version = "1.0.0"
   s.author = "Nathan Sobo"
   s.email = "nathansobo@gmail.com"
   s.homepage = "http://functionalform.blogspot.com"
   s.platform = Gem::Platform::RUBY
   s.summary = "A Ruby-based text parsing and interpretation DSL"
-  s.files = FileList["{test,lib}/**/*"].to_a
+  s.files = FileList["README", "Rakefile", "{test,lib,bin}/**/*"].to_a
+  s.bindir = "bin"
+  s.executables = ["tt"]
   s.require_path = "lib"
   s.autorequire = "treetop"
   s.has_rdoc = false
+  s.add_dependency "facets"
 end
 
 Rake::GemPackageTask.new(gemspec) do |pkg|
   pkg.need_tar = true
-end
-
-namespace :metagrammar do
-  task :generate do |object|
-    require "#{dir}/lib/treetop"
-    Treetop::MetagrammarBootstrapper.generate_metagrammar
-  end
 end

@@ -1,0 +1,3 @@
+= Treetop
+
+To compile a treetop grammar file into Ruby, run `tt` on the file. See the metagrammar for an example of how to write a grammar. More examples soon!
