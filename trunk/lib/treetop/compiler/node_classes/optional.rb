@@ -1,9 +1,6 @@
 module Treetop
   module Compiler
-    class Optional < Runtime::SyntaxNode
-
-      include ParsingExpression
-      
+    class Optional < ParsingExpression
       def compile(address, builder, parent_expression)
         super
         use_vars :result

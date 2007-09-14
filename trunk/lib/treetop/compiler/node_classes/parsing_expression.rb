@@ -1,6 +1,6 @@
 module Treetop
   module Compiler
-    module ParsingExpression
+    class ParsingExpression < Runtime::SyntaxNode
       attr_reader :address, :builder, :subexpression_address, :var_symbols, :parent_expression
     
       def compile(address, builder, parent_expression)

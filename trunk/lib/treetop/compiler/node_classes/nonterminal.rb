@@ -1,7 +1,6 @@
 module Treetop
   module Compiler    
-    class Nonterminal < Runtime::SyntaxNode
-      include ParsingExpression
+    class Nonterminal < ParsingExpression
       include AtomicExpression
       
       def compile(address, builder, parent_expression = nil)

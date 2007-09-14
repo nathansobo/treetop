@@ -1,7 +1,6 @@
 module Treetop
   module Compiler    
-    class AnythingSymbol < Runtime::SyntaxNode
-      include ParsingExpression
+    class AnythingSymbol < ParsingExpression
       include AtomicExpression
       
       def compile(address, builder, parent_expression = nil)

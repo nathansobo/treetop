@@ -1,9 +1,6 @@
 module Treetop
   module Compiler
-    class Predicate < Runtime::SyntaxNode
-
-      include ParsingExpression
-
+    class Predicate < ParsingExpression
       def compile(address, builder, parent_expression)
         super
         begin_comment(parent_expression)

@@ -1,8 +1,6 @@
 module Treetop
   module Compiler
-    class Repetition < Runtime::SyntaxNode
-      include ParsingExpression
-      
+    class Repetition < ParsingExpression
       def compile(address, builder, parent_expression)
         super
         repeated_expression = parent_expression.atomic

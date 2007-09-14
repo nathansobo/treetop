@@ -1,7 +1,6 @@
 module Treetop
   module Compiler    
-    class Terminal < Runtime::SyntaxNode
-      include ParsingExpression
+    class Terminal < ParsingExpression
       include AtomicExpression
       
       def compile(address, builder, parent_expression = nil)

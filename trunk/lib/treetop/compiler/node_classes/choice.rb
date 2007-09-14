@@ -1,9 +1,6 @@
 module Treetop
   module Compiler
-    class Choice < Runtime::SyntaxNode
-
-      include ParsingExpression
-      
+    class Choice < ParsingExpression
       def compile(address, builder, parent_expression = nil)
         super
         begin_comment(self)

@@ -1,7 +1,6 @@
 module Treetop
   module Compiler    
-    class CharacterClass < Runtime::SyntaxNode
-      include ParsingExpression
+    class CharacterClass < ParsingExpression
       include AtomicExpression
       
       def compile(address, builder, parent_expression = nil)

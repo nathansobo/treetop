@@ -1,9 +1,6 @@
 module Treetop
   module Compiler    
-    class Sequence < Runtime::SyntaxNode
-
-      include ParsingExpression
-      
+    class Sequence < ParsingExpression
       def compile(address, builder, parent_expression = nil)
         super
         begin_comment(self)
