@@ -1,6 +1,6 @@
 module Treetop
   module Compiler
-    module AtomicExpression
+    class AtomicExpression < ParsingExpression
       def inline_modules
         []
       end

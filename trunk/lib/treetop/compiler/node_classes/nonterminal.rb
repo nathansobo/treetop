@@ -1,8 +1,6 @@
 module Treetop
   module Compiler    
-    class Nonterminal < ParsingExpression
-      include AtomicExpression
-      
+    class Nonterminal < AtomicExpression
       def compile(address, builder, parent_expression = nil)
         super
         use_vars :result
