@@ -1,3 +1,65 @@
-= Treetop
+Overview
+========
 
-To compile a treetop grammar file into Ruby, run `tt` on the file. See the metagrammar for an example of how to write a grammar. More examples soon!
+Building an interpretter in Treetop involves two major steps:
+
+1. Defining a grammar for the target language.
+2. Associating methods with the syntax trees produced by this grammar.
+
+Treetop has a custom syntax for grammar definition based on parsing expressions. You write a grammar `.treetop` file and use Treetop to transform it into a parser for the language it describes. The basic structure of such a file is as follows.
+
+    grammar GrammarName
+      rule rule_name
+        'parsing expression'
+      end
+    end
+
+The first rule is the grammar's *root rule*. The generated parser will always start with it when parsing input. At first glance, parsing expressions are similar to regular expressions. But parsing expressions are more powerful because they can refer to other parsing expressions by name. Here's an example:
+
+    grammar Parenthesized
+      def parenthesized_character
+        '(' (parenthesized_character / .) ')'
+      end
+    end
+
+This is a grammar with a single, self-recursive rule. It describes a character nested within an arbitrary number of parentheses. It would successfully match any of the following input strings:
+  
+    (a)
+    ((a))
+    (((a)))
+
+
+
+Parsing Expressions
+===================
+
+Terminals
+---------
+
+Nonterminals
+------------
+
+Ordered Choices
+---------------
+
+Sequences
+---------
+
+Repetition Suffixes
+--------------------
+
+Optional Suffix
+---------------
+
+Lookahead Assertions
+--------------------
+
+Referencing Grammars In Ruby Scripts
+====================================
+
+Loading
+-------
+
+Compilation
+-----------
+
