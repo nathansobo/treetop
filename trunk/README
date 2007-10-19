@@ -1,5 +1,5 @@
-Introduction
-============
+Tutorial
+========
 Languages can be split into two components, their *syntax* and their *semantics*. It's your understanding of English syntax that tells you the stream of words "Sleep furiously green ideas colorless" is not a valid sentence. Semantics is deeper. Even if we rearrange the above sentence to be "Colorless green ideas sleep furiously", which is syntactically correct, it remains nonsensical on a semantic level. With Treetop, you'll be dealing with languages that are much simpler than English, but these basic concepts apply. Your programs will need to address both the syntax and the semantics of the languages they interpret.
 
 Treetop equips you with powerful tools for each of these two aspects of interpreter writing. You'll describe the syntax of your language with a *parsing expression grammar*. From this description, Treetop will generate a Ruby parser that transforms streams of characters written into your language into *abstract syntax trees* representing their structure. You'll then describe the semantics of your language in Ruby by defining methods on the syntax trees the parser generates.
@@ -93,4 +93,26 @@ The true power of this facility, however, is unleashed when writing *recursive e
 
 
 The `parens` expression simply states that a `parens` is a set of parentheses surrounding another `parens` expression or, if that doesn't match, the empty string. If you are uncomfortable with recursion, its time to get comfortable, because it is the basis of language. Here's a tip: Don't try and imagine the parser circling round and round through the same rule. Instead, imagine the rule is *already* defined while you are defining it. If you imagine that `parens` already matches a string of matching parentheses, then its easy to think of `parens` as an open and closing parentheses around another set of matching parentheses, which conveniently, you happen to be defining. You know that `parens` is supposed to represent a string of matched parentheses, so trust in that meaning, even if you haven't fully implemented it yet.
+
+
+Features to cover in the talk
+=============================
+
+* Treetop files
+* Grammar definition
+* Rules
+* Loading a grammar
+* Compiling a grammar with the `tt` command
+* Accessing a parser for the grammar from Ruby
+* Parsing Expressions of all kinds
+? Left recursion and factorization
+  - Here I can talk about function application, discussing how the operator
+    could be an arbitrary expression
+* Inline node class eval blocks
+* Node class declarations
+* Labels
+* Use of super within within labels
+* Grammar composition with include
+* Use of super with grammar composition
+
 

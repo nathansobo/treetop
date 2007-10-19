@@ -1,0 +1,26 @@
+
+Function application... the left-recursion problem
+--------------------------------------------------
+f g x
+
+rule expression
+  application / function / variable
+end
+
+rule application
+  expression space expression
+end
+
+Function application... how can we avoid left recursion?
+--------------------------------------------------------
+rule expression
+  application / function / variable
+end
+
+rule application
+  operator space expression
+end
+
+rule operator
+  function / variable
+end

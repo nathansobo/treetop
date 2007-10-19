@@ -1,0 +1,80 @@
+grammar LambdaCalculus
+  rule expression
+    application / function / variable
+  end
+
+  rule application
+    operator:non_application operands:(space non_application)+ {
+      def eval(env={})
+        operands.inject(operator) do |operator, operand|
+          operator.eval(env).apply(operand.eval(env))
+        end
+      end
+      
+      def operands
+        super.elements.map {|elt| elt.non_application }
+      end
+      
+      def to_s
+        text_value
+      end
+    }
+  end
+  
+  rule non_application
+    function / variable
+  end
+  
+  rule function
+    '\\' param:variable '[' body:expression ']' {
+      class Closure
+        attr_reader :env, :function
+        
+        def initialize(function, env)
+          @function = function
+          @env = env
+        end
+      
+        def apply(arg)
+          function.body.eval(function.param.bind(arg, env))
+        end
+      
+        def to_s
+          function.to_s + ' ' + env.inspect
+        end
+        
+        def eval(env)
+          self
+        end
+      end
+      
+      def eval(env={})
+        Closure.new(self, env)
+      end
+      
+      def to_s
+        text_value
+      end
+    }
+  end
+  
+  rule variable
+    [a-z] {
+      def eval(env={})
+        env[to_s] || self
+      end
+      
+      def bind(value, env)
+        env.merge(to_s => value)
+      end
+      
+      def to_s
+        text_value
+      end
+    }
+  end
+  
+  rule space
+    [ \n]*
+  end
+end
