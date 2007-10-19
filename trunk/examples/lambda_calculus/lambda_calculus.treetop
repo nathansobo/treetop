@@ -6,8 +6,8 @@ grammar LambdaCalculus
   rule application
     operator:non_application operands:(space non_application)+ {
       def eval(env={})
-        operands.inject(operator) do |operator, operand|
-          operator.eval(env).apply(operand.eval(env))
+        operands.inject(operator.eval(env)) do |operator, operand|
+          operator.apply(operand.eval(env))
         end
       end
       
@@ -41,10 +41,6 @@ grammar LambdaCalculus
       
         def to_s
           function.to_s + ' ' + env.inspect
-        end
-        
-        def eval(env)
-          self
         end
       end
       
