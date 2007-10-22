@@ -1,11 +1,12 @@
-require 'test/unit'
-require 'rubygems'
-require 'treetop'
-
 dir = File.dirname(__FILE__)
+require File.expand_path("#{dir}/test_helper")
+require File.expand_path("#{dir}/arithmetic_node_classes")
+load_grammar File.expand_path("#{dir}/arithmetic")
 load_grammar File.expand_path("#{dir}/lambda_calculus")
 
-class LambdaCalculusParserTest < Test::Unit::TestCase  
+class LambdaCalculusParserTest < Test::Unit::TestCase
+  include ParserTestHelper
+  
   def setup
     @parser = LambdaCalculusParser.new
   end
@@ -42,23 +43,15 @@ class LambdaCalculusParserTest < Test::Unit::TestCase
     assert_evals_to 'x', '\x[\y[x y]] \a[a] x'
   end
   
-  def assert_evals_to_self(input)
-    assert_evals_to(input, input)
+  def test_parentheses
+    puts parse('\a[\b[a]] \c[c] d').eval
   end
   
-  def assert_evals_to(expected, input)
-    result = @parser.parse(input)
-    if result.failure?
-      puts result.nested_failures
-    end
-    assert_equal expected, result.eval.to_s
-  end
-  
-  def assert_parse_success(input)
-    result = @parser.parse(input)
-    if result.failure?
-      puts result.nested_failures
-    end
-    assert @parser.parse(input).success?
-  end
+  # def test_arithmetic_expression_as_body
+  #   assert_equal 10, parse('\x[x + 5] 5').eval
+  # end
+  # 
+  # def test_precedence_of_prefix_vs_infix_application
+  #   assert_equal 13, parse('\x[x * 5] 2 + 3').eval
+  # end  
 end
