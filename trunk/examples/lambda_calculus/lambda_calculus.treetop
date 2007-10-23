@@ -4,21 +4,27 @@ grammar LambdaCalculus
   end
 
   rule application
-    operator:non_application operands:(space non_application)+ {
+    operator space expression <Application> {
       def eval(env={})
-        operands.inject(operator.eval(env)) do |operator, operand|
-          operator.apply(operand.eval(env))
-        end
+        left_associative_apply(operator.eval(env), env)
       end
       
-      def operands
-        super.elements.map {|elt| elt.non_application }
+      def left_associative_apply(operator, env)
+        if expression.instance_of?(Application)
+          expression.left_associative_apply(operator.apply(expression.operator.eval(env)), env)
+        else
+          operator.apply(expression.eval(env))
+        end
       end
       
       def to_s
         text_value
       end
     }
+  end
+  
+  rule operator
+    function / variable
   end
   
   rule non_application

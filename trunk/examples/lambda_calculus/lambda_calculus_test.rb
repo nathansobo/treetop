@@ -1,6 +1,7 @@
 dir = File.dirname(__FILE__)
 require File.expand_path("#{dir}/test_helper")
 require File.expand_path("#{dir}/arithmetic_node_classes")
+require File.expand_path("#{dir}/lambda_calculus_node_classes")
 load_grammar File.expand_path("#{dir}/arithmetic")
 load_grammar File.expand_path("#{dir}/lambda_calculus")
 
@@ -41,10 +42,6 @@ class LambdaCalculusParserTest < Test::Unit::TestCase
   
   def test_multiple_argument_application
     assert_evals_to 'x', '\x[\y[x y]] \a[a] x'
-  end
-  
-  def test_parentheses
-    puts parse('\a[\b[a]] \c[c] d').eval
   end
   
   # def test_arithmetic_expression_as_body
