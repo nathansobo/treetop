@@ -4,6 +4,10 @@ grammar LambdaCalculus
   rule expression
     application / function / super
   end
+  
+  rule primary
+    application / super
+  end
 
   rule application
     operator space expression <Application> {
@@ -19,8 +23,8 @@ grammar LambdaCalculus
         end
       end
       
-      def to_s
-        text_value
+      def to_s(env={})
+        operator.to_s(env) + ' ' + expression.to_s(env)
       end
     }
   end
@@ -47,8 +51,8 @@ grammar LambdaCalculus
           function.body.eval(function.param.bind(arg, env))
         end
       
-        def to_s
-          function.to_s + ' ' + env.inspect
+        def to_s(other_env={})
+          "\\#{function.param.to_s}[#{function.body.to_s(other_env.merge(env))}]"
         end
       end
       
@@ -56,8 +60,8 @@ grammar LambdaCalculus
         Closure.new(self, env)
       end
       
-      def to_s
-        text_value
+      def to_s(env={})
+        eval(env).to_s
       end
     }
   end
@@ -65,15 +69,19 @@ grammar LambdaCalculus
   rule variable
     [a-z] {
       def eval(env={})
-        env[to_s] || self
+        env[name] || self
       end
       
       def bind(value, env)
-        env.merge(to_s => value)
+        env.merge(name => value)
       end
       
-      def to_s
+      def name
         text_value
+      end
+      
+      def to_s(env={})
+        env[name] ? env[name].to_s : name
       end
     }
   end

@@ -13,42 +13,49 @@ class LambdaCalculusParserTest < Test::Unit::TestCase
   end
   
   def test_free_variable
-    assert_evals_to_self 'x'
+    assert_equal 'x', parse('x').eval.to_s
   end
   
   def test_variable_binding
-    variable = @parser.parse('x').eval
+    variable = parse('x').eval
     env = variable.bind(1, {})
     assert_equal 1, env['x']
   end
   
-  def test_bound_variable
-    result = @parser.parse('x')
-    assert_equal 1, result.eval({'x' => 1})
+  def test_bound_variable_evaluation
+    assert_equal 1, parse('x').eval({'x' => 1})
   end
   
   def test_identity_function
-    assert_evals_to '\x[x] {}', '\x[x]'
+    assert_equal '\x[x]', parse('\x[x]').eval.to_s
   end
   
   def test_function_returning_constant_function
-    assert_evals_to '\x[\y[x]] {}', '\x[\y[x]]'
+    assert_equal '\x[\y[x]]', parse('\x[\y[x]]').eval.to_s
   end
   
   def test_identity_function_application
-    assert_evals_to 'y', '\x[x] y'
-    assert_evals_to '\y[y] {}', '\x[x] \y[y]'
+    assert_equal 1, parse('\x[x] 1').eval
+    assert_equal '\y[y]', parse('\x[x] \y[y]').eval.to_s
   end
   
-  def test_multiple_argument_application
-    assert_evals_to 'x', '\x[\y[x y]] \a[a] x'
+  def test_constant_function_construction
+    assert_equal '\y[1]', parse('\x[\y[x]] 1').eval.to_s
   end
   
-  # def test_arithmetic_expression_as_body
-  #   assert_equal 10, parse('\x[x + 5] 5').eval
-  # end
-  # 
-  # def test_precedence_of_prefix_vs_infix_application
-  #   assert_equal 13, parse('\x[x * 5] 2 + 3').eval
-  # end  
+  def test_multiple_argument_application_is_left_associative
+    assert_equal '\b[b]', parse('\x[\y[x y]] \a[a] \b[b]').eval.to_s
+  end
+  
+  def test_parentheses_override_application_order
+    assert_equal '\y[\b[b] y]', parse('\x[\y[x y]] (\a[a] \b[b])').eval.to_s
+  end
+  
+  def test_arithmetic_in_function_body
+    assert_equal 10, parse('\x[x + 5] 5').eval
+  end
+  
+  def test_addition_of_function_results
+    assert_equal 20, parse('\x[x + 5] 5 + \x[15 - x] 5').eval
+  end
 end
