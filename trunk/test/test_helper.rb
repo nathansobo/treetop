@@ -1,7 +1,8 @@
+require 'rubygems'
 dir = File.dirname(__FILE__)
-$:.unshift(File.join(dir, *%w[.. lib]))
+$:.unshift(File.expand_path(File.join(dir, '..', 'lib')))
 require File.expand_path(File.join(dir, 'screw', 'unit'))
-require 'treetop'
+gem_original_require 'treetop'
 
 include Treetop
 
