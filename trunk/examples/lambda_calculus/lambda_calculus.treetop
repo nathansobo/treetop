@@ -1,6 +1,8 @@
 grammar LambdaCalculus
+  include Arithmetic
+
   rule expression
-    application / function / variable
+    application / function / super
   end
 
   rule application
