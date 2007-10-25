@@ -1,6 +1,14 @@
 grammar Arithmetic  
   rule expression
-    additive
+    comparative / additive
+  end
+  
+  rule comparative
+    exp_1:additive space '==' space exp_2:additive {
+      def eval(env={})
+        exp_1.eval(env) == exp_2.eval(env)
+      end
+    }
   end
   
   rule additive

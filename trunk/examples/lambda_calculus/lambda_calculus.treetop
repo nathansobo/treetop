@@ -1,8 +1,46 @@
 grammar LambdaCalculus
   include Arithmetic
 
+  rule program
+    expression more_expressions:(';' space expression)* {
+      def eval(env={})
+        env = env.clone
+        last_eval = nil
+        expressions.each do |exp|
+          last_eval = exp.eval(env)
+        end
+        last_eval
+      end
+      
+      def expressions
+        [expression] + more_expressions.elements.map {|elt| elt.expression}
+      end
+    }
+  end
+
   rule expression
-    application / function / super
+    definition / conditional / application / function / super
+  end
+  
+  rule definition
+    'def' space variable space expression {
+      def eval(env)
+        env[variable.name] = expression.eval(env)
+      end
+    }
+  end
+  
+  rule conditional
+    'if' space '(' space condition:expression space ')' space
+    true_case:expression space 'else' space false_case:expression {
+      def eval(env)
+        if condition.eval(env)
+          true_case.eval(env)
+        else
+          false_case.eval(env)
+        end
+      end
+    }
   end
   
   rule primary
@@ -38,7 +76,7 @@ grammar LambdaCalculus
   end
   
   rule function
-    '\\' param:variable '[' body:expression ']' {
+    '\\' param:variable '(' body:expression ')' {
       class Closure
         attr_reader :env, :function
         
@@ -52,7 +90,7 @@ grammar LambdaCalculus
         end
       
         def to_s(other_env={})
-          "\\#{function.param.to_s}[#{function.body.to_s(other_env.merge(env))}]"
+          "\\#{function.param.to_s}(#{function.body.to_s(other_env.merge(env))})"
         end
       end
       
@@ -67,9 +105,9 @@ grammar LambdaCalculus
   end
   
   rule variable
-    [a-z] {
+    !keyword [a-z]+ {
       def eval(env={})
-        env[name] || self
+        env.has_key?(name) ? env[name] : self
       end
       
       def bind(value, env)
@@ -81,10 +119,19 @@ grammar LambdaCalculus
       end
       
       def to_s(env={})
-        env[name] ? env[name].to_s : name
+        env.has_key?(name) ? env[name].to_s : name
       end
     }
   end
+  
+  rule keyword
+    ('if' / 'else') !non_space_char
+  end
+  
+  rule non_space_char
+    ![ \n] .
+  end
+  
   
   rule space
     [ \n]*

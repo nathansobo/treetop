@@ -46,4 +46,9 @@ class ArithmeticParserTest < Test::Unit::TestCase
   def test_parentheses
     assert_equal 25, parse('(5 + x) * (10 - y)').eval('x' => 0, 'y' => 5)
   end
+  
+  def test_equality
+    assert parse('4 == 4').eval
+    assert !parse('4 == 3').eval
+  end
 end
