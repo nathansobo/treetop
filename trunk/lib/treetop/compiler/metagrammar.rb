@@ -933,8 +933,8 @@ module Treetop
           atomic
         end
     
-        def node_class
-          node_class_declarations.node_class
+        def node_class_name
+          node_class_declarations.node_class_name
         end
     
         def inline_modules
@@ -961,8 +961,8 @@ module Treetop
           atomic.compile(address, builder, self)
         end
     
-        def node_class
-          node_class_declarations.node_class
+        def node_class_name
+          node_class_declarations.node_class_name
         end
     
         def inline_modules
@@ -1250,7 +1250,7 @@ module Treetop
           suffix.compile(lexical_address, builder, self)
         end
     
-        def node_class
+        def node_class_name
           'SyntaxNode'
         end
     
@@ -1386,8 +1386,8 @@ module Treetop
       end
       
       module NodeClassDeclarations1
-        def node_class
-          node_class_expression.node_class
+        def node_class_name
+          node_class_expression.node_class_name
         end
     
         def inline_modules
@@ -2006,13 +2006,13 @@ module Treetop
       end
       
       module NodeClassExpression2
-        def node_class
+        def node_class_name
           elements[2].text_value
         end
       end
       
       module NodeClassExpression3
-        def node_class
+        def node_class_name
           nil
         end
       end

@@ -9,8 +9,8 @@ module Treetop
         @parent_expression = parent_expression
       end
       
-      def node_class
-        parent_expression && parent_expression.node_class || 'SyntaxNode'
+      def node_class_name
+        parent_expression && parent_expression.node_class_name || 'SyntaxNode'
       end
       
       def inline_module_name
