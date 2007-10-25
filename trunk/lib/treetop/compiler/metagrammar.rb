@@ -1251,7 +1251,7 @@ module Treetop
         end
     
         def node_class_name
-          'SyntaxNode'
+          nil
         end
     
         def inline_modules

@@ -14,8 +14,7 @@ module Treetop
       end
       
       def inline_module_name
-        return nil unless parent_expression
-        parent_expression.inline_module_name
+        parent_expression && parent_expression.inline_module_name
       end
       
       def optional_arg(arg)

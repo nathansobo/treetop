@@ -47,3 +47,13 @@ describe "A choice between sequences", :extend => CompilerTestCase do
     parse('bingbangboom').should be_success
   end
 end
+
+describe "A choice between terminals followed by a block", :extend => CompilerTestCase do  
+  testing_expression "('a'/ 'b' / 'c') { def a_method; end }"
+
+  it "extends a match of any of its subexpressions with a module created from the block" do
+    ['a', 'b', 'c'].each do |letter|
+      parse(letter).should respond_to(:a_method)
+    end
+  end
+end
