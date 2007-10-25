@@ -74,6 +74,10 @@ module Treetop
       def extend_result(module_name)
         builder.extend result_var, module_name
       end
+      
+      def extend_result_with_inline_module
+        extend_result inline_module_name if inline_module_name
+      end
     
       def reset_index
         builder.assign 'self.index', start_index_var

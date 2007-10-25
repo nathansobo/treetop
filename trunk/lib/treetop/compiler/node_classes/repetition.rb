@@ -26,7 +26,7 @@ module Treetop
       
       def assign_and_extend_result
         assign_result "#{node_class_name}.new(input, #{start_index_var}...index, #{accumulator_var}, #{nested_results_var})"
-        builder << "#{result_var}.extend(#{inline_module_name})" if inline_module_name
+        extend_result_with_inline_module
       end
     end
 

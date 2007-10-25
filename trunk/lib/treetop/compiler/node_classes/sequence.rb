@@ -8,8 +8,8 @@ module Treetop
         compile_sequence_elements(sequence_elements)
         builder.if__ "#{accumulator_var}.last.success?" do
           assign_result "(#{node_class_name}).new(input, #{start_index_var}...index, #{accumulator_var})"
-          builder << "#{result_var}.extend(#{sequence_element_accessor_module_name})" if sequence_element_accessor_module_name
-          builder << "#{result_var}.extend(#{inline_module_name})" if inline_module_name
+          extend_result sequence_element_accessor_module_name if sequence_element_accessor_module_name
+          extend_result_with_inline_module
         end
         builder.else_ do
           reset_index

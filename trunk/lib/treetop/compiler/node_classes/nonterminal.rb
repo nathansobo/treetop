@@ -5,7 +5,7 @@ module Treetop
         super
         use_vars :result
         assign_result text_value == 'super' ? 'super' : "_nt_#{text_value}"
-        extend_result inline_module_name if inline_module_name
+        extend_result_with_inline_module
       end
     end
   end
