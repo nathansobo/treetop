@@ -70,6 +70,10 @@ module Treetop
       def assign_result(value_ruby)
         builder.assign result_var, value_ruby
       end
+      
+      def extend_result(module_name)
+        builder.extend result_var, module_name
+      end
     
       def reset_index
         builder.assign 'self.index', start_index_var

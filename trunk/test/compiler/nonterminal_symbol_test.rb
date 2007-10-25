@@ -12,6 +12,6 @@ describe "A nonterminal symbol followed by a block", :extend => CompilerTestCase
   it "compiles to a method call, extending its results with the anonymous module for the block" do
     result = parse('')
     result.should == '_nt_foo called'
-    # result.should respond_to(:a_method)
+    result.should respond_to(:a_method)
   end
 end

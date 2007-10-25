@@ -51,6 +51,10 @@ module Treetop
         end
       end
       
+      def extend(var, module_name)
+        self << "#{var}.extend(#{module_name})"
+      end
+      
       def accumulate(left, right)
         self << "#{left} << #{right}"
       end
