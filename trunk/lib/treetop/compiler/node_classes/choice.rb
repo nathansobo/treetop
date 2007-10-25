@@ -15,6 +15,7 @@ module Treetop
         accumulate_nested_result
         builder.if__ subexpression_success? do
           assign_result subexpression_result_var
+          extend_result_with_declared_module
           extend_result_with_inline_module
           builder << "#{subexpression_result_var}.update_nested_results(#{nested_results_var})"
         end

@@ -57,3 +57,18 @@ describe "A choice between terminals followed by a block", :extend => CompilerTe
     end
   end
 end
+
+class ChoiceWithDeclaredModuleTest < CompilerTestCase
+  module TestModule
+    def a_method
+    end
+  end
+  
+  testing_expression "('a'/ 'b' / 'c') <TestModule>"
+
+  it "extends a match of any of its subexpressions with a module created from the block" do
+    ['a', 'b', 'c'].each do |letter|
+      parse(letter).should respond_to(:a_method)
+    end
+  end
+end
