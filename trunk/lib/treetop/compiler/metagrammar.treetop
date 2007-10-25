@@ -225,7 +225,7 @@ module Treetop
           end
       
           def node_class
-            'SyntaxNode'
+            nil
           end
       
           def inline_modules
@@ -325,7 +325,7 @@ module Treetop
         /
         '' {
           def node_class
-            'SyntaxNode'
+            nil
           end
         }
       end

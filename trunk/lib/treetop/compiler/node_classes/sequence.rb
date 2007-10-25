@@ -7,7 +7,7 @@ module Treetop
         use_vars :result, :start_index, :accumulator, :nested_results
         compile_sequence_elements(sequence_elements)
         builder.if__ "#{accumulator_var}.last.success?" do
-          assign_result "(#{node_class_declarations.node_class}).new(input, #{start_index_var}...index, #{accumulator_var})"
+          assign_result "(#{node_class}).new(input, #{start_index_var}...index, #{accumulator_var})"
           builder << "#{result_var}.extend(#{sequence_element_accessor_module_name})" if sequence_element_accessor_module_name
           builder << "#{result_var}.extend(#{inline_module_name})" if inline_module_name
         end
@@ -16,6 +16,10 @@ module Treetop
           assign_failure start_index_var, accumulator_var
         end
         end_comment(self)
+      end
+      
+      def node_class
+        node_class_declarations.node_class || 'SyntaxNode'
       end
       
       def compile_sequence_elements(elements)

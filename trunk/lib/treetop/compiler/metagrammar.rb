@@ -4,7 +4,12 @@ module Treetop
       include ::Treetop::Runtime
       
       def root
-        _nt_treetop_file
+        result = _nt_treetop_file
+        if index == input.size
+          return result
+        else
+          return ParseFailure.new(input, index, result.nested_failures)
+        end
       end
       
       module TreetopFile0
@@ -2008,7 +2013,7 @@ module Treetop
       
       module NodeClassExpression3
         def node_class
-          'SyntaxNode'
+          nil
         end
       end
       
