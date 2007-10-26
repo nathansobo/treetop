@@ -893,7 +893,7 @@ module Treetop
       end
       
       module Primary1
-        def compile(address, builder)
+        def compile(address, builder, parent_expression=nil)
           prefix.compile(address, builder, self)
         end
     
@@ -925,7 +925,7 @@ module Treetop
       end
       
       module Primary3
-        def compile(address, builder)
+        def compile(address, builder, parent_expression=nil)
           suffix.compile(address, builder, self)
         end
     
@@ -957,7 +957,7 @@ module Treetop
       end
       
       module Primary5
-        def compile(address, builder)
+        def compile(address, builder, parent_expression=nil)
           atomic.compile(address, builder, self)
         end
     
