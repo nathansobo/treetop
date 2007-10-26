@@ -105,23 +105,17 @@ grammar LambdaCalculus
   end
   
   rule variable
-    !keyword [a-z]+ {
-      def eval(env={})
-        env.has_key?(name) ? env[name] : self
+    !keyword (
+      super {
+        def bind(value, env)
+          env.merge(name => value)
+        end
+
+        def to_s(env={})
+          env.has_key?(name) ? env[name].to_s : name
       end
-      
-      def bind(value, env)
-        env.merge(name => value)
-      end
-      
-      def name
-        text_value
-      end
-      
-      def to_s(env={})
-        env.has_key?(name) ? env[name].to_s : name
-      end
-    }
+      }
+    )
   end
   
   rule keyword

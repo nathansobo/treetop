@@ -4,9 +4,13 @@ grammar Arithmetic
   end
   
   rule comparative
-    exp_1:additive space '==' space exp_2:additive {
-      def eval(env={})
-        exp_1.eval(env) == exp_2.eval(env)
+    operand_1:additive space operator:equality_op space operand_2:additive <BinaryOperation>
+  end
+  
+  rule equality_op
+    '==' {
+      def apply(a, b)
+        a == b
       end
     }
   end
@@ -68,7 +72,7 @@ grammar Arithmetic
   end
 
   rule variable
-    [a-z] {
+    [a-z]+ {
       def eval(env={})
         env[name]
       end
@@ -80,13 +84,7 @@ grammar Arithmetic
   end
 
   rule number
-    [1-9] [0-9]* {
-      def eval(env={})
-        text_value.to_i
-      end
-    }
-    /
-    '0' {
+    ([1-9] [0-9]* / '0') {
       def eval(env={})
         text_value.to_i
       end

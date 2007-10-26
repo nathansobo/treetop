@@ -106,7 +106,7 @@ module Treetop
 
       rule primary
         prefix atomic {
-          def compile(address, builder)
+          def compile(address, builder, parent_expression=nil)
             prefix.compile(address, builder, self)
           end
       
@@ -124,7 +124,7 @@ module Treetop
         }
         /
         atomic suffix node_class_declarations {
-          def compile(address, builder)
+          def compile(address, builder, parent_expression=nil)
             suffix.compile(address, builder, self)
           end
       
@@ -146,7 +146,7 @@ module Treetop
         }
         /
         atomic node_class_declarations {
-          def compile(address, builder)
+          def compile(address, builder, parent_expression=nil)
             atomic.compile(address, builder, self)
           end
       
