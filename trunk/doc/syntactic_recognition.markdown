@@ -1,5 +1,5 @@
 #Syntactic Recognition 
-Treetop grammars are written in a custom language based on parsing expression grammars. Literature on the subject of parsing expression grammars will be useful in writing Treetop grammars.
+Treetop grammars are written in a custom language based on parsing expression grammars. Literature on the subject of parsing expression grammars is useful in writing Treetop grammars.
 
 #Grammar Structure
 Treetop grammars look like this:
@@ -17,6 +17,7 @@ Treetop grammars look like this:
     end
 
 The main keywords are:
+
 * `grammar` : This introduces a new grammar. It is followed by a constant name to which the grammar will be bound when it is loaded.
 
 * `rule` : This defines a parsing rule within the grammar. It is followed by a name by which this rule can be referenced within other rules. It is then followed by a parsing expression defining the rule.
@@ -99,4 +100,4 @@ Preceding an expression with an ampersand `(&)` indicates that it must match, bu
 ###Negative Lookahead Assertion
 Preceding an expression with a bang `(!)` indicates that the expression must not match, but no input will be consumed in the process of determining whether this is true.
 
-* `"foo" &"bar"` matches `"foobar"` but only consumes up to the end `"foo"`. It will not match `"foobaz"`.
+* `"foo" !"bar"` matches `"foobaz"` but only consumes up to the end `"foo"`. It will not match `"foobar"`.
