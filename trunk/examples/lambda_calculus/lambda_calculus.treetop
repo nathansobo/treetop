@@ -126,7 +126,6 @@ grammar LambdaCalculus
     ![ \n] .
   end
   
-  
   rule space
     [ \n]*
   end
