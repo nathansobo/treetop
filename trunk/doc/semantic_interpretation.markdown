@@ -23,7 +23,10 @@ Output from a parser for this grammar looks like this:
 
 This is a parse tree whose nodes are instances of `Treetop::Runtime::SyntaxNode`. What if we could define methods on these node objects? We would then have an object-oriented program whose structure corresponded to the structure of our language. Treetop provides two techniques for doing just this.
 
-##Inline Method Definition
+##Associating Methods with Node-Instantiating Expressions
+Sequences and all types of terminals are node-instantiating expressions. When they match, they create instances of `Treetop::Runtime::SyntaxNode`. Methods can be added to these nodes in the following ways:
+
+###Inline Method Definition
 Methods can be added to the nodes instantiated by the successful match of an expression
 
     grammar ParenLanguage
@@ -44,42 +47,8 @@ Methods can be added to the nodes instantiated by the successful match of an exp
 
 Note that each alternative expression is followed by a block containing a method definition. A `depth` method is defined on both expressions. The recursive `depth` method defined in the block following the first expression determines the depth of the nested parentheses and adds one two it. The base case is implemented in the block following the second expression; a single character has a depth of 0.
 
-A number of methods are available on `Treetop::Runtime::SyntaxNode` that can be used by the methods you define. They include the following:
 
-  <table>
-    <tr>
-      <td>
-        `terminal?`
-      </td>
-      <td>
-        Was this node produced by the matching of a terminal symbol?
-      </td>
-    </tr>
-    <tr>
-      <td>
-        `nonterminal?`
-      </td>
-      <td>
-        Was this node produced by the matching of a nonterminal symbol?
-      </td>
-    <tr>
-      <td>
-        `text_value`
-      </td>
-      <td>
-        The substring of the input represented by this node.
-      </td>
-    <tr>
-      <td>
-        `elements`
-      </td>
-      <td>
-        Available only on nonterminal nodes, returns the nodes parsed by the elements of the matched sequence.
-      </td>
-    </tr>
-  </table>
-
-##Custom SyntaxNode Subclass Declarations
+###Custom `SyntaxNode` Subclass Declarations
 You can instruct the parser to instantiate a custom subclass of Treetop::Runtime::SyntaxNode for an expression by following it by the name of that class enclosed in angle brackets (`<>`). The above inline method definitions could have been moved out into a single class like so.
 
     # in .treetop file
@@ -180,3 +149,39 @@ The module containing automatically defined element accessor methods is an ances
         end
       }
     end
+
+
+##Methods Available on `Treetop::Runtime::SyntaxNode`
+
+<table>
+  <tr>
+    <td>
+      <code>terminal?</code>
+    </td>
+    <td>
+      Was this node produced by the matching of a terminal symbol?
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <code>nonterminal?</code>
+    </td>
+    <td>
+      Was this node produced by the matching of a nonterminal symbol?
+    </td>
+  <tr>
+    <td>
+      <code>text_value</code>
+    </td>
+    <td>
+      The substring of the input represented by this node.
+    </td>
+  <tr>
+    <td>
+      <code>elements</code>
+    </td>
+    <td>
+      Available only on nonterminal nodes, returns the nodes parsed by the elements of the matched sequence.
+    </td>
+  </tr>
+</table>
