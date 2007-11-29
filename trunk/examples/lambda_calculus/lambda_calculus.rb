@@ -1,5 +1,5 @@
 module LambdaCalculus
-  include ::Treetop::Runtime
+  include Treetop::Runtime
   
   def root
     result = _nt_program
@@ -746,6 +746,6 @@ module LambdaCalculus
   
 end
 
-class LambdaCalculusParser < ::Treetop::Runtime::CompiledParser
+class LambdaCalculusParser < Treetop::Runtime::CompiledParser
   include LambdaCalculus
 end

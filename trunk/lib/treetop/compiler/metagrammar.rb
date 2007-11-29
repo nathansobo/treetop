@@ -1,7 +1,7 @@
 module Treetop
   module Compiler
     module Metagrammar
-      include ::Treetop::Runtime
+      include Treetop::Runtime
       
       def root
         result = _nt_treetop_file
@@ -2438,7 +2438,7 @@ module Treetop
       
     end
     
-    class MetagrammarParser < ::Treetop::Runtime::CompiledParser
+    class MetagrammarParser < Treetop::Runtime::CompiledParser
       include Metagrammar
     end
 

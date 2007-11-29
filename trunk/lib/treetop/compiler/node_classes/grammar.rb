@@ -6,12 +6,12 @@ module Treetop
         
         builder.module_declaration "#{grammar_name.text_value}" do
           builder.in(indent_level) # account for initial indentation of grammar declaration
-          builder << "include ::Treetop::Runtime"
+          builder << "include Treetop::Runtime"
           builder.newline
           declaration_sequence.compile(builder)
         end
         builder.newline
-        builder.class_declaration "#{parser_name} < ::Treetop::Runtime::CompiledParser" do
+        builder.class_declaration "#{parser_name} < Treetop::Runtime::CompiledParser" do
           builder << "include #{grammar_name.text_value}"
         end
       end
