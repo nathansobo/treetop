@@ -9,18 +9,12 @@ require 'treetop'
 include Treetop
 
 unless $metagrammar_under_test_loaded
+  METAGRAMMAR_PATH = File.join(TREETOP_ROOT, 'compiler', 'metagrammar.treetop')
   Compiler.send(:remove_const, :Metagrammar)
   tested_metagrammar_path =  "#{dir}/tested_metagrammar.rb"
-  `tt #{TREETOP_ROOT}/compiler/metagrammar.treetop -o #{tested_metagrammar_path}`
+  `tt #{METAGRAMMAR_PATH} -o #{tested_metagrammar_path}`
   load tested_metagrammar_path
   $metagrammar_under_test_loaded = true
-end
-
-unless Object.const_defined?(:METAGRAMMAR_PATH)
-  METAGRAMMAR_PATH = File.join(TREETOP_ROOT, 'compiler', 'metagrammar.treetop')
-  fresh_metagrammar_source = Compiler::GrammarCompiler.new.ruby_source(METAGRAMMAR_PATH)
-  Compiler.send(:remove_const, :Metagrammar)
-  Object.class_eval(fresh_metagrammar_source)
 end
 
 class CompilerTestCase < Screw::Unit::TestCase
