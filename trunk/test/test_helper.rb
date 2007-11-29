@@ -1,10 +1,20 @@
-require 'rubygems'
 dir = File.dirname(__FILE__)
-$:.unshift(File.expand_path(File.join(dir, '..', 'lib')))
-require File.expand_path(File.join(dir, 'screw', 'unit'))
-gem_original_require 'treetop'
 
+require File.expand_path(File.join(dir, 'screw', 'unit'))
+
+
+$:.unshift(File.expand_path(File.join(dir, '..', 'lib')))
+
+require 'treetop'
 include Treetop
+
+unless $metagrammar_under_test_loaded
+  Compiler.send(:remove_const, :Metagrammar)
+  tested_metagrammar_path =  "#{dir}/tested_metagrammar.rb"
+  `tt #{TREETOP_ROOT}/compiler/metagrammar.treetop -o #{tested_metagrammar_path}`
+  load tested_metagrammar_path
+  $metagrammar_under_test_loaded = true
+end
 
 unless Object.const_defined?(:METAGRAMMAR_PATH)
   METAGRAMMAR_PATH = File.join(TREETOP_ROOT, 'compiler', 'metagrammar.treetop')
