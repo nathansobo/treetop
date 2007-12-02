@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+gem 'treetop'
+
+$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + "/../lib"))
+require 'treetop'
+
+if ARGV.empty?
+  puts "Usage:\n\ntt foo.treetop bar.treetop ...\n or\ntt foo.treetop -o alternate_name.rb\n\n"
+  exit
+end
+
+compiler = Treetop::Compiler::GrammarCompiler.new
+
+# explicit output file name option
+if ARGV.size == 3 && ARGV[1] == '-o'
+  compiler.compile(ARGV[0], ARGV[2])
+  exit
+end
+
+# list of input files option
+treetop_files = ARGV
+treetop_files.each do |treetop_file_path|
+  compiler.compile(treetop_file_path)
+end

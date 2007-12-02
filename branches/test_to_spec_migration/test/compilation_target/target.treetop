@@ -1,0 +1,15 @@
+module Target
+  class Bar < Treetop::Runtime::SyntaxNode
+    
+  end
+
+  grammar Foo
+    rule foo
+      'a' ('b' 'c' / 'b' 'd')+ 'e' <Bar> {
+        def foo
+          'foo'
+        end
+      }
+    end
+  end
+end
