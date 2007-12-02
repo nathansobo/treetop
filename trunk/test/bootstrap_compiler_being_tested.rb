@@ -1,7 +1,7 @@
 dir = File.dirname(__FILE__)
 
 # Loading trusted version of Treetop to compile the compiler
-trusted_treetop_path = Gem.source_index.find_name('treetop', ["1.1.3"]).last.full_gem_path
+trusted_treetop_path = Gem.source_index.find_name('treetop').last.full_gem_path
 require File.join(trusted_treetop_path, 'lib', 'treetop')
 
 # Relocating trusted version of Treetop to Trusted::Treetop
