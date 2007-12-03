@@ -14,6 +14,7 @@ Object.send(:remove_const, :TREETOP_ROOT)
 require File.expand_path(File.join(dir, '..', 'lib', 'treetop'))
 # Remove stale Metagrammar defined by the generated metagrammar.rb in system under test
 Treetop::Compiler.send(:remove_const, :Metagrammar)
+Treetop::Compiler.send(:remove_const, :MetagrammarParser)
 
 # Compile and evaluate freshly generated metagrammar source
 METAGRAMMAR_PATH = File.join(TREETOP_ROOT, 'compiler', 'metagrammar.treetop')

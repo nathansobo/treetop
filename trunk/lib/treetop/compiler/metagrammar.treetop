@@ -47,7 +47,7 @@ module Treetop
       end
       
       rule include_declaration
-        'include' space [A-Z] alphanumeric_char* {
+        'include' space [A-Z] (alphanumeric_char / '::')* {
           def compile(builder)
             builder << text_value
           end

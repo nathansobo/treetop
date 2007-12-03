@@ -1,14 +1,13 @@
 require File.join(File.dirname(__FILE__), '..', 'spec_helper')
 
-#FIXME: Move this back into grammarspec
-module GrammarSpecBar
-end
-
 module GrammarSpec
+  module Bar
+  end
+  
   describe "a grammar" do
     testing_grammar %{
       grammar Foo
-        include GrammarSpecBar
+        include GrammarSpec::Bar
     
         rule foo
           bar / baz
@@ -34,7 +33,7 @@ module GrammarSpec
     end
   
     it "mixes in included modules" do
-      self.class.const_get(:Foo).ancestors.should include(GrammarSpecBar)
+      self.class.const_get(:Foo).ancestors.should include(GrammarSpec::Bar)
     end
   end
 end

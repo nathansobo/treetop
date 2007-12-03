@@ -9,6 +9,7 @@ module CircularCompilationSpec
       File.open(METAGRAMMAR_PATH, 'r') do |file|
         @input = file.read
       end
+
       result = Trusted::Treetop::Compiler::MetagrammarParser.new.parse(input)
       compiled_metagrammar_parser_source = result.compile
       
