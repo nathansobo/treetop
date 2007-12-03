@@ -18,6 +18,7 @@ Object.send(:remove_const, :TREETOP_ROOT)
 
 # Requiring version of Treetop that is under test
 require File.expand_path(File.join(dir, '..', 'treetop'))
+
 # Remove stale Metagrammar defined by the generated metagrammar.rb in system under test
 Treetop::Compiler.send(:remove_const, :Metagrammar)
 Treetop::Compiler.send(:remove_const, :MetagrammarParser)
