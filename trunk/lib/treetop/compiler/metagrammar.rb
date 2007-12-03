@@ -4,12 +4,7 @@ module Treetop
       include Treetop::Runtime
       
       def root
-        result = _nt_treetop_file
-        if index == input.size
-          return result
-        else
-          return ParseFailure.new(input, index, result.nested_failures)
-        end
+        @root || :treetop_file
       end
       
       module TreetopFile0
@@ -505,7 +500,23 @@ module Treetop
             if r3.success?
               s4, nr4, i4 = [], [], index
               loop do
-                r5 = _nt_alphanumeric_char
+                i5, nr5 = index, []
+                r6 = _nt_alphanumeric_char
+                nr5 << r6
+                if r6.success?
+                  r5 = r6
+                  r6.update_nested_results(nr5)
+                else
+                  r7 = parse_terminal('::', SyntaxNode)
+                  nr5 << r7
+                  if r7.success?
+                    r5 = r7
+                    r7.update_nested_results(nr5)
+                  else
+                    self.index = i5
+                    r5 = ParseFailure.new(input, i5, nr5)
+                  end
+                end
                 nr4 << r5
                 if r5.success?
                   s4 << r5

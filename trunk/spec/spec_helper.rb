@@ -4,8 +4,8 @@ require 'rubygems'
 $LOAD_PATH.unshift(File.join(dir, '..', 'vendor', 'rspec', 'lib'))
 require 'spec'
 
-unless $bootstrapped_compiler_being_tested
-  load File.join(dir, 'bootstrap_compiler_being_tested.rb')
+unless $bootstrapped_gen_1_metagrammar
+  load File.join(dir, '..', 'lib', 'treetop', 'bootstrap_gen_1_metagrammar.rb')
 end
 include Treetop
 
