@@ -37,29 +37,6 @@ module Treetop
         self.parser_class_under_test = const_get(grammar_node.parser_name.to_sym)
       end
 
-      def generate_test_parser_for_expression(expression_node)
-        builder = Compiler::RubyBuilder.new
-        address = builder.next_address
-        expression_node.compile(builder)
-        %{
-          class TestParser < Treetop::Runtime::CompiledParser
-            include Treetop::Runtime
-          
-            attr_accessor :test_index
-          
-            def root
-              _nt_test_expression
-            end
-          
-            def reset_index
-              @index = @test_index || 0
-            end
-          
-            #{builder.ruby.tabrestto(10)}
-          end
-        }.tabto(0)
-      end
-
       def parse_with_metagrammar(input, root)
         parser = Treetop::Compiler::MetagrammarParser.new
         parser.send(:prepare_to_parse, input)
@@ -91,10 +68,5 @@ module Treetop
     end
     
     Spec::Example::ExampleGroupFactory.register(:compiler, self)
-  end
-end
-class String
-  def tabrestto(n)
-    self.gsub(/\n^/, "\n" + ' ' * n)
   end
 end
