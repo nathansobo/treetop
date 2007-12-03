@@ -1,3 +1,6 @@
+# This file's job is to load a Treetop::Compiler::Metagrammar and Treetop::Compiler::MetagrammarParser
+# into the environment by compiling the current metagrammar.treetop using a trusted version of Treetop.
+
 require 'rubygems'
 dir = File.dirname(__FILE__)
 
@@ -25,7 +28,7 @@ compiled_metagrammar_source = Trusted::Treetop::Compiler::GrammarCompiler.new.ru
 Object.class_eval(compiled_metagrammar_source)
 
 # The compiler under test was compiled with the trusted grammar and therefore depends on its runtime
-# But the runtime in the global namespace is the new runtime. We therefore inject the tursted runtime
+# But the runtime in the global namespace is the new runtime. We therefore inject the trusted runtime
 # into the compiler so its parser functions correctly
 Treetop::Compiler::Metagrammar.module_eval do
   include Trusted::Treetop::Runtime
