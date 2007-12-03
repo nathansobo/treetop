@@ -22,12 +22,6 @@ module Treetop
             end
           end
         }.tabto(0))
-        
-        parser_class_under_test.class_eval do
-          def root
-            _nt_expression_under_test
-          end
-        end
       end
 
       def testing_grammar(grammar_to_test)
@@ -57,12 +51,10 @@ module Treetop
   
     def parse(input, options = {})
       test_parser = parser_class_under_test.new
-      result = test_parser.instance_eval do
-        prepare_to_parse(input)
-        @index = options[:at_index] if options[:at_index]
-        root
+      unless options[:consume_all_input].nil?
+        test_parser.consume_all_input = options.delete(:consume_all_input)
       end
-      
+      result = test_parser.parse(input, options)
       yield result if block_given?
       result
     end

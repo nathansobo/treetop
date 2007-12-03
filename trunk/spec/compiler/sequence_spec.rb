@@ -19,7 +19,7 @@ module SequenceSpec
     end
     
     it "successfully matches at a non-zero index" do
-      parse('---foobarbaz', :at_index => 3) do |result|
+      parse('---foobarbaz', :index => 3) do |result|
         result.should be_success
         result.should be_nonterminal
         (result.elements.map {|elt| elt.text_value}).join.should == 'foobarbaz'
@@ -27,7 +27,7 @@ module SequenceSpec
     end
   
     it "fails to match non-matching input, returning a nested failure at the first terminal that did not match" do
-      parse('---foobazbaz', :at_index => 3) do |result|
+      parse('---foobazbaz', :index => 3) do |result|
         result.should be_failure
         result.index.should == 3
         result.nested_failures.size.should == 1

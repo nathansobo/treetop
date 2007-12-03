@@ -35,7 +35,7 @@ module ZeroOrMoreSpec
     testing_expression '("foo" "bar")*'
   
     it "resets the index appropriately following partially matcing input" do
-      parse('foobarfoo') do |result|
+      parse('foobarfoo', :consume_all_input => false) do |result|
         result.should be_success
         result.interval.should == (0...6)
       end

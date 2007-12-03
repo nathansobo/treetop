@@ -5,13 +5,7 @@ module Treetop
       def compile(builder)
         unless rules.empty?
           builder.method_declaration("root") do
-            builder.assign 'result', rules.first.method_name
-            builder.if__ 'index == input.size' do
-              builder << 'return result'
-            end
-            builder.else_ do
-              builder << 'return ParseFailure.new(input, index, result.nested_failures)'
-            end
+            builder << "@root || :#{rules.first.name}"
           end
           builder.newline
         end

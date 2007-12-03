@@ -20,7 +20,7 @@ module OptionalSpec
     end
   
     it "parses input not matching the terminal, returning an epsilon result with a nested failure" do
-      parse('bar') do |result|
+      parse('bar', :consume_all_input => false) do |result|
         result.should be_success
         result.interval.should == (0...0)
         result.nested_failures.size.should == 1

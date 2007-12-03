@@ -5,7 +5,7 @@ module AndPredicateSpec
     testing_expression '&"foo"'
 
     it "successfully parses input matching the terminal symbol, returning an epsilon syntax node" do
-      parse('foo') do |result|
+      parse('foo', :consume_all_input => false) do |result|
         result.should be_success
         result.interval.should == (0...0)
       end
@@ -16,7 +16,7 @@ module AndPredicateSpec
     testing_expression '"foo" &"bar"'
 
     it "matches input matching both terminals, but only consumes the first" do
-      parse('foobar') do |result|
+      parse('foobar', :consume_all_input => false) do |result|
         result.should be_success
         result.text_value.should == 'foo'
       end

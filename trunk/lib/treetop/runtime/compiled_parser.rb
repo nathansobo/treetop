@@ -3,11 +3,24 @@ module Treetop
     class CompiledParser
       include Treetop::Runtime
       
+      attr_accessor :consume_all_input
+      attr_writer :root
+      alias :consume_all_input? :consume_all_input
       attr_reader :input, :index
 
-      def parse(input)
+      def initialize
+        self.consume_all_input = true
+      end
+
+      def parse(input, options = {})
         prepare_to_parse(input)
-        return root
+        @index = options[:index] if options[:index]
+        result = send("_nt_#{root}")
+        if consume_all_input? && index != input.size
+          return ParseFailure.new(input, index, result.nested_failures)
+        else
+          return result
+        end
       end
       
       protected

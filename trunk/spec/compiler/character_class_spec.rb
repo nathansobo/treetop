@@ -26,11 +26,11 @@ module CharacterClassSpec
     end
   
     it "matches a single character within that range at index 1" do
-      parse(' A', :at_index => 1).should be_success
+      parse(' A', :index => 1).should be_success
     end
   
     it "fails to match a single character out of that range at index 1" do
-      parse(' 1', :at_index => 1).should be_failure
+      parse(' 1', :index => 1).should be_failure
     end
   end
 
