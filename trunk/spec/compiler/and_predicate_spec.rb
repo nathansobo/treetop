@@ -3,7 +3,7 @@ require File.join(File.dirname(__FILE__), '..', 'spec_helper')
 module AndPredicateSpec
   describe "An &-predicated terminal symbol" do
     testing_expression '&"foo"'
-  
+
     it "successfully parses input matching the terminal symbol, returning an epsilon syntax node" do
       parse('foo') do |result|
         result.should be_success

@@ -14,12 +14,20 @@ module Treetop
     class << self
       attr_accessor :parser_class_under_test
     
-      def testing_expression(expression_to_test)
-        rule_node = parse_with_metagrammar("rule test_expression\n" + expression_to_test + "\nend", :parsing_rule)
-        test_parser_code = generate_test_parser_for_expression(rule_node)
-        #puts test_parser_code
-        class_eval(test_parser_code)
-        self.parser_class_under_test = const_get(:TestParser)
+      def testing_expression(expression_under_test)
+        testing_grammar(%{
+          grammar Test
+            rule expression_under_test
+              #{expression_under_test}
+            end
+          end
+        }.tabto(0))
+        
+        parser_class_under_test.class_eval do
+          def root
+            _nt_expression_under_test
+          end
+        end
       end
 
       def testing_grammar(grammar_to_test)
@@ -72,8 +80,12 @@ module Treetop
   
     def parse(input, options = {})
       test_parser = parser_class_under_test.new
-      test_parser.test_index = options[:at_index] if options[:at_index]
-      result = test_parser.parse(input)
+      result = test_parser.instance_eval do
+        prepare_to_parse(input)
+        @index = options[:at_index] if options[:at_index]
+        root
+      end
+      
       yield result if block_given?
       result
     end
