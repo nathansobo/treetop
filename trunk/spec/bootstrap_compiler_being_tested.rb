@@ -21,4 +21,16 @@ METAGRAMMAR_PATH = File.join(TREETOP_ROOT, 'compiler', 'metagrammar.treetop')
 compiled_metagrammar_source = Trusted::Treetop::Compiler::GrammarCompiler.new.ruby_source(METAGRAMMAR_PATH)
 Object.class_eval(compiled_metagrammar_source)
 
+# The compiler under test was compiled with the trusted grammar and therefore depends on its runtime
+# But the runtime in the global namespace is the new runtime. We therefore inject the tursted runtime
+# into the compiler so its parser functions correctly
+Treetop::Compiler::Metagrammar.module_eval do
+  include Trusted::Treetop::Runtime
+end
+
+Treetop::Compiler.send(:remove_const, :MetagrammarParser)
+class Treetop::Compiler::MetagrammarParser < Trusted::Treetop::Runtime::CompiledParser
+  include Treetop::Compiler::Metagrammar
+end
+
 $bootstrapped_compiler_being_tested = true
