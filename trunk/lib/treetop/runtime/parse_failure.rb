@@ -3,8 +3,8 @@ module Treetop
     class ParseFailure < ParseResult
       attr_reader :index
     
-      def initialize(input, index, nested_results = [])
-        super(input, nested_results)
+      def initialize(input, index)
+        super(input)
         @index = index
       end
       

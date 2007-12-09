@@ -32,13 +32,14 @@ Object.class_eval(compiled_metagrammar_source)
 # into the compiler so its parser functions correctly. It will still not work for custom classes that
 # explicitly subclass the wrong runtime. For now I am working around this by keeping 1 generation of
 # backward compatibility in these cases.
-Treetop::Compiler::Metagrammar.module_eval do
-  include Trusted::Treetop::Runtime
-end
-
-Treetop::Compiler.send(:remove_const, :MetagrammarParser)
-class Treetop::Compiler::MetagrammarParser < Trusted::Treetop::Runtime::CompiledParser
-  include Treetop::Compiler::Metagrammar
-end
+# Treetop::Compiler::Metagrammar.module_eval do
+#   include Trusted::Treetop::Runtime
+# end
+# 
+# Treetop::Compiler.send(:remove_const, :MetagrammarParser)
+# class Treetop::Compiler::MetagrammarParser < Trusted::Treetop::Runtime::CompiledParser
+#   include Treetop::Compiler::Metagrammar
+#   include Trusted::Treetop::Runtime
+# end
 
 $bootstrapped_gen_1_metagrammar = true

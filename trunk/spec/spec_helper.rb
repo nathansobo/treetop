@@ -35,7 +35,7 @@ module Treetop
         parser = Treetop::Compiler::MetagrammarParser.new
         parser.root = root
         node = parser.parse(input)
-        raise "#{input} cannot be parsed by the metagrammar: #{node.nested_failures.map {|f| f.to_s}.join("\n")}" if node.failure? 
+        raise "#{input} cannot be parsed by the metagrammar: #{parser.terminal_failures.map {|f| f.to_s}.join("\n")}" if node.failure? 
         node
       end
     end

@@ -2,12 +2,7 @@ module LambdaCalculus
   include Treetop::Runtime
   
   def root
-    result = _nt_program
-    if index == input.size
-      return result
-    else
-      return ParseFailure.new(input, index, result.nested_failures)
-    end
+    @root || :program
   end
   
   include Arithmetic
@@ -55,13 +50,13 @@ module LambdaCalculus
       return cached
     end
     
-    i0, s0, nr0 = index, [], []
+    i0, s0 = index, []
     r1 = _nt_expression
     s0 << r1
     if r1.success?
-      s2, nr2, i2 = [], [], index
+      s2, i2 = [], index
       loop do
-        i3, s3, nr3 = index, [], []
+        i3, s3 = index, []
         r4 = parse_terminal(';', SyntaxNode)
         s3 << r4
         if r4.success?
@@ -77,16 +72,15 @@ module LambdaCalculus
           r3.extend(Program0)
         else
           self.index = i3
-          r3 = ParseFailure.new(input, i3, s3)
+          r3 = ParseFailure.new(input, i3)
         end
-        nr2 << r3
         if r3.success?
           s2 << r3
         else
           break
         end
       end
-      r2 = SyntaxNode.new(input, i2...index, s2, nr2)
+      r2 = SyntaxNode.new(input, i2...index, s2)
       s0 << r2
     end
     if s0.last.success?
@@ -95,7 +89,7 @@ module LambdaCalculus
       r0.extend(Program2)
     else
       self.index = i0
-      r0 = ParseFailure.new(input, i0, s0)
+      r0 = ParseFailure.new(input, i0)
     end
     
     node_cache[:program][start_index] = r0
@@ -111,39 +105,29 @@ module LambdaCalculus
       return cached
     end
     
-    i0, nr0 = index, []
+    i0 = index
     r1 = _nt_definition
-    nr0 << r1
     if r1.success?
       r0 = r1
-      r1.update_nested_results(nr0)
     else
       r2 = _nt_conditional
-      nr0 << r2
       if r2.success?
         r0 = r2
-        r2.update_nested_results(nr0)
       else
         r3 = _nt_application
-        nr0 << r3
         if r3.success?
           r0 = r3
-          r3.update_nested_results(nr0)
         else
           r4 = _nt_function
-          nr0 << r4
           if r4.success?
             r0 = r4
-            r4.update_nested_results(nr0)
           else
             r5 = super
-            nr0 << r5
             if r5.success?
               r0 = r5
-              r5.update_nested_results(nr0)
             else
               self.index = i0
-              r0 = ParseFailure.new(input, i0, nr0)
+              r0 = ParseFailure.new(input, i0)
             end
           end
         end
@@ -187,7 +171,7 @@ module LambdaCalculus
       return cached
     end
     
-    i0, s0, nr0 = index, [], []
+    i0, s0 = index, []
     r1 = parse_terminal('def', SyntaxNode)
     s0 << r1
     if r1.success?
@@ -212,7 +196,7 @@ module LambdaCalculus
       r0.extend(Definition1)
     else
       self.index = i0
-      r0 = ParseFailure.new(input, i0, s0)
+      r0 = ParseFailure.new(input, i0)
     end
     
     node_cache[:definition][start_index] = r0
@@ -276,7 +260,7 @@ module LambdaCalculus
       return cached
     end
     
-    i0, s0, nr0 = index, [], []
+    i0, s0 = index, []
     r1 = parse_terminal('if', SyntaxNode)
     s0 << r1
     if r1.success?
@@ -333,7 +317,7 @@ module LambdaCalculus
       r0.extend(Conditional1)
     else
       self.index = i0
-      r0 = ParseFailure.new(input, i0, s0)
+      r0 = ParseFailure.new(input, i0)
     end
     
     node_cache[:conditional][start_index] = r0
@@ -349,21 +333,17 @@ module LambdaCalculus
       return cached
     end
     
-    i0, nr0 = index, []
+    i0 = index
     r1 = _nt_application
-    nr0 << r1
     if r1.success?
       r0 = r1
-      r1.update_nested_results(nr0)
     else
       r2 = super
-      nr0 << r2
       if r2.success?
         r0 = r2
-        r2.update_nested_results(nr0)
       else
         self.index = i0
-        r0 = ParseFailure.new(input, i0, nr0)
+        r0 = ParseFailure.new(input, i0)
       end
     end
     
@@ -412,7 +392,7 @@ module LambdaCalculus
       return cached
     end
     
-    i0, s0, nr0 = index, [], []
+    i0, s0 = index, []
     r1 = _nt_operator
     s0 << r1
     if r1.success?
@@ -429,7 +409,7 @@ module LambdaCalculus
       r0.extend(Application1)
     else
       self.index = i0
-      r0 = ParseFailure.new(input, i0, s0)
+      r0 = ParseFailure.new(input, i0)
     end
     
     node_cache[:application][start_index] = r0
@@ -445,21 +425,17 @@ module LambdaCalculus
       return cached
     end
     
-    i0, nr0 = index, []
+    i0 = index
     r1 = _nt_function
-    nr0 << r1
     if r1.success?
       r0 = r1
-      r1.update_nested_results(nr0)
     else
       r2 = _nt_variable
-      nr0 << r2
       if r2.success?
         r0 = r2
-        r2.update_nested_results(nr0)
       else
         self.index = i0
-        r0 = ParseFailure.new(input, i0, nr0)
+        r0 = ParseFailure.new(input, i0)
       end
     end
     
@@ -476,21 +452,17 @@ module LambdaCalculus
       return cached
     end
     
-    i0, nr0 = index, []
+    i0 = index
     r1 = _nt_function
-    nr0 << r1
     if r1.success?
       r0 = r1
-      r1.update_nested_results(nr0)
     else
       r2 = _nt_variable
-      nr0 << r2
       if r2.success?
         r0 = r2
-        r2.update_nested_results(nr0)
       else
         self.index = i0
-        r0 = ParseFailure.new(input, i0, nr0)
+        r0 = ParseFailure.new(input, i0)
       end
     end
     
@@ -545,7 +517,7 @@ module LambdaCalculus
       return cached
     end
     
-    i0, s0, nr0 = index, [], []
+    i0, s0 = index, []
     r1 = parse_terminal('\\', SyntaxNode)
     s0 << r1
     if r1.success?
@@ -570,7 +542,7 @@ module LambdaCalculus
       r0.extend(Function1)
     else
       self.index = i0
-      r0 = ParseFailure.new(input, i0, s0)
+      r0 = ParseFailure.new(input, i0)
     end
     
     node_cache[:function][start_index] = r0
@@ -599,14 +571,14 @@ module LambdaCalculus
       return cached
     end
     
-    i0, s0, nr0 = index, [], []
+    i0, s0 = index, []
     i1 = index
     r2 = _nt_keyword
     if r2.success?
-      r1 = ParseFailure.new(input, i1, r2.nested_failures)
+      r1 = ParseFailure.new(input, i1)
     else
       self.index = i1
-      r1 = SyntaxNode.new(input, index...index, r2.nested_failures)
+      r1 = SyntaxNode.new(input, index...index)
     end
     s0 << r1
     if r1.success?
@@ -619,7 +591,7 @@ module LambdaCalculus
       r0.extend(Variable1)
     else
       self.index = i0
-      r0 = ParseFailure.new(input, i0, s0)
+      r0 = ParseFailure.new(input, i0)
     end
     
     node_cache[:variable][start_index] = r0
@@ -638,22 +610,18 @@ module LambdaCalculus
       return cached
     end
     
-    i0, s0, nr0 = index, [], []
-    i1, nr1 = index, []
+    i0, s0 = index, []
+    i1 = index
     r2 = parse_terminal('if', SyntaxNode)
-    nr1 << r2
     if r2.success?
       r1 = r2
-      r2.update_nested_results(nr1)
     else
       r3 = parse_terminal('else', SyntaxNode)
-      nr1 << r3
       if r3.success?
         r1 = r3
-        r3.update_nested_results(nr1)
       else
         self.index = i1
-        r1 = ParseFailure.new(input, i1, nr1)
+        r1 = ParseFailure.new(input, i1)
       end
     end
     s0 << r1
@@ -661,10 +629,10 @@ module LambdaCalculus
       i4 = index
       r5 = _nt_non_space_char
       if r5.success?
-        r4 = ParseFailure.new(input, i4, r5.nested_failures)
+        r4 = ParseFailure.new(input, i4)
       else
         self.index = i4
-        r4 = SyntaxNode.new(input, index...index, r5.nested_failures)
+        r4 = SyntaxNode.new(input, index...index)
       end
       s0 << r4
     end
@@ -673,7 +641,7 @@ module LambdaCalculus
       r0.extend(Keyword0)
     else
       self.index = i0
-      r0 = ParseFailure.new(input, i0, s0)
+      r0 = ParseFailure.new(input, i0)
     end
     
     node_cache[:keyword][start_index] = r0
@@ -692,14 +660,14 @@ module LambdaCalculus
       return cached
     end
     
-    i0, s0, nr0 = index, [], []
+    i0, s0 = index, []
     i1 = index
     r2 = parse_char_class(/[ \n]/, ' \n', SyntaxNode)
     if r2.success?
-      r1 = ParseFailure.new(input, i1, r2.nested_failures)
+      r1 = ParseFailure.new(input, i1)
     else
       self.index = i1
-      r1 = SyntaxNode.new(input, index...index, r2.nested_failures)
+      r1 = SyntaxNode.new(input, index...index)
     end
     s0 << r1
     if r1.success?
@@ -711,7 +679,7 @@ module LambdaCalculus
       r0.extend(NonSpaceChar0)
     else
       self.index = i0
-      r0 = ParseFailure.new(input, i0, s0)
+      r0 = ParseFailure.new(input, i0)
     end
     
     node_cache[:non_space_char][start_index] = r0
@@ -727,17 +695,16 @@ module LambdaCalculus
       return cached
     end
     
-    s0, nr0, i0 = [], [], index
+    s0, i0 = [], index
     loop do
       r1 = parse_char_class(/[ \n]/, ' \n', SyntaxNode)
-      nr0 << r1
       if r1.success?
         s0 << r1
       else
         break
       end
     end
-    r0 = SyntaxNode.new(input, i0...index, s0, nr0)
+    r0 = SyntaxNode.new(input, i0...index, s0)
     
     node_cache[:space][start_index] = r0
     

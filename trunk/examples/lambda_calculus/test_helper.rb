@@ -10,7 +10,7 @@ module ParserTestHelper
   def parse(input)
     result = @parser.parse(input)
     if result.failure?
-      puts result.nested_failures.join("\n")
+      puts @parser.terminal_failures.join("\n")
     end
     assert result.success?
     result

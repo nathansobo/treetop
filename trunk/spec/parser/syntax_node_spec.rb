@@ -15,10 +15,6 @@ module SyntaxNodeSpec
       @node.text_value.should == "inp"
     end
   
-    it "has no nested failures" do
-      @node.nested_failures.should be_empty
-    end
-  
     it "has itself as its only element" do
       @node.elements.should == [@node]
     end
@@ -27,9 +23,8 @@ module SyntaxNodeSpec
   describe "A new nonterminal syntax node" do
     before do
       @input = 'test input'
-      @nested_results = [Runtime::TerminalParseFailure.new(@input, 1, 'foo')]
       @elements = Runtime::SyntaxNode.new('input', 0...3)
-      @node = Runtime::SyntaxNode.new('input', 0...3, @elements, @nested_results)
+      @node = Runtime::SyntaxNode.new('input', 0...3, @elements)
     end
 
     it "reports itself as nonterminal" do
@@ -44,10 +39,5 @@ module SyntaxNodeSpec
     it "has the elements with which it was instantiated" do
       @node.elements.should == @elements
     end
-  
-    it "has nested failures frow within the nested results with which it was instantiated" do
-      @node.nested_failures.should == @nested_results
-    end
-  
   end
 end

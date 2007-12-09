@@ -8,10 +8,6 @@ module Treetop
         @expected_string = expected_string      
       end
 
-      def nested_failures
-        [self]
-      end
-      
       def to_s
         "String matching #{expected_string} expected at line #{line}, column #{column} (index #{index})."
       end
