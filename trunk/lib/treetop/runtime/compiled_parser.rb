@@ -6,7 +6,7 @@ module Treetop
       attr_accessor :consume_all_input
       attr_writer :root
       alias :consume_all_input? :consume_all_input
-      attr_reader :input, :index
+      attr_reader :input, :index, :terminal_failures, :max_terminal_failure_index
 
       def initialize
         self.consume_all_input = true
@@ -32,6 +32,8 @@ module Treetop
         @input = input
         reset_index
         @node_cache = Hash.new {|hash, key| hash[key] = Hash.new}
+        @terminal_failures = []
+        @max_terminal_failure_index = 0
       end
       
       def reset_index
@@ -72,7 +74,17 @@ module Treetop
       end
     
       def terminal_parse_failure(expected_string)
-        TerminalParseFailure.new(input, index, expected_string)
+        failure = TerminalParseFailure.new(input, index, expected_string)
+        return failure if index < max_terminal_failure_index
+
+        if index > max_terminal_failure_index
+          @max_terminal_failure_index = index
+          @terminal_failures = []
+        end
+
+        terminal_failures << failure
+
+        return failure
       end
     end
   end

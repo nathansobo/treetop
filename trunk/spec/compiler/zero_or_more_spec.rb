@@ -12,8 +12,10 @@ module ZeroOrMoreSpec
         result.should be_success
         result.should be_an_instance_of(Foo)
         result.should respond_to(:a_method)
-        result.nested_failures.size.should == 1
-        nested_failure = result.nested_failures.first
+
+        terminal_failures = parser.terminal_failures
+        terminal_failures.size.should == 1
+        nested_failure = terminal_failures.first
         nested_failure.index.should == 0
         nested_failure.expected_string.should == 'foo'
       end
@@ -23,8 +25,10 @@ module ZeroOrMoreSpec
       parse("foofoo") do |result|
         result.should be_success
         result.should be_an_instance_of(Foo)
-        result.nested_failures.size.should == 1
-        nested_failure = result.nested_failures.first
+
+        terminal_failures = parser.terminal_failures
+        terminal_failures.size.should == 1
+        nested_failure = terminal_failures.first
         nested_failure.index.should == 6
         nested_failure.expected_string.should == 'foo'
       end

@@ -12,10 +12,12 @@ module OptionalSpec
       parse('') do |result|
         result.should be_success
         result.interval.should == (0...0)
-        result.nested_failures.size.should == 1
-        nested_failure = result.nested_failures.first
-        nested_failure.index.should == 0
-        nested_failure.expected_string.should == 'foo'
+        
+        terminal_failures = parser.terminal_failures
+        terminal_failures.size.should == 1
+        failure = terminal_failures.first
+        failure.index.should == 0
+        failure.expected_string.should == 'foo'
       end
     end
   
@@ -23,10 +25,12 @@ module OptionalSpec
       parse('bar', :consume_all_input => false) do |result|
         result.should be_success
         result.interval.should == (0...0)
-        result.nested_failures.size.should == 1
-        nested_failure = result.nested_failures.first
-        nested_failure.index.should == 0
-        nested_failure.expected_string.should == 'foo'
+        
+        terminal_failures = parser.terminal_failures
+        terminal_failures.size.should == 1
+        failure = terminal_failures.first
+        failure.index.should == 0
+        failure.expected_string.should == 'foo'
       end
     end
   end

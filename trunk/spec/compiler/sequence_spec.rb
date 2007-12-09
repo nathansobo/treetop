@@ -30,10 +30,11 @@ module SequenceSpec
       parse('---foobazbaz', :index => 3) do |result|
         result.should be_failure
         result.index.should == 3
-        result.nested_failures.size.should == 1
-        nested_failure = result.nested_failures.first
-        nested_failure.index.should == 6
-        nested_failure.expected_string.should == 'bar'
+        terminal_failures = parser.terminal_failures
+        terminal_failures.size.should == 1
+        failure = terminal_failures.first
+        failure.index.should == 6
+        failure.expected_string.should == 'bar'
       end
     end  
   end

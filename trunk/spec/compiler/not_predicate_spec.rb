@@ -16,13 +16,14 @@ module NotPredicateSpec
       parse('foobar').should be_failure
     end
   
-    it "successfully parses input matching the first terminal and not the second, with the failure of the second as a nested failure" do
+    it "successfully parses input matching the first terminal and not the second, reporting the parse failure of the second terminal" do
       parse('foo') do |result|
         result.should be_success
-        result.nested_failures.size.should == 1
-        nested_failure = result.nested_failures[0]
-        nested_failure.index.should == 3
-        nested_failure.expected_string.should == 'bar'
+        terminal_failures = parser.terminal_failures
+        terminal_failures.size.should == 1
+        failure = terminal_failures.first
+        failure.index.should == 3
+        failure.expected_string.should == 'bar'
       end
     end
   end

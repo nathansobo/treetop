@@ -7,14 +7,15 @@ describe "An expression for braces surrounding zero or more letters followed by 
     parse('{a;b;c;}').should be_success
   end
   
-  it "fails to parse input with an expression that is missing a semicolon, reporting the correct nested failure" do
+  it "fails to parse input with an expression that is missing a semicolon, reporting the terminal failure occurring at the maximum index" do
     parse('{a;b;c}') do |result|
       result.should be_failure
       
-      result.nested_failures.size.should == 1      
-      nested_failure = result.nested_failures[0]
-      nested_failure.index.should == 6
-      nested_failure.expected_string.should == ';'
+      terminal_failures = parser.terminal_failures
+      terminal_failures.size.should == 1      
+      failure = terminal_failures[0]
+      failure.index.should == 6
+      failure.expected_string.should == ';'
     end
   end
 end

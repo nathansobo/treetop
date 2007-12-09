@@ -22,13 +22,14 @@ module AndPredicateSpec
       end
     end
   
-    it "fails to parse input matching only the first terminal, with the nested failure of the second" do
+    it "fails to parse input matching only the first terminal, with a terminal failure recorded at index 3" do
       parse('foo') do |result|
         result.should be_failure
-        result.nested_failures.size.should == 1
-        nested_failure = result.nested_failures[0]
-        nested_failure.index.should == 3
-        nested_failure.expected_string.should == 'bar'
+        terminal_failures = parser.terminal_failures
+        terminal_failures.size.should == 1
+        failure = terminal_failures[0]
+        failure.index.should == 3
+        failure.expected_string.should == 'bar'
       end
     end
   end

@@ -7,25 +7,28 @@ module OneOrMoreSpec
   describe "one or more of a terminal symbol followed by a node class declaration and a block" do
     testing_expression '"foo"+ <OneOrMoreSpec::Foo> { def a_method; end }'
 
-    it "fails to parse epsilon with a nested failure" do
+    it "fails to parse epsilon, reporting a failure" do
       parse('') do |result|
         result.should be_failure
-        result.nested_failures.size.should == 1
-        nested_failure = result.nested_failures.first
-        nested_failure.index.should == 0
-        nested_failure.expected_string.should == 'foo'
+        terminal_failures = parser.terminal_failures
+        terminal_failures.size.should == 1
+        failure = terminal_failures.first
+        failure.index.should == 0
+        failure.expected_string.should == 'foo'
       end
     end
   
-    it "successfully parses two of that terminal in a row, returning an instance of the declared node class with a nested failure representing the third attempt" do
+    it "successfully parses two of that terminal in a row, returning an instance of the declared node class and reporting the failure the third parsing attempt" do
       parse("foofoo") do |result|
         result.should be_success
         result.should be_an_instance_of(Foo)
         result.should respond_to(:a_method)
-        result.nested_failures.size.should == 1
-        nested_failure = result.nested_failures.first
-        nested_failure.index.should == 6
-        nested_failure.expected_string.should == 'foo'
+        
+        terminal_failures = parser.terminal_failures
+        terminal_failures.size.should == 1
+        failure = terminal_failures.first
+        failure.index.should == 6
+        failure.expected_string.should == 'foo'
       end
     end
   end

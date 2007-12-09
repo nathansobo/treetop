@@ -18,25 +18,29 @@ module ChoiceSpec
       result.should respond_to(:baz_method)
     end
   
-    it "attaches the nested failure of the first terminal to a successful parsing of input matching the second" do
+    it "upon parsing a string matching the second alternative, records the failure of the first terminal" do
       result = parse('bar')
-      result.nested_failures.size.should == 1
-      nested_failure = result.nested_failures[0]
-      nested_failure.expected_string.should == 'foo'
-      nested_failure.index.should == 0
+      terminal_failures = parser.terminal_failures
+      terminal_failures.size.should == 1
+      failure = terminal_failures[0]
+      failure.expected_string.should == 'foo'
+      failure.index.should == 0
     end
   
-    it "attaches the nested failure of the first and second terminal to a successful parsing of input matching the third" do
+    it "upon parsing a string matching the third alternative, records the failure of the first two terminals" do
       result = parse('baz')
-      result.nested_failures.size.should == 2
+      
+      terminal_failures = parser.terminal_failures
+      
+      terminal_failures.size.should == 2
 
-      first_nested_failure = result.nested_failures[0]
-      first_nested_failure.expected_string == 'foo'
-      first_nested_failure.index.should == 0
+      failure_1 = terminal_failures[0]
+      failure_1.expected_string == 'foo'
+      failure_1.index.should == 0
     
-      first_nested_failure = result.nested_failures[1]
-      first_nested_failure.expected_string == 'bar'
-      first_nested_failure.index.should == 0
+      failure_2 = terminal_failures[1]
+      failure_2.expected_string == 'bar'
+      failure_2.index.should == 0
     end
   end
 

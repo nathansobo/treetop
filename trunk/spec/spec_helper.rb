@@ -9,8 +9,8 @@ unless $bootstrapped_gen_1_metagrammar
 end
 include Treetop
 
-module Treetop
-  class CompilerExampleGroup < Spec::Example::ExampleGroup
+module Treetop  
+  class TreetopExampleGroup < Spec::Example::ExampleGroup
     class << self
       attr_accessor :parser_class_under_test
     
@@ -26,8 +26,8 @@ module Treetop
 
       def testing_grammar(grammar_to_test)
         grammar_node = parse_with_metagrammar(grammar_to_test.strip, :grammar)
-        test_parser_code = grammar_node.compile
-        class_eval(test_parser_code)
+        parser_code = grammar_node.compile
+        class_eval(parser_code)
         self.parser_class_under_test = const_get(grammar_node.parser_name.to_sym)
       end
 
@@ -39,6 +39,8 @@ module Treetop
         node
       end
     end
+    
+    attr_reader :parser
   
     def parse_with_metagrammar(input, root)
       self.class.parse_with_metagrammar(input, root)
@@ -49,15 +51,16 @@ module Treetop
     end
   
     def parse(input, options = {})
-      test_parser = parser_class_under_test.new
+      @parser = parser_class_under_test.new
       unless options[:consume_all_input].nil?
-        test_parser.consume_all_input = options.delete(:consume_all_input)
+        parser.consume_all_input = options.delete(:consume_all_input)
       end
-      result = test_parser.parse(input, options)
+      result = parser.parse(input, options)
       yield result if block_given?
       result
     end
     
     Spec::Example::ExampleGroupFactory.register(:compiler, self)
+    Spec::Example::ExampleGroupFactory.register(:parser, self)
   end
 end
