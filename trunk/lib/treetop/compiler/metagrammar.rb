@@ -35,30 +35,26 @@ module Treetop
           return cached
         end
         
-        i0, s0, nr0 = index, [], []
+        i0, s0 = index, []
         r2 = _nt_space
         if r2.success?
           r1 = r2
         else
-          r1 = SyntaxNode.new(input, index...index, r2.nested_failures)
+          r1 = SyntaxNode.new(input, index...index)
         end
         s0 << r1
         if r1.success?
-          i3, nr3 = index, []
+          i3 = index
           r4 = _nt_module_declaration
-          nr3 << r4
           if r4.success?
             r3 = r4
-            r4.update_nested_results(nr3)
           else
             r5 = _nt_grammar
-            nr3 << r5
             if r5.success?
               r3 = r5
-              r5.update_nested_results(nr3)
             else
               self.index = i3
-              r3 = ParseFailure.new(input, i3, nr3)
+              r3 = ParseFailure.new(input, i3)
             end
           end
           s0 << r3
@@ -67,7 +63,7 @@ module Treetop
             if r7.success?
               r6 = r7
             else
-              r6 = SyntaxNode.new(input, index...index, r7.nested_failures)
+              r6 = SyntaxNode.new(input, index...index)
             end
             s0 << r6
           end
@@ -78,7 +74,7 @@ module Treetop
           r0.extend(TreetopFile1)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0, s0)
+          r0 = ParseFailure.new(input, i0)
         end
         
         node_cache[:treetop_file][start_index] = r0
@@ -131,8 +127,8 @@ module Treetop
           return cached
         end
         
-        i0, s0, nr0 = index, [], []
-        i1, s1, nr1 = index, [], []
+        i0, s0 = index, []
+        i1, s1 = index, []
         r2 = parse_terminal('module', SyntaxNode)
         s1 << r2
         if r2.success?
@@ -142,17 +138,16 @@ module Treetop
             r4 = parse_char_class(/[A-Z]/, 'A-Z', SyntaxNode)
             s1 << r4
             if r4.success?
-              s5, nr5, i5 = [], [], index
+              s5, i5 = [], index
               loop do
                 r6 = _nt_alphanumeric_char
-                nr5 << r6
                 if r6.success?
                   s5 << r6
                 else
                   break
                 end
               end
-              r5 = SyntaxNode.new(input, i5...index, s5, nr5)
+              r5 = SyntaxNode.new(input, i5...index, s5)
               s1 << r5
               if r5.success?
                 r7 = _nt_space
@@ -166,30 +161,26 @@ module Treetop
           r1.extend(ModuleDeclaration0)
         else
           self.index = i1
-          r1 = ParseFailure.new(input, i1, s1)
+          r1 = ParseFailure.new(input, i1)
         end
         s0 << r1
         if r1.success?
-          i8, nr8 = index, []
+          i8 = index
           r9 = _nt_module_declaration
-          nr8 << r9
           if r9.success?
             r8 = r9
-            r9.update_nested_results(nr8)
           else
             r10 = _nt_grammar
-            nr8 << r10
             if r10.success?
               r8 = r10
-              r10.update_nested_results(nr8)
             else
               self.index = i8
-              r8 = ParseFailure.new(input, i8, nr8)
+              r8 = ParseFailure.new(input, i8)
             end
           end
           s0 << r8
           if r8.success?
-            i11, s11, nr11 = index, [], []
+            i11, s11 = index, []
             r12 = _nt_space
             s11 << r12
             if r12.success?
@@ -201,7 +192,7 @@ module Treetop
               r11.extend(ModuleDeclaration1)
             else
               self.index = i11
-              r11 = ParseFailure.new(input, i11, s11)
+              r11 = ParseFailure.new(input, i11)
             end
             s0 << r11
           end
@@ -212,7 +203,7 @@ module Treetop
           r0.extend(ModuleDeclaration3)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0, s0)
+          r0 = ParseFailure.new(input, i0)
         end
         
         node_cache[:module_declaration][start_index] = r0
@@ -247,7 +238,7 @@ module Treetop
           return cached
         end
         
-        i0, s0, nr0 = index, [], []
+        i0, s0 = index, []
         r1 = parse_terminal('grammar', SyntaxNode)
         s0 << r1
         if r1.success?
@@ -267,7 +258,7 @@ module Treetop
                   if r7.success?
                     r6 = r7
                   else
-                    r6 = SyntaxNode.new(input, index...index, r7.nested_failures)
+                    r6 = SyntaxNode.new(input, index...index)
                   end
                   s0 << r6
                   if r6.success?
@@ -284,7 +275,7 @@ module Treetop
           r0.extend(Grammar0)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0, s0)
+          r0 = ParseFailure.new(input, i0)
         end
         
         node_cache[:grammar][start_index] = r0
@@ -303,21 +294,20 @@ module Treetop
           return cached
         end
         
-        i0, s0, nr0 = index, [], []
+        i0, s0 = index, []
         r1 = parse_char_class(/[A-Z]/, 'A-Z', SyntaxNode)
         s0 << r1
         if r1.success?
-          s2, nr2, i2 = [], [], index
+          s2, i2 = [], index
           loop do
             r3 = _nt_alphanumeric_char
-            nr2 << r3
             if r3.success?
               s2 << r3
             else
               break
             end
           end
-          r2 = SyntaxNode.new(input, i2...index, s2, nr2)
+          r2 = SyntaxNode.new(input, i2...index, s2)
           s0 << r2
         end
         if s0.last.success?
@@ -325,7 +315,7 @@ module Treetop
           r0.extend(GrammarName0)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0, s0)
+          r0 = ParseFailure.new(input, i0)
         end
         
         node_cache[:grammar_name][start_index] = r0
@@ -376,14 +366,14 @@ module Treetop
           return cached
         end
         
-        i0, nr0 = index, []
-        i1, s1, nr1 = index, [], []
+        i0 = index
+        i1, s1 = index, []
         r2 = _nt_declaration
         s1 << r2
         if r2.success?
-          s3, nr3, i3 = [], [], index
+          s3, i3 = [], index
           loop do
-            i4, s4, nr4 = index, [], []
+            i4, s4 = index, []
             r5 = _nt_space
             s4 << r5
             if r5.success?
@@ -395,16 +385,15 @@ module Treetop
               r4.extend(DeclarationSequence0)
             else
               self.index = i4
-              r4 = ParseFailure.new(input, i4, s4)
+              r4 = ParseFailure.new(input, i4)
             end
-            nr3 << r4
             if r4.success?
               s3 << r4
             else
               break
             end
           end
-          r3 = SyntaxNode.new(input, i3...index, s3, nr3)
+          r3 = SyntaxNode.new(input, i3...index, s3)
           s1 << r3
         end
         if s1.last.success?
@@ -413,21 +402,17 @@ module Treetop
           r1.extend(DeclarationSequence2)
         else
           self.index = i1
-          r1 = ParseFailure.new(input, i1, s1)
+          r1 = ParseFailure.new(input, i1)
         end
-        nr0 << r1
         if r1.success?
           r0 = r1
-          r1.update_nested_results(nr0)
         else
           r7 = parse_terminal('', SyntaxNode, DeclarationSequence3)
-          nr0 << r7
           if r7.success?
             r0 = r7
-            r7.update_nested_results(nr0)
           else
             self.index = i0
-            r0 = ParseFailure.new(input, i0, nr0)
+            r0 = ParseFailure.new(input, i0)
           end
         end
         
@@ -444,21 +429,17 @@ module Treetop
           return cached
         end
         
-        i0, nr0 = index, []
+        i0 = index
         r1 = _nt_parsing_rule
-        nr0 << r1
         if r1.success?
           r0 = r1
-          r1.update_nested_results(nr0)
         else
           r2 = _nt_include_declaration
-          nr0 << r2
           if r2.success?
             r0 = r2
-            r2.update_nested_results(nr0)
           else
             self.index = i0
-            r0 = ParseFailure.new(input, i0, nr0)
+            r0 = ParseFailure.new(input, i0)
           end
         end
         
@@ -488,7 +469,7 @@ module Treetop
           return cached
         end
         
-        i0, s0, nr0 = index, [], []
+        i0, s0 = index, []
         r1 = parse_terminal('include', SyntaxNode)
         s0 << r1
         if r1.success?
@@ -498,33 +479,28 @@ module Treetop
             r3 = parse_char_class(/[A-Z]/, 'A-Z', SyntaxNode)
             s0 << r3
             if r3.success?
-              s4, nr4, i4 = [], [], index
+              s4, i4 = [], index
               loop do
-                i5, nr5 = index, []
+                i5 = index
                 r6 = _nt_alphanumeric_char
-                nr5 << r6
                 if r6.success?
                   r5 = r6
-                  r6.update_nested_results(nr5)
                 else
                   r7 = parse_terminal('::', SyntaxNode)
-                  nr5 << r7
                   if r7.success?
                     r5 = r7
-                    r7.update_nested_results(nr5)
                   else
                     self.index = i5
-                    r5 = ParseFailure.new(input, i5, nr5)
+                    r5 = ParseFailure.new(input, i5)
                   end
                 end
-                nr4 << r5
                 if r5.success?
                   s4 << r5
                 else
                   break
                 end
               end
-              r4 = SyntaxNode.new(input, i4...index, s4, nr4)
+              r4 = SyntaxNode.new(input, i4...index, s4)
               s0 << r4
             end
           end
@@ -535,7 +511,7 @@ module Treetop
           r0.extend(IncludeDeclaration1)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0, s0)
+          r0 = ParseFailure.new(input, i0)
         end
         
         node_cache[:include_declaration][start_index] = r0
@@ -574,7 +550,7 @@ module Treetop
           return cached
         end
         
-        i0, s0, nr0 = index, [], []
+        i0, s0 = index, []
         r1 = parse_terminal('rule', SyntaxNode)
         s0 << r1
         if r1.success?
@@ -606,7 +582,7 @@ module Treetop
           r0.extend(ParsingRule0)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0, s0)
+          r0 = ParseFailure.new(input, i0)
         end
         
         node_cache[:parsing_rule][start_index] = r0
@@ -622,27 +598,21 @@ module Treetop
           return cached
         end
         
-        i0, nr0 = index, []
+        i0 = index
         r1 = _nt_choice
-        nr0 << r1
         if r1.success?
           r0 = r1
-          r1.update_nested_results(nr0)
         else
           r2 = _nt_sequence
-          nr0 << r2
           if r2.success?
             r0 = r2
-            r2.update_nested_results(nr0)
           else
             r3 = _nt_primary
-            nr0 << r3
             if r3.success?
               r0 = r3
-              r3.update_nested_results(nr0)
             else
               self.index = i0
-              r0 = ParseFailure.new(input, i0, nr0)
+              r0 = ParseFailure.new(input, i0)
             end
           end
         end
@@ -690,18 +660,18 @@ module Treetop
           return cached
         end
         
-        i0, s0, nr0 = index, [], []
+        i0, s0 = index, []
         r1 = _nt_alternative
         s0 << r1
         if r1.success?
-          s2, nr2, i2 = [], [], index
+          s2, i2 = [], index
           loop do
-            i3, s3, nr3 = index, [], []
+            i3, s3 = index, []
             r5 = _nt_space
             if r5.success?
               r4 = r5
             else
-              r4 = SyntaxNode.new(input, index...index, r5.nested_failures)
+              r4 = SyntaxNode.new(input, index...index)
             end
             s3 << r4
             if r4.success?
@@ -712,7 +682,7 @@ module Treetop
                 if r8.success?
                   r7 = r8
                 else
-                  r7 = SyntaxNode.new(input, index...index, r8.nested_failures)
+                  r7 = SyntaxNode.new(input, index...index)
                 end
                 s3 << r7
                 if r7.success?
@@ -726,9 +696,8 @@ module Treetop
               r3.extend(Choice0)
             else
               self.index = i3
-              r3 = ParseFailure.new(input, i3, s3)
+              r3 = ParseFailure.new(input, i3)
             end
-            nr2 << r3
             if r3.success?
               s2 << r3
             else
@@ -737,9 +706,9 @@ module Treetop
           end
           if s2.empty?
             self.index = i2
-            r2 = ParseFailure.new(input, i2, nr2)
+            r2 = ParseFailure.new(input, i2)
           else
-            r2 = SyntaxNode.new(input, i2...index, s2, nr2)
+            r2 = SyntaxNode.new(input, i2...index, s2)
           end
           s0 << r2
         end
@@ -749,7 +718,7 @@ module Treetop
           r0.extend(Choice2)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0, s0)
+          r0 = ParseFailure.new(input, i0)
         end
         
         node_cache[:choice][start_index] = r0
@@ -809,13 +778,13 @@ module Treetop
           return cached
         end
         
-        i0, s0, nr0 = index, [], []
+        i0, s0 = index, []
         r1 = _nt_labeled_sequence_primary
         s0 << r1
         if r1.success?
-          s2, nr2, i2 = [], [], index
+          s2, i2 = [], index
           loop do
-            i3, s3, nr3 = index, [], []
+            i3, s3 = index, []
             r4 = _nt_space
             s3 << r4
             if r4.success?
@@ -827,9 +796,8 @@ module Treetop
               r3.extend(Sequence0)
             else
               self.index = i3
-              r3 = ParseFailure.new(input, i3, s3)
+              r3 = ParseFailure.new(input, i3)
             end
-            nr2 << r3
             if r3.success?
               s2 << r3
             else
@@ -838,9 +806,9 @@ module Treetop
           end
           if s2.empty?
             self.index = i2
-            r2 = ParseFailure.new(input, i2, nr2)
+            r2 = ParseFailure.new(input, i2)
           else
-            r2 = SyntaxNode.new(input, i2...index, s2, nr2)
+            r2 = SyntaxNode.new(input, i2...index, s2)
           end
           s0 << r2
           if r2.success?
@@ -854,7 +822,7 @@ module Treetop
           r0.extend(Sequence2)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0, s0)
+          r0 = ParseFailure.new(input, i0)
         end
         
         node_cache[:sequence][start_index] = r0
@@ -870,21 +838,17 @@ module Treetop
           return cached
         end
         
-        i0, nr0 = index, []
+        i0 = index
         r1 = _nt_sequence
-        nr0 << r1
         if r1.success?
           r0 = r1
-          r1.update_nested_results(nr0)
         else
           r2 = _nt_primary
-          nr0 << r2
           if r2.success?
             r0 = r2
-            r2.update_nested_results(nr0)
           else
             self.index = i0
-            r0 = ParseFailure.new(input, i0, nr0)
+            r0 = ParseFailure.new(input, i0)
           end
         end
         
@@ -993,8 +957,8 @@ module Treetop
           return cached
         end
         
-        i0, nr0 = index, []
-        i1, s1, nr1 = index, [], []
+        i0 = index
+        i1, s1 = index, []
         r2 = _nt_prefix
         s1 << r2
         if r2.success?
@@ -1007,14 +971,12 @@ module Treetop
           r1.extend(Primary1)
         else
           self.index = i1
-          r1 = ParseFailure.new(input, i1, s1)
+          r1 = ParseFailure.new(input, i1)
         end
-        nr0 << r1
         if r1.success?
           r0 = r1
-          r1.update_nested_results(nr0)
         else
-          i4, s4, nr4 = index, [], []
+          i4, s4 = index, []
           r5 = _nt_atomic
           s4 << r5
           if r5.success?
@@ -1031,14 +993,12 @@ module Treetop
             r4.extend(Primary3)
           else
             self.index = i4
-            r4 = ParseFailure.new(input, i4, s4)
+            r4 = ParseFailure.new(input, i4)
           end
-          nr0 << r4
           if r4.success?
             r0 = r4
-            r4.update_nested_results(nr0)
           else
-            i8, s8, nr8 = index, [], []
+            i8, s8 = index, []
             r9 = _nt_atomic
             s8 << r9
             if r9.success?
@@ -1051,15 +1011,13 @@ module Treetop
               r8.extend(Primary5)
             else
               self.index = i8
-              r8 = ParseFailure.new(input, i8, s8)
+              r8 = ParseFailure.new(input, i8)
             end
-            nr0 << r8
             if r8.success?
               r0 = r8
-              r8.update_nested_results(nr0)
             else
               self.index = i0
-              r0 = ParseFailure.new(input, i0, nr0)
+              r0 = ParseFailure.new(input, i0)
             end
           end
         end
@@ -1107,7 +1065,7 @@ module Treetop
           return cached
         end
         
-        i0, s0, nr0 = index, [], []
+        i0, s0 = index, []
         r1 = _nt_label
         s0 << r1
         if r1.success?
@@ -1120,7 +1078,7 @@ module Treetop
           r0.extend(LabeledSequencePrimary1)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0, s0)
+          r0 = ParseFailure.new(input, i0)
         end
         
         node_cache[:labeled_sequence_primary][start_index] = r0
@@ -1158,23 +1116,22 @@ module Treetop
           return cached
         end
         
-        i0, nr0 = index, []
-        i1, s1, nr1 = index, [], []
-        i2, s2, nr2 = index, [], []
+        i0 = index
+        i1, s1 = index, []
+        i2, s2 = index, []
         r3 = _nt_alpha_char
         s2 << r3
         if r3.success?
-          s4, nr4, i4 = [], [], index
+          s4, i4 = [], index
           loop do
             r5 = _nt_alphanumeric_char
-            nr4 << r5
             if r5.success?
               s4 << r5
             else
               break
             end
           end
-          r4 = SyntaxNode.new(input, i4...index, s4, nr4)
+          r4 = SyntaxNode.new(input, i4...index, s4)
           s2 << r4
         end
         if s2.last.success?
@@ -1182,7 +1139,7 @@ module Treetop
           r2.extend(Label0)
         else
           self.index = i2
-          r2 = ParseFailure.new(input, i2, s2)
+          r2 = ParseFailure.new(input, i2)
         end
         s1 << r2
         if r2.success?
@@ -1195,21 +1152,17 @@ module Treetop
           r1.extend(Label2)
         else
           self.index = i1
-          r1 = ParseFailure.new(input, i1, s1)
+          r1 = ParseFailure.new(input, i1)
         end
-        nr0 << r1
         if r1.success?
           r0 = r1
-          r1.update_nested_results(nr0)
         else
           r7 = parse_terminal('', SyntaxNode, Label3)
-          nr0 << r7
           if r7.success?
             r0 = r7
-            r7.update_nested_results(nr0)
           else
             self.index = i0
-            r0 = ParseFailure.new(input, i0, nr0)
+            r0 = ParseFailure.new(input, i0)
           end
         end
         
@@ -1282,8 +1235,8 @@ module Treetop
           return cached
         end
         
-        i0, nr0 = index, []
-        i1, s1, nr1 = index, [], []
+        i0 = index
+        i1, s1 = index, []
         r2 = _nt_prefix
         s1 << r2
         if r2.success?
@@ -1296,14 +1249,12 @@ module Treetop
           r1.extend(SequencePrimary1)
         else
           self.index = i1
-          r1 = ParseFailure.new(input, i1, s1)
+          r1 = ParseFailure.new(input, i1)
         end
-        nr0 << r1
         if r1.success?
           r0 = r1
-          r1.update_nested_results(nr0)
         else
-          i4, s4, nr4 = index, [], []
+          i4, s4 = index, []
           r5 = _nt_atomic
           s4 << r5
           if r5.success?
@@ -1316,21 +1267,17 @@ module Treetop
             r4.extend(SequencePrimary3)
           else
             self.index = i4
-            r4 = ParseFailure.new(input, i4, s4)
+            r4 = ParseFailure.new(input, i4)
           end
-          nr0 << r4
           if r4.success?
             r0 = r4
-            r4.update_nested_results(nr0)
           else
             r7 = _nt_atomic
-            nr0 << r7
             if r7.success?
               r0 = r7
-              r7.update_nested_results(nr0)
             else
               self.index = i0
-              r0 = ParseFailure.new(input, i0, nr0)
+              r0 = ParseFailure.new(input, i0)
             end
           end
         end
@@ -1348,21 +1295,17 @@ module Treetop
           return cached
         end
         
-        i0, nr0 = index, []
+        i0 = index
         r1 = _nt_repetition_suffix
-        nr0 << r1
         if r1.success?
           r0 = r1
-          r1.update_nested_results(nr0)
         else
           r2 = _nt_optional_suffix
-          nr0 << r2
           if r2.success?
             r0 = r2
-            r2.update_nested_results(nr0)
           else
             self.index = i0
-            r0 = ParseFailure.new(input, i0, nr0)
+            r0 = ParseFailure.new(input, i0)
           end
         end
         
@@ -1422,7 +1365,7 @@ module Treetop
           return cached
         end
         
-        i0, s0, nr0 = index, [], []
+        i0, s0 = index, []
         r1 = _nt_node_class_expression
         s0 << r1
         if r1.success?
@@ -1435,7 +1378,7 @@ module Treetop
           r0.extend(NodeClassDeclarations1)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0, s0)
+          r0 = ParseFailure.new(input, i0)
         end
         
         node_cache[:node_class_declarations][start_index] = r0
@@ -1451,21 +1394,17 @@ module Treetop
           return cached
         end
         
-        i0, nr0 = index, []
+        i0 = index
         r1 = parse_terminal('+', OneOrMore)
-        nr0 << r1
         if r1.success?
           r0 = r1
-          r1.update_nested_results(nr0)
         else
           r2 = parse_terminal('*', ZeroOrMore)
-          nr0 << r2
           if r2.success?
             r0 = r2
-            r2.update_nested_results(nr0)
           else
             self.index = i0
-            r0 = ParseFailure.new(input, i0, nr0)
+            r0 = ParseFailure.new(input, i0)
           end
         end
         
@@ -1482,21 +1421,17 @@ module Treetop
           return cached
         end
         
-        i0, nr0 = index, []
+        i0 = index
         r1 = parse_terminal('&', AndPredicate)
-        nr0 << r1
         if r1.success?
           r0 = r1
-          r1.update_nested_results(nr0)
         else
           r2 = parse_terminal('!', NotPredicate)
-          nr0 << r2
           if r2.success?
             r0 = r2
-            r2.update_nested_results(nr0)
           else
             self.index = i0
-            r0 = ParseFailure.new(input, i0, nr0)
+            r0 = ParseFailure.new(input, i0)
           end
         end
         
@@ -1513,27 +1448,21 @@ module Treetop
           return cached
         end
         
-        i0, nr0 = index, []
+        i0 = index
         r1 = _nt_terminal
-        nr0 << r1
         if r1.success?
           r0 = r1
-          r1.update_nested_results(nr0)
         else
           r2 = _nt_nonterminal
-          nr0 << r2
           if r2.success?
             r0 = r2
-            r2.update_nested_results(nr0)
           else
             r3 = _nt_parenthesized_expression
-            nr0 << r3
             if r3.success?
               r0 = r3
-              r3.update_nested_results(nr0)
             else
               self.index = i0
-              r0 = ParseFailure.new(input, i0, nr0)
+              r0 = ParseFailure.new(input, i0)
             end
           end
         end
@@ -1564,7 +1493,7 @@ module Treetop
           return cached
         end
         
-        i0, s0, nr0 = index, [], []
+        i0, s0 = index, []
         r1 = parse_terminal('(', SyntaxNode)
         s0 << r1
         if r1.success?
@@ -1572,7 +1501,7 @@ module Treetop
           if r3.success?
             r2 = r3
           else
-            r2 = SyntaxNode.new(input, index...index, r3.nested_failures)
+            r2 = SyntaxNode.new(input, index...index)
           end
           s0 << r2
           if r2.success?
@@ -1583,7 +1512,7 @@ module Treetop
               if r6.success?
                 r5 = r6
               else
-                r5 = SyntaxNode.new(input, index...index, r6.nested_failures)
+                r5 = SyntaxNode.new(input, index...index)
               end
               s0 << r5
               if r5.success?
@@ -1599,7 +1528,7 @@ module Treetop
           r0.extend(ParenthesizedExpression1)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0, s0)
+          r0 = ParseFailure.new(input, i0)
         end
         
         node_cache[:parenthesized_expression][start_index] = r0
@@ -1625,32 +1554,31 @@ module Treetop
           return cached
         end
         
-        i0, s0, nr0 = index, [], []
+        i0, s0 = index, []
         i1 = index
         r2 = _nt_keyword_inside_grammar
         if r2.success?
-          r1 = ParseFailure.new(input, i1, r2.nested_failures)
+          r1 = ParseFailure.new(input, i1)
         else
           self.index = i1
-          r1 = SyntaxNode.new(input, index...index, r2.nested_failures)
+          r1 = SyntaxNode.new(input, index...index)
         end
         s0 << r1
         if r1.success?
-          i3, s3, nr3 = index, [], []
+          i3, s3 = index, []
           r4 = _nt_alpha_char
           s3 << r4
           if r4.success?
-            s5, nr5, i5 = [], [], index
+            s5, i5 = [], index
             loop do
               r6 = _nt_alphanumeric_char
-              nr5 << r6
               if r6.success?
                 s5 << r6
               else
                 break
               end
             end
-            r5 = SyntaxNode.new(input, i5...index, s5, nr5)
+            r5 = SyntaxNode.new(input, i5...index, s5)
             s3 << r5
           end
           if s3.last.success?
@@ -1658,7 +1586,7 @@ module Treetop
             r3.extend(Nonterminal0)
           else
             self.index = i3
-            r3 = ParseFailure.new(input, i3, s3)
+            r3 = ParseFailure.new(input, i3)
           end
           s0 << r3
         end
@@ -1667,7 +1595,7 @@ module Treetop
           r0.extend(Nonterminal1)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0, s0)
+          r0 = ParseFailure.new(input, i0)
         end
         
         node_cache[:nonterminal][start_index] = r0
@@ -1683,33 +1611,25 @@ module Treetop
           return cached
         end
         
-        i0, nr0 = index, []
+        i0 = index
         r1 = _nt_single_quoted_string
-        nr0 << r1
         if r1.success?
           r0 = r1
-          r1.update_nested_results(nr0)
         else
           r2 = _nt_double_quoted_string
-          nr0 << r2
           if r2.success?
             r0 = r2
-            r2.update_nested_results(nr0)
           else
             r3 = _nt_character_class
-            nr0 << r3
             if r3.success?
               r0 = r3
-              r3.update_nested_results(nr0)
             else
               r4 = _nt_anything_symbol
-              nr0 << r4
               if r4.success?
                 r0 = r4
-                r4.update_nested_results(nr0)
               else
                 self.index = i0
-                r0 = ParseFailure.new(input, i0, nr0)
+                r0 = ParseFailure.new(input, i0)
               end
             end
           end
@@ -1734,44 +1654,38 @@ module Treetop
           return cached
         end
         
-        i0, s0, nr0 = index, [], []
+        i0, s0 = index, []
         r1 = parse_terminal('"', SyntaxNode)
         s0 << r1
         if r1.success?
-          s2, nr2, i2 = [], [], index
+          s2, i2 = [], index
           loop do
-            i3, s3, nr3 = index, [], []
+            i3, s3 = index, []
             i4 = index
             r5 = parse_terminal('"', SyntaxNode)
             if r5.success?
-              r4 = ParseFailure.new(input, i4, r5.nested_failures)
+              r4 = ParseFailure.new(input, i4)
             else
               self.index = i4
-              r4 = SyntaxNode.new(input, index...index, r5.nested_failures)
+              r4 = SyntaxNode.new(input, index...index)
             end
             s3 << r4
             if r4.success?
-              i6, nr6 = index, []
+              i6 = index
               r7 = parse_terminal("\\\\", SyntaxNode)
-              nr6 << r7
               if r7.success?
                 r6 = r7
-                r7.update_nested_results(nr6)
               else
                 r8 = parse_terminal('\"', SyntaxNode)
-                nr6 << r8
                 if r8.success?
                   r6 = r8
-                  r8.update_nested_results(nr6)
                 else
                   r9 = parse_anything(SyntaxNode)
-                  nr6 << r9
                   if r9.success?
                     r6 = r9
-                    r9.update_nested_results(nr6)
                   else
                     self.index = i6
-                    r6 = ParseFailure.new(input, i6, nr6)
+                    r6 = ParseFailure.new(input, i6)
                   end
                 end
               end
@@ -1782,16 +1696,15 @@ module Treetop
               r3.extend(DoubleQuotedString0)
             else
               self.index = i3
-              r3 = ParseFailure.new(input, i3, s3)
+              r3 = ParseFailure.new(input, i3)
             end
-            nr2 << r3
             if r3.success?
               s2 << r3
             else
               break
             end
           end
-          r2 = SyntaxNode.new(input, i2...index, s2, nr2)
+          r2 = SyntaxNode.new(input, i2...index, s2)
           s0 << r2
           if r2.success?
             r10 = parse_terminal('"', SyntaxNode)
@@ -1803,7 +1716,7 @@ module Treetop
           r0.extend(DoubleQuotedString1)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0, s0)
+          r0 = ParseFailure.new(input, i0)
         end
         
         node_cache[:double_quoted_string][start_index] = r0
@@ -1825,44 +1738,38 @@ module Treetop
           return cached
         end
         
-        i0, s0, nr0 = index, [], []
+        i0, s0 = index, []
         r1 = parse_terminal("'", SyntaxNode)
         s0 << r1
         if r1.success?
-          s2, nr2, i2 = [], [], index
+          s2, i2 = [], index
           loop do
-            i3, s3, nr3 = index, [], []
+            i3, s3 = index, []
             i4 = index
             r5 = parse_terminal("'", SyntaxNode)
             if r5.success?
-              r4 = ParseFailure.new(input, i4, r5.nested_failures)
+              r4 = ParseFailure.new(input, i4)
             else
               self.index = i4
-              r4 = SyntaxNode.new(input, index...index, r5.nested_failures)
+              r4 = SyntaxNode.new(input, index...index)
             end
             s3 << r4
             if r4.success?
-              i6, nr6 = index, []
+              i6 = index
               r7 = parse_terminal("\\\\", SyntaxNode)
-              nr6 << r7
               if r7.success?
                 r6 = r7
-                r7.update_nested_results(nr6)
               else
                 r8 = parse_terminal("\\'", SyntaxNode)
-                nr6 << r8
                 if r8.success?
                   r6 = r8
-                  r8.update_nested_results(nr6)
                 else
                   r9 = parse_anything(SyntaxNode)
-                  nr6 << r9
                   if r9.success?
                     r6 = r9
-                    r9.update_nested_results(nr6)
                   else
                     self.index = i6
-                    r6 = ParseFailure.new(input, i6, nr6)
+                    r6 = ParseFailure.new(input, i6)
                   end
                 end
               end
@@ -1873,16 +1780,15 @@ module Treetop
               r3.extend(SingleQuotedString0)
             else
               self.index = i3
-              r3 = ParseFailure.new(input, i3, s3)
+              r3 = ParseFailure.new(input, i3)
             end
-            nr2 << r3
             if r3.success?
               s2 << r3
             else
               break
             end
           end
-          r2 = SyntaxNode.new(input, i2...index, s2, nr2)
+          r2 = SyntaxNode.new(input, i2...index, s2)
           s0 << r2
           if r2.success?
             r10 = parse_terminal("'", SyntaxNode)
@@ -1894,7 +1800,7 @@ module Treetop
           r0.extend(SingleQuotedString1)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0, s0)
+          r0 = ParseFailure.new(input, i0)
         end
         
         node_cache[:single_quoted_string][start_index] = r0
@@ -1916,38 +1822,34 @@ module Treetop
           return cached
         end
         
-        i0, s0, nr0 = index, [], []
+        i0, s0 = index, []
         r1 = parse_terminal('[', SyntaxNode)
         s0 << r1
         if r1.success?
-          s2, nr2, i2 = [], [], index
+          s2, i2 = [], index
           loop do
-            i3, s3, nr3 = index, [], []
+            i3, s3 = index, []
             i4 = index
             r5 = parse_terminal(']', SyntaxNode)
             if r5.success?
-              r4 = ParseFailure.new(input, i4, r5.nested_failures)
+              r4 = ParseFailure.new(input, i4)
             else
               self.index = i4
-              r4 = SyntaxNode.new(input, index...index, r5.nested_failures)
+              r4 = SyntaxNode.new(input, index...index)
             end
             s3 << r4
             if r4.success?
-              i6, nr6 = index, []
+              i6 = index
               r7 = parse_terminal('\]', SyntaxNode)
-              nr6 << r7
               if r7.success?
                 r6 = r7
-                r7.update_nested_results(nr6)
               else
                 r8 = parse_anything(SyntaxNode)
-                nr6 << r8
                 if r8.success?
                   r6 = r8
-                  r8.update_nested_results(nr6)
                 else
                   self.index = i6
-                  r6 = ParseFailure.new(input, i6, nr6)
+                  r6 = ParseFailure.new(input, i6)
                 end
               end
               s3 << r6
@@ -1957,9 +1859,8 @@ module Treetop
               r3.extend(CharacterClass0)
             else
               self.index = i3
-              r3 = ParseFailure.new(input, i3, s3)
+              r3 = ParseFailure.new(input, i3)
             end
-            nr2 << r3
             if r3.success?
               s2 << r3
             else
@@ -1968,9 +1869,9 @@ module Treetop
           end
           if s2.empty?
             self.index = i2
-            r2 = ParseFailure.new(input, i2, nr2)
+            r2 = ParseFailure.new(input, i2)
           else
-            r2 = SyntaxNode.new(input, i2...index, s2, nr2)
+            r2 = SyntaxNode.new(input, i2...index, s2)
           end
           s0 << r2
           if r2.success?
@@ -1983,7 +1884,7 @@ module Treetop
           r0.extend(CharacterClass1)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0, s0)
+          r0 = ParseFailure.new(input, i0)
         end
         
         node_cache[:character_class][start_index] = r0
@@ -2036,24 +1937,24 @@ module Treetop
           return cached
         end
         
-        i0, nr0 = index, []
-        i1, s1, nr1 = index, [], []
+        i0 = index
+        i1, s1 = index, []
         r2 = _nt_space
         s1 << r2
         if r2.success?
           r3 = parse_terminal('<', SyntaxNode)
           s1 << r3
           if r3.success?
-            s4, nr4, i4 = [], [], index
+            s4, i4 = [], index
             loop do
-              i5, s5, nr5 = index, [], []
+              i5, s5 = index, []
               i6 = index
               r7 = parse_terminal('>', SyntaxNode)
               if r7.success?
-                r6 = ParseFailure.new(input, i6, r7.nested_failures)
+                r6 = ParseFailure.new(input, i6)
               else
                 self.index = i6
-                r6 = SyntaxNode.new(input, index...index, r7.nested_failures)
+                r6 = SyntaxNode.new(input, index...index)
               end
               s5 << r6
               if r6.success?
@@ -2065,9 +1966,8 @@ module Treetop
                 r5.extend(NodeClassExpression0)
               else
                 self.index = i5
-                r5 = ParseFailure.new(input, i5, s5)
+                r5 = ParseFailure.new(input, i5)
               end
-              nr4 << r5
               if r5.success?
                 s4 << r5
               else
@@ -2076,9 +1976,9 @@ module Treetop
             end
             if s4.empty?
               self.index = i4
-              r4 = ParseFailure.new(input, i4, nr4)
+              r4 = ParseFailure.new(input, i4)
             else
-              r4 = SyntaxNode.new(input, i4...index, s4, nr4)
+              r4 = SyntaxNode.new(input, i4...index, s4)
             end
             s1 << r4
             if r4.success?
@@ -2093,21 +1993,17 @@ module Treetop
           r1.extend(NodeClassExpression2)
         else
           self.index = i1
-          r1 = ParseFailure.new(input, i1, s1)
+          r1 = ParseFailure.new(input, i1)
         end
-        nr0 << r1
         if r1.success?
           r0 = r1
-          r1.update_nested_results(nr0)
         else
           r10 = parse_terminal('', SyntaxNode, NodeClassExpression3)
-          nr0 << r10
           if r10.success?
             r0 = r10
-            r10.update_nested_results(nr0)
           else
             self.index = i0
-            r0 = ParseFailure.new(input, i0, nr0)
+            r0 = ParseFailure.new(input, i0)
           end
         end
         
@@ -2158,8 +2054,8 @@ module Treetop
           return cached
         end
         
-        i0, nr0 = index, []
-        i1, s1, nr1 = index, [], []
+        i0 = index
+        i1, s1 = index, []
         r2 = _nt_space
         s1 << r2
         if r2.success?
@@ -2172,21 +2068,17 @@ module Treetop
           r1.extend(TrailingInlineModule1)
         else
           self.index = i1
-          r1 = ParseFailure.new(input, i1, s1)
+          r1 = ParseFailure.new(input, i1)
         end
-        nr0 << r1
         if r1.success?
           r0 = r1
-          r1.update_nested_results(nr0)
         else
           r4 = parse_terminal('', SyntaxNode, TrailingInlineModule2)
-          nr0 << r4
           if r4.success?
             r0 = r4
-            r4.update_nested_results(nr0)
           else
             self.index = i0
-            r0 = ParseFailure.new(input, i0, nr0)
+            r0 = ParseFailure.new(input, i0)
           end
         end
         
@@ -2209,27 +2101,25 @@ module Treetop
           return cached
         end
         
-        i0, s0, nr0 = index, [], []
+        i0, s0 = index, []
         r1 = parse_terminal('{', SyntaxNode)
         s0 << r1
         if r1.success?
-          s2, nr2, i2 = [], [], index
+          s2, i2 = [], index
           loop do
-            i3, nr3 = index, []
+            i3 = index
             r4 = _nt_inline_module
-            nr3 << r4
             if r4.success?
               r3 = r4
-              r4.update_nested_results(nr3)
             else
-              i5, s5, nr5 = index, [], []
+              i5, s5 = index, []
               i6 = index
               r7 = parse_char_class(/[{}]/, '{}', SyntaxNode)
               if r7.success?
-                r6 = ParseFailure.new(input, i6, r7.nested_failures)
+                r6 = ParseFailure.new(input, i6)
               else
                 self.index = i6
-                r6 = SyntaxNode.new(input, index...index, r7.nested_failures)
+                r6 = SyntaxNode.new(input, index...index)
               end
               s5 << r6
               if r6.success?
@@ -2241,25 +2131,22 @@ module Treetop
                 r5.extend(InlineModule0)
               else
                 self.index = i5
-                r5 = ParseFailure.new(input, i5, s5)
+                r5 = ParseFailure.new(input, i5)
               end
-              nr3 << r5
               if r5.success?
                 r3 = r5
-                r5.update_nested_results(nr3)
               else
                 self.index = i3
-                r3 = ParseFailure.new(input, i3, nr3)
+                r3 = ParseFailure.new(input, i3)
               end
             end
-            nr2 << r3
             if r3.success?
               s2 << r3
             else
               break
             end
           end
-          r2 = SyntaxNode.new(input, i2...index, s2, nr2)
+          r2 = SyntaxNode.new(input, i2...index, s2)
           s0 << r2
           if r2.success?
             r9 = parse_terminal('}', SyntaxNode)
@@ -2271,7 +2158,7 @@ module Treetop
           r0.extend(InlineModule1)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0, s0)
+          r0 = ParseFailure.new(input, i0)
         end
         
         node_cache[:inline_module][start_index] = r0
@@ -2290,22 +2177,18 @@ module Treetop
           return cached
         end
         
-        i0, s0, nr0 = index, [], []
-        i1, nr1 = index, []
+        i0, s0 = index, []
+        i1 = index
         r2 = parse_terminal('rule', SyntaxNode)
-        nr1 << r2
         if r2.success?
           r1 = r2
-          r2.update_nested_results(nr1)
         else
           r3 = parse_terminal('end', SyntaxNode)
-          nr1 << r3
           if r3.success?
             r1 = r3
-            r3.update_nested_results(nr1)
           else
             self.index = i1
-            r1 = ParseFailure.new(input, i1, nr1)
+            r1 = ParseFailure.new(input, i1)
           end
         end
         s0 << r1
@@ -2313,10 +2196,10 @@ module Treetop
           i4 = index
           r5 = _nt_non_space_char
           if r5.success?
-            r4 = ParseFailure.new(input, i4, r5.nested_failures)
+            r4 = ParseFailure.new(input, i4)
           else
             self.index = i4
-            r4 = SyntaxNode.new(input, index...index, r5.nested_failures)
+            r4 = SyntaxNode.new(input, index...index)
           end
           s0 << r4
         end
@@ -2325,7 +2208,7 @@ module Treetop
           r0.extend(KeywordInsideGrammar0)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0, s0)
+          r0 = ParseFailure.new(input, i0)
         end
         
         node_cache[:keyword_inside_grammar][start_index] = r0
@@ -2344,14 +2227,14 @@ module Treetop
           return cached
         end
         
-        i0, s0, nr0 = index, [], []
+        i0, s0 = index, []
         i1 = index
         r2 = _nt_space
         if r2.success?
-          r1 = ParseFailure.new(input, i1, r2.nested_failures)
+          r1 = ParseFailure.new(input, i1)
         else
           self.index = i1
-          r1 = SyntaxNode.new(input, index...index, r2.nested_failures)
+          r1 = SyntaxNode.new(input, index...index)
         end
         s0 << r1
         if r1.success?
@@ -2363,7 +2246,7 @@ module Treetop
           r0.extend(NonSpaceChar0)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0, s0)
+          r0 = ParseFailure.new(input, i0)
         end
         
         node_cache[:non_space_char][start_index] = r0
@@ -2394,21 +2277,17 @@ module Treetop
           return cached
         end
         
-        i0, nr0 = index, []
+        i0 = index
         r1 = _nt_alpha_char
-        nr0 << r1
         if r1.success?
           r0 = r1
-          r1.update_nested_results(nr0)
         else
           r2 = parse_char_class(/[0-9]/, '0-9', SyntaxNode)
-          nr0 << r2
           if r2.success?
             r0 = r2
-            r2.update_nested_results(nr0)
           else
             self.index = i0
-            r0 = ParseFailure.new(input, i0, nr0)
+            r0 = ParseFailure.new(input, i0)
           end
         end
         
@@ -2425,10 +2304,9 @@ module Treetop
           return cached
         end
         
-        s0, nr0, i0 = [], [], index
+        s0, i0 = [], index
         loop do
           r1 = parse_char_class(/[ \t\n\r]/, ' \t\n\r', SyntaxNode)
-          nr0 << r1
           if r1.success?
             s0 << r1
           else
@@ -2437,9 +2315,9 @@ module Treetop
         end
         if s0.empty?
           self.index = i0
-          r0 = ParseFailure.new(input, i0, nr0)
+          r0 = ParseFailure.new(input, i0)
         else
-          r0 = SyntaxNode.new(input, i0...index, s0, nr0)
+          r0 = SyntaxNode.new(input, i0...index, s0)
         end
         
         node_cache[:space][start_index] = r0
