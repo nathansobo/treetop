@@ -1,5 +1,6 @@
 dir = File.dirname(__FILE__)
 require 'rubygems'
+require 'benchmark'
 
 $LOAD_PATH.unshift(File.join(dir, '..', 'vendor', 'rspec', 'lib'))
 require 'spec'
@@ -58,6 +59,16 @@ module Treetop
       result = parser.parse(input, options)
       yield result if block_given?
       result
+    end
+    
+    def optionally_benchmark(&block)
+      if BENCHMARK
+        Benchmark.bm do |x|
+          x.report(&block)
+        end
+      else
+        yield
+      end
     end
     
     Spec::Example::ExampleGroupFactory.register(:compiler, self)
