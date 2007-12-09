@@ -41,11 +41,7 @@ module Treetop
       def accumulator_var
         var(:accumulator)
       end
-    
-      def nested_results_var
-        var(:nested_results)
-      end
-    
+      
       def start_index_var
         var(:start_index)
       end
@@ -61,11 +57,7 @@ module Treetop
       def obtain_new_subexpression_address
         @subexpression_address = builder.next_address
       end
-    
-      def accumulate_nested_result
-        builder.accumulate nested_results_var, subexpression_result_var
-      end
-    
+        
       def accumulate_subexpression_result
         builder.accumulate accumulator_var, subexpression_result_var
       end
@@ -91,11 +83,11 @@ module Treetop
       end
       
       def epsilon_node
-        "SyntaxNode.new(input, index...index, #{subexpression_result_var}.nested_failures)"
+        "SyntaxNode.new(input, index...index)"
       end
       
-      def assign_failure(start_index_var, nested_results_var)
-        assign_result("ParseFailure.new(input, #{start_index_var}, #{nested_results_var})")
+      def assign_failure(start_index_var)
+        assign_result("ParseFailure.new(input, #{start_index_var})")
       end
     
       def var_initialization
@@ -117,7 +109,6 @@ module Treetop
         case var_symbol
         when :result then "r#{address}"
         when :accumulator then "s#{address}"
-        when :nested_results then "nr#{address}"
         when :start_index then "i#{address}"
         else raise "Unknown var symbol #{var_symbol}."
         end
@@ -125,7 +116,7 @@ module Treetop
     
       def init_value(var_symbol)
         case var_symbol
-        when :accumulator, :nested_results then '[]'
+        when :accumulator then '[]'
         when :start_index then 'index'
         else nil
         end

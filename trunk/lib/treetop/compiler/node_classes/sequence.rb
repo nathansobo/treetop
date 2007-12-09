@@ -4,7 +4,7 @@ module Treetop
       def compile(address, builder, parent_expression = nil)
         super
         begin_comment(self)
-        use_vars :result, :start_index, :accumulator, :nested_results
+        use_vars :result, :start_index, :accumulator
         compile_sequence_elements(sequence_elements)
         builder.if__ "#{accumulator_var}.last.success?" do
           assign_result "(#{node_class_name}).new(input, #{start_index_var}...index, #{accumulator_var})"
@@ -13,7 +13,7 @@ module Treetop
         end
         builder.else_ do
           reset_index
-          assign_failure start_index_var, accumulator_var
+          assign_failure start_index_var
         end
         end_comment(self)
       end

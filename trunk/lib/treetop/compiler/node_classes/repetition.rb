@@ -5,12 +5,11 @@ module Treetop
         super
         repeated_expression = parent_expression.atomic
         begin_comment(parent_expression)
-        use_vars :result, :accumulator, :nested_results, :start_index
+        use_vars :result, :accumulator, :start_index
 
         builder.loop do
           obtain_new_subexpression_address
           repeated_expression.compile(subexpression_address, builder)
-          accumulate_nested_result
           builder.if__ subexpression_success? do
             accumulate_subexpression_result
           end
@@ -25,7 +24,7 @@ module Treetop
       end
       
       def assign_and_extend_result
-        assign_result "#{node_class_name}.new(input, #{start_index_var}...index, #{accumulator_var}, #{nested_results_var})"
+        assign_result "#{node_class_name}.new(input, #{start_index_var}...index, #{accumulator_var})"
         extend_result_with_inline_module
       end
     end
@@ -44,7 +43,7 @@ module Treetop
         super
         builder.if__ "#{accumulator_var}.empty?" do
           reset_index
-          assign_failure start_index_var, nested_results_var
+          assign_failure start_index_var
         end
         builder.else_ do
           assign_and_extend_result

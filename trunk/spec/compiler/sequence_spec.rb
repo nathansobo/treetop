@@ -26,7 +26,7 @@ module SequenceSpec
       end
     end
   
-    it "fails to match non-matching input, returning a nested failure at the first terminal that did not match" do
+    it "fails to match non-matching input, recording the parse failure of first non-matching terminal" do
       parse('---foobazbaz', :index => 3) do |result|
         result.should be_failure
         result.index.should == 3

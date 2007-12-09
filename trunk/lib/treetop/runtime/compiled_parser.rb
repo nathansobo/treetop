@@ -17,7 +17,7 @@ module Treetop
         @index = options[:index] if options[:index]
         result = send("_nt_#{root}")
         if consume_all_input? && index != input.size
-          return ParseFailure.new(input, index, result.nested_failures)
+          return ParseFailure.new(input, index)
         else
           return result
         end

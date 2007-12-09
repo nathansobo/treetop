@@ -13,7 +13,7 @@ module Treetop
       end
       
       def assign_failure
-        super(start_index_var, "#{subexpression_result_var}.nested_failures")
+        super(start_index_var)
       end
       
       def assign_success
