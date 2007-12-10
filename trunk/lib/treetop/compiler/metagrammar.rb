@@ -54,7 +54,7 @@ module Treetop
               r3 = r5
             else
               self.index = i3
-              r3 = ParseFailure.new(input, i3)
+              r3 = nil
             end
           end
           s0 << r3
@@ -74,7 +74,7 @@ module Treetop
           r0.extend(TreetopFile1)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0)
+          r0 = nil
         end
         
         node_cache[:treetop_file][start_index] = r0
@@ -161,7 +161,7 @@ module Treetop
           r1.extend(ModuleDeclaration0)
         else
           self.index = i1
-          r1 = ParseFailure.new(input, i1)
+          r1 = nil
         end
         s0 << r1
         if r1.success?
@@ -175,7 +175,7 @@ module Treetop
               r8 = r10
             else
               self.index = i8
-              r8 = ParseFailure.new(input, i8)
+              r8 = nil
             end
           end
           s0 << r8
@@ -192,7 +192,7 @@ module Treetop
               r11.extend(ModuleDeclaration1)
             else
               self.index = i11
-              r11 = ParseFailure.new(input, i11)
+              r11 = nil
             end
             s0 << r11
           end
@@ -203,7 +203,7 @@ module Treetop
           r0.extend(ModuleDeclaration3)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0)
+          r0 = nil
         end
         
         node_cache[:module_declaration][start_index] = r0
@@ -275,7 +275,7 @@ module Treetop
           r0.extend(Grammar0)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0)
+          r0 = nil
         end
         
         node_cache[:grammar][start_index] = r0
@@ -315,7 +315,7 @@ module Treetop
           r0.extend(GrammarName0)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0)
+          r0 = nil
         end
         
         node_cache[:grammar_name][start_index] = r0
@@ -385,7 +385,7 @@ module Treetop
               r4.extend(DeclarationSequence0)
             else
               self.index = i4
-              r4 = ParseFailure.new(input, i4)
+              r4 = nil
             end
             if r4.success?
               s3 << r4
@@ -402,7 +402,7 @@ module Treetop
           r1.extend(DeclarationSequence2)
         else
           self.index = i1
-          r1 = ParseFailure.new(input, i1)
+          r1 = nil
         end
         if r1.success?
           r0 = r1
@@ -412,7 +412,7 @@ module Treetop
             r0 = r7
           else
             self.index = i0
-            r0 = ParseFailure.new(input, i0)
+            r0 = nil
           end
         end
         
@@ -439,7 +439,7 @@ module Treetop
             r0 = r2
           else
             self.index = i0
-            r0 = ParseFailure.new(input, i0)
+            r0 = nil
           end
         end
         
@@ -491,7 +491,7 @@ module Treetop
                     r5 = r7
                   else
                     self.index = i5
-                    r5 = ParseFailure.new(input, i5)
+                    r5 = nil
                   end
                 end
                 if r5.success?
@@ -511,7 +511,7 @@ module Treetop
           r0.extend(IncludeDeclaration1)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0)
+          r0 = nil
         end
         
         node_cache[:include_declaration][start_index] = r0
@@ -582,7 +582,7 @@ module Treetop
           r0.extend(ParsingRule0)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0)
+          r0 = nil
         end
         
         node_cache[:parsing_rule][start_index] = r0
@@ -612,7 +612,7 @@ module Treetop
               r0 = r3
             else
               self.index = i0
-              r0 = ParseFailure.new(input, i0)
+              r0 = nil
             end
           end
         end
@@ -696,7 +696,7 @@ module Treetop
               r3.extend(Choice0)
             else
               self.index = i3
-              r3 = ParseFailure.new(input, i3)
+              r3 = nil
             end
             if r3.success?
               s2 << r3
@@ -706,7 +706,7 @@ module Treetop
           end
           if s2.empty?
             self.index = i2
-            r2 = ParseFailure.new(input, i2)
+            r2 = nil
           else
             r2 = SyntaxNode.new(input, i2...index, s2)
           end
@@ -718,7 +718,7 @@ module Treetop
           r0.extend(Choice2)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0)
+          r0 = nil
         end
         
         node_cache[:choice][start_index] = r0
@@ -796,7 +796,7 @@ module Treetop
               r3.extend(Sequence0)
             else
               self.index = i3
-              r3 = ParseFailure.new(input, i3)
+              r3 = nil
             end
             if r3.success?
               s2 << r3
@@ -806,7 +806,7 @@ module Treetop
           end
           if s2.empty?
             self.index = i2
-            r2 = ParseFailure.new(input, i2)
+            r2 = nil
           else
             r2 = SyntaxNode.new(input, i2...index, s2)
           end
@@ -822,7 +822,7 @@ module Treetop
           r0.extend(Sequence2)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0)
+          r0 = nil
         end
         
         node_cache[:sequence][start_index] = r0
@@ -848,7 +848,7 @@ module Treetop
             r0 = r2
           else
             self.index = i0
-            r0 = ParseFailure.new(input, i0)
+            r0 = nil
           end
         end
         
@@ -971,7 +971,7 @@ module Treetop
           r1.extend(Primary1)
         else
           self.index = i1
-          r1 = ParseFailure.new(input, i1)
+          r1 = nil
         end
         if r1.success?
           r0 = r1
@@ -993,7 +993,7 @@ module Treetop
             r4.extend(Primary3)
           else
             self.index = i4
-            r4 = ParseFailure.new(input, i4)
+            r4 = nil
           end
           if r4.success?
             r0 = r4
@@ -1011,13 +1011,13 @@ module Treetop
               r8.extend(Primary5)
             else
               self.index = i8
-              r8 = ParseFailure.new(input, i8)
+              r8 = nil
             end
             if r8.success?
               r0 = r8
             else
               self.index = i0
-              r0 = ParseFailure.new(input, i0)
+              r0 = nil
             end
           end
         end
@@ -1078,7 +1078,7 @@ module Treetop
           r0.extend(LabeledSequencePrimary1)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0)
+          r0 = nil
         end
         
         node_cache[:labeled_sequence_primary][start_index] = r0
@@ -1139,7 +1139,7 @@ module Treetop
           r2.extend(Label0)
         else
           self.index = i2
-          r2 = ParseFailure.new(input, i2)
+          r2 = nil
         end
         s1 << r2
         if r2.success?
@@ -1152,7 +1152,7 @@ module Treetop
           r1.extend(Label2)
         else
           self.index = i1
-          r1 = ParseFailure.new(input, i1)
+          r1 = nil
         end
         if r1.success?
           r0 = r1
@@ -1162,7 +1162,7 @@ module Treetop
             r0 = r7
           else
             self.index = i0
-            r0 = ParseFailure.new(input, i0)
+            r0 = nil
           end
         end
         
@@ -1249,7 +1249,7 @@ module Treetop
           r1.extend(SequencePrimary1)
         else
           self.index = i1
-          r1 = ParseFailure.new(input, i1)
+          r1 = nil
         end
         if r1.success?
           r0 = r1
@@ -1267,7 +1267,7 @@ module Treetop
             r4.extend(SequencePrimary3)
           else
             self.index = i4
-            r4 = ParseFailure.new(input, i4)
+            r4 = nil
           end
           if r4.success?
             r0 = r4
@@ -1277,7 +1277,7 @@ module Treetop
               r0 = r7
             else
               self.index = i0
-              r0 = ParseFailure.new(input, i0)
+              r0 = nil
             end
           end
         end
@@ -1305,7 +1305,7 @@ module Treetop
             r0 = r2
           else
             self.index = i0
-            r0 = ParseFailure.new(input, i0)
+            r0 = nil
           end
         end
         
@@ -1378,7 +1378,7 @@ module Treetop
           r0.extend(NodeClassDeclarations1)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0)
+          r0 = nil
         end
         
         node_cache[:node_class_declarations][start_index] = r0
@@ -1404,7 +1404,7 @@ module Treetop
             r0 = r2
           else
             self.index = i0
-            r0 = ParseFailure.new(input, i0)
+            r0 = nil
           end
         end
         
@@ -1431,7 +1431,7 @@ module Treetop
             r0 = r2
           else
             self.index = i0
-            r0 = ParseFailure.new(input, i0)
+            r0 = nil
           end
         end
         
@@ -1462,7 +1462,7 @@ module Treetop
               r0 = r3
             else
               self.index = i0
-              r0 = ParseFailure.new(input, i0)
+              r0 = nil
             end
           end
         end
@@ -1528,7 +1528,7 @@ module Treetop
           r0.extend(ParenthesizedExpression1)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0)
+          r0 = nil
         end
         
         node_cache[:parenthesized_expression][start_index] = r0
@@ -1558,7 +1558,7 @@ module Treetop
         i1 = index
         r2 = _nt_keyword_inside_grammar
         if r2.success?
-          r1 = ParseFailure.new(input, i1)
+          r1 = nil
         else
           self.index = i1
           r1 = SyntaxNode.new(input, index...index)
@@ -1586,7 +1586,7 @@ module Treetop
             r3.extend(Nonterminal0)
           else
             self.index = i3
-            r3 = ParseFailure.new(input, i3)
+            r3 = nil
           end
           s0 << r3
         end
@@ -1595,7 +1595,7 @@ module Treetop
           r0.extend(Nonterminal1)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0)
+          r0 = nil
         end
         
         node_cache[:nonterminal][start_index] = r0
@@ -1629,7 +1629,7 @@ module Treetop
                 r0 = r4
               else
                 self.index = i0
-                r0 = ParseFailure.new(input, i0)
+                r0 = nil
               end
             end
           end
@@ -1664,7 +1664,7 @@ module Treetop
             i4 = index
             r5 = parse_terminal('"', SyntaxNode)
             if r5.success?
-              r4 = ParseFailure.new(input, i4)
+              r4 = nil
             else
               self.index = i4
               r4 = SyntaxNode.new(input, index...index)
@@ -1685,7 +1685,7 @@ module Treetop
                     r6 = r9
                   else
                     self.index = i6
-                    r6 = ParseFailure.new(input, i6)
+                    r6 = nil
                   end
                 end
               end
@@ -1696,7 +1696,7 @@ module Treetop
               r3.extend(DoubleQuotedString0)
             else
               self.index = i3
-              r3 = ParseFailure.new(input, i3)
+              r3 = nil
             end
             if r3.success?
               s2 << r3
@@ -1716,7 +1716,7 @@ module Treetop
           r0.extend(DoubleQuotedString1)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0)
+          r0 = nil
         end
         
         node_cache[:double_quoted_string][start_index] = r0
@@ -1748,7 +1748,7 @@ module Treetop
             i4 = index
             r5 = parse_terminal("'", SyntaxNode)
             if r5.success?
-              r4 = ParseFailure.new(input, i4)
+              r4 = nil
             else
               self.index = i4
               r4 = SyntaxNode.new(input, index...index)
@@ -1769,7 +1769,7 @@ module Treetop
                     r6 = r9
                   else
                     self.index = i6
-                    r6 = ParseFailure.new(input, i6)
+                    r6 = nil
                   end
                 end
               end
@@ -1780,7 +1780,7 @@ module Treetop
               r3.extend(SingleQuotedString0)
             else
               self.index = i3
-              r3 = ParseFailure.new(input, i3)
+              r3 = nil
             end
             if r3.success?
               s2 << r3
@@ -1800,7 +1800,7 @@ module Treetop
           r0.extend(SingleQuotedString1)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0)
+          r0 = nil
         end
         
         node_cache[:single_quoted_string][start_index] = r0
@@ -1832,7 +1832,7 @@ module Treetop
             i4 = index
             r5 = parse_terminal(']', SyntaxNode)
             if r5.success?
-              r4 = ParseFailure.new(input, i4)
+              r4 = nil
             else
               self.index = i4
               r4 = SyntaxNode.new(input, index...index)
@@ -1849,7 +1849,7 @@ module Treetop
                   r6 = r8
                 else
                   self.index = i6
-                  r6 = ParseFailure.new(input, i6)
+                  r6 = nil
                 end
               end
               s3 << r6
@@ -1859,7 +1859,7 @@ module Treetop
               r3.extend(CharacterClass0)
             else
               self.index = i3
-              r3 = ParseFailure.new(input, i3)
+              r3 = nil
             end
             if r3.success?
               s2 << r3
@@ -1869,7 +1869,7 @@ module Treetop
           end
           if s2.empty?
             self.index = i2
-            r2 = ParseFailure.new(input, i2)
+            r2 = nil
           else
             r2 = SyntaxNode.new(input, i2...index, s2)
           end
@@ -1884,7 +1884,7 @@ module Treetop
           r0.extend(CharacterClass1)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0)
+          r0 = nil
         end
         
         node_cache[:character_class][start_index] = r0
@@ -1951,7 +1951,7 @@ module Treetop
               i6 = index
               r7 = parse_terminal('>', SyntaxNode)
               if r7.success?
-                r6 = ParseFailure.new(input, i6)
+                r6 = nil
               else
                 self.index = i6
                 r6 = SyntaxNode.new(input, index...index)
@@ -1966,7 +1966,7 @@ module Treetop
                 r5.extend(NodeClassExpression0)
               else
                 self.index = i5
-                r5 = ParseFailure.new(input, i5)
+                r5 = nil
               end
               if r5.success?
                 s4 << r5
@@ -1976,7 +1976,7 @@ module Treetop
             end
             if s4.empty?
               self.index = i4
-              r4 = ParseFailure.new(input, i4)
+              r4 = nil
             else
               r4 = SyntaxNode.new(input, i4...index, s4)
             end
@@ -1993,7 +1993,7 @@ module Treetop
           r1.extend(NodeClassExpression2)
         else
           self.index = i1
-          r1 = ParseFailure.new(input, i1)
+          r1 = nil
         end
         if r1.success?
           r0 = r1
@@ -2003,7 +2003,7 @@ module Treetop
             r0 = r10
           else
             self.index = i0
-            r0 = ParseFailure.new(input, i0)
+            r0 = nil
           end
         end
         
@@ -2068,7 +2068,7 @@ module Treetop
           r1.extend(TrailingInlineModule1)
         else
           self.index = i1
-          r1 = ParseFailure.new(input, i1)
+          r1 = nil
         end
         if r1.success?
           r0 = r1
@@ -2078,7 +2078,7 @@ module Treetop
             r0 = r4
           else
             self.index = i0
-            r0 = ParseFailure.new(input, i0)
+            r0 = nil
           end
         end
         
@@ -2116,7 +2116,7 @@ module Treetop
               i6 = index
               r7 = parse_char_class(/[{}]/, '{}', SyntaxNode)
               if r7.success?
-                r6 = ParseFailure.new(input, i6)
+                r6 = nil
               else
                 self.index = i6
                 r6 = SyntaxNode.new(input, index...index)
@@ -2131,13 +2131,13 @@ module Treetop
                 r5.extend(InlineModule0)
               else
                 self.index = i5
-                r5 = ParseFailure.new(input, i5)
+                r5 = nil
               end
               if r5.success?
                 r3 = r5
               else
                 self.index = i3
-                r3 = ParseFailure.new(input, i3)
+                r3 = nil
               end
             end
             if r3.success?
@@ -2158,7 +2158,7 @@ module Treetop
           r0.extend(InlineModule1)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0)
+          r0 = nil
         end
         
         node_cache[:inline_module][start_index] = r0
@@ -2188,7 +2188,7 @@ module Treetop
             r1 = r3
           else
             self.index = i1
-            r1 = ParseFailure.new(input, i1)
+            r1 = nil
           end
         end
         s0 << r1
@@ -2196,7 +2196,7 @@ module Treetop
           i4 = index
           r5 = _nt_non_space_char
           if r5.success?
-            r4 = ParseFailure.new(input, i4)
+            r4 = nil
           else
             self.index = i4
             r4 = SyntaxNode.new(input, index...index)
@@ -2208,7 +2208,7 @@ module Treetop
           r0.extend(KeywordInsideGrammar0)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0)
+          r0 = nil
         end
         
         node_cache[:keyword_inside_grammar][start_index] = r0
@@ -2231,7 +2231,7 @@ module Treetop
         i1 = index
         r2 = _nt_space
         if r2.success?
-          r1 = ParseFailure.new(input, i1)
+          r1 = nil
         else
           self.index = i1
           r1 = SyntaxNode.new(input, index...index)
@@ -2246,7 +2246,7 @@ module Treetop
           r0.extend(NonSpaceChar0)
         else
           self.index = i0
-          r0 = ParseFailure.new(input, i0)
+          r0 = nil
         end
         
         node_cache[:non_space_char][start_index] = r0
@@ -2287,7 +2287,7 @@ module Treetop
             r0 = r2
           else
             self.index = i0
-            r0 = ParseFailure.new(input, i0)
+            r0 = nil
           end
         end
         
@@ -2315,7 +2315,7 @@ module Treetop
         end
         if s0.empty?
           self.index = i0
-          r0 = ParseFailure.new(input, i0)
+          r0 = nil
         else
           r0 = SyntaxNode.new(input, i0...index, s0)
         end

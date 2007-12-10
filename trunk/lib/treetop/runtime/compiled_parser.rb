@@ -16,7 +16,7 @@ module Treetop
         prepare_to_parse(input)
         @index = options[:index] if options[:index]
         result = send("_nt_#{root}")
-        if consume_all_input? && index != input.size
+        if result.nil? || (consume_all_input? && index != input.size)
           return ParseFailure.new(input, index)
         else
           return result
@@ -74,17 +74,13 @@ module Treetop
       end
     
       def terminal_parse_failure(expected_string)
-        failure = TerminalParseFailure.new(input, index, expected_string)
-        return failure if index < max_terminal_failure_index
-
+        return nil if index < max_terminal_failure_index
         if index > max_terminal_failure_index
           @max_terminal_failure_index = index
           @terminal_failures = []
         end
-
-        terminal_failures << failure
-
-        return failure
+        terminal_failures << TerminalParseFailure.new(input, index, expected_string)
+        return nil
       end
     end
   end
