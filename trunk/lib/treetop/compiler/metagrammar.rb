@@ -129,7 +129,13 @@ module Treetop
         
         i0, s0 = index, []
         i1, s1 = index, []
-        r2 = parse_terminal('module', SyntaxNode)
+        if input.index('module', index) == index
+          r2 = (SyntaxNode).new(input, index...(index + 6))
+          @index += 6
+        else
+          terminal_parse_failure('module')
+          r2 = nil
+        end
         s1 << r2
         if r2
           r3 = _nt_space
@@ -189,7 +195,13 @@ module Treetop
             r12 = _nt_space
             s11 << r12
             if r12
-              r13 = parse_terminal('end', SyntaxNode)
+              if input.index('end', index) == index
+                r13 = (SyntaxNode).new(input, index...(index + 3))
+                @index += 3
+              else
+                terminal_parse_failure('end')
+                r13 = nil
+              end
               s11 << r13
             end
             if s11.last
@@ -244,7 +256,13 @@ module Treetop
         end
         
         i0, s0 = index, []
-        r1 = parse_terminal('grammar', SyntaxNode)
+        if input.index('grammar', index) == index
+          r1 = (SyntaxNode).new(input, index...(index + 7))
+          @index += 7
+        else
+          terminal_parse_failure('grammar')
+          r1 = nil
+        end
         s0 << r1
         if r1
           r2 = _nt_space
@@ -267,7 +285,13 @@ module Treetop
                   end
                   s0 << r6
                   if r6
-                    r8 = parse_terminal('end', SyntaxNode)
+                    if input.index('end', index) == index
+                      r8 = (SyntaxNode).new(input, index...(index + 3))
+                      @index += 3
+                    else
+                      terminal_parse_failure('end')
+                      r8 = nil
+                    end
                     s0 << r8
                   end
                 end
@@ -417,7 +441,14 @@ module Treetop
         if r1
           r0 = r1
         else
-          r7 = parse_terminal('', SyntaxNode, DeclarationSequence3)
+          if input.index('', index) == index
+            r7 = (SyntaxNode).new(input, index...(index + 0))
+            r7.extend(DeclarationSequence3)
+            @index += 0
+          else
+            terminal_parse_failure('')
+            r7 = nil
+          end
           if r7
             r0 = r7
           else
@@ -480,7 +511,13 @@ module Treetop
         end
         
         i0, s0 = index, []
-        r1 = parse_terminal('include', SyntaxNode)
+        if input.index('include', index) == index
+          r1 = (SyntaxNode).new(input, index...(index + 7))
+          @index += 7
+        else
+          terminal_parse_failure('include')
+          r1 = nil
+        end
         s0 << r1
         if r1
           r2 = _nt_space
@@ -501,7 +538,13 @@ module Treetop
                 if r6
                   r5 = r6
                 else
-                  r7 = parse_terminal('::', SyntaxNode)
+                  if input.index('::', index) == index
+                    r7 = (SyntaxNode).new(input, index...(index + 2))
+                    @index += 2
+                  else
+                    terminal_parse_failure('::')
+                    r7 = nil
+                  end
                   if r7
                     r5 = r7
                   else
@@ -566,7 +609,13 @@ module Treetop
         end
         
         i0, s0 = index, []
-        r1 = parse_terminal('rule', SyntaxNode)
+        if input.index('rule', index) == index
+          r1 = (SyntaxNode).new(input, index...(index + 4))
+          @index += 4
+        else
+          terminal_parse_failure('rule')
+          r1 = nil
+        end
         s0 << r1
         if r1
           r2 = _nt_space
@@ -584,7 +633,13 @@ module Treetop
                   r6 = _nt_space
                   s0 << r6
                   if r6
-                    r7 = parse_terminal('end', SyntaxNode)
+                    if input.index('end', index) == index
+                      r7 = (SyntaxNode).new(input, index...(index + 3))
+                      @index += 3
+                    else
+                      terminal_parse_failure('end')
+                      r7 = nil
+                    end
                     s0 << r7
                   end
                 end
@@ -690,7 +745,13 @@ module Treetop
             end
             s3 << r4
             if r4
-              r6 = parse_terminal('/', SyntaxNode)
+              if input.index('/', index) == index
+                r6 = (SyntaxNode).new(input, index...(index + 1))
+                @index += 1
+              else
+                terminal_parse_failure('/')
+                r6 = nil
+              end
               s3 << r6
               if r6
                 r8 = _nt_space
@@ -1158,7 +1219,13 @@ module Treetop
         end
         s1 << r2
         if r2
-          r6 = parse_terminal(':', SyntaxNode)
+          if input.index(':', index) == index
+            r6 = (SyntaxNode).new(input, index...(index + 1))
+            @index += 1
+          else
+            terminal_parse_failure(':')
+            r6 = nil
+          end
           s1 << r6
         end
         if s1.last
@@ -1172,7 +1239,14 @@ module Treetop
         if r1
           r0 = r1
         else
-          r7 = parse_terminal('', SyntaxNode, Label3)
+          if input.index('', index) == index
+            r7 = (SyntaxNode).new(input, index...(index + 0))
+            r7.extend(Label3)
+            @index += 0
+          else
+            terminal_parse_failure('')
+            r7 = nil
+          end
           if r7
             r0 = r7
           else
@@ -1337,7 +1411,13 @@ module Treetop
           return cached
         end
         
-        r0 = parse_terminal('?', Optional)
+        if input.index('?', index) == index
+          r0 = (Optional).new(input, index...(index + 1))
+          @index += 1
+        else
+          terminal_parse_failure('?')
+          r0 = nil
+        end
         
         node_cache[:optional_suffix][start_index] = r0
         
@@ -1410,11 +1490,23 @@ module Treetop
         end
         
         i0 = index
-        r1 = parse_terminal('+', OneOrMore)
+        if input.index('+', index) == index
+          r1 = (OneOrMore).new(input, index...(index + 1))
+          @index += 1
+        else
+          terminal_parse_failure('+')
+          r1 = nil
+        end
         if r1
           r0 = r1
         else
-          r2 = parse_terminal('*', ZeroOrMore)
+          if input.index('*', index) == index
+            r2 = (ZeroOrMore).new(input, index...(index + 1))
+            @index += 1
+          else
+            terminal_parse_failure('*')
+            r2 = nil
+          end
           if r2
             r0 = r2
           else
@@ -1437,11 +1529,23 @@ module Treetop
         end
         
         i0 = index
-        r1 = parse_terminal('&', AndPredicate)
+        if input.index('&', index) == index
+          r1 = (AndPredicate).new(input, index...(index + 1))
+          @index += 1
+        else
+          terminal_parse_failure('&')
+          r1 = nil
+        end
         if r1
           r0 = r1
         else
-          r2 = parse_terminal('!', NotPredicate)
+          if input.index('!', index) == index
+            r2 = (NotPredicate).new(input, index...(index + 1))
+            @index += 1
+          else
+            terminal_parse_failure('!')
+            r2 = nil
+          end
           if r2
             r0 = r2
           else
@@ -1509,7 +1613,13 @@ module Treetop
         end
         
         i0, s0 = index, []
-        r1 = parse_terminal('(', SyntaxNode)
+        if input.index('(', index) == index
+          r1 = (SyntaxNode).new(input, index...(index + 1))
+          @index += 1
+        else
+          terminal_parse_failure('(')
+          r1 = nil
+        end
         s0 << r1
         if r1
           r3 = _nt_space
@@ -1531,7 +1641,13 @@ module Treetop
               end
               s0 << r5
               if r5
-                r7 = parse_terminal(')', SyntaxNode)
+                if input.index(')', index) == index
+                  r7 = (SyntaxNode).new(input, index...(index + 1))
+                  @index += 1
+                else
+                  terminal_parse_failure(')')
+                  r7 = nil
+                end
                 s0 << r7
               end
             end
@@ -1627,25 +1743,20 @@ module Treetop
         end
         
         i0 = index
-        r1 = _nt_single_quoted_string
+        r1 = _nt_quoted_string
         if r1
           r0 = r1
         else
-          r2 = _nt_double_quoted_string
+          r2 = _nt_character_class
           if r2
             r0 = r2
           else
-            r3 = _nt_character_class
+            r3 = _nt_anything_symbol
             if r3
               r0 = r3
             else
-              r4 = _nt_anything_symbol
-              if r4
-                r0 = r4
-              else
-                self.index = i0
-                r0 = nil
-              end
+              self.index = i0
+              r0 = nil
             end
           end
         end
@@ -1655,10 +1766,49 @@ module Treetop
         return r0
       end
       
+      module QuotedString0
+        def string
+          super.text_value
+        end
+      end
+      
+      def _nt_quoted_string
+        start_index = index
+        cached = node_cache[:quoted_string][index]
+        if cached
+          @index = cached.interval.end
+          return cached
+        end
+        
+        i0 = index
+        r1 = _nt_single_quoted_string
+        if r1
+          r0 = r1
+          r0.extend(QuotedString0)
+        else
+          r2 = _nt_double_quoted_string
+          if r2
+            r0 = r2
+            r0.extend(QuotedString0)
+          else
+            self.index = i0
+            r0 = nil
+          end
+        end
+        
+        node_cache[:quoted_string][start_index] = r0
+        
+        return r0
+      end
+      
       module DoubleQuotedString0
       end
       
       module DoubleQuotedString1
+        def string
+          elements[1]
+        end
+        
       end
       
       def _nt_double_quoted_string
@@ -1670,14 +1820,26 @@ module Treetop
         end
         
         i0, s0 = index, []
-        r1 = parse_terminal('"', SyntaxNode)
+        if input.index('"', index) == index
+          r1 = (SyntaxNode).new(input, index...(index + 1))
+          @index += 1
+        else
+          terminal_parse_failure('"')
+          r1 = nil
+        end
         s0 << r1
         if r1
           s2, i2 = [], index
           loop do
             i3, s3 = index, []
             i4 = index
-            r5 = parse_terminal('"', SyntaxNode)
+            if input.index('"', index) == index
+              r5 = (SyntaxNode).new(input, index...(index + 1))
+              @index += 1
+            else
+              terminal_parse_failure('"')
+              r5 = nil
+            end
             if r5
               r4 = nil
             else
@@ -1687,11 +1849,23 @@ module Treetop
             s3 << r4
             if r4
               i6 = index
-              r7 = parse_terminal("\\\\", SyntaxNode)
+              if input.index("\\\\", index) == index
+                r7 = (SyntaxNode).new(input, index...(index + 2))
+                @index += 2
+              else
+                terminal_parse_failure("\\\\")
+                r7 = nil
+              end
               if r7
                 r6 = r7
               else
-                r8 = parse_terminal('\"', SyntaxNode)
+                if input.index('\"', index) == index
+                  r8 = (SyntaxNode).new(input, index...(index + 2))
+                  @index += 2
+                else
+                  terminal_parse_failure('\"')
+                  r8 = nil
+                end
                 if r8
                   r6 = r8
                 else
@@ -1722,7 +1896,13 @@ module Treetop
           r2 = SyntaxNode.new(input, i2...index, s2)
           s0 << r2
           if r2
-            r10 = parse_terminal('"', SyntaxNode)
+            if input.index('"', index) == index
+              r10 = (SyntaxNode).new(input, index...(index + 1))
+              @index += 1
+            else
+              terminal_parse_failure('"')
+              r10 = nil
+            end
             s0 << r10
           end
         end
@@ -1743,6 +1923,10 @@ module Treetop
       end
       
       module SingleQuotedString1
+        def string
+          elements[1]
+        end
+        
       end
       
       def _nt_single_quoted_string
@@ -1754,14 +1938,26 @@ module Treetop
         end
         
         i0, s0 = index, []
-        r1 = parse_terminal("'", SyntaxNode)
+        if input.index("'", index) == index
+          r1 = (SyntaxNode).new(input, index...(index + 1))
+          @index += 1
+        else
+          terminal_parse_failure("'")
+          r1 = nil
+        end
         s0 << r1
         if r1
           s2, i2 = [], index
           loop do
             i3, s3 = index, []
             i4 = index
-            r5 = parse_terminal("'", SyntaxNode)
+            if input.index("'", index) == index
+              r5 = (SyntaxNode).new(input, index...(index + 1))
+              @index += 1
+            else
+              terminal_parse_failure("'")
+              r5 = nil
+            end
             if r5
               r4 = nil
             else
@@ -1771,11 +1967,23 @@ module Treetop
             s3 << r4
             if r4
               i6 = index
-              r7 = parse_terminal("\\\\", SyntaxNode)
+              if input.index("\\\\", index) == index
+                r7 = (SyntaxNode).new(input, index...(index + 2))
+                @index += 2
+              else
+                terminal_parse_failure("\\\\")
+                r7 = nil
+              end
               if r7
                 r6 = r7
               else
-                r8 = parse_terminal("\\'", SyntaxNode)
+                if input.index("\\'", index) == index
+                  r8 = (SyntaxNode).new(input, index...(index + 2))
+                  @index += 2
+                else
+                  terminal_parse_failure("\\'")
+                  r8 = nil
+                end
                 if r8
                   r6 = r8
                 else
@@ -1806,7 +2014,13 @@ module Treetop
           r2 = SyntaxNode.new(input, i2...index, s2)
           s0 << r2
           if r2
-            r10 = parse_terminal("'", SyntaxNode)
+            if input.index("'", index) == index
+              r10 = (SyntaxNode).new(input, index...(index + 1))
+              @index += 1
+            else
+              terminal_parse_failure("'")
+              r10 = nil
+            end
             s0 << r10
           end
         end
@@ -1848,14 +2062,26 @@ module Treetop
         end
         
         i0, s0 = index, []
-        r1 = parse_terminal('[', SyntaxNode)
+        if input.index('[', index) == index
+          r1 = (SyntaxNode).new(input, index...(index + 1))
+          @index += 1
+        else
+          terminal_parse_failure('[')
+          r1 = nil
+        end
         s0 << r1
         if r1
           s2, i2 = [], index
           loop do
             i3, s3 = index, []
             i4 = index
-            r5 = parse_terminal(']', SyntaxNode)
+            if input.index(']', index) == index
+              r5 = (SyntaxNode).new(input, index...(index + 1))
+              @index += 1
+            else
+              terminal_parse_failure(']')
+              r5 = nil
+            end
             if r5
               r4 = nil
             else
@@ -1865,7 +2091,13 @@ module Treetop
             s3 << r4
             if r4
               i6 = index
-              r7 = parse_terminal('\]', SyntaxNode)
+              if input.index('\]', index) == index
+                r7 = (SyntaxNode).new(input, index...(index + 2))
+                @index += 2
+              else
+                terminal_parse_failure('\]')
+                r7 = nil
+              end
               if r7
                 r6 = r7
               else
@@ -1900,7 +2132,13 @@ module Treetop
           end
           s0 << r2
           if r2
-            r9 = parse_terminal(']', SyntaxNode)
+            if input.index(']', index) == index
+              r9 = (SyntaxNode).new(input, index...(index + 1))
+              @index += 1
+            else
+              terminal_parse_failure(']')
+              r9 = nil
+            end
             s0 << r9
           end
         end
@@ -1926,7 +2164,13 @@ module Treetop
           return cached
         end
         
-        r0 = parse_terminal('.', AnythingSymbol)
+        if input.index('.', index) == index
+          r0 = (AnythingSymbol).new(input, index...(index + 1))
+          @index += 1
+        else
+          terminal_parse_failure('.')
+          r0 = nil
+        end
         
         node_cache[:anything_symbol][start_index] = r0
         
@@ -1968,14 +2212,26 @@ module Treetop
         r2 = _nt_space
         s1 << r2
         if r2
-          r3 = parse_terminal('<', SyntaxNode)
+          if input.index('<', index) == index
+            r3 = (SyntaxNode).new(input, index...(index + 1))
+            @index += 1
+          else
+            terminal_parse_failure('<')
+            r3 = nil
+          end
           s1 << r3
           if r3
             s4, i4 = [], index
             loop do
               i5, s5 = index, []
               i6 = index
-              r7 = parse_terminal('>', SyntaxNode)
+              if input.index('>', index) == index
+                r7 = (SyntaxNode).new(input, index...(index + 1))
+                @index += 1
+              else
+                terminal_parse_failure('>')
+                r7 = nil
+              end
               if r7
                 r6 = nil
               else
@@ -2008,7 +2264,13 @@ module Treetop
             end
             s1 << r4
             if r4
-              r9 = parse_terminal('>', SyntaxNode)
+              if input.index('>', index) == index
+                r9 = (SyntaxNode).new(input, index...(index + 1))
+                @index += 1
+              else
+                terminal_parse_failure('>')
+                r9 = nil
+              end
               s1 << r9
             end
           end
@@ -2024,7 +2286,14 @@ module Treetop
         if r1
           r0 = r1
         else
-          r10 = parse_terminal('', SyntaxNode, NodeClassExpression3)
+          if input.index('', index) == index
+            r10 = (SyntaxNode).new(input, index...(index + 0))
+            r10.extend(NodeClassExpression3)
+            @index += 0
+          else
+            terminal_parse_failure('')
+            r10 = nil
+          end
           if r10
             r0 = r10
           else
@@ -2099,7 +2368,14 @@ module Treetop
         if r1
           r0 = r1
         else
-          r4 = parse_terminal('', SyntaxNode, TrailingInlineModule2)
+          if input.index('', index) == index
+            r4 = (SyntaxNode).new(input, index...(index + 0))
+            r4.extend(TrailingInlineModule2)
+            @index += 0
+          else
+            terminal_parse_failure('')
+            r4 = nil
+          end
           if r4
             r0 = r4
           else
@@ -2128,7 +2404,13 @@ module Treetop
         end
         
         i0, s0 = index, []
-        r1 = parse_terminal('{', SyntaxNode)
+        if input.index('{', index) == index
+          r1 = (SyntaxNode).new(input, index...(index + 1))
+          @index += 1
+        else
+          terminal_parse_failure('{')
+          r1 = nil
+        end
         s0 << r1
         if r1
           s2, i2 = [], index
@@ -2180,7 +2462,13 @@ module Treetop
           r2 = SyntaxNode.new(input, i2...index, s2)
           s0 << r2
           if r2
-            r9 = parse_terminal('}', SyntaxNode)
+            if input.index('}', index) == index
+              r9 = (SyntaxNode).new(input, index...(index + 1))
+              @index += 1
+            else
+              terminal_parse_failure('}')
+              r9 = nil
+            end
             s0 << r9
           end
         end
@@ -2210,11 +2498,23 @@ module Treetop
         
         i0, s0 = index, []
         i1 = index
-        r2 = parse_terminal('rule', SyntaxNode)
+        if input.index('rule', index) == index
+          r2 = (SyntaxNode).new(input, index...(index + 4))
+          @index += 4
+        else
+          terminal_parse_failure('rule')
+          r2 = nil
+        end
         if r2
           r1 = r2
         else
-          r3 = parse_terminal('end', SyntaxNode)
+          if input.index('end', index) == index
+            r3 = (SyntaxNode).new(input, index...(index + 3))
+            @index += 3
+          else
+            terminal_parse_failure('end')
+            r3 = nil
+          end
           if r3
             r1 = r3
           else

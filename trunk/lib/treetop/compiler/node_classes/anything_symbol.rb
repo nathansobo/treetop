@@ -3,7 +3,15 @@ module Treetop
     class AnythingSymbol < AtomicExpression
       def compile(address, builder, parent_expression = nil)
         super
-        assign_result "parse_anything(#{node_class_name}#{optional_arg(inline_module_name)})"
+        builder.if__ "index < input_length" do
+          assign_result "(#{node_class_name}).new(input, index...(index + 1))"
+          extend_result_with_inline_module
+          builder << "@index += 1"
+        end
+        builder.else_ do
+          builder << 'terminal_parse_failure("any character")'
+          assign_result 'nil'
+        end
       end
     end
   end
