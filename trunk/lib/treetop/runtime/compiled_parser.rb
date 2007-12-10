@@ -3,11 +3,11 @@ module Treetop
     class CompiledParser
       include Treetop::Runtime
       
-      attr_accessor :consume_all_input
-      attr_writer :root
-      alias :consume_all_input? :consume_all_input
       attr_reader :input, :index, :terminal_failures, :max_terminal_failure_index
-
+      attr_writer :root
+      attr_accessor :consume_all_input
+      alias :consume_all_input? :consume_all_input
+      
       def initialize
         self.consume_all_input = true
       end

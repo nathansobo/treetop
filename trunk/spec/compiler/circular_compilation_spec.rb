@@ -11,9 +11,16 @@ module CircularCompilationSpec
     
     it "can parse the metagrammar.treetop whence it was generated" do
       File.open(METAGRAMMAR_PATH, 'r') do |f|
+        metagrammar_source = f.read
+        result = parser.parse(metagrammar_source)
+        result.should be_success
+
+        generated_parser = result.compile
+        Object.class_eval(generated_parser)
+        parser_2 = Treetop::Compiler::MetagrammarParser.new
         optionally_benchmark do
-          result = parser.parse(f.read)
-          result.should be_success
+          result = parser_2.parse(metagrammar_source)
+          result.should_not be_nil
         end
       end
     end
