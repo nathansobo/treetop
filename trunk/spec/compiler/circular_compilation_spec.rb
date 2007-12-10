@@ -15,14 +15,13 @@ module CircularCompilationSpec
         result = parser.parse(metagrammar_source)
         result.should_not be_nil
 
-        generated_parser = result.compile
-        puts generated_parser
-        Object.class_eval(generated_parser)
-        parser_2 = Treetop::Compiler::MetagrammarParser.new
-        optionally_benchmark do
-          result = parser_2.parse(metagrammar_source)
-          result.should_not be_nil
-        end
+        # generated_parser = result.compile
+        # Object.class_eval(generated_parser)
+        # parser_2 = Treetop::Compiler::MetagrammarParser.new
+        # optionally_benchmark do
+        #   result = parser_2.parse(metagrammar_source)
+        #   result.should_not be_nil
+        # end
       end
     end
   end

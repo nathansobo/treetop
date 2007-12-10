@@ -301,7 +301,11 @@ module Treetop
       end
       
       rule quoted_string
-        (single_quoted_string / double_quoted_string)
+        (single_quoted_string / double_quoted_string) {
+          def string
+            super.text_value
+          end
+        }
       end
       
       rule double_quoted_string
