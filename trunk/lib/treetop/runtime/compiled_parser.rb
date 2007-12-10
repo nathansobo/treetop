@@ -76,7 +76,7 @@ module Treetop
           @max_terminal_failure_index = index
           @terminal_failures = []
         end
-        terminal_failures << TerminalParseFailure.new(input, index, expected_string)
+        terminal_failures << TerminalParseFailure.new(index, expected_string)
         return nil
       end
     end
