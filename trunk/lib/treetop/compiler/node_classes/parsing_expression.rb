@@ -89,7 +89,18 @@ module Treetop
       def assign_failure(start_index_var)
         assign_result("nil")
       end
-    
+      
+      def assign_terminal_failure(expected_string)
+        builder.if_ "index >= max_terminal_failure_index" do
+          builder.if_ "index > max_terminal_failure_index" do
+            builder << "@max_terminal_failure_index = index"
+            builder << "@terminal_failures = []"
+          end
+          builder << "terminal_failures << TerminalParseFailure.new(index, #{expected_string})"
+        end
+        assign_result 'nil'
+      end
+        
       def var_initialization
         left, right = [], []
         var_symbols.each do |symbol|

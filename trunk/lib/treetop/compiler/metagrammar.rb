@@ -1869,7 +1869,13 @@ module Treetop
                 if r8
                   r6 = r8
                 else
-                  r9 = parse_anything(SyntaxNode)
+                  if index < input_length
+                    r9 = (SyntaxNode).new(input, index...(index + 1))
+                    @index += 1
+                  else
+                    terminal_parse_failure("any character")
+                    r9 = nil
+                  end
                   if r9
                     r6 = r9
                   else
@@ -1987,7 +1993,13 @@ module Treetop
                 if r8
                   r6 = r8
                 else
-                  r9 = parse_anything(SyntaxNode)
+                  if index < input_length
+                    r9 = (SyntaxNode).new(input, index...(index + 1))
+                    @index += 1
+                  else
+                    terminal_parse_failure("any character")
+                    r9 = nil
+                  end
                   if r9
                     r6 = r9
                   else
@@ -2101,7 +2113,13 @@ module Treetop
               if r7
                 r6 = r7
               else
-                r8 = parse_anything(SyntaxNode)
+                if index < input_length
+                  r8 = (SyntaxNode).new(input, index...(index + 1))
+                  @index += 1
+                else
+                  terminal_parse_failure("any character")
+                  r8 = nil
+                end
                 if r8
                   r6 = r8
                 else
@@ -2240,7 +2258,13 @@ module Treetop
               end
               s5 << r6
               if r6
-                r8 = parse_anything(SyntaxNode)
+                if index < input_length
+                  r8 = (SyntaxNode).new(input, index...(index + 1))
+                  @index += 1
+                else
+                  terminal_parse_failure("any character")
+                  r8 = nil
+                end
                 s5 << r8
               end
               if s5.last
@@ -2436,7 +2460,13 @@ module Treetop
               end
               s5 << r6
               if r6
-                r8 = parse_anything(SyntaxNode)
+                if index < input_length
+                  r8 = (SyntaxNode).new(input, index...(index + 1))
+                  @index += 1
+                else
+                  terminal_parse_failure("any character")
+                  r8 = nil
+                end
                 s5 << r8
               end
               if s5.last
@@ -2569,7 +2599,13 @@ module Treetop
         end
         s0 << r1
         if r1
-          r3 = parse_anything(SyntaxNode)
+          if index < input_length
+            r3 = (SyntaxNode).new(input, index...(index + 1))
+            @index += 1
+          else
+            terminal_parse_failure("any character")
+            r3 = nil
+          end
           s0 << r3
         end
         if s0.last

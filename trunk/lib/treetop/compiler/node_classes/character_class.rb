@@ -10,8 +10,7 @@ module Treetop
           builder << "@index += 1"
         end
         builder.else_ do
-          "terminal_parse_failure(#{single_quote(characters)})"
-          assign_result 'nil'
+          assign_terminal_failure(single_quote(characters))
         end
       end
     end

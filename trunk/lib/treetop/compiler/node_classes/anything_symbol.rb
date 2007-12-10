@@ -9,8 +9,7 @@ module Treetop
           builder << "@index += 1"
         end
         builder.else_ do
-          builder << 'terminal_parse_failure("any character")'
-          assign_result 'nil'
+          assign_terminal_failure('"any character"')
         end
       end
     end

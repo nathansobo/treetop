@@ -38,17 +38,6 @@ module Treetop
         @index = 0
       end
       
-      def parse_anything(node_class = SyntaxNode, inline_module = nil)
-        if index < input.length
-          result = node_class.new(input, index...(index + 1))
-          result.extend(inline_module) if inline_module
-          @index += 1
-          result
-        else
-          terminal_parse_failure("any character")
-        end
-      end
-    
       def terminal_parse_failure(expected_string)
         return nil if index < max_terminal_failure_index
         if index > max_terminal_failure_index
