@@ -32,9 +32,9 @@ module Treetop
       end
       
       def generate_cache_lookup(builder)
-        builder.assign 'cached', "node_cache[:#{name}][index]"
-        builder.if_ 'cached' do
-          builder << '@index = cached.interval.end'
+        builder.if_ "node_cache[:#{name}].has_key?(index)" do
+          builder.assign 'cached', "node_cache[:#{name}][index]"
+          builder << '@index = cached.interval.end if cached'
           builder << 'return cached'
         end
       end
