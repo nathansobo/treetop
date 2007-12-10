@@ -297,15 +297,19 @@ module Treetop
       end
 
       rule terminal
-        single_quoted_string / double_quoted_string / character_class / anything_symbol
+        quoted_string / character_class / anything_symbol
+      end
+      
+      rule quoted_string
+        (single_quoted_string / double_quoted_string)
       end
       
       rule double_quoted_string
-        '"' (!'"' ("\\\\" / '\"' / .))* '"' <Terminal>
+        '"' string:(!'"' ("\\\\" / '\"' / .))* '"' <Terminal>
       end
 
       rule single_quoted_string
-        "'" (!"'" ("\\\\" / "\\'" / .))* "'" <Terminal>
+        "'" string:(!"'" ("\\\\" / "\\'" / .))* "'" <Terminal>
       end
 
       rule character_class

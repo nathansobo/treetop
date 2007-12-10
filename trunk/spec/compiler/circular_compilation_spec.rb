@@ -16,6 +16,7 @@ module CircularCompilationSpec
         result.should_not be_nil
 
         generated_parser = result.compile
+        puts generated_parser
         Object.class_eval(generated_parser)
         parser_2 = Treetop::Compiler::MetagrammarParser.new
         optionally_benchmark do
