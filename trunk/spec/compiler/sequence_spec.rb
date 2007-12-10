@@ -29,7 +29,7 @@ module SequenceSpec
     it "fails to match non-matching input, recording the parse failure of first non-matching terminal" do
       parse('---foobazbaz', :index => 3) do |result|
         result.should be_failure
-        result.index.should == 3
+        parser.index.should == 3
         terminal_failures = parser.terminal_failures
         terminal_failures.size.should == 1
         failure = terminal_failures.first
