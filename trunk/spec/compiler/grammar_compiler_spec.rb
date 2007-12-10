@@ -21,7 +21,7 @@ describe Compiler::GrammarCompiler do
     @compiler.compile(@source_path)
     File.exists?(@target_path).should be_true
     require @target_path
-    Test::GrammarParser.new.parse('foo').should be_success
+    Test::GrammarParser.new.parse('foo').should_not be_nil
   end
   
   specify "compilation of a single file to an explicit file name" do
@@ -29,7 +29,7 @@ describe Compiler::GrammarCompiler do
     @compiler.compile(@source_path, @alternate_target_path)
     File.exists?(@alternate_target_path).should be_true
     require @alternate_target_path
-    Test::GrammarParser.new.parse('foo').should be_success
+    Test::GrammarParser.new.parse('foo').should_not be_nil
   end
   
   specify "compilation of a single file without writing it to an output file" do
@@ -38,13 +38,13 @@ describe Compiler::GrammarCompiler do
 
   specify "load_grammar compiles and evaluates source grammar with extension" do    
     load_grammar @source_path
-    Test::GrammarParser.new.parse('foo').should be_success
+    Test::GrammarParser.new.parse('foo').should_not be_nil
   end
 
   specify "load_grammar compiles and evaluates source grammar with no extension" do
     path_without_extension = @source_path.gsub(/\.treetop\Z/, '')
     load_grammar path_without_extension
-    Test::GrammarParser.new.parse('foo').should be_success
+    Test::GrammarParser.new.parse('foo').should_not be_nil
   end
   
   

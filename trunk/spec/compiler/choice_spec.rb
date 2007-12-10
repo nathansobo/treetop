@@ -6,15 +6,15 @@ module ChoiceSpec
 
     it "successfully parses input matching any of the alternatives, returning a node that responds to methods defined in its respective inline module" do
       result = parse('foo')
-      result.should be_success
+      result.should_not be_nil
       result.should respond_to(:foo_method)
     
       result = parse('bar')
-      result.should be_success
+      result.should_not be_nil
       result.should respond_to(:bar_method)
     
       result = parse('baz')
-      result.should be_success
+      result.should_not be_nil
       result.should respond_to(:baz_method)
     end
   
@@ -48,8 +48,8 @@ module ChoiceSpec
     testing_expression "'foo' 'bar' 'baz'\n/\n'bing' 'bang' 'boom'"
 
     it "successfully parses input matching any of the alternatives" do
-      parse('foobarbaz').should be_success
-      parse('bingbangboom').should be_success
+      parse('foobarbaz').should_not be_nil
+      parse('bingbangboom').should_not be_nil
     end
   end
 

@@ -51,7 +51,7 @@ module Treetop
       end
     
       def subexpression_success?
-        subexpression_result_var + ".success?"
+        subexpression_result_var
       end
     
       def obtain_new_subexpression_address

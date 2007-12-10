@@ -31,7 +31,7 @@ module TerminalSymbolSpec
     end
 
     it "fails to parse nonmatching input at the index even if a match occurs later" do
-      parse(" foo", :index =>  0).should be_failure
+      parse(" foo", :index =>  0).should be_nil
     end
   end
 end

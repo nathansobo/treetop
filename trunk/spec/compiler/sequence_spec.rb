@@ -9,7 +9,7 @@ module SequenceSpec
   
     it "upon successfully matching input, instantiates an instance of the declared node class with element accessor methods and the method from the inline module" do
       parse('foobarbaz') do |result|
-        result.should be_success
+        result.should_not be_nil
         result.should be_an_instance_of(Foo)      
         result.should respond_to(:a_method)
         result.foo.text_value.should == 'foo'
@@ -20,7 +20,7 @@ module SequenceSpec
     
     it "successfully matches at a non-zero index" do
       parse('---foobarbaz', :index => 3) do |result|
-        result.should be_success
+        result.should_not be_nil
         result.should be_nonterminal
         (result.elements.map {|elt| elt.text_value}).join.should == 'foobarbaz'
       end
@@ -28,7 +28,7 @@ module SequenceSpec
   
     it "fails to match non-matching input, recording the parse failure of first non-matching terminal" do
       parse('---foobazbaz', :index => 3) do |result|
-        result.should be_failure
+        result.should be_nil
         parser.index.should == 3
         terminal_failures = parser.terminal_failures
         terminal_failures.size.should == 1

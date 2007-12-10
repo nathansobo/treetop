@@ -5,12 +5,12 @@ module OptionalSpec
     testing_expression '"foo"?'
   
     it "parses input matching the terminal" do
-      parse('foo').should be_success
+      parse('foo').should_not be_nil
     end
   
     it "parses epsilon, recording a failure" do
       parse('') do |result|
-        result.should be_success
+        result.should_not be_nil
         result.interval.should == (0...0)
         
         terminal_failures = parser.terminal_failures
@@ -23,7 +23,7 @@ module OptionalSpec
   
     it "parses input not matching the terminal, returning an epsilon result and recording a failure" do
       parse('bar', :consume_all_input => false) do |result|
-        result.should be_success
+        result.should_not be_nil
         result.interval.should == (0...0)
         
         terminal_failures = parser.terminal_failures

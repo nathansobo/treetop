@@ -11,7 +11,7 @@ module Treetop
         File.open(source_path) do |source_file|
           parser = MetagrammarParser.new
           result = parser.parse(source_file.read)
-          if result.failure?
+          unless result
             raise RuntimeError.new(parser.terminal_failures.map {|failure| failure.to_s}.join("\n"))
           end
           result.compile

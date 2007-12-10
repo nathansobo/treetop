@@ -12,7 +12,7 @@ module Treetop
       end
   
       def store(parse_result)
-        if parse_result.failure?
+        if parse_result.nil?
           parse_results[parse_result.index] = parse_result
         else
           parse_results[parse_result.interval.begin] = parse_result

@@ -9,7 +9,7 @@ module ZeroOrMoreSpec
   
     it "successfully parses epsilon, returning an instance declared node class and recording a terminal failure" do
       parse('') do |result|
-        result.should be_success
+        result.should_not be_nil
         result.should be_an_instance_of(Foo)
         result.should respond_to(:a_method)
 
@@ -23,7 +23,7 @@ module ZeroOrMoreSpec
   
     it "successfully parses two of that terminal in a row, returning an instance of the declared node class and recording a failure representing the third attempt " do
       parse("foofoo") do |result|
-        result.should be_success
+        result.should_not be_nil
         result.should be_an_instance_of(Foo)
 
         terminal_failures = parser.terminal_failures
@@ -40,7 +40,7 @@ module ZeroOrMoreSpec
   
     it "resets the index appropriately following partially matcing input" do
       parse('foobarfoo', :consume_all_input => false) do |result|
-        result.should be_success
+        result.should_not be_nil
         result.interval.should == (0...6)
       end
     end
@@ -50,7 +50,7 @@ module ZeroOrMoreSpec
     testing_expression '("a" / "b")*'
 
     it "successfully parses matching input" do
-      parse('abba').should be_success
+      parse('abba').should_not be_nil
     end
   end
 end

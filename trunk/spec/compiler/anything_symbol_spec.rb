@@ -10,7 +10,7 @@ module AnythingSymbolSpec
     it "matches any single character in a big range, returning an instance of the declared node class that responds to methods defined in the inline module" do
       (33..127).each do |digit|
         parse(digit.chr) do |result|
-          result.should be_success
+          result.should_not be_nil
           result.should be_an_instance_of(Foo)
           result.should respond_to(:a_method)
           result.interval.should == (0...1)
@@ -19,7 +19,7 @@ module AnythingSymbolSpec
     end
   
     it "fails to parse epsilon" do
-      parse('').should be_failure
+      parse('').should be_nil
     end
   end
 end

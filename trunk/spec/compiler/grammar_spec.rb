@@ -24,12 +24,12 @@ module GrammarSpec
     }
   
     it "parses matching input" do
-      parse('barbar').should be_success
-      parse('bazbaz').should be_success
+      parse('barbar').should_not be_nil
+      parse('bazbaz').should_not be_nil
     end
   
     it "fails if it does not parse all input" do
-      parse('barbarbazbaz').should be_failure
+      parse('barbarbazbaz').should be_nil
     end
   
     it "mixes in included modules" do

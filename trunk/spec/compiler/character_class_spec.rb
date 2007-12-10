@@ -21,16 +21,16 @@ module CharacterClassSpec
     end
   
     it "does not match single characters outside of that range" do
-      parse('8').should be_failure
-      parse('a').should be_failure
+      parse('8').should be_nil
+      parse('a').should be_nil
     end
   
     it "matches a single character within that range at index 1" do
-      parse(' A', :index => 1).should be_success
+      parse(' A', :index => 1).should_not be_nil
     end
   
     it "fails to match a single character out of that range at index 1" do
-      parse(' 1', :index => 1).should be_failure
+      parse(' 1', :index => 1).should be_nil
     end
   end
 
@@ -38,11 +38,11 @@ module CharacterClassSpec
     testing_expression "[\"']"
   
     it "matches a quote" do
-      parse("'").should be_success
+      parse("'").should_not be_nil
     end
   
     it "matches a double-quote" do
-      parse('"').should be_success
+      parse('"').should_not be_nil
     end
   end
 end

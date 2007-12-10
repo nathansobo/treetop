@@ -9,7 +9,7 @@ module OneOrMoreSpec
 
     it "fails to parse epsilon, reporting a failure" do
       parse('') do |result|
-        result.should be_failure
+        result.should be_nil
         terminal_failures = parser.terminal_failures
         terminal_failures.size.should == 1
         failure = terminal_failures.first
@@ -20,7 +20,7 @@ module OneOrMoreSpec
   
     it "successfully parses two of that terminal in a row, returning an instance of the declared node class and reporting the failure the third parsing attempt" do
       parse("foofoo") do |result|
-        result.should be_success
+        result.should_not be_nil
         result.should be_an_instance_of(Foo)
         result.should respond_to(:a_method)
         

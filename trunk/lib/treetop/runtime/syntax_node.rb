@@ -9,14 +9,6 @@ module Treetop
         @elements = elements
       end
       
-      def success?
-        true
-      end
-    
-      def failure?
-        false
-      end
-
       def terminal?
         @elements.nil?
       end

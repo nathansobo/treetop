@@ -37,20 +37,20 @@ module Treetop
         
         i0, s0 = index, []
         r2 = _nt_space
-        if r2.success?
+        if r2
           r1 = r2
         else
           r1 = SyntaxNode.new(input, index...index)
         end
         s0 << r1
-        if r1.success?
+        if r1
           i3 = index
           r4 = _nt_module_declaration
-          if r4.success?
+          if r4
             r3 = r4
           else
             r5 = _nt_grammar
-            if r5.success?
+            if r5
               r3 = r5
             else
               self.index = i3
@@ -58,9 +58,9 @@ module Treetop
             end
           end
           s0 << r3
-          if r3.success?
+          if r3
             r7 = _nt_space
-            if r7.success?
+            if r7
               r6 = r7
             else
               r6 = SyntaxNode.new(input, index...index)
@@ -68,7 +68,7 @@ module Treetop
             s0 << r6
           end
         end
-        if s0.last.success?
+        if s0.last
           r0 = (SyntaxNode).new(input, i0...index, s0)
           r0.extend(TreetopFile0)
           r0.extend(TreetopFile1)
@@ -131,10 +131,10 @@ module Treetop
         i1, s1 = index, []
         r2 = parse_terminal('module', SyntaxNode)
         s1 << r2
-        if r2.success?
+        if r2
           r3 = _nt_space
           s1 << r3
-          if r3.success?
+          if r3
             if input.index(/[A-Z]/, index) == index
               r4 = (SyntaxNode).new(input, index...(index + 1))
               @index += 1
@@ -142,11 +142,11 @@ module Treetop
               r4 = nil
             end
             s1 << r4
-            if r4.success?
+            if r4
               s5, i5 = [], index
               loop do
                 r6 = _nt_alphanumeric_char
-                if r6.success?
+                if r6
                   s5 << r6
                 else
                   break
@@ -154,14 +154,14 @@ module Treetop
               end
               r5 = SyntaxNode.new(input, i5...index, s5)
               s1 << r5
-              if r5.success?
+              if r5
                 r7 = _nt_space
                 s1 << r7
               end
             end
           end
         end
-        if s1.last.success?
+        if s1.last
           r1 = (SyntaxNode).new(input, i1...index, s1)
           r1.extend(ModuleDeclaration0)
         else
@@ -169,14 +169,14 @@ module Treetop
           r1 = nil
         end
         s0 << r1
-        if r1.success?
+        if r1
           i8 = index
           r9 = _nt_module_declaration
-          if r9.success?
+          if r9
             r8 = r9
           else
             r10 = _nt_grammar
-            if r10.success?
+            if r10
               r8 = r10
             else
               self.index = i8
@@ -184,15 +184,15 @@ module Treetop
             end
           end
           s0 << r8
-          if r8.success?
+          if r8
             i11, s11 = index, []
             r12 = _nt_space
             s11 << r12
-            if r12.success?
+            if r12
               r13 = parse_terminal('end', SyntaxNode)
               s11 << r13
             end
-            if s11.last.success?
+            if s11.last
               r11 = (SyntaxNode).new(input, i11...index, s11)
               r11.extend(ModuleDeclaration1)
             else
@@ -202,7 +202,7 @@ module Treetop
             s0 << r11
           end
         end
-        if s0.last.success?
+        if s0.last
           r0 = (SyntaxNode).new(input, i0...index, s0)
           r0.extend(ModuleDeclaration2)
           r0.extend(ModuleDeclaration3)
@@ -246,27 +246,27 @@ module Treetop
         i0, s0 = index, []
         r1 = parse_terminal('grammar', SyntaxNode)
         s0 << r1
-        if r1.success?
+        if r1
           r2 = _nt_space
           s0 << r2
-          if r2.success?
+          if r2
             r3 = _nt_grammar_name
             s0 << r3
-            if r3.success?
+            if r3
               r4 = _nt_space
               s0 << r4
-              if r4.success?
+              if r4
                 r5 = _nt_declaration_sequence
                 s0 << r5
-                if r5.success?
+                if r5
                   r7 = _nt_space
-                  if r7.success?
+                  if r7
                     r6 = r7
                   else
                     r6 = SyntaxNode.new(input, index...index)
                   end
                   s0 << r6
-                  if r6.success?
+                  if r6
                     r8 = parse_terminal('end', SyntaxNode)
                     s0 << r8
                   end
@@ -275,7 +275,7 @@ module Treetop
             end
           end
         end
-        if s0.last.success?
+        if s0.last
           r0 = (Grammar).new(input, i0...index, s0)
           r0.extend(Grammar0)
         else
@@ -307,11 +307,11 @@ module Treetop
           r1 = nil
         end
         s0 << r1
-        if r1.success?
+        if r1
           s2, i2 = [], index
           loop do
             r3 = _nt_alphanumeric_char
-            if r3.success?
+            if r3
               s2 << r3
             else
               break
@@ -320,7 +320,7 @@ module Treetop
           r2 = SyntaxNode.new(input, i2...index, s2)
           s0 << r2
         end
-        if s0.last.success?
+        if s0.last
           r0 = (SyntaxNode).new(input, i0...index, s0)
           r0.extend(GrammarName0)
         else
@@ -380,24 +380,24 @@ module Treetop
         i1, s1 = index, []
         r2 = _nt_declaration
         s1 << r2
-        if r2.success?
+        if r2
           s3, i3 = [], index
           loop do
             i4, s4 = index, []
             r5 = _nt_space
             s4 << r5
-            if r5.success?
+            if r5
               r6 = _nt_declaration
               s4 << r6
             end
-            if s4.last.success?
+            if s4.last
               r4 = (SyntaxNode).new(input, i4...index, s4)
               r4.extend(DeclarationSequence0)
             else
               self.index = i4
               r4 = nil
             end
-            if r4.success?
+            if r4
               s3 << r4
             else
               break
@@ -406,7 +406,7 @@ module Treetop
           r3 = SyntaxNode.new(input, i3...index, s3)
           s1 << r3
         end
-        if s1.last.success?
+        if s1.last
           r1 = (DeclarationSequence).new(input, i1...index, s1)
           r1.extend(DeclarationSequence1)
           r1.extend(DeclarationSequence2)
@@ -414,11 +414,11 @@ module Treetop
           self.index = i1
           r1 = nil
         end
-        if r1.success?
+        if r1
           r0 = r1
         else
           r7 = parse_terminal('', SyntaxNode, DeclarationSequence3)
-          if r7.success?
+          if r7
             r0 = r7
           else
             self.index = i0
@@ -441,11 +441,11 @@ module Treetop
         
         i0 = index
         r1 = _nt_parsing_rule
-        if r1.success?
+        if r1
           r0 = r1
         else
           r2 = _nt_include_declaration
-          if r2.success?
+          if r2
             r0 = r2
           else
             self.index = i0
@@ -482,10 +482,10 @@ module Treetop
         i0, s0 = index, []
         r1 = parse_terminal('include', SyntaxNode)
         s0 << r1
-        if r1.success?
+        if r1
           r2 = _nt_space
           s0 << r2
-          if r2.success?
+          if r2
             if input.index(/[A-Z]/, index) == index
               r3 = (SyntaxNode).new(input, index...(index + 1))
               @index += 1
@@ -493,23 +493,23 @@ module Treetop
               r3 = nil
             end
             s0 << r3
-            if r3.success?
+            if r3
               s4, i4 = [], index
               loop do
                 i5 = index
                 r6 = _nt_alphanumeric_char
-                if r6.success?
+                if r6
                   r5 = r6
                 else
                   r7 = parse_terminal('::', SyntaxNode)
-                  if r7.success?
+                  if r7
                     r5 = r7
                   else
                     self.index = i5
                     r5 = nil
                   end
                 end
-                if r5.success?
+                if r5
                   s4 << r5
                 else
                   break
@@ -520,7 +520,7 @@ module Treetop
             end
           end
         end
-        if s0.last.success?
+        if s0.last
           r0 = (SyntaxNode).new(input, i0...index, s0)
           r0.extend(IncludeDeclaration0)
           r0.extend(IncludeDeclaration1)
@@ -568,22 +568,22 @@ module Treetop
         i0, s0 = index, []
         r1 = parse_terminal('rule', SyntaxNode)
         s0 << r1
-        if r1.success?
+        if r1
           r2 = _nt_space
           s0 << r2
-          if r2.success?
+          if r2
             r3 = _nt_nonterminal
             s0 << r3
-            if r3.success?
+            if r3
               r4 = _nt_space
               s0 << r4
-              if r4.success?
+              if r4
                 r5 = _nt_parsing_expression
                 s0 << r5
-                if r5.success?
+                if r5
                   r6 = _nt_space
                   s0 << r6
-                  if r6.success?
+                  if r6
                     r7 = parse_terminal('end', SyntaxNode)
                     s0 << r7
                   end
@@ -592,7 +592,7 @@ module Treetop
             end
           end
         end
-        if s0.last.success?
+        if s0.last
           r0 = (ParsingRule).new(input, i0...index, s0)
           r0.extend(ParsingRule0)
         else
@@ -615,15 +615,15 @@ module Treetop
         
         i0 = index
         r1 = _nt_choice
-        if r1.success?
+        if r1
           r0 = r1
         else
           r2 = _nt_sequence
-          if r2.success?
+          if r2
             r0 = r2
           else
             r3 = _nt_primary
-            if r3.success?
+            if r3
               r0 = r3
             else
               self.index = i0
@@ -678,42 +678,42 @@ module Treetop
         i0, s0 = index, []
         r1 = _nt_alternative
         s0 << r1
-        if r1.success?
+        if r1
           s2, i2 = [], index
           loop do
             i3, s3 = index, []
             r5 = _nt_space
-            if r5.success?
+            if r5
               r4 = r5
             else
               r4 = SyntaxNode.new(input, index...index)
             end
             s3 << r4
-            if r4.success?
+            if r4
               r6 = parse_terminal('/', SyntaxNode)
               s3 << r6
-              if r6.success?
+              if r6
                 r8 = _nt_space
-                if r8.success?
+                if r8
                   r7 = r8
                 else
                   r7 = SyntaxNode.new(input, index...index)
                 end
                 s3 << r7
-                if r7.success?
+                if r7
                   r9 = _nt_alternative
                   s3 << r9
                 end
               end
             end
-            if s3.last.success?
+            if s3.last
               r3 = (SyntaxNode).new(input, i3...index, s3)
               r3.extend(Choice0)
             else
               self.index = i3
               r3 = nil
             end
-            if r3.success?
+            if r3
               s2 << r3
             else
               break
@@ -727,7 +727,7 @@ module Treetop
           end
           s0 << r2
         end
-        if s0.last.success?
+        if s0.last
           r0 = (Choice).new(input, i0...index, s0)
           r0.extend(Choice1)
           r0.extend(Choice2)
@@ -796,24 +796,24 @@ module Treetop
         i0, s0 = index, []
         r1 = _nt_labeled_sequence_primary
         s0 << r1
-        if r1.success?
+        if r1
           s2, i2 = [], index
           loop do
             i3, s3 = index, []
             r4 = _nt_space
             s3 << r4
-            if r4.success?
+            if r4
               r5 = _nt_labeled_sequence_primary
               s3 << r5
             end
-            if s3.last.success?
+            if s3.last
               r3 = (SyntaxNode).new(input, i3...index, s3)
               r3.extend(Sequence0)
             else
               self.index = i3
               r3 = nil
             end
-            if r3.success?
+            if r3
               s2 << r3
             else
               break
@@ -826,12 +826,12 @@ module Treetop
             r2 = SyntaxNode.new(input, i2...index, s2)
           end
           s0 << r2
-          if r2.success?
+          if r2
             r6 = _nt_node_class_declarations
             s0 << r6
           end
         end
-        if s0.last.success?
+        if s0.last
           r0 = (Sequence).new(input, i0...index, s0)
           r0.extend(Sequence1)
           r0.extend(Sequence2)
@@ -855,11 +855,11 @@ module Treetop
         
         i0 = index
         r1 = _nt_sequence
-        if r1.success?
+        if r1
           r0 = r1
         else
           r2 = _nt_primary
-          if r2.success?
+          if r2
             r0 = r2
           else
             self.index = i0
@@ -976,11 +976,11 @@ module Treetop
         i1, s1 = index, []
         r2 = _nt_prefix
         s1 << r2
-        if r2.success?
+        if r2
           r3 = _nt_atomic
           s1 << r3
         end
-        if s1.last.success?
+        if s1.last
           r1 = (SyntaxNode).new(input, i1...index, s1)
           r1.extend(Primary0)
           r1.extend(Primary1)
@@ -988,21 +988,21 @@ module Treetop
           self.index = i1
           r1 = nil
         end
-        if r1.success?
+        if r1
           r0 = r1
         else
           i4, s4 = index, []
           r5 = _nt_atomic
           s4 << r5
-          if r5.success?
+          if r5
             r6 = _nt_suffix
             s4 << r6
-            if r6.success?
+            if r6
               r7 = _nt_node_class_declarations
               s4 << r7
             end
           end
-          if s4.last.success?
+          if s4.last
             r4 = (SyntaxNode).new(input, i4...index, s4)
             r4.extend(Primary2)
             r4.extend(Primary3)
@@ -1010,17 +1010,17 @@ module Treetop
             self.index = i4
             r4 = nil
           end
-          if r4.success?
+          if r4
             r0 = r4
           else
             i8, s8 = index, []
             r9 = _nt_atomic
             s8 << r9
-            if r9.success?
+            if r9
               r10 = _nt_node_class_declarations
               s8 << r10
             end
-            if s8.last.success?
+            if s8.last
               r8 = (SyntaxNode).new(input, i8...index, s8)
               r8.extend(Primary4)
               r8.extend(Primary5)
@@ -1028,7 +1028,7 @@ module Treetop
               self.index = i8
               r8 = nil
             end
-            if r8.success?
+            if r8
               r0 = r8
             else
               self.index = i0
@@ -1083,11 +1083,11 @@ module Treetop
         i0, s0 = index, []
         r1 = _nt_label
         s0 << r1
-        if r1.success?
+        if r1
           r2 = _nt_sequence_primary
           s0 << r2
         end
-        if s0.last.success?
+        if s0.last
           r0 = (SyntaxNode).new(input, i0...index, s0)
           r0.extend(LabeledSequencePrimary0)
           r0.extend(LabeledSequencePrimary1)
@@ -1136,11 +1136,11 @@ module Treetop
         i2, s2 = index, []
         r3 = _nt_alpha_char
         s2 << r3
-        if r3.success?
+        if r3
           s4, i4 = [], index
           loop do
             r5 = _nt_alphanumeric_char
-            if r5.success?
+            if r5
               s4 << r5
             else
               break
@@ -1149,7 +1149,7 @@ module Treetop
           r4 = SyntaxNode.new(input, i4...index, s4)
           s2 << r4
         end
-        if s2.last.success?
+        if s2.last
           r2 = (SyntaxNode).new(input, i2...index, s2)
           r2.extend(Label0)
         else
@@ -1157,11 +1157,11 @@ module Treetop
           r2 = nil
         end
         s1 << r2
-        if r2.success?
+        if r2
           r6 = parse_terminal(':', SyntaxNode)
           s1 << r6
         end
-        if s1.last.success?
+        if s1.last
           r1 = (SyntaxNode).new(input, i1...index, s1)
           r1.extend(Label1)
           r1.extend(Label2)
@@ -1169,11 +1169,11 @@ module Treetop
           self.index = i1
           r1 = nil
         end
-        if r1.success?
+        if r1
           r0 = r1
         else
           r7 = parse_terminal('', SyntaxNode, Label3)
-          if r7.success?
+          if r7
             r0 = r7
           else
             self.index = i0
@@ -1254,11 +1254,11 @@ module Treetop
         i1, s1 = index, []
         r2 = _nt_prefix
         s1 << r2
-        if r2.success?
+        if r2
           r3 = _nt_atomic
           s1 << r3
         end
-        if s1.last.success?
+        if s1.last
           r1 = (SyntaxNode).new(input, i1...index, s1)
           r1.extend(SequencePrimary0)
           r1.extend(SequencePrimary1)
@@ -1266,17 +1266,17 @@ module Treetop
           self.index = i1
           r1 = nil
         end
-        if r1.success?
+        if r1
           r0 = r1
         else
           i4, s4 = index, []
           r5 = _nt_atomic
           s4 << r5
-          if r5.success?
+          if r5
             r6 = _nt_suffix
             s4 << r6
           end
-          if s4.last.success?
+          if s4.last
             r4 = (SyntaxNode).new(input, i4...index, s4)
             r4.extend(SequencePrimary2)
             r4.extend(SequencePrimary3)
@@ -1284,11 +1284,11 @@ module Treetop
             self.index = i4
             r4 = nil
           end
-          if r4.success?
+          if r4
             r0 = r4
           else
             r7 = _nt_atomic
-            if r7.success?
+            if r7
               r0 = r7
             else
               self.index = i0
@@ -1312,11 +1312,11 @@ module Treetop
         
         i0 = index
         r1 = _nt_repetition_suffix
-        if r1.success?
+        if r1
           r0 = r1
         else
           r2 = _nt_optional_suffix
-          if r2.success?
+          if r2
             r0 = r2
           else
             self.index = i0
@@ -1383,11 +1383,11 @@ module Treetop
         i0, s0 = index, []
         r1 = _nt_node_class_expression
         s0 << r1
-        if r1.success?
+        if r1
           r2 = _nt_trailing_inline_module
           s0 << r2
         end
-        if s0.last.success?
+        if s0.last
           r0 = (SyntaxNode).new(input, i0...index, s0)
           r0.extend(NodeClassDeclarations0)
           r0.extend(NodeClassDeclarations1)
@@ -1411,11 +1411,11 @@ module Treetop
         
         i0 = index
         r1 = parse_terminal('+', OneOrMore)
-        if r1.success?
+        if r1
           r0 = r1
         else
           r2 = parse_terminal('*', ZeroOrMore)
-          if r2.success?
+          if r2
             r0 = r2
           else
             self.index = i0
@@ -1438,11 +1438,11 @@ module Treetop
         
         i0 = index
         r1 = parse_terminal('&', AndPredicate)
-        if r1.success?
+        if r1
           r0 = r1
         else
           r2 = parse_terminal('!', NotPredicate)
-          if r2.success?
+          if r2
             r0 = r2
           else
             self.index = i0
@@ -1465,15 +1465,15 @@ module Treetop
         
         i0 = index
         r1 = _nt_terminal
-        if r1.success?
+        if r1
           r0 = r1
         else
           r2 = _nt_nonterminal
-          if r2.success?
+          if r2
             r0 = r2
           else
             r3 = _nt_parenthesized_expression
-            if r3.success?
+            if r3
               r0 = r3
             else
               self.index = i0
@@ -1511,33 +1511,33 @@ module Treetop
         i0, s0 = index, []
         r1 = parse_terminal('(', SyntaxNode)
         s0 << r1
-        if r1.success?
+        if r1
           r3 = _nt_space
-          if r3.success?
+          if r3
             r2 = r3
           else
             r2 = SyntaxNode.new(input, index...index)
           end
           s0 << r2
-          if r2.success?
+          if r2
             r4 = _nt_parsing_expression
             s0 << r4
-            if r4.success?
+            if r4
               r6 = _nt_space
-              if r6.success?
+              if r6
                 r5 = r6
               else
                 r5 = SyntaxNode.new(input, index...index)
               end
               s0 << r5
-              if r5.success?
+              if r5
                 r7 = parse_terminal(')', SyntaxNode)
                 s0 << r7
               end
             end
           end
         end
-        if s0.last.success?
+        if s0.last
           r0 = (ParenthesizedExpression).new(input, i0...index, s0)
           r0.extend(ParenthesizedExpression0)
           r0.extend(ParenthesizedExpression1)
@@ -1572,22 +1572,22 @@ module Treetop
         i0, s0 = index, []
         i1 = index
         r2 = _nt_keyword_inside_grammar
-        if r2.success?
+        if r2
           r1 = nil
         else
           self.index = i1
           r1 = SyntaxNode.new(input, index...index)
         end
         s0 << r1
-        if r1.success?
+        if r1
           i3, s3 = index, []
           r4 = _nt_alpha_char
           s3 << r4
-          if r4.success?
+          if r4
             s5, i5 = [], index
             loop do
               r6 = _nt_alphanumeric_char
-              if r6.success?
+              if r6
                 s5 << r6
               else
                 break
@@ -1596,7 +1596,7 @@ module Treetop
             r5 = SyntaxNode.new(input, i5...index, s5)
             s3 << r5
           end
-          if s3.last.success?
+          if s3.last
             r3 = (SyntaxNode).new(input, i3...index, s3)
             r3.extend(Nonterminal0)
           else
@@ -1605,7 +1605,7 @@ module Treetop
           end
           s0 << r3
         end
-        if s0.last.success?
+        if s0.last
           r0 = (Nonterminal).new(input, i0...index, s0)
           r0.extend(Nonterminal1)
         else
@@ -1628,19 +1628,19 @@ module Treetop
         
         i0 = index
         r1 = _nt_single_quoted_string
-        if r1.success?
+        if r1
           r0 = r1
         else
           r2 = _nt_double_quoted_string
-          if r2.success?
+          if r2
             r0 = r2
           else
             r3 = _nt_character_class
-            if r3.success?
+            if r3
               r0 = r3
             else
               r4 = _nt_anything_symbol
-              if r4.success?
+              if r4
                 r0 = r4
               else
                 self.index = i0
@@ -1672,31 +1672,31 @@ module Treetop
         i0, s0 = index, []
         r1 = parse_terminal('"', SyntaxNode)
         s0 << r1
-        if r1.success?
+        if r1
           s2, i2 = [], index
           loop do
             i3, s3 = index, []
             i4 = index
             r5 = parse_terminal('"', SyntaxNode)
-            if r5.success?
+            if r5
               r4 = nil
             else
               self.index = i4
               r4 = SyntaxNode.new(input, index...index)
             end
             s3 << r4
-            if r4.success?
+            if r4
               i6 = index
               r7 = parse_terminal("\\\\", SyntaxNode)
-              if r7.success?
+              if r7
                 r6 = r7
               else
                 r8 = parse_terminal('\"', SyntaxNode)
-                if r8.success?
+                if r8
                   r6 = r8
                 else
                   r9 = parse_anything(SyntaxNode)
-                  if r9.success?
+                  if r9
                     r6 = r9
                   else
                     self.index = i6
@@ -1706,14 +1706,14 @@ module Treetop
               end
               s3 << r6
             end
-            if s3.last.success?
+            if s3.last
               r3 = (SyntaxNode).new(input, i3...index, s3)
               r3.extend(DoubleQuotedString0)
             else
               self.index = i3
               r3 = nil
             end
-            if r3.success?
+            if r3
               s2 << r3
             else
               break
@@ -1721,12 +1721,12 @@ module Treetop
           end
           r2 = SyntaxNode.new(input, i2...index, s2)
           s0 << r2
-          if r2.success?
+          if r2
             r10 = parse_terminal('"', SyntaxNode)
             s0 << r10
           end
         end
-        if s0.last.success?
+        if s0.last
           r0 = (Terminal).new(input, i0...index, s0)
           r0.extend(DoubleQuotedString1)
         else
@@ -1756,31 +1756,31 @@ module Treetop
         i0, s0 = index, []
         r1 = parse_terminal("'", SyntaxNode)
         s0 << r1
-        if r1.success?
+        if r1
           s2, i2 = [], index
           loop do
             i3, s3 = index, []
             i4 = index
             r5 = parse_terminal("'", SyntaxNode)
-            if r5.success?
+            if r5
               r4 = nil
             else
               self.index = i4
               r4 = SyntaxNode.new(input, index...index)
             end
             s3 << r4
-            if r4.success?
+            if r4
               i6 = index
               r7 = parse_terminal("\\\\", SyntaxNode)
-              if r7.success?
+              if r7
                 r6 = r7
               else
                 r8 = parse_terminal("\\'", SyntaxNode)
-                if r8.success?
+                if r8
                   r6 = r8
                 else
                   r9 = parse_anything(SyntaxNode)
-                  if r9.success?
+                  if r9
                     r6 = r9
                   else
                     self.index = i6
@@ -1790,14 +1790,14 @@ module Treetop
               end
               s3 << r6
             end
-            if s3.last.success?
+            if s3.last
               r3 = (SyntaxNode).new(input, i3...index, s3)
               r3.extend(SingleQuotedString0)
             else
               self.index = i3
               r3 = nil
             end
-            if r3.success?
+            if r3
               s2 << r3
             else
               break
@@ -1805,12 +1805,12 @@ module Treetop
           end
           r2 = SyntaxNode.new(input, i2...index, s2)
           s0 << r2
-          if r2.success?
+          if r2
             r10 = parse_terminal("'", SyntaxNode)
             s0 << r10
           end
         end
-        if s0.last.success?
+        if s0.last
           r0 = (Terminal).new(input, i0...index, s0)
           r0.extend(SingleQuotedString1)
         else
@@ -1850,27 +1850,27 @@ module Treetop
         i0, s0 = index, []
         r1 = parse_terminal('[', SyntaxNode)
         s0 << r1
-        if r1.success?
+        if r1
           s2, i2 = [], index
           loop do
             i3, s3 = index, []
             i4 = index
             r5 = parse_terminal(']', SyntaxNode)
-            if r5.success?
+            if r5
               r4 = nil
             else
               self.index = i4
               r4 = SyntaxNode.new(input, index...index)
             end
             s3 << r4
-            if r4.success?
+            if r4
               i6 = index
               r7 = parse_terminal('\]', SyntaxNode)
-              if r7.success?
+              if r7
                 r6 = r7
               else
                 r8 = parse_anything(SyntaxNode)
-                if r8.success?
+                if r8
                   r6 = r8
                 else
                   self.index = i6
@@ -1879,14 +1879,14 @@ module Treetop
               end
               s3 << r6
             end
-            if s3.last.success?
+            if s3.last
               r3 = (SyntaxNode).new(input, i3...index, s3)
               r3.extend(CharacterClass0)
             else
               self.index = i3
               r3 = nil
             end
-            if r3.success?
+            if r3
               s2 << r3
             else
               break
@@ -1899,12 +1899,12 @@ module Treetop
             r2 = SyntaxNode.new(input, i2...index, s2)
           end
           s0 << r2
-          if r2.success?
+          if r2
             r9 = parse_terminal(']', SyntaxNode)
             s0 << r9
           end
         end
-        if s0.last.success?
+        if s0.last
           r0 = (CharacterClass).new(input, i0...index, s0)
           r0.extend(CharacterClass1)
           r0.extend(CharacterClass2)
@@ -1967,34 +1967,34 @@ module Treetop
         i1, s1 = index, []
         r2 = _nt_space
         s1 << r2
-        if r2.success?
+        if r2
           r3 = parse_terminal('<', SyntaxNode)
           s1 << r3
-          if r3.success?
+          if r3
             s4, i4 = [], index
             loop do
               i5, s5 = index, []
               i6 = index
               r7 = parse_terminal('>', SyntaxNode)
-              if r7.success?
+              if r7
                 r6 = nil
               else
                 self.index = i6
                 r6 = SyntaxNode.new(input, index...index)
               end
               s5 << r6
-              if r6.success?
+              if r6
                 r8 = parse_anything(SyntaxNode)
                 s5 << r8
               end
-              if s5.last.success?
+              if s5.last
                 r5 = (SyntaxNode).new(input, i5...index, s5)
                 r5.extend(NodeClassExpression0)
               else
                 self.index = i5
                 r5 = nil
               end
-              if r5.success?
+              if r5
                 s4 << r5
               else
                 break
@@ -2007,13 +2007,13 @@ module Treetop
               r4 = SyntaxNode.new(input, i4...index, s4)
             end
             s1 << r4
-            if r4.success?
+            if r4
               r9 = parse_terminal('>', SyntaxNode)
               s1 << r9
             end
           end
         end
-        if s1.last.success?
+        if s1.last
           r1 = (SyntaxNode).new(input, i1...index, s1)
           r1.extend(NodeClassExpression1)
           r1.extend(NodeClassExpression2)
@@ -2021,11 +2021,11 @@ module Treetop
           self.index = i1
           r1 = nil
         end
-        if r1.success?
+        if r1
           r0 = r1
         else
           r10 = parse_terminal('', SyntaxNode, NodeClassExpression3)
-          if r10.success?
+          if r10
             r0 = r10
           else
             self.index = i0
@@ -2084,11 +2084,11 @@ module Treetop
         i1, s1 = index, []
         r2 = _nt_space
         s1 << r2
-        if r2.success?
+        if r2
           r3 = _nt_inline_module
           s1 << r3
         end
-        if s1.last.success?
+        if s1.last
           r1 = (SyntaxNode).new(input, i1...index, s1)
           r1.extend(TrailingInlineModule0)
           r1.extend(TrailingInlineModule1)
@@ -2096,11 +2096,11 @@ module Treetop
           self.index = i1
           r1 = nil
         end
-        if r1.success?
+        if r1
           r0 = r1
         else
           r4 = parse_terminal('', SyntaxNode, TrailingInlineModule2)
-          if r4.success?
+          if r4
             r0 = r4
           else
             self.index = i0
@@ -2130,12 +2130,12 @@ module Treetop
         i0, s0 = index, []
         r1 = parse_terminal('{', SyntaxNode)
         s0 << r1
-        if r1.success?
+        if r1
           s2, i2 = [], index
           loop do
             i3 = index
             r4 = _nt_inline_module
-            if r4.success?
+            if r4
               r3 = r4
             else
               i5, s5 = index, []
@@ -2146,32 +2146,32 @@ module Treetop
               else
                 r7 = nil
               end
-              if r7.success?
+              if r7
                 r6 = nil
               else
                 self.index = i6
                 r6 = SyntaxNode.new(input, index...index)
               end
               s5 << r6
-              if r6.success?
+              if r6
                 r8 = parse_anything(SyntaxNode)
                 s5 << r8
               end
-              if s5.last.success?
+              if s5.last
                 r5 = (SyntaxNode).new(input, i5...index, s5)
                 r5.extend(InlineModule0)
               else
                 self.index = i5
                 r5 = nil
               end
-              if r5.success?
+              if r5
                 r3 = r5
               else
                 self.index = i3
                 r3 = nil
               end
             end
-            if r3.success?
+            if r3
               s2 << r3
             else
               break
@@ -2179,12 +2179,12 @@ module Treetop
           end
           r2 = SyntaxNode.new(input, i2...index, s2)
           s0 << r2
-          if r2.success?
+          if r2
             r9 = parse_terminal('}', SyntaxNode)
             s0 << r9
           end
         end
-        if s0.last.success?
+        if s0.last
           r0 = (InlineModule).new(input, i0...index, s0)
           r0.extend(InlineModule1)
         else
@@ -2211,11 +2211,11 @@ module Treetop
         i0, s0 = index, []
         i1 = index
         r2 = parse_terminal('rule', SyntaxNode)
-        if r2.success?
+        if r2
           r1 = r2
         else
           r3 = parse_terminal('end', SyntaxNode)
-          if r3.success?
+          if r3
             r1 = r3
           else
             self.index = i1
@@ -2223,10 +2223,10 @@ module Treetop
           end
         end
         s0 << r1
-        if r1.success?
+        if r1
           i4 = index
           r5 = _nt_non_space_char
-          if r5.success?
+          if r5
             r4 = nil
           else
             self.index = i4
@@ -2234,7 +2234,7 @@ module Treetop
           end
           s0 << r4
         end
-        if s0.last.success?
+        if s0.last
           r0 = (SyntaxNode).new(input, i0...index, s0)
           r0.extend(KeywordInsideGrammar0)
         else
@@ -2261,18 +2261,18 @@ module Treetop
         i0, s0 = index, []
         i1 = index
         r2 = _nt_space
-        if r2.success?
+        if r2
           r1 = nil
         else
           self.index = i1
           r1 = SyntaxNode.new(input, index...index)
         end
         s0 << r1
-        if r1.success?
+        if r1
           r3 = parse_anything(SyntaxNode)
           s0 << r3
         end
-        if s0.last.success?
+        if s0.last
           r0 = (SyntaxNode).new(input, i0...index, s0)
           r0.extend(NonSpaceChar0)
         else
@@ -2315,7 +2315,7 @@ module Treetop
         
         i0 = index
         r1 = _nt_alpha_char
-        if r1.success?
+        if r1
           r0 = r1
         else
           if input.index(/[0-9]/, index) == index
@@ -2324,7 +2324,7 @@ module Treetop
           else
             r2 = nil
           end
-          if r2.success?
+          if r2
             r0 = r2
           else
             self.index = i0
@@ -2353,7 +2353,7 @@ module Treetop
           else
             r1 = nil
           end
-          if r1.success?
+          if r1
             s0 << r1
           else
             break

@@ -13,7 +13,7 @@ module CircularCompilationSpec
       File.open(METAGRAMMAR_PATH, 'r') do |f|
         metagrammar_source = f.read
         result = parser.parse(metagrammar_source)
-        result.should be_success
+        result.should_not be_nil
 
         generated_parser = result.compile
         Object.class_eval(generated_parser)

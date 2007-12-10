@@ -19,27 +19,27 @@ module CompiledParserSpec
     before do
       @parser = parser_class_under_test.new
     end
-    
+  
     it "allows its root to be specified" do
-      parser.parse('a').should be_success
-      parser.parse('b').should_not be_success
+      parser.parse('a').should_not be_nil
+      parser.parse('b').should be_nil
       
       parser.root = :b
-      parser.parse('b').should be_success
-      parser.parse('a').should_not be_success
+      parser.parse('b').should_not be_nil
+      parser.parse('a').should be_nil
     end
     
     it "allows the requirement that all input be consumed to be disabled" do
-      parser.parse('ab').should_not be_success
+      parser.parse('ab').should be_nil
       parser.consume_all_input = false
       result = parser.parse('ab')
-      result.should be_success
+      result.should_not be_nil
       result.interval.should == (0...1)
     end
     
     it "allows input to be parsed at a given index" do
-      parser.parse('ba').should_not be_success
-      parser.parse('ba', :index => 1).should be_success
+      parser.parse('ba').should be_nil
+      parser.parse('ba', :index => 1).should_not be_nil
     end
   end
   
