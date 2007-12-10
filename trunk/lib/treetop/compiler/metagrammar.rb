@@ -135,7 +135,12 @@ module Treetop
           r3 = _nt_space
           s1 << r3
           if r3.success?
-            r4 = parse_char_class(/[A-Z]/, 'A-Z', SyntaxNode)
+            if input.index(/[A-Z]/, index) == index
+              r4 = (SyntaxNode).new(input, index...(index + 1))
+              @index += 1
+            else
+              r4 = nil
+            end
             s1 << r4
             if r4.success?
               s5, i5 = [], index
@@ -295,7 +300,12 @@ module Treetop
         end
         
         i0, s0 = index, []
-        r1 = parse_char_class(/[A-Z]/, 'A-Z', SyntaxNode)
+        if input.index(/[A-Z]/, index) == index
+          r1 = (SyntaxNode).new(input, index...(index + 1))
+          @index += 1
+        else
+          r1 = nil
+        end
         s0 << r1
         if r1.success?
           s2, i2 = [], index
@@ -476,7 +486,12 @@ module Treetop
           r2 = _nt_space
           s0 << r2
           if r2.success?
-            r3 = parse_char_class(/[A-Z]/, 'A-Z', SyntaxNode)
+            if input.index(/[A-Z]/, index) == index
+              r3 = (SyntaxNode).new(input, index...(index + 1))
+              @index += 1
+            else
+              r3 = nil
+            end
             s0 << r3
             if r3.success?
               s4, i4 = [], index
@@ -1812,6 +1827,16 @@ module Treetop
       end
       
       module CharacterClass1
+        def characters
+          elements[1]
+        end
+        
+      end
+      
+      module CharacterClass2
+        def characters
+          super.text_value
+        end
       end
       
       def _nt_character_class
@@ -1882,6 +1907,7 @@ module Treetop
         if s0.last.success?
           r0 = (CharacterClass).new(input, i0...index, s0)
           r0.extend(CharacterClass1)
+          r0.extend(CharacterClass2)
         else
           self.index = i0
           r0 = nil
@@ -2114,7 +2140,12 @@ module Treetop
             else
               i5, s5 = index, []
               i6 = index
-              r7 = parse_char_class(/[{}]/, '{}', SyntaxNode)
+              if input.index(/[{}]/, index) == index
+                r7 = (SyntaxNode).new(input, index...(index + 1))
+                @index += 1
+              else
+                r7 = nil
+              end
               if r7.success?
                 r6 = nil
               else
@@ -2262,7 +2293,12 @@ module Treetop
           return cached
         end
         
-        r0 = parse_char_class(/[A-Za-z_]/, 'A-Za-z_', SyntaxNode)
+        if input.index(/[A-Za-z_]/, index) == index
+          r0 = (SyntaxNode).new(input, index...(index + 1))
+          @index += 1
+        else
+          r0 = nil
+        end
         
         node_cache[:alpha_char][start_index] = r0
         
@@ -2282,7 +2318,12 @@ module Treetop
         if r1.success?
           r0 = r1
         else
-          r2 = parse_char_class(/[0-9]/, '0-9', SyntaxNode)
+          if input.index(/[0-9]/, index) == index
+            r2 = (SyntaxNode).new(input, index...(index + 1))
+            @index += 1
+          else
+            r2 = nil
+          end
           if r2.success?
             r0 = r2
           else
@@ -2306,7 +2347,12 @@ module Treetop
         
         s0, i0 = [], index
         loop do
-          r1 = parse_char_class(/[ \t\n\r]/, ' \t\n\r', SyntaxNode)
+          if input.index(/[ \t\n\r]/, index) == index
+            r1 = (SyntaxNode).new(input, index...(index + 1))
+            @index += 1
+          else
+            r1 = nil
+          end
           if r1.success?
             s0 << r1
           else
