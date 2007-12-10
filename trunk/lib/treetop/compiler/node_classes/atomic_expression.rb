@@ -4,6 +4,10 @@ module Treetop
       def inline_modules
         []
       end
+      
+      def single_quote(string)
+        "'#{string.gsub(/'$/, "\\'")}'"
+      end
     end
   end
 end

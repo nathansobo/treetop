@@ -309,7 +309,11 @@ module Treetop
       end
 
       rule character_class
-        '[' (!']' ('\]'/.))+ ']' <CharacterClass>
+        '[' characters:(!']' ('\]'/.))+ ']' <CharacterClass> {
+          def characters
+            super.text_value
+          end
+        }
       end
 
       rule anything_symbol
