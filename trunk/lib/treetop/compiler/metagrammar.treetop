@@ -389,7 +389,15 @@ module Treetop
       end
 
       rule space
-        [ \t\n\r]+
+        (white / comment_to_eol)+
+      end
+
+      rule comment_to_eol
+        '#' (!"\n" .)+
+      end
+
+      rule white
+        [ \t\n\r]
       end
     end
   end

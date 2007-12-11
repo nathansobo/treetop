@@ -1869,7 +1869,13 @@ module Treetop
                 if r8
                   r6 = r8
                 else
-                  r9 = parse_anything(SyntaxNode)
+                  if index < input_length
+                    r9 = (SyntaxNode).new(input, index...(index + 1))
+                    @index += 1
+                  else
+                    terminal_parse_failure("any character")
+                    r9 = nil
+                  end
                   if r9
                     r6 = r9
                   else
@@ -1987,7 +1993,13 @@ module Treetop
                 if r8
                   r6 = r8
                 else
-                  r9 = parse_anything(SyntaxNode)
+                  if index < input_length
+                    r9 = (SyntaxNode).new(input, index...(index + 1))
+                    @index += 1
+                  else
+                    terminal_parse_failure("any character")
+                    r9 = nil
+                  end
                   if r9
                     r6 = r9
                   else
@@ -2101,7 +2113,13 @@ module Treetop
               if r7
                 r6 = r7
               else
-                r8 = parse_anything(SyntaxNode)
+                if index < input_length
+                  r8 = (SyntaxNode).new(input, index...(index + 1))
+                  @index += 1
+                else
+                  terminal_parse_failure("any character")
+                  r8 = nil
+                end
                 if r8
                   r6 = r8
                 else
@@ -2240,7 +2258,13 @@ module Treetop
               end
               s5 << r6
               if r6
-                r8 = parse_anything(SyntaxNode)
+                if index < input_length
+                  r8 = (SyntaxNode).new(input, index...(index + 1))
+                  @index += 1
+                else
+                  terminal_parse_failure("any character")
+                  r8 = nil
+                end
                 s5 << r8
               end
               if s5.last
@@ -2436,7 +2460,13 @@ module Treetop
               end
               s5 << r6
               if r6
-                r8 = parse_anything(SyntaxNode)
+                if index < input_length
+                  r8 = (SyntaxNode).new(input, index...(index + 1))
+                  @index += 1
+                else
+                  terminal_parse_failure("any character")
+                  r8 = nil
+                end
                 s5 << r8
               end
               if s5.last
@@ -2569,7 +2599,13 @@ module Treetop
         end
         s0 << r1
         if r1
-          r3 = parse_anything(SyntaxNode)
+          if index < input_length
+            r3 = (SyntaxNode).new(input, index...(index + 1))
+            @index += 1
+          else
+            terminal_parse_failure("any character")
+            r3 = nil
+          end
           s0 << r3
         end
         if s0.last
@@ -2647,11 +2683,18 @@ module Treetop
         
         s0, i0 = [], index
         loop do
-          if input.index(/[ \t\n\r]/, index) == index
-            r1 = (SyntaxNode).new(input, index...(index + 1))
-            @index += 1
+          i1 = index
+          r2 = _nt_white
+          if r2
+            r1 = r2
           else
-            r1 = nil
+            r3 = _nt_comment_to_eol
+            if r3
+              r1 = r3
+            else
+              self.index = i1
+              r1 = nil
+            end
           end
           if r1
             s0 << r1
@@ -2667,6 +2710,112 @@ module Treetop
         end
         
         node_cache[:space][start_index] = r0
+        
+        return r0
+      end
+      
+      module CommentToEol0
+      end
+      
+      module CommentToEol1
+      end
+      
+      def _nt_comment_to_eol
+        start_index = index
+        cached = node_cache[:comment_to_eol][index]
+        if cached
+          @index = cached.interval.end
+          return cached
+        end
+        
+        i0, s0 = index, []
+        if input.index('#', index) == index
+          r1 = (SyntaxNode).new(input, index...(index + 1))
+          @index += 1
+        else
+          terminal_parse_failure('#')
+          r1 = nil
+        end
+        s0 << r1
+        if r1
+          s2, i2 = [], index
+          loop do
+            i3, s3 = index, []
+            i4 = index
+            if input.index("\n", index) == index
+              r5 = (SyntaxNode).new(input, index...(index + 1))
+              @index += 1
+            else
+              terminal_parse_failure("\n")
+              r5 = nil
+            end
+            if r5
+              r4 = nil
+            else
+              self.index = i4
+              r4 = SyntaxNode.new(input, index...index)
+            end
+            s3 << r4
+            if r4
+              if index < input_length
+                r6 = (SyntaxNode).new(input, index...(index + 1))
+                @index += 1
+              else
+                terminal_parse_failure("any character")
+                r6 = nil
+              end
+              s3 << r6
+            end
+            if s3.last
+              r3 = (SyntaxNode).new(input, i3...index, s3)
+              r3.extend(CommentToEol0)
+            else
+              self.index = i3
+              r3 = nil
+            end
+            if r3
+              s2 << r3
+            else
+              break
+            end
+          end
+          if s2.empty?
+            self.index = i2
+            r2 = nil
+          else
+            r2 = SyntaxNode.new(input, i2...index, s2)
+          end
+          s0 << r2
+        end
+        if s0.last
+          r0 = (SyntaxNode).new(input, i0...index, s0)
+          r0.extend(CommentToEol1)
+        else
+          self.index = i0
+          r0 = nil
+        end
+        
+        node_cache[:comment_to_eol][start_index] = r0
+        
+        return r0
+      end
+      
+      def _nt_white
+        start_index = index
+        cached = node_cache[:white][index]
+        if cached
+          @index = cached.interval.end
+          return cached
+        end
+        
+        if input.index(/[ \t\n\r]/, index) == index
+          r0 = (SyntaxNode).new(input, index...(index + 1))
+          @index += 1
+        else
+          r0 = nil
+        end
+        
+        node_cache[:white][start_index] = r0
         
         return r0
       end
