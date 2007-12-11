@@ -19,4 +19,8 @@ module Treetop
       end
     end
   end
+
+  def self.load(file)
+    load_grammar file
+  end
 end

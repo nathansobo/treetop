@@ -28,6 +28,7 @@ gemspec = Gem::Specification.new do |s|
   s.autorequire = "treetop"
   s.has_rdoc = false
   s.add_dependency "facets", ">=2.0.2"
+  s.add_dependency "polyglot"
 end
 
 Rake::GemPackageTask.new(gemspec) do |pkg|

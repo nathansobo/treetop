@@ -8,7 +8,9 @@ module GrammarCompositionSpec
       load_grammar File.join(dir, 'a')
       load_grammar File.join(dir, 'b')
       load_grammar File.join(dir, 'c')
-      load_grammar File.join(dir, 'd')
+      # Check that polyglot finds d.treetop and loads it:
+      $: << dir
+      require 'd'
   
       @c = ::Test::CParser.new
       @d = ::Test::DParser.new
