@@ -22,6 +22,7 @@ module CompiledParserSpec
   
     it "allows its root to be specified" do
       parser.parse('a').should_not be_nil
+      parser.failure_reason.should == nil
       parser.parse('b').should be_nil
       
       parser.root = :b
@@ -65,7 +66,12 @@ module CompiledParserSpec
       failure = terminal_failures.first
       failure.index.should == 1
       failure.expected_string.should == 'b'
-      
+
+      parser.failure_index.should == 1
+      parser.failure_line.should == 1
+      parser.failure_column.should == 2
+      parser.failure_reason.should == "Expected b at line 1, column 2 (byte 2) after a"
+
       parser.parse('b')
       terminal_failures = parser.terminal_failures
       terminal_failures.size.should == 1

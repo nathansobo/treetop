@@ -19,7 +19,31 @@ module Treetop
         return nil if (consume_all_input? && index != input.size)
         return result
       end
-      
+
+      def failure_index
+        max_terminal_failure_index
+      end
+
+      def failure_line
+        terminal_failures && input.line_of(failure_index)
+      end
+
+      def failure_column
+        terminal_failures && input.column_of(failure_index)
+      end
+
+      def failure_reason
+        return nil unless (tf = terminal_failures) && tf.size > 0
+	"Expected " +
+	  (tf.size == 1 ?
+	   tf[0].expected_string :
+           "one of #{tf.map{|f| f.expected_string}.uniq*', '}"
+	  ) +
+          " at line #{failure_line}, column #{failure_column} (byte #{failure_index+1})" +
+          " after #{input[index...failure_index]}"
+      end
+
+
       protected
       
       attr_reader :node_cache, :input_length
