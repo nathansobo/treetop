@@ -1,7 +1,7 @@
 module Treetop
   module Compiler
     class GrammarCompiler
-      def compile(source_path, target_path = source_path.gsub(/treetop\Z/, 'rb'))
+      def compile(source_path, target_path = source_path.gsub(/\.(treetop|tt)\Z/, '.rb'))
         File.open(target_path, 'w') do |target_file|
           target_file.write(ruby_source(source_path))
         end
