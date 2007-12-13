@@ -16,7 +16,7 @@ module Treetop
       end
 
       def newline
-        ruby << indent << "\n"
+        ruby << "\n"
       end
       
       def indented(depth = 2)
