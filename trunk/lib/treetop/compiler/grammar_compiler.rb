@@ -12,7 +12,7 @@ module Treetop
           parser = MetagrammarParser.new
           result = parser.parse(source_file.read)
           unless result
-            raise RuntimeError.new(parser.terminal_failures.map {|failure| failure.to_s}.join("\n"))
+            raise RuntimeError.new(parser.failure_reason)
           end
           result.compile
         end
