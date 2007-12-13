@@ -16,7 +16,7 @@ module SyntaxNodeSpec
     end
   
     it "has itself as its only element" do
-      @node.elements.should == [@node]
+      @node.elements.should be_nil
     end
   end
 
