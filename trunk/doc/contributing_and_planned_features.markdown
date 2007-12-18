@@ -15,7 +15,7 @@ Due to shortcomings in Ruby's semantics that scope constant definitions in a blo
 ##Small Stuff
 * Migrate the tests back to RSpec.
 * Improve the `tt` command line tool to allow `.treetop` extensions to be elided in its arguments.
-* Generate and load temp files with `load_grammar` rather than evaluating strings to improve stack trace readability.
+* Generate and load temp files with `Treetop.load` rather than evaluating strings to improve stack trace readability.
 * Allow `do/end` style blocks as well as curly brace blocks. This was originally omitted because I thought it would be confusing. It probably isn't.
 * Allow the root of a grammar to be dynamically set for testing purposes.
 

@@ -20,7 +20,9 @@ module Treetop
     end
   end
 
-  def self.load(file)
-    load_grammar file
+  def self.load(path)
+    adjusted_path = path =~ /\.(treetop|tt)\Z/ ? path : path + '.treetop'
+    compiler = Treetop::Compiler::GrammarCompiler.new
+    Object.class_eval(compiler.ruby_source(adjusted_path))
   end
 end

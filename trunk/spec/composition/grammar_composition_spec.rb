@@ -5,9 +5,9 @@ module GrammarCompositionSpec
   describe "several composed grammars" do
     before do
       dir = File.dirname(__FILE__)
-      load_grammar File.join(dir, 'a')
-      load_grammar File.join(dir, 'b')
-      load_grammar File.join(dir, 'c')
+      Treetop.load File.join(dir, 'a')
+      Treetop.load File.join(dir, 'b')
+      Treetop.load File.join(dir, 'c')
       # Check that polyglot finds d.treetop and loads it:
       $: << dir
       require 'd'

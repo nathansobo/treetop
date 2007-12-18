@@ -4,4 +4,3 @@ require File.join(dir, *%w[compiler ruby_builder])
 require File.join(dir, *%w[compiler node_classes])
 require File.join(dir, *%w[compiler metagrammar]) unless $exclude_metagrammar
 require File.join(dir, *%w[compiler grammar_compiler])
-require File.join(dir, *%w[compiler load_grammar])

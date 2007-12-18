@@ -40,21 +40,21 @@ describe Compiler::GrammarCompiler do
     compiler.ruby_source(source_path_with_treetop_extension).should_not be_nil
   end
 
-  specify "load_grammar compiles and evaluates a source grammar with a .treetop extension" do    
-    load_grammar source_path_with_treetop_extension
+  specify "Treetop.load compiles and evaluates a source grammar with a .treetop extension" do    
+    Treetop.load source_path_with_treetop_extension
     Test::GrammarParser.new.parse('foo').should_not be_nil
   end
   
-  specify "load_grammar compiles and evaluates a source grammar with a .tt extension" do
+  specify "Treetop.load compiles and evaluates a source grammar with a .tt extension" do
     path_without_extension = source_path_with_tt_extension
-    load_grammar path_without_extension
+    Treetop.load path_without_extension
     Test::GrammarParser.new.parse('foo').should_not be_nil
   end
 
 
-  specify "load_grammar compiles and evaluates source grammar with no extension" do
+  specify "Treetop.load compiles and evaluates source grammar with no extension" do
     path_without_extension = source_path_with_treetop_extension.gsub(/\.treetop\Z/, '')
-    load_grammar path_without_extension
+    Treetop.load path_without_extension
     Test::GrammarParser.new.parse('foo').should_not be_nil
   end
 

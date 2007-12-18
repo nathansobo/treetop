@@ -2,8 +2,8 @@ dir = File.dirname(__FILE__)
 require File.expand_path("#{dir}/test_helper")
 require File.expand_path("#{dir}/arithmetic_node_classes")
 require File.expand_path("#{dir}/lambda_calculus_node_classes")
-load_grammar File.expand_path("#{dir}/arithmetic")
-load_grammar File.expand_path("#{dir}/lambda_calculus")
+Treetop.load File.expand_path("#{dir}/arithmetic")
+Treetop.load File.expand_path("#{dir}/lambda_calculus")
 
 class Treetop::Runtime::SyntaxNode 
   def method_missing(method, *args)

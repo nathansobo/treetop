@@ -26,7 +26,7 @@ The first rule becomes the *root* of the grammar, causing its expression to be m
     # use_grammar.rb
     require 'rubygems'
     require 'treetop'
-    load_grammar 'my_grammar'
+    Treetop.load 'my_grammar'
     
     parser = MyGrammarParser.new
     puts parser.parse('hello chomsky').success?         # => true
