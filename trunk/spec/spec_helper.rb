@@ -63,20 +63,20 @@ module Treetop
     end
 
     def compiling_grammar(grammar_under_test)
-      lambda{
-	grammar_node = parse_with_metagrammar(grammar_under_test.strip, :grammar)
-	parser_code = grammar_node.compile
-	[grammar_node, parser_code]
+      lambda {
+        grammar_node = parse_with_metagrammar(grammar_under_test.strip, :grammar)
+        parser_code = grammar_node.compile
+        [grammar_node, parser_code]
       }
     end
 
     def compiling_expression(expression_under_test)
       compiling_grammar(%{
-	grammar Test
-	  rule expression_under_test
-	    #{expression_under_test}
-	  end
-	end
+        grammar Test
+          rule expression_under_test
+            #{expression_under_test}
+          end
+        end
       }.tabto(0))
     end
 

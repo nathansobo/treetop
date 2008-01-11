@@ -69,18 +69,23 @@ module SequenceSpec
     it "should succeed on a valid sequence" do
       compiling_expression('foo:"foo" "bar" <SequenceSpec::Foo> { def a_method; end }').should_not raise_error
     end
+
     it "rejects space after a label" do
       compiling_expression('foo :"foo" "bar"').should raise_error(RuntimeError)
     end
+
     it "rejects space after label's colon" do
       compiling_expression('foo: "foo" "bar"').should raise_error(RuntimeError)
     end
+
     it "rejects missing space after a primary" do
       compiling_expression('foo:"foo""bar"').should raise_error(RuntimeError)
     end
+
     it "rejects missing space before node class declaration" do
       compiling_expression('foo:"foo" "bar"<SequenceSpec::Foo>').should raise_error(RuntimeError)
     end
+    
     it "rejects missing space before inline module" do
       compiling_expression('foo:"foo" "bar" <SequenceSpec::Foo>{def a_method; end}').should raise_error(RuntimeError)
     end

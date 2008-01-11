@@ -7,7 +7,7 @@ module GrammarSpec
   describe "a grammar" do
     testing_grammar %{
       grammar Foo
-	# This is a grammar for Foo
+	      # This comment should not cause a syntax error.
         include GrammarSpec::Bar
 
         rule foo
