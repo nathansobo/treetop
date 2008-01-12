@@ -6,12 +6,16 @@ You can `.treetop` files into Ruby source code with the `tt` command line script
     tt foo.treetop -o foogrammar.rb
 
 ##Loading A Grammar Directly
-The `Treetop.load` method takes the path to a `.treetop` file (where the extension is optional), and automatically compiles and evaluates the Ruby source. If you are getting errors in methods you define on the syntax tree, try using the command line compiler for better stack trace feedback. The need to do this is being addressed.
+The Polyglot gem makes it possible to load `.treetop` or `.tt` files directly with `require`. This will invoke `Treetop.load`, which automatically compiles the grammar to Ruby and then evaluates the Ruby source. If you are getting errors in methods you define on the syntax tree, try using the command line compiler for better stack trace feedback. A better solution to this issue is in the works.
 
 ##Instantiating and Using Parsers
-If a grammar by the name of `Foo` is defined, the compiled Ruby source will define a `FooParser` class. To parse input, create an instance and call its `parse` method with a string.
+If a grammar by the name of `Foo` is defined, the compiled Ruby source will define a `FooParser` class. To parse input, create an instance and call its `parse` method with a string. The parser will return the syntax tree of the match or `nil` if there is a failure.
 
     Treetop.load "arithmetic"
     
     parser = ArithmeticParser.new
-    puts parser.parse('1+1').success?
+    if parser.parse('1+1')
+      puts 'success'
+    else
+      puts 'failure'
+    end

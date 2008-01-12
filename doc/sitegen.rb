@@ -24,11 +24,11 @@ class Layout < Erector::Widget
     end
 
     def relative_path
-      "site/#{name.gsub('::', '_').underscore}.html"
+      "#{name.gsub('::', '_').underscore}.html"
     end
 
     def absolutize(relative_path)
-      File.join(File.dirname(__FILE__), relative_path)
+      File.join(File.dirname(__FILE__), "site", relative_path)
     end
 
     def abstract
@@ -41,7 +41,7 @@ class Layout < Erector::Widget
   end
 
   def bluecloth(relative_path)
-    File.open(absolutize(relative_path)) do |file|
+    File.open(File.join(File.dirname(__FILE__), relative_path)) do |file|
       text BlueCloth.new(file.read).to_html
     end
   end

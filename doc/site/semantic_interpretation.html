@@ -1,4 +1,4 @@
-<html><head><link rel="stylesheet" href="./screen.css" type="text/css"></link></head><body><div id="top"><div id="main_navigation"><ul><li>Documentation</li><li><a href="site/contribute.html">Contribute</a></li><li><a href="site/index.html">Home</a></li></ul></div></div><div id="middle"><div id="content"><div id="secondary_navigation"><ul><li><a href="site/syntactic_recognition.html">Syntax</a></li><li>Semantics</li><li><a href="site/using_in_ruby.html">Using In Ruby</a></li><li><a href="site/pitfalls_and_advanced_techniques.html">Advanced Techniques</a></li></ul></div><h1>Semantic Interpretation</h1>
+<html><head><link rel="stylesheet" href="./screen.css" type="text/css"></link></head><body><div id="top"><div id="main_navigation"><ul><li>Documentation</li><li><a href="contribute.html">Contribute</a></li><li><a href="index.html">Home</a></li></ul></div></div><div id="middle"><div id="content"><div id="secondary_navigation"><ul><li><a href="syntactic_recognition.html">Syntax</a></li><li>Semantics</li><li><a href="using_in_ruby.html">Using In Ruby</a></li><li><a href="pitfalls_and_advanced_techniques.html">Advanced Techniques</a></li></ul></div><div id="documentation_content"><h1>Semantic Interpretation</h1>
 
 <p>Lets use the below grammar as an example. It describes parentheses wrapping a single character to an arbitrary depth.</p>
 
@@ -144,7 +144,9 @@ end
 <pre><code>rule labels
   first_letter:[a-z] rest_letters:(', ' letter:[a-z])* {
     def letters
-      [first_letter] + rest_letters.map { |comma_and_letter| comma_and_letter.letter }
+      [first_letter] + rest_letters.map do |comma_and_letter|
+        comma_and_letter.letter
+      end
     end
   }
 end
@@ -202,4 +204,4 @@ end
       Available only on nonterminal nodes, returns the nodes parsed by the elements of the matched sequence.
     </td>
   </tr>
-</table></div></div><div id="bottom"></div></body></html>
+</table></div></div></div><div id="bottom"></div></body></html>

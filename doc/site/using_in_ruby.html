@@ -1,4 +1,4 @@
-<html><head><link rel="stylesheet" href="./screen.css" type="text/css"></link></head><body><div id="top"><div id="main_navigation"><ul><li>Documentation</li><li><a href="site/contribute.html">Contribute</a></li><li><a href="site/index.html">Home</a></li></ul></div></div><div id="middle"><div id="content"><div id="secondary_navigation"><ul><li><a href="site/syntactic_recognition.html">Syntax</a></li><li><a href="site/semantic_interpretation.html">Semantics</a></li><li>Using In Ruby</li><li><a href="site/pitfalls_and_advanced_techniques.html">Advanced Techniques</a></li></ul></div><h1>Using Treetop Grammars in Ruby</h1>
+<html><head><link rel="stylesheet" href="./screen.css" type="text/css"></link></head><body><div id="top"><div id="main_navigation"><ul><li>Documentation</li><li><a href="contribute.html">Contribute</a></li><li><a href="index.html">Home</a></li></ul></div></div><div id="middle"><div id="content"><div id="secondary_navigation"><ul><li><a href="syntactic_recognition.html">Syntax</a></li><li><a href="semantic_interpretation.html">Semantics</a></li><li>Using In Ruby</li><li><a href="pitfalls_and_advanced_techniques.html">Advanced Techniques</a></li></ul></div><div id="documentation_content"><h1>Using Treetop Grammars in Ruby</h1>
 
 <h2>Using the Command Line Compiler</h2>
 
@@ -10,14 +10,18 @@ tt foo.treetop -o foogrammar.rb
 
 <h2>Loading A Grammar Directly</h2>
 
-<p>The <code>Treetop.load</code> method takes the path to a <code>.treetop</code> file (where the extension is optional), and automatically compiles and evaluates the Ruby source. If you are getting errors in methods you define on the syntax tree, try using the command line compiler for better stack trace feedback. The need to do this is being addressed.</p>
+<p>The Polyglot gem makes it possible to load <code>.treetop</code> or <code>.tt</code> files directly with <code>require</code>. This will invoke <code>Treetop.load</code>, which automatically compiles the grammar to Ruby and then evaluates the Ruby source. If you are getting errors in methods you define on the syntax tree, try using the command line compiler for better stack trace feedback. A better solution to this issue is in the works.</p>
 
 <h2>Instantiating and Using Parsers</h2>
 
-<p>If a grammar by the name of <code>Foo</code> is defined, the compiled Ruby source will define a <code>FooParser</code> class. To parse input, create an instance and call its <code>parse</code> method with a string.</p>
+<p>If a grammar by the name of <code>Foo</code> is defined, the compiled Ruby source will define a <code>FooParser</code> class. To parse input, create an instance and call its <code>parse</code> method with a string. The parser will return the syntax tree of the match or <code>nil</code> if there is a failure.</p>
 
 <pre><code>Treetop.load "arithmetic"
 
 parser = ArithmeticParser.new
-puts parser.parse('1+1').success?
-</code></pre></div></div><div id="bottom"></div></body></html>
+if parser.parse('1+1')
+  puts 'success'
+else
+  puts 'failure'
+end
+</code></pre></div></div></div><div id="bottom"></div></body></html>

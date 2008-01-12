@@ -59,8 +59,10 @@ class Documentation < Layout
         li { link_to 'Advanced Techniques', PitfallsAndAdvancedTechniques }
       end
     end
-
-    documentation_content
+    
+    div :id => 'documentation_content' do
+      documentation_content
+    end
   end
 end
 
@@ -90,7 +92,9 @@ end
 
 
 class Contribute < Layout
-
+  def content
+    bluecloth "contributing_and_planned_features.markdown"
+  end
 end
 
 

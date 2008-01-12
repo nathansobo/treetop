@@ -1,6 +1,6 @@
-<html><head><link rel="stylesheet" href="./screen.css" type="text/css"></link></head><body><div id="top"><div id="main_navigation"><ul><li>Documentation</li><li><a href="site/contribute.html">Contribute</a></li><li><a href="site/index.html">Home</a></li></ul></div></div><div id="middle"><div id="content"><div id="secondary_navigation"><ul><li>Syntax</li><li><a href="site/semantic_interpretation.html">Semantics</a></li><li><a href="site/using_in_ruby.html">Using In Ruby</a></li><li><a href="site/pitfalls_and_advanced_techniques.html">Advanced Techniques</a></li></ul></div><h1>Syntactic Recognition</h1>
+<html><head><link rel="stylesheet" href="./screen.css" type="text/css"></link></head><body><div id="top"><div id="main_navigation"><ul><li>Documentation</li><li><a href="contribute.html">Contribute</a></li><li><a href="index.html">Home</a></li></ul></div></div><div id="middle"><div id="content"><div id="secondary_navigation"><ul><li>Syntax</li><li><a href="semantic_interpretation.html">Semantics</a></li><li><a href="using_in_ruby.html">Using In Ruby</a></li><li><a href="pitfalls_and_advanced_techniques.html">Advanced Techniques</a></li></ul></div><div id="documentation_content"><h1>Syntactic Recognition</h1>
 
-<p>Treetop grammars are written in a custom language based on parsing expression grammars. Literature on the subject of parsing expression grammars is useful in writing Treetop grammars.</p>
+<p>Treetop grammars are written in a custom language based on parsing expression grammars. Literature on the subject of <a href="http://en.wikipedia.org/wiki/Parsing_expression_grammar">parsing expression grammars</a> is useful in writing Treetop grammars.</p>
 
 <h1>Grammar Structure</h1>
 
@@ -30,11 +30,9 @@ end
 
 <p>Each rule associates a name with a <em>parsing expression</em>. Parsing expressions are a generalization of vanilla regular expressions. Their key feature is the ability to reference other expressions in the grammar by name.</p>
 
-<h2>Atomic Expressions</h2>
+<h2>Terminal Symbols</h2>
 
-<h3>Terminal Symbols</h3>
-
-<h4>Strings</h4>
+<h3>Strings</h3>
 
 <p>Strings are surrounded in double or single quotes and must be matched exactly.</p>
 
@@ -43,7 +41,7 @@ end
 <li><code>'foo'</code></li>
 </ul>
 
-<h4>Character Classes</h4>
+<h3>Character Classes</h3>
 
 <p>Character classes are surrounded by brackets. Their semantics are identical to those used in Ruby's regular expressions.</p>
 
@@ -52,11 +50,11 @@ end
 <li><code>[0-9]</code></li>
 </ul>
 
-<h4>The Anything Symbol</h4>
+<h3>The Anything Symbol</h3>
 
 <p>The anything symbol is represented by a dot (<code>.</code>) and matches any single character.</p>
 
-<h3>Nonterminal Symbols</h3>
+<h2>Nonterminal Symbols</h2>
 
 <p>Nonterminal symbols are unquoted references to other named rules. They are equivalent to an inline substitution of the named expression.</p>
 
@@ -76,9 +74,7 @@ end
 end
 </code></pre>
 
-<h2>Composite Expressions</h2>
-
-<h3>Ordered Choice</h3>
+<h2>Ordered Choice</h2>
 
 <p>Parsers attempt to match ordered choices in left-to-right order, and stop after the first successful match.</p>
 
@@ -87,16 +83,14 @@ end
 
 <p>Note that if <code>"foo"</code> in the above expression came first, <code>"foobar"</code> would never be matched.</p>
 
-<h3>Sequences</h3>
+<h2>Sequences</h2>
 
 <p>Sequences are a space-separated list of parsing expressions. They have higher precedence than choices, so choices must be parenthesized to be used as the elements of a sequence. </p>
 
 <pre><code>"foo" "bar" ("baz" / "bop")
 </code></pre>
 
-<h3>Repetitions</h3>
-
-<h4>Zero or More</h4>
+<h2>Zero or More</h2>
 
 <p>Parsers will greedily match an expression zero or more times if it is followed by the star (<code>*</code>) symbol.</p>
 
@@ -104,7 +98,7 @@ end
 <li><code>'foo'*</code> matches the empty string, <code>"foo"</code>, <code>"foofoo"</code>, etc.</li>
 </ul>
 
-<h4>One or More</h4>
+<h2>One or More</h2>
 
 <p>Parsers will greedily match an expression one or more times if it is followed by the star (<code>+</code>) symbol.</p>
 
@@ -112,7 +106,7 @@ end
 <li><code>'foo'+</code> does not match the empty string, but matches <code>"foo"</code>, <code>"foofoo"</code>, etc.</li>
 </ul>
 
-<h3>Optional Expressions</h3>
+<h2>Optional Expressions</h2>
 
 <p>An expression can be declared optional by following it with a question mark (<code>?</code>).</p>
 
@@ -138,4 +132,4 @@ end
 
 <ul>
 <li><code>"foo" !"bar"</code> matches <code>"foobaz"</code> but only consumes up to the end <code>"foo"</code>. It will not match <code>"foobar"</code>.</li>
-</ul></div></div><div id="bottom"></div></body></html>
+</ul></div></div></div><div id="bottom"></div></body></html>

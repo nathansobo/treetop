@@ -4,18 +4,79 @@ Treetop is a language for describing languages. Combining the elegance of Ruby w
 
 </p>
 
+    sudo gem install treetop
 
 #Intuitive Grammar Specifications
-Treetop's packrat parsers use _memoization_ to make the backtracking possible in linear time. This cuts the gordian knot of grammar design. There's no need to look ahead and no need to lex. Worry about the structure of the language, not the idiosyncrasies of the parser.
+Parsing expression grammars (PEGs) are simple to write and easy to maintain. They are a simple but powerful generalization of regular expressions that are easier to work with than the LALR or LR-1 grammars of traditional parser generators. There's no need for a tokenization phase, and _lookahead assertions_ can be used for a limited degree of context-sensitivity. Here's an extremely simple Treetop grammar that matches a subset of arithmetic, respecting operator precedence:
+
+    grammar Arithmetic
+      rule additive
+        multitive '+' additive / multitive
+      end
+      
+      rule multitive
+        primary '*' multitive / primary
+      end
+      
+      rule primary
+        '(' additive ')' / number
+      end
+      
+      rule number
+        [1-9] [0-9]*
+      end
+    end
+  
 
 #Syntax-Oriented Programming
-Rather than implementing semantic actions that construct parse trees, define methods on the trees that Treetop automatically constructs–and write this code directly inside the grammar.
+Rather than implementing semantic actions that construct parse trees, Treetop lets you define methods on trees that it constructs for you automatically. You can define these methods directly within the grammar...
+
+    grammar Arithmetic
+      rule additive
+        multitive '+' additive {
+          def value
+            multitive.value + additive.value
+          end
+        }
+        /
+        multitive
+      end
+      
+      # other rules below ...
+    end
+    
+...or associate rules with classes of nodes you wish your parsers to instantiate upon matching a rule.
+
+    grammar Arithmetic
+      rule additive
+        multitive '+' additive <AdditiveNode>
+        /
+        multitive
+      end
+      
+      # other rules below ...
+    end
+
 
 #Reusable, Composable Language Descriptions
-Break grammars into modules and compose them via Ruby's mixin semantics. Or combine grammars written by others in novel ways. Or extend existing grammars with your own syntactic constructs by overriding rules with access to a `super` keyword. Compositionally means your investment of time into grammar writing is secure–you can always extend and reuse your code.
+Because PEGs are closed under composition, Treetop grammars can be treated like Ruby modules. You can mix them into one another and override rules with access to the `super` keyword. You can break large grammars down into coherent units or make your language's syntax modular. This is especially useful if you want other programmers to be able to reuse your work.
+
+    grammar RubyWithEmbeddedSQL
+      include SQL
+      
+      rule string
+        quote sql_expression quote / super
+      end
+    end
+
 
 #Acknowledgements
-First, thank you to my employer Rob Mee of Pivotal Labs for funding a substantial portion of Treetop's development. He gets it.
+
+
+<a href="http://pivotallabs.com"><img id="pivotal_logo" src="./images/pivotal.gif"></a>
+
+First, thank you to my employer Rob Mee of <a href="http://pivotallabs.com"/>Pivotal Labs</a> for funding a substantial portion of Treetop's development. He gets it.
+
 
 I'd also like to thank:
 
