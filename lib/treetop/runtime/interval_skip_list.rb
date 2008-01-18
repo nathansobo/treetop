@@ -21,6 +21,7 @@ class IntervalSkipList
     0.upto(node.height - 1) do |i|
       head.next[i] = node
     end
+    node
   end
 
   protected

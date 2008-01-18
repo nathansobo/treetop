@@ -46,19 +46,13 @@ describe IntervalSkipList do
     attr_reader :inserted_node
 
     before do
-      list.insert(1)
-      @inserted_node = list.nodes.first
+      @inserted_node = list.insert(1)
     end
 
     it_should_behave_like "it is non-empty"
 
-    specify "#nodes is an array of 1 node with a value of 1 and the first expected node height" do
-      nodes = list.nodes
-      nodes.size.should == 1
-      node = nodes.first
-
-      node.value.should == 1
-      node.height.should == expected_node_heights.first
+    specify "#nodes is an array of the single inserted node" do
+      list.nodes.should == [inserted_node]
     end
 
     describe "#head" do
@@ -98,20 +92,51 @@ describe IntervalSkipList do
     end
   end
 
-  describe "when 1 and 3 have been inserted" do
+  describe "when 1 and 3 have been inserted in order" do
+    attr_reader :inserted_nodes
+
     before do
-      list.insert(1)
-      list.insert(3)
+      @inserted_nodes = []
+      inserted_nodes << list.insert(1)
+      inserted_nodes << list.insert(3)
     end
 
     it_should_behave_like "it is non-empty"
 
-    specify "#nodes is an array of 2 nodes with the correct values and heights" do
-      nodes = list.nodes
-      nodes.size.should == 2
+    specify "#nodes is an array of the two inserted nodes" do
+      list.nodes.should == inserted_nodes
+    end
 
-      nodes.map(&:value).should == [1, 3]
-      nodes.map(&:height).should == expected_node_heights[0..1]
+    describe "the first inserted node" do
+      attr_reader :inserted_node
+
+      before do
+        @inserted_node = inserted_nodes[0]
+      end
+
+      it "has a value of 1" do
+        inserted_node.value.should == 1
+      end
+
+      it "has a height of the first expected node height" do
+        inserted_node.height.should == expected_node_heights[0]
+      end
+    end
+
+    describe "the second inserted node" do
+      attr_reader :inserted_node
+
+      before do
+        @inserted_node = inserted_nodes[1]
+      end
+
+      it "has a value of 3" do
+        inserted_node.value.should == 3
+      end
+
+      it "has a height of the second expected node height" do
+        inserted_node.height.should == expected_node_heights[1]
+      end
     end
   end
 
