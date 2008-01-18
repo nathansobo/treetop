@@ -10,6 +10,10 @@ unless $bootstrapped_gen_1_metagrammar
 end
 include Treetop
 
+Spec::Runner.configure do |config|
+  config.mock_with :rr
+end
+
 module Treetop
   class TreetopExampleGroup < Spec::Example::ExampleGroup
     class << self

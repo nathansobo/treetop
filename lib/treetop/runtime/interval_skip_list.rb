@@ -2,7 +2,6 @@ class IntervalSkipList
   attr_reader :head
 
   def initialize
-    @node_heights = [1, 2, 1, 3, 1, 2, 2]
     @head = Node.new(nil, max_height)
   end
 
@@ -35,7 +34,6 @@ class IntervalSkipList
   end
 
   protected
-  attr_reader :node_heights
   def find(value, path)
     cur_node = head
     (max_height - 1).downto(0) do |cur_height|
@@ -57,7 +55,7 @@ class IntervalSkipList
   end
 
   def next_node_height
-    height = node_heights.shift
+    nil
   end
 
   class Node
