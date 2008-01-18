@@ -11,7 +11,7 @@ describe IntervalSkipList do
 
   before do
     @list = IntervalSkipList.new
-    @expected_node_heights = [01, 2, 1, 3, 1, 2, 2]
+    @expected_node_heights = [1, 2, 1, 3, 1, 2, 2]
   end
 
   describe "when nothing has been inserted" do
@@ -34,7 +34,7 @@ describe IntervalSkipList do
         head.height.should == list.max_height
       end
 
-      it "has null next pointers" do
+      it "has nil next pointers" do
         0.upto(list.max_height - 1) do |i|
           head.next[i].should be_nil
         end
@@ -84,7 +84,7 @@ describe IntervalSkipList do
         inserted_node.value.should == 1
       end
 
-      it "has null next pointers" do
+      it "has nil next pointers" do
         inserted_node.next.each do |next_pointer|
           next_pointer.should be_nil
         end
@@ -121,6 +121,10 @@ describe IntervalSkipList do
       it "has a height of the first expected node height" do
         inserted_node.height.should == expected_node_heights[0]
       end
+
+      it "has its single next pointer pointing at the second inserted node" do
+        inserted_node.next[0].should == inserted_nodes[1]
+      end
     end
 
     describe "the second inserted node" do
@@ -136,6 +140,12 @@ describe IntervalSkipList do
 
       it "has a height of the second expected node height" do
         inserted_node.height.should == expected_node_heights[1]
+      end
+
+      it "has nil next pointers" do
+        inserted_node.next.each do |next_pointer|
+          next_pointer.should be_nil
+        end
       end
     end
   end
