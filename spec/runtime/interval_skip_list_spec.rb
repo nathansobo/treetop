@@ -22,11 +22,32 @@ describe IntervalSkipList do
     specify "#nodes returns an empty array" do
       list.nodes.should == []
     end
+
+    describe "#head" do
+      attr_reader :head
+
+      before do
+        @head = list.head
+      end
+
+      it "#has a height of #max_height" do
+        head.height.should == list.max_height
+      end
+
+      it "has null next pointers" do
+        0.upto(list.max_height - 1) do |i|
+          head.next[i].should be_nil
+        end
+      end
+    end
   end
 
   describe "when 1 has been inserted" do
+    attr_reader :inserted_node
+
     before do
       list.insert(1)
+      @inserted_node = list.nodes.first
     end
 
     it_should_behave_like "it is non-empty"
@@ -38,6 +59,26 @@ describe IntervalSkipList do
 
       node.value.should == 1
       node.height.should == expected_node_heights.first
+    end
+
+    describe "#head" do
+      attr_reader :head
+
+      before do
+        @head = list.head
+      end
+
+      it "has inserted_node.height next pointers pointing at the inserted node" do
+        0.upto(inserted_node.height - 1) do |i|
+          head.next[i].should == inserted_node
+        end
+      end
+
+      it "has the rest of its next pointers pointing at nil" do
+        inserted_node.height.upto(list.max_height - 1) do |i|
+          head.next[i].should == nil
+        end
+      end
     end
   end
 
@@ -66,6 +107,15 @@ describe IntervalSkipList do
         actual_heights << list.send(:next_node_height)
       end
       actual_heights.should == expected_node_heights
+    end
+  end
+end
+
+class IntervalSkipList
+  describe Node do
+    it "instantiated a next array of nils of size equal to its height" do
+      node = Node.new(nil, 3)
+      node.next.should == [nil, nil, nil]
     end
   end
 end
