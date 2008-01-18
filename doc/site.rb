@@ -9,6 +9,15 @@ class Layout < Erector::Widget
         link :rel => "stylesheet",
         :type => "text/css",
         :href => "./screen.css"
+        
+        text %(
+          <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+          </script>
+          <script type="text/javascript">
+          _uacct = "UA-3418876-1";
+          urchinTracker();
+          </script>
+        )
       end
 
       body do

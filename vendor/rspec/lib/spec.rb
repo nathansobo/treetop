@@ -24,7 +24,7 @@ module Spec
     attr_writer :run
 
     def exit?; \
-      !Object.const_defined?(:Test) || Test::Unit.run?; \
+      false # !Object.const_defined?(:Test) || Test::Unit.run?; \
     end
   end
 end
