@@ -2,7 +2,7 @@ class IntervalSkipList
   attr_reader :nodes, :head
 
   def initialize
-    @node_heights = [3, 1, 2, 1, 3, 1, 2, 2]
+    @node_heights = [1, 2, 1, 3, 1, 2, 2]
     @nodes = []
     @head = Node.new(nil, max_height)
   end
