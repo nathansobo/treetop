@@ -1,5 +1,4 @@
-dir = File.dirname(__FILE__)
-require File.join(dir, '..', 'spec_helper')
+require File.expand_path("#{File.dirname(__FILE__)}/../spec_helper")
 
 module GrammarCompositionSpec
   describe "several composed grammars" do

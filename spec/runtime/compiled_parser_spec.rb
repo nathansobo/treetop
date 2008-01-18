@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), '..', 'spec_helper')
+require File.expand_path("#{File.dirname(__FILE__)}/../spec_helper")
 
 module CompiledParserSpec
   describe Runtime::CompiledParser, "for a grammar with two rules" do

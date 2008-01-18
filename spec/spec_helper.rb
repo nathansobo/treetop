@@ -91,6 +91,14 @@ module Treetop
     end
 
     Spec::Example::ExampleGroupFactory.register(:compiler, self)
-    Spec::Example::ExampleGroupFactory.register(:parser, self)
+    Spec::Example::ExampleGroupFactory.register(:runtime, self)
+  end
+end
+
+class Symbol
+  def to_proc
+    lambda do |x|
+      x.send(self)
+    end
   end
 end

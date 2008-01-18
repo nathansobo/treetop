@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), '..', 'spec_helper')
+require File.expand_path("#{File.dirname(__FILE__)}/../spec_helper")
 
 describe Compiler::GrammarCompiler do
   attr_reader :compiler, :source_path_with_treetop_extension, :source_path_with_tt_extension, :target_path, :alternate_target_path

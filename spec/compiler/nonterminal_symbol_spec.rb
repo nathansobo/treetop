@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), '..', 'spec_helper')
+require File.expand_path("#{File.dirname(__FILE__)}/../spec_helper")
 
 module NonterminalSymbolSpec
   describe "A nonterminal symbol followed by a block" do
