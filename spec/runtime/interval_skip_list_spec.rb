@@ -34,7 +34,7 @@ describe IntervalSkipList do
     @list = IntervalSkipList.new
   end
 
-  describe "when :a is inserted for interval 1..5" do
+  describe " when :a is inserted for interval 1..5" do
     def expected_node_heights
       [1,2]
     end
@@ -78,15 +78,85 @@ describe IntervalSkipList do
 
       it "has a height of 2" do
         @node.height.should == 2
-      end      
+      end
+    end
+  end  
+
+  describe " when :a is inserted for interval 1..5 and :b is inserted for interval 2..6" do
+    def expected_node_heights
+      [1, 2, 3, 3]
+    end
+
+    it_should_behave_like "#next_node_height is deterministic"
+
+    before do
+      list.insert(1..5, :a)
+      list.insert(2..6, :b)
+    end
+
+    describe "the first node in the list" do
+      attr_reader :node
+
+      before do
+        @node = list.nodes[0]
+      end
+
+      it "has a key of 1" do
+        node.key.should == 1
+      end
+
+      it "has a height of 1" do
+        node.height.should == 1
+      end
+
+      it "has :a as its sole value at level 0" do
+        node.values[0].should == [:a]
+      end
+    end
+
+    describe "the second node in the list" do
+      attr_reader :node
+
+      before do
+        @node = list.nodes[1]
+      end
+
+      it "has a key of 2" do
+        node.key.should == 2
+      end
+
+      it "has a height of 3" do
+        node.height.should == 3
+      end
+
+      it "has :b as its sole value at level 2" do
+        node.values[2].should == [:b]
+      end
+
+      it "has no values below level 2" do
+        node.values[0].should be_empty
+        node.values[1].should be_empty
+      end
+    end
+
+    describe "the third node in the list" do
+      attr_reader :node
+
+      before do
+        @node = list.nodes[2]
+      end
+
+      it "has a key of 5" do
+        @node.key.should == 5
+      end
+
+      it "has a height of 2" do
+        @node.height.should == 2
+      end
     end
   end
 
-  describe "when :a is inserted for interval 1..5 and :b is inserted for interval 2..6" do
-
-  end
-
-  describe "when nothing has been inserted" do
+  describe " when nothing has been inserted" do
     specify "#empty? returns true" do
       list.should be_empty
     end
@@ -114,7 +184,7 @@ describe IntervalSkipList do
     end
   end
 
-  describe "when 1 has been inserted" do
+  describe " when 1 has been inserted" do
     attr_reader :inserted_node, :inserted_nodes
 
     def expected_node_heights
@@ -174,7 +244,7 @@ describe IntervalSkipList do
     end
   end
 
-  describe "when 1 and 3 have been inserted in order" do
+  describe " when 1 and 3 have been inserted in order" do
     attr_reader :inserted_nodes
 
     def expected_node_heights
@@ -271,7 +341,7 @@ describe IntervalSkipList do
     end
   end
 
-  describe "when 1, 3 and 7 have been inserted in order" do
+  describe " when 1, 3 and 7 have been inserted in order" do
     attr_reader :inserted_nodes
 
     def expected_node_heights
@@ -368,7 +438,7 @@ describe IntervalSkipList do
     end
   end
 
-  describe "when 7, 1 and 3 have been inserted in order" do
+  describe " when 7, 1 and 3 have been inserted in order" do
     attr_reader :inserted_nodes
 
     def expected_node_heights

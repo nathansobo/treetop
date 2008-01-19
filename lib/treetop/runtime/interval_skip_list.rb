@@ -18,9 +18,10 @@ class IntervalSkipList
     last_node = insert_node(range.last)
 
     cur_node = first_node
-    until cur_node == last_node
-      (cur_node.values[0] ||= []).push(value)
-      cur_node = cur_node.next[0]
+    cur_level = first_node.height - 1
+    while cur_node.next[cur_level] && cur_node.next[cur_level].key <= range.last
+      cur_node.values[cur_level].push(value)
+      cur_node = cur_node.next[cur_level]
     end
   end
 
@@ -53,11 +54,11 @@ class IntervalSkipList
   protected
   def find(key, path)
     cur_node = head
-    (max_height - 1).downto(0) do |cur_height|
-      while (next_node = cur_node.next[cur_height]) && next_node.key < key
+    (max_height - 1).downto(0) do |cur_level|
+      while (next_node = cur_node.next[cur_level]) && next_node.key < key
         cur_node = next_node
       end
-      path[cur_height] = cur_node
+      path[cur_level] = cur_node
     end
     cur_node.next[0]
   end
@@ -92,7 +93,7 @@ class IntervalSkipList
       @key = key
       @height = height
       @next = Array.new(height, nil)
-      @values = []
+      @values = Array.new(height) {|i| []}
     end
   end
 end
