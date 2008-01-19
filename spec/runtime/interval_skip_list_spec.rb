@@ -133,10 +133,14 @@ describe IntervalSkipList do
         node.values[2].should == [:b]
       end
 
-      it "has no values below level 2" do
-        node.values[0].should be_empty
-        node.values[1].should be_empty
+      it "has :a as its sole value at level 1" do
+        node.values[1].should == [:a]
       end
+
+      it "has no values at level 0" do
+        node.values[0].should be_empty
+      end
+
     end
 
     describe "the third node in the list" do

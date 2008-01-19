@@ -94,6 +94,7 @@ class IntervalSkipList
       @height = height
       @next = Array.new(height, nil)
       @values = Array.new(height) {|i| []}
+      @
     end
   end
 end
