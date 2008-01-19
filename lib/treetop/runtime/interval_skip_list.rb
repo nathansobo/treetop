@@ -13,20 +13,31 @@ class IntervalSkipList
     head.next[0].nil?
   end
 
-  def insert(value)
-    path = make_path
-    found_node = find(value, path)
-    if found_node && found_node.value == value
-      return found_node
-    else
-      return make_node(value, path)
+  def insert(range, value)
+    first_node = insert_node(range.first)
+    last_node = insert_node(range.last)
+
+    cur_node = first_node
+    until cur_node == last_node
+      (cur_node.markers[0] ||= []).push(value)
+      cur_node = cur_node.next[0]
     end
   end
 
-  def delete(value)
+  def insert_node(key)
     path = make_path
-    found_node = find(value, path)
-    remove_node(found_node, path) if found_node.value == value
+    found_node = find(key, path)
+    if found_node && found_node.key == key
+      return found_node
+    else
+      return make_node(key, path)
+    end
+  end
+
+  def delete(key)
+    path = make_path
+    found_node = find(key, path)
+    remove_node(found_node, path) if found_node.key == key
   end
 
   def nodes
@@ -40,10 +51,10 @@ class IntervalSkipList
   end
 
   protected
-  def find(value, path)
+  def find(key, path)
     cur_node = head
     (max_height - 1).downto(0) do |cur_height|
-      while (next_node = cur_node.next[cur_height]) && next_node.value < value
+      while (next_node = cur_node.next[cur_height]) && next_node.key < key
         cur_node = next_node
       end
       path[cur_height] = cur_node
@@ -51,8 +62,8 @@ class IntervalSkipList
     cur_node.next[0]
   end
 
-  def make_node(value, path)
-    new_node = Node.new(value, next_node_height)
+  def make_node(key, path)
+    new_node = Node.new(key, next_node_height)
     0.upto(new_node.height - 1) do |i|
       new_node.next[i] = path[i].next[i]
       path[i].next[i] = new_node
@@ -75,12 +86,13 @@ class IntervalSkipList
   end
 
   class Node
-    attr_reader :value, :height, :next
+    attr_reader :key, :height, :next, :markers
 
-    def initialize(value, height)
-      @value = value
+    def initialize(key, height)
+      @key = key
       @height = height
       @next = Array.new(height, nil)
+      @markers = []
     end
   end
 end

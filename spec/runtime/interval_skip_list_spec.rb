@@ -13,9 +13,9 @@ describe "it is non-empty", :shared => true do
   end
 end
 
-describe "#nodes is an array of the three inserted nodes in value order", :shared => true do
-  specify "#nodes is an array of the three inserted nodes in value order" do
-    list.nodes.should == inserted_nodes.sort_by(&:value)
+describe "#nodes is an array of the three inserted nodes in key order", :shared => true do
+  specify "#nodes is an array of the three inserted nodes in key order" do
+    list.nodes.should == inserted_nodes.sort_by(&:key)
   end
 end
 
@@ -32,6 +32,58 @@ describe IntervalSkipList do
 
   before do
     @list = IntervalSkipList.new
+  end
+
+  describe "when :a is inserted for interval 1..5" do
+    def expected_node_heights
+      [1,2]
+    end
+
+    it_should_behave_like "#next_node_height is deterministic"
+
+    before do
+      list.insert(1..5, :a)
+    end
+
+    describe "first node" do
+      attr_reader :node
+
+      before do
+        @node = list.nodes[0]
+      end
+
+      it "has a key of 1" do
+        node.key.should == 1
+      end
+
+      it "has a height of 1" do
+        node.height.should == 1
+      end
+
+      it "has :a as its sole marker at level 0" do
+        node.markers[0].should == [:a]
+      end
+    end
+
+    describe "second node" do
+      attr_reader :node
+
+      before do
+        @node = list.nodes[1]
+      end
+
+      it "has a key of 5" do
+        @node.key.should == 5
+      end
+
+      it "has a height of 2" do
+        @node.height.should == 2
+      end      
+    end
+  end
+
+  describe "when :a is inserted for interval 1..5 and :b is inserted for interval 2..6" do
+
   end
 
   describe "when nothing has been inserted" do
@@ -72,12 +124,12 @@ describe IntervalSkipList do
     it_should_behave_like "#next_node_height is deterministic"
 
     before do
-      @inserted_node = list.insert(1)
+      @inserted_node = list.insert_node(1)
       @inserted_nodes = [@inserted_node]
     end
 
     it_should_behave_like "it is non-empty"
-    it_should_behave_like "#nodes is an array of the three inserted nodes in value order"
+    it_should_behave_like "#nodes is an array of the three inserted nodes in key order"
 
     describe "#head" do
       attr_reader :head
@@ -106,8 +158,8 @@ describe IntervalSkipList do
         inserted_node.height.should == expected_node_heights.first
       end
 
-      it "has a value of 1" do
-        inserted_node.value.should == 1
+      it "has a key of 1" do
+        inserted_node.key.should == 1
       end
     end
 
@@ -133,12 +185,12 @@ describe IntervalSkipList do
 
     before do
       @inserted_nodes = []
-      inserted_nodes << list.insert(1)
-      inserted_nodes << list.insert(3)
+      inserted_nodes << list.insert_node(1)
+      inserted_nodes << list.insert_node(3)
     end
 
     it_should_behave_like "it is non-empty"
-    it_should_behave_like "#nodes is an array of the three inserted nodes in value order"
+    it_should_behave_like "#nodes is an array of the three inserted nodes in key order"
 
     describe "the first inserted node" do
       attr_reader :inserted_node
@@ -147,8 +199,8 @@ describe IntervalSkipList do
         @inserted_node = inserted_nodes[0]
       end
 
-      it "has a value of 1" do
-        inserted_node.value.should == 1
+      it "has a key of 1" do
+        inserted_node.key.should == 1
       end
 
       it "has a height of the first expected node height" do
@@ -169,8 +221,8 @@ describe IntervalSkipList do
 
       it_should_behave_like "it has nil next pointers"
 
-      it "has a value of 3" do
-        inserted_node.value.should == 3
+      it "has a key of 3" do
+        inserted_node.key.should == 3
       end
 
       it "has a height of the second expected node height" do
@@ -230,13 +282,13 @@ describe IntervalSkipList do
 
     before do
       @inserted_nodes = []
-      inserted_nodes << list.insert(1)
-      inserted_nodes << list.insert(3)
-      inserted_nodes << list.insert(7)
+      inserted_nodes << list.insert_node(1)
+      inserted_nodes << list.insert_node(3)
+      inserted_nodes << list.insert_node(7)
     end
 
     it_should_behave_like "it is non-empty"
-    it_should_behave_like "#nodes is an array of the three inserted nodes in value order"
+    it_should_behave_like "#nodes is an array of the three inserted nodes in key order"
 
     describe "the first inserted node" do
       attr_reader :inserted_node
@@ -245,8 +297,8 @@ describe IntervalSkipList do
         @inserted_node = inserted_nodes[0]
       end
 
-      it "has a value of 1" do
-        inserted_node.value.should == 1
+      it "has a key of 1" do
+        inserted_node.key.should == 1
       end
 
       it "has a height of the first expected node height" do
@@ -265,8 +317,8 @@ describe IntervalSkipList do
         @inserted_node = inserted_nodes[1]
       end
 
-      it "has a value of 3" do
-        inserted_node.value.should == 3
+      it "has a key of 3" do
+        inserted_node.key.should == 3
       end
 
       it "has a height of the second expected node height" do
@@ -291,8 +343,8 @@ describe IntervalSkipList do
 
       it_should_behave_like "it has nil next pointers"
 
-      it "has a value of 3" do
-        inserted_node.value.should == 7
+      it "has a key of 3" do
+        inserted_node.key.should == 7
       end
 
       it "has a height of the third expected node height" do
@@ -327,13 +379,13 @@ describe IntervalSkipList do
 
     before do
       @inserted_nodes = []
-      inserted_nodes << list.insert(7)
-      inserted_nodes << list.insert(1)
-      inserted_nodes << list.insert(3)
+      inserted_nodes << list.insert_node(7)
+      inserted_nodes << list.insert_node(1)
+      inserted_nodes << list.insert_node(3)
     end
 
     it_should_behave_like "it is non-empty"
-    it_should_behave_like "#nodes is an array of the three inserted nodes in value order"
+    it_should_behave_like "#nodes is an array of the three inserted nodes in key order"
 
     describe "the first inserted node" do
       attr_reader :inserted_node
@@ -344,8 +396,8 @@ describe IntervalSkipList do
 
       it_should_behave_like "it has nil next pointers"
 
-      it "has a value of 7" do
-        inserted_node.value.should == 7
+      it "has a key of 7" do
+        inserted_node.key.should == 7
       end
 
       it "has a height of the first expected node height" do
@@ -360,8 +412,8 @@ describe IntervalSkipList do
         @inserted_node = inserted_nodes[1]
       end
 
-      it "has a value of 1" do
-        inserted_node.value.should == 1
+      it "has a key of 1" do
+        inserted_node.key.should == 1
       end
 
       it "has a height of the second expected node height" do
@@ -380,8 +432,8 @@ describe IntervalSkipList do
         @inserted_node = inserted_nodes[2]
       end
 
-      it "has a value of 3" do
-        inserted_node.value.should == 3
+      it "has a key of 3" do
+        inserted_node.key.should == 3
       end
 
       it "has a height of the third expected node height" do
