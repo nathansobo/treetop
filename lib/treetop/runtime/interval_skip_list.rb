@@ -21,7 +21,9 @@ class IntervalSkipList
     cur_level = first_node.height - 1
     while cur_node.next[cur_level] && cur_node.next[cur_level].key <= range.last
       cur_node.values[cur_level].push(value)
-      cur_node = cur_node.next[cur_level]
+      next_node = cur_node.next[cur_level]
+      next_node.eq_values.push(value)
+      cur_node = next_node
     end
   end
 
@@ -87,14 +89,14 @@ class IntervalSkipList
   end
 
   class Node
-    attr_reader :key, :height, :next, :values
+    attr_reader :key, :height, :next, :values, :eq_values
 
     def initialize(key, height)
       @key = key
       @height = height
       @next = Array.new(height, nil)
       @values = Array.new(height) {|i| []}
-      @
+      @eq_values = []
     end
   end
 end

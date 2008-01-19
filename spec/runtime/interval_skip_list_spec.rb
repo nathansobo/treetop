@@ -60,7 +60,7 @@ describe IntervalSkipList do
         node.height.should == 1
       end
 
-      it "has :a as its sole marker at level 0" do
+      it "has :a as its sole value at level 0" do
         node.values[0].should == [:a]
       end
     end
@@ -73,11 +73,15 @@ describe IntervalSkipList do
       end
 
       it "has a key of 5" do
-        @node.key.should == 5
+        node.key.should == 5
       end
 
       it "has a height of 2" do
-        @node.height.should == 2
+        node.height.should == 2
+      end
+
+      it "has :a as its sole eq_value" do
+        node.eq_values.should == [:a]
       end
     end
   end  
@@ -141,6 +145,9 @@ describe IntervalSkipList do
         node.values[0].should be_empty
       end
 
+      it "has :a as its sole eq_value" do
+        node.eq_values.should == [:a]
+      end
     end
 
     describe "the third node in the list" do
@@ -151,13 +158,38 @@ describe IntervalSkipList do
       end
 
       it "has a key of 5" do
-        @node.key.should == 5
+        node.key.should == 5
       end
 
       it "has a height of 2" do
-        @node.height.should == 2
+        node.height.should == 2
+      end
+
+      it "has :a as its sole eq_value" do
+        node.eq_values.should == [:a]
       end
     end
+
+    describe "the fourth node in the list" do
+      attr_reader :node
+
+      before do
+        @node = list.nodes[3]
+      end
+
+      it "has a key of 6" do
+        node.key.should == 6
+      end
+
+      it "has a height of 3" do
+        node.height.should == 3
+      end
+
+      it "has :b as its sole eq_value" do
+        node.eq_values.should == [:b]
+      end
+    end
+
   end
 
   describe " when nothing has been inserted" do
