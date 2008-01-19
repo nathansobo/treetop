@@ -10,17 +10,23 @@ class IntervalSkipList
   end
 
   def empty?
-    nodes.empty?
+    head.next[0].nil?
   end
 
   def insert(value)
-    path = Array.new(max_height, nil)
+    path = make_path
     found_node = find(value, path)
     if found_node && found_node.value == value
       return found_node
     else
       return make_node(value, path)
     end
+  end
+
+  def delete(value)
+    path = make_path
+    found_node = find(value, path)
+    remove_node(found_node, path) if found_node.value == value
   end
 
   def nodes
@@ -52,6 +58,16 @@ class IntervalSkipList
       path[i].next[i] = new_node
     end
     return new_node
+  end
+
+  def remove_node(node, path)
+    0.upto(node.height - 1) do |i|
+      path[i].next[i] = node.next[i]
+    end
+  end
+
+  def make_path
+    Array.new(max_height, nil)
   end
 
   def next_node_height

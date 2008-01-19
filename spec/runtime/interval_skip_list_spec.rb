@@ -27,7 +27,6 @@ describe "it has nil next pointers", :shared => true do
   end
 end
 
-
 describe IntervalSkipList do
   attr_reader :list
 
@@ -111,6 +110,16 @@ describe IntervalSkipList do
         inserted_node.value.should == 1
       end
     end
+
+    describe "and subsequently deleted" do
+      before do
+        list.delete(1)
+      end
+
+      specify "#empty? returns true" do
+        list.should be_empty
+      end
+    end
   end
 
   describe "when 1 and 3 have been inserted in order" do
@@ -166,6 +175,46 @@ describe IntervalSkipList do
 
       it "has a height of the second expected node height" do
         inserted_node.height.should == expected_node_heights[1]
+      end
+    end
+
+    describe "and 1 is subsequently deleted" do
+      before do
+        list.delete(1)
+      end
+
+      describe "the remaining node" do
+        attr_reader :inserted_node
+
+        before do
+          @inserted_node = inserted_nodes[1]
+        end
+
+        it "is the first node in the list" do
+          inserted_node.should == list.nodes[0]
+        end
+
+        it_should_behave_like "it has nil next pointers"
+      end
+    end
+
+    describe "and 3 is subsequently deleted" do
+      before do
+        list.delete(3)
+      end
+
+      describe "the remaining node" do
+        attr_reader :inserted_node
+
+        before do
+          @inserted_node = inserted_nodes[0]
+        end
+
+        it "is the first node in the list" do
+          inserted_node.should == list.nodes[0]
+        end
+
+        it_should_behave_like "it has nil next pointers"
       end
     end
   end
@@ -250,8 +299,22 @@ describe IntervalSkipList do
         inserted_node.height.should == expected_node_heights[2]
       end
     end
-  end
 
+    describe "and 3 is subsequently deleted" do
+      before do
+        list.delete(3)
+      end
+
+      specify "#head points at nil at levels 1 and 2" do
+        list.head.next[1].should be_nil
+        list.head.next[2].should be_nil
+      end
+
+      specify "#nodes contains the remaining nodes in order" do
+        list.nodes.should == [inserted_nodes[0], inserted_nodes[2]]
+      end
+    end
+  end
 
   describe "when 7, 1 and 3 have been inserted in order" do
     attr_reader :inserted_nodes
@@ -281,10 +344,6 @@ describe IntervalSkipList do
 
       it_should_behave_like "it has nil next pointers"
 
-      it "is the third node in the list" do
-        inserted_node.should == list.nodes[2]
-      end
-
       it "has a value of 7" do
         inserted_node.value.should == 7
       end
@@ -299,10 +358,6 @@ describe IntervalSkipList do
 
       before do
         @inserted_node = inserted_nodes[1]
-      end
-
-      it "is the first node in the list" do
-        inserted_node.should == list.nodes[0]
       end
 
       it "has a value of 1" do
@@ -325,10 +380,6 @@ describe IntervalSkipList do
         @inserted_node = inserted_nodes[2]
       end
 
-      it "is the second node in the list" do
-        inserted_node.should == list.nodes[1]         
-      end
-
       it "has a value of 3" do
         inserted_node.value.should == 3
       end
@@ -338,7 +389,6 @@ describe IntervalSkipList do
       end
     end
   end
-
 end
 
 class IntervalSkipList
