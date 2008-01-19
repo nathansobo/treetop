@@ -61,7 +61,7 @@ describe IntervalSkipList do
       end
 
       it "has :a as its sole marker at level 0" do
-        node.markers[0].should == [:a]
+        node.values[0].should == [:a]
       end
     end
 
