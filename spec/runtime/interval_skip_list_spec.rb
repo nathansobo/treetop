@@ -31,13 +31,394 @@ describe "it has nil forward pointers", :shared => true do
   end
 end
 
-describe IntervalSkipList do
-  attr_reader :list
+describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in order" do
+  attr_reader :list, :node
 
   before do
     @list = IntervalSkipList.new
   end
 
+  it_should_behave_like "#next_node_height is deterministic"
+
+  def expected_node_heights
+    [2, 3, 2, 3, 1]
+  end
+
+  def have_values(*values)
+    HaveValues.new(values)
+  end
+
+  def have_value(value)
+    HaveValues.new([value])
+  end
+
+  class HaveValues
+    def initialize(expected_values)
+      @expected_values = expected_values
+    end
+
+    def matches?(target)
+      @target = target
+      return false unless @target.size == @expected_values.size
+      @expected_values.each do |expected_value|
+        return false unless @target.include?(expected_value)
+      end
+      true
+    end
+
+    def failure_message
+      "expected #{@target.inspect} to include only #{@expected_values.inspect}"
+    end
+  end
+
+  describe ", when :a is inserted on 1..7" do
+    before do
+      list.insert(1..7, :a)
+    end
+
+    describe " #nodes[0]" do
+      before do
+        @node = list.nodes[0]
+      end
+
+      it "has a key of 1 and height of 2" do
+        node.key.should == 1
+        node.height.should == 2
+      end
+
+      it "has :a as its only value at level 1" do
+        node.values[1].should have_value(:a)
+      end
+
+      it "has no values at level 0" do
+        node.values[0].should be_empty
+      end
+
+      it "has no eq_values" do
+        node.eq_values.should be_empty
+      end
+    end
+
+    describe " #nodes[1]" do
+      before do
+        @node = list.nodes[1]
+      end
+
+      it "has a key of 7 and height of 3" do
+        node.key.should == 7
+        node.height.should == 3
+      end
+
+      it "has no values at any level" do
+        node.values[0].should be_empty
+        node.values[1].should be_empty
+        node.values[2].should be_empty
+      end
+
+      it "has :a as its only eq_value" do
+        node.eq_values.should have_value(:a)
+      end
+    end
+
+    describe ", and then :b is inserted on 1..5" do
+      before do
+        list.insert(1..5, :b)
+      end
+
+      describe " #nodes[0]" do
+        before do
+          @node = list.nodes[0]
+        end
+
+        it "has a key of 1 and height of 2" do
+          node.key.should == 1
+          node.height.should == 2
+        end
+
+        it "has :a and :b as its only values at level 1" do
+          node.values[1].should have_values(:a, :b)
+        end
+
+        it "has no values at level 0" do
+          node.values[0].should be_empty
+        end
+
+        it "has no eq_values" do
+          node.eq_values.should be_empty
+        end
+      end
+
+      describe " #nodes[1]" do
+        before do
+          @node = list.nodes[1]
+        end
+
+        it "has a key of 5 and height of 2" do
+          node.key.should == 5
+          node.height.should == 2
+        end
+
+        it "has :a as its only value at level 1" do
+          node.values[1].should have_value(:a)
+        end
+
+        it "has no values at level 0" do
+          node.values[0].should be_empty
+        end
+
+        it "has :a and :b as its only eq_values" do
+          node.eq_values.should have_values(:a, :b)
+        end
+      end
+
+      describe " #nodes[2]" do
+        before do
+          @node = list.nodes[2]
+        end
+
+        it "has a key of 7 and height of 3" do
+          node.key.should == 7
+          node.height.should == 3
+        end
+
+        it "has no values at any level" do
+          node.values[0].should be_empty
+          node.values[1].should be_empty
+          node.values[2].should be_empty
+        end
+
+        it "has :a its only eq_value" do
+          node.eq_values.should have_value(:a)
+        end
+      end
+
+      describe ", and then :c is inserted on 1..3" do
+        before do
+          list.insert(1..3, :c)
+        end
+
+        describe " #nodes[0]" do
+          before do
+            @node = list.nodes[0]
+          end
+
+          it "has a key of 1 and height of 2" do
+            node.key.should == 1
+            node.height.should == 2
+          end
+
+          it "has :a, :b, :c as its only values at level 1" do
+            node.values[1].should have_values(:a, :b, :c)
+          end
+
+          it "has no values at level 0" do
+            node.values[0].should be_empty
+          end
+
+          it "has no eq_values" do
+            node.eq_values.should be_empty
+          end
+        end
+
+        describe " #nodes[1]" do
+          before do
+            @node = list.nodes[1]
+          end
+
+          it "has a key of 3 and height of 3" do
+            node.key.should == 3
+            node.height.should == 3
+          end
+
+          it "has :a as its only value at level 2" do
+            node.values[2].should have_value(:a)
+          end
+
+          it "has :b as its only value at level 1" do
+            node.values[1].should have_value(:b)
+          end
+          
+          it "has no values at level 0" do
+            node.values[0].should be_empty
+          end
+
+          it "has :a, :b, and :c as its only eq_values" do
+            node.eq_values.should have_values(:a, :b, :c)
+          end
+        end
+
+        describe " #nodes[2]" do
+          before do
+            @node = list.nodes[2]
+          end
+
+          it "has a key of 5 and height of 2" do
+            node.key.should == 5
+            node.height.should == 2
+          end
+
+          it "has no values at any level" do
+            pending "deletion upon promotion"
+            node.values[0].should be_empty
+            node.values[1].should be_empty
+          end
+
+          it "has :b as its only eq_values" do
+            pending "deletion upon promotion"
+            node.eq_values.should have_value(:b)
+          end
+        end
+
+        describe " #nodes[3]" do
+          before do
+            @node = list.nodes[3]
+          end
+
+          it "has a key of 7 and height of 3" do
+            node.key.should == 7
+            node.height.should == 3
+          end
+
+          it "has no values at any level" do
+            node.values[0].should be_empty
+            node.values[1].should be_empty
+            node.values[2].should be_empty
+          end
+
+          it "has :a as its only eq_value" do
+            node.eq_values.should have_value(:a)
+          end
+        end
+
+        describe ", and then :d is inserted on 1..9" do
+          before do
+            list.insert(1..9, :d)
+          end
+
+          describe " #nodes[0]" do
+            before do
+              @node = list.nodes[0]
+            end
+
+            it "has a key of 1 and height of 2" do
+              node.key.should == 1
+              node.height.should == 2
+            end
+
+            it "has :a, :b, :c, :d as its only values at level 1" do
+              node.values[1].should have_values(:a, :b, :c, :d)
+            end
+
+            it "has no values at level 0" do
+              node.values[0].should be_empty
+            end
+
+            it "has no eq_values" do
+              node.eq_values.should be_empty
+            end
+          end
+
+          describe " #nodes[1]" do
+            before do
+              @node = list.nodes[1]
+            end
+
+            it "has a key of 3 and height of 3" do
+              node.key.should == 3
+              node.height.should == 3
+            end
+
+            it "has :a and :d as its only values at level 2" do
+              pending "ascending during insert"
+              node.values[2].should have_values(:a, :d)
+            end
+
+            it "has :b as its only value at level 1" do
+              pending "ascending during insert"
+              node.values[1].should have_value(:b)
+            end
+
+            it "has no values at level 0" do
+              node.values[0].should be_empty
+            end
+
+            it "has :a, :b, :c, :d as its only eq_values" do
+              node.eq_values.should have_values(:a, :b, :c, :d)
+            end
+          end
+
+          describe " #nodes[2]" do
+            before do
+              @node = list.nodes[2]
+            end
+
+            it "has a key of 5 and height of 2" do
+              node.key.should == 5
+              node.height.should == 2
+            end
+
+            it "has no values on any level" do
+              pending "deletion upon promotion"
+              node.values[0].should be_empty
+              node.values[1].should be_empty
+            end
+
+            it "has :b as its only eq_value" do
+              pending "deletion upon promotion"
+              node.eq_values.should have_value(:b)
+            end
+          end
+
+          describe " #nodes[3]" do
+            before do
+              @node = list.nodes[3]
+            end
+
+            it "has a key of 7 and height of 3" do
+              node.key.should == 7
+              node.height.should == 3
+            end
+
+            it "has :d as its only value at level 0" do
+              pending "descending during insertion"
+              node.values[0].should have_value(:d)
+            end
+
+            it "has no values at levels 1 and 2" do
+              node.values[1].should be_empty
+              node.values[2].should be_empty
+            end
+
+            it "has :a, :d as its only eq_values" do
+              node.eq_values.should have_values(:a, :d)
+            end
+          end
+
+          describe " #nodes[4]" do
+            before do
+              @node = list.nodes[4]
+            end
+
+            it "has a key of 9 and height of 1" do
+              node.key.should == 9
+              node.height.should == 1
+            end
+
+            it "has no values at level 0" do
+              node.values[0].should be_empty
+            end
+
+            it "has :d as its only eq_value" do
+              pending "descending during insertion"
+              node.eq_values.should have_value(:d)
+            end
+          end
+        end
+      end
+    end
+  end
+
+  # TODO: Remove these 
   describe " when :a is inserted for interval 1..5" do
     def expected_node_heights
       [1,2]
