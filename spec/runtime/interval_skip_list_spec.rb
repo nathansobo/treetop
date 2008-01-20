@@ -44,6 +44,44 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
     [2, 3, 2, 3, 1]
   end
 
+  def confirm_containing_intervals(range, *markers)
+    (range.begin).upto(range.end) do |i|
+      list.containing(i).should have_markers(*markers)
+    end
+  end
+
+  def contain_marker(marker)
+    ContainMarkers.new(list, [marker])
+  end
+
+  def contain_markers(*markers)
+    ContainMarkers.new(list, markers)
+  end
+
+  class ContainMarkers
+    attr_reader :failure_message
+
+    def initialize(list, expected_markers)
+      @list = list
+      @expected_markers = expected_markers
+    end
+
+    def matches?(target_range)
+      @target_range = target_range
+
+      @target_range.each do |i|
+        markers = @list.containing(i)
+        @expected_markers.each do |expected_marker|
+          unless markers.include?(expected_marker)
+            @failure_message = "Expected #{expected_marker.inspect} to contain #{i}, but it doesn't. #{i} is contained by: #{markers.inspect}."
+            return false
+          end
+        end
+      end
+      true
+    end
+  end
+
   def have_markers(*markers)
     HaveMarkers.new(markers)
   end
@@ -67,7 +105,7 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
     end
 
     def failure_message
-      "expected #{@target.inspect} to include only #{@expected_markers.inspect}"
+      "Expected #{@target.inspect} to include only #{@expected_markers.inspect}"
     end
   end
 
@@ -76,8 +114,12 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
       list.insert(1..7, :a)
     end
 
-    describe "#containing" do
-      it "returns nothing for 1 or 7" do
+    describe ", #containing" do
+      it "returns only :a from 2 through 6" do
+        (2..6).should contain_marker(:a)
+      end
+
+      it "returns nothing at 1 and 7" do
         list.containing(1).should be_empty
         list.containing(7).should be_empty
       end

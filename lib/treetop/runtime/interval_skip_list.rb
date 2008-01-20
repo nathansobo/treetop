@@ -12,7 +12,16 @@ class IntervalSkipList
   end
 
   def containing(n)
-    []
+    containing = []
+    cur_node = head
+    (max_height - 1).downto(0) do |cur_level|
+      while (next_node = cur_node.forward[cur_level]) && next_node.key <= n
+        cur_node = next_node
+        return containing if cur_node.key == n
+      end
+      containing.concat(cur_node.markers[cur_level])
+    end
+    containing
   end
 
   def insert(range, marker)
@@ -54,7 +63,7 @@ class IntervalSkipList
     found_node = find(key, path)
     found_node.remove(path) if found_node.key == key
   end  
-
+  
   def find(key, path)
     cur_node = head
     (max_height - 1).downto(0) do |cur_level|
