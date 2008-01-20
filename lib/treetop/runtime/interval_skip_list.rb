@@ -106,7 +106,7 @@ class IntervalSkipList
   def mark_forward_path_at_level(node, level, marker)
     node.forward_markers[level].push(marker)
     next_node = node.forward[level]
-    next_node.eq_markers.push(marker)
+    next_node.markers.push(marker)
     node = next_node
   end
 
@@ -131,12 +131,12 @@ class IntervalSkipList
   end
 
   class Node < HeadNode
-    attr_reader :key, :eq_markers
+    attr_reader :key, :markers
 
     def initialize(key, height, path)
       super(height)
       @key = key
-      @eq_markers = []
+      @markers = []
 
       update_forward_pointers(path)
       promote_markers(path)
@@ -162,7 +162,7 @@ class IntervalSkipList
       new_promoted = []
       0.upto(height - 1) do |i|
         incoming_markers = path[i].forward_markers[i]
-        eq_markers.concat(incoming_markers)
+        markers.concat(incoming_markers)
 
         incoming_markers.each do |marker|
           if can_be_promoted_higher?(marker, i)
@@ -187,14 +187,14 @@ class IntervalSkipList
     end
 
     def can_be_promoted_higher?(marker, level)
-      level < height - 1 && forward[level + 1] && forward[level + 1].eq_markers.include?(marker)
+      level < height - 1 && forward[level + 1] && forward[level + 1].markers.include?(marker)
     end
 
     def delete_marker_from_path(marker, level, terminus)
       cur_node = forward[level]
       until cur_node == terminus
         cur_node.forward_markers[level].delete(marker)
-        cur_node.eq_markers.delete(marker)
+        cur_node.markers.delete(marker)
         cur_node = cur_node.forward[level]
       end
     end
