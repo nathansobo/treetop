@@ -1,7 +1,7 @@
 require File.expand_path("#{File.dirname(__FILE__)}/../spec_helper")
 
 class IntervalSkipList
-  public :insert_node, :delete, :head
+  public :insert_node, :delete, :head, :nodes
 end
 
 describe "#next_node_height is deterministic", :shared => true do
@@ -44,36 +44,43 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
     [2, 3, 2, 3, 1]
   end
 
-  def have_values(*values)
-    HaveValues.new(values)
+  def have_markers(*markers)
+    HaveMarkers.new(markers)
   end
 
-  def have_value(value)
-    HaveValues.new([value])
+  def have_marker(marker)
+    HaveMarkers.new([marker])
   end
 
-  class HaveValues
-    def initialize(expected_values)
-      @expected_values = expected_values
+  class HaveMarkers
+    def initialize(expected_markers)
+      @expected_markers = expected_markers
     end
 
     def matches?(target)
       @target = target
-      return false unless @target.size == @expected_values.size
-      @expected_values.each do |expected_value|
-        return false unless @target.include?(expected_value)
+      return false unless @target.size == @expected_markers.size
+      @expected_markers.each do |expected_marker|
+        return false unless @target.include?(expected_marker)
       end
       true
     end
 
     def failure_message
-      "expected #{@target.inspect} to include only #{@expected_values.inspect}"
+      "expected #{@target.inspect} to include only #{@expected_markers.inspect}"
     end
   end
 
   describe ", when :a is inserted on 1..7" do
     before do
       list.insert(1..7, :a)
+    end
+
+    describe "#containing" do
+      it "returns nothing for 1 or 7" do
+        list.containing(1).should be_empty
+        list.containing(7).should be_empty
+      end
     end
 
     describe " #nodes[0]" do
@@ -86,16 +93,16 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
         node.height.should == 2
       end
 
-      it "has :a as its only value at level 1" do
-        node.values[1].should have_value(:a)
+      it "has :a as its only marker at level 1" do
+        node.markers[1].should have_marker(:a)
       end
 
-      it "has no values at level 0" do
-        node.values[0].should be_empty
+      it "has no markers at level 0" do
+        node.markers[0].should be_empty
       end
 
-      it "has no eq_values" do
-        node.eq_values.should be_empty
+      it "has no eq_markers" do
+        node.eq_markers.should be_empty
       end
     end
 
@@ -109,14 +116,14 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
         node.height.should == 3
       end
 
-      it "has no values at any level" do
-        node.values[0].should be_empty
-        node.values[1].should be_empty
-        node.values[2].should be_empty
+      it "has no markers at any level" do
+        node.markers[0].should be_empty
+        node.markers[1].should be_empty
+        node.markers[2].should be_empty
       end
 
-      it "has :a as its only eq_value" do
-        node.eq_values.should have_value(:a)
+      it "has :a as its only eq_marker" do
+        node.eq_markers.should have_marker(:a)
       end
     end
 
@@ -135,16 +142,16 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
           node.height.should == 2
         end
 
-        it "has :a and :b as its only values at level 1" do
-          node.values[1].should have_values(:a, :b)
+        it "has :a and :b as its only markers at level 1" do
+          node.markers[1].should have_markers(:a, :b)
         end
 
-        it "has no values at level 0" do
-          node.values[0].should be_empty
+        it "has no markers at level 0" do
+          node.markers[0].should be_empty
         end
 
-        it "has no eq_values" do
-          node.eq_values.should be_empty
+        it "has no eq_markers" do
+          node.eq_markers.should be_empty
         end
       end
 
@@ -158,16 +165,16 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
           node.height.should == 2
         end
 
-        it "has :a as its only value at level 1" do
-          node.values[1].should have_value(:a)
+        it "has :a as its only marker at level 1" do
+          node.markers[1].should have_marker(:a)
         end
 
-        it "has no values at level 0" do
-          node.values[0].should be_empty
+        it "has no markers at level 0" do
+          node.markers[0].should be_empty
         end
 
-        it "has :a and :b as its only eq_values" do
-          node.eq_values.should have_values(:a, :b)
+        it "has :a and :b as its only eq_markers" do
+          node.eq_markers.should have_markers(:a, :b)
         end
       end
 
@@ -181,14 +188,14 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
           node.height.should == 3
         end
 
-        it "has no values at any level" do
-          node.values[0].should be_empty
-          node.values[1].should be_empty
-          node.values[2].should be_empty
+        it "has no markers at any level" do
+          node.markers[0].should be_empty
+          node.markers[1].should be_empty
+          node.markers[2].should be_empty
         end
 
-        it "has :a its only eq_value" do
-          node.eq_values.should have_value(:a)
+        it "has :a its only eq_marker" do
+          node.eq_markers.should have_marker(:a)
         end
       end
 
@@ -207,16 +214,16 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
             node.height.should == 2
           end
 
-          it "has :a, :b, :c as its only values at level 1" do
-            node.values[1].should have_values(:a, :b, :c)
+          it "has :a, :b, :c as its only markers at level 1" do
+            node.markers[1].should have_markers(:a, :b, :c)
           end
 
-          it "has no values at level 0" do
-            node.values[0].should be_empty
+          it "has no markers at level 0" do
+            node.markers[0].should be_empty
           end
 
-          it "has no eq_values" do
-            node.eq_values.should be_empty
+          it "has no eq_markers" do
+            node.eq_markers.should be_empty
           end
         end
 
@@ -230,20 +237,20 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
             node.height.should == 3
           end
 
-          it "has :a as its only value at level 2" do
-            node.values[2].should have_value(:a)
+          it "has :a as its only marker at level 2" do
+            node.markers[2].should have_marker(:a)
           end
 
-          it "has :b as its only value at level 1" do
-            node.values[1].should have_value(:b)
+          it "has :b as its only marker at level 1" do
+            node.markers[1].should have_marker(:b)
           end
           
-          it "has no values at level 0" do
-            node.values[0].should be_empty
+          it "has no markers at level 0" do
+            node.markers[0].should be_empty
           end
 
-          it "has :a, :b, and :c as its only eq_values" do
-            node.eq_values.should have_values(:a, :b, :c)
+          it "has :a, :b, and :c as its only eq_markers" do
+            node.eq_markers.should have_markers(:a, :b, :c)
           end
         end
 
@@ -257,13 +264,13 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
             node.height.should == 2
           end
 
-          it "has no values at any level" do
-            node.values[0].should be_empty
-            node.values[1].should be_empty
+          it "has no markers at any level" do
+            node.markers[0].should be_empty
+            node.markers[1].should be_empty
           end
 
-          it "has :b as its only eq_values" do
-            node.eq_values.should have_value(:b)
+          it "has :b as its only eq_markers" do
+            node.eq_markers.should have_marker(:b)
           end
         end
 
@@ -277,14 +284,14 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
             node.height.should == 3
           end
 
-          it "has no values at any level" do
-            node.values[0].should be_empty
-            node.values[1].should be_empty
-            node.values[2].should be_empty
+          it "has no markers at any level" do
+            node.markers[0].should be_empty
+            node.markers[1].should be_empty
+            node.markers[2].should be_empty
           end
 
-          it "has :a as its only eq_value" do
-            node.eq_values.should have_value(:a)
+          it "has :a as its only eq_marker" do
+            node.eq_markers.should have_marker(:a)
           end
         end
 
@@ -303,16 +310,16 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
               node.height.should == 2
             end
 
-            it "has :a, :b, :c, :d as its only values at level 1" do
-              node.values[1].should have_values(:a, :b, :c, :d)
+            it "has :a, :b, :c, :d as its only markers at level 1" do
+              node.markers[1].should have_markers(:a, :b, :c, :d)
             end
 
-            it "has no values at level 0" do
-              node.values[0].should be_empty
+            it "has no markers at level 0" do
+              node.markers[0].should be_empty
             end
 
-            it "has no eq_values" do
-              node.eq_values.should be_empty
+            it "has no eq_markers" do
+              node.eq_markers.should be_empty
             end
           end
 
@@ -326,20 +333,20 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
               node.height.should == 3
             end
 
-            it "has :a and :d as its only values at level 2" do
-              node.values[2].should have_values(:a, :d)
+            it "has :a and :d as its only markers at level 2" do
+              node.markers[2].should have_markers(:a, :d)
             end
 
-            it "has :b as its only value at level 1" do
-              node.values[1].should have_value(:b)
+            it "has :b as its only marker at level 1" do
+              node.markers[1].should have_marker(:b)
             end
 
-            it "has no values at level 0" do
-              node.values[0].should be_empty
+            it "has no markers at level 0" do
+              node.markers[0].should be_empty
             end
 
-            it "has :a, :b, :c, :d as its only eq_values" do
-              node.eq_values.should have_values(:a, :b, :c, :d)
+            it "has :a, :b, :c, :d as its only eq_markers" do
+              node.eq_markers.should have_markers(:a, :b, :c, :d)
             end
           end
 
@@ -353,13 +360,13 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
               node.height.should == 2
             end
 
-            it "has no values on any level" do
-              node.values[0].should be_empty
-              node.values[1].should be_empty
+            it "has no markers on any level" do
+              node.markers[0].should be_empty
+              node.markers[1].should be_empty
             end
 
-            it "has :b as its only eq_value" do
-              node.eq_values.should have_value(:b)
+            it "has :b as its only eq_marker" do
+              node.eq_markers.should have_marker(:b)
             end
           end
 
@@ -373,17 +380,17 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
               node.height.should == 3
             end
 
-            it "has :d as its only value at level 0" do
-              node.values[0].should have_value(:d)
+            it "has :d as its only marker at level 0" do
+              node.markers[0].should have_marker(:d)
             end
 
-            it "has no values at levels 1 and 2" do
-              node.values[1].should be_empty
-              node.values[2].should be_empty
+            it "has no markers at levels 1 and 2" do
+              node.markers[1].should be_empty
+              node.markers[2].should be_empty
             end
 
-            it "has :a, :d as its only eq_values" do
-              node.eq_values.should have_values(:a, :d)
+            it "has :a, :d as its only eq_markers" do
+              node.eq_markers.should have_markers(:a, :d)
             end
           end
 
@@ -397,12 +404,12 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
               node.height.should == 1
             end
 
-            it "has no values at level 0" do
-              node.values[0].should be_empty
+            it "has no markers at level 0" do
+              node.markers[0].should be_empty
             end
 
-            it "has :d as its only eq_value" do
-              node.eq_values.should have_value(:d)
+            it "has :d as its only eq_marker" do
+              node.eq_markers.should have_marker(:d)
             end
           end
         end
