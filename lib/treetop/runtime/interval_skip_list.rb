@@ -18,6 +18,9 @@ class IntervalSkipList
     cur_node = first_node
     cur_level = first_node.height - 1
     while cur_node.forward[cur_level] && cur_node.forward[cur_level].key <= range.last
+
+      cur_level += 1 while cur_level < cur_node.height - 1 && cur_node.forward[cur_level + 1] && cur_node.forward[cur_level + 1].key <= range.last
+
       cur_node.values[cur_level].push(value)
       next_node = cur_node.forward[cur_level]
       next_node.eq_values.push(value)

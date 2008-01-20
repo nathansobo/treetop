@@ -327,12 +327,10 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
             end
 
             it "has :a and :d as its only values at level 2" do
-              pending "ascending during insert"
               node.values[2].should have_values(:a, :d)
             end
 
             it "has :b as its only value at level 1" do
-              pending "ascending during insert"
               node.values[1].should have_value(:b)
             end
 
@@ -356,13 +354,11 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
             end
 
             it "has no values on any level" do
-              pending "ascending during insertion"
               node.values[0].should be_empty
               node.values[1].should be_empty
             end
 
             it "has :b as its only eq_value" do
-              pending "ascending during insertion"
               node.eq_values.should have_value(:b)
             end
           end
