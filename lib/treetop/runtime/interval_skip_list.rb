@@ -40,7 +40,7 @@ class IntervalSkipList
   def delete(key)
     path = make_path
     found_node = find(key, path)
-    remove_node(found_node, path) if found_node.key == key
+    found_node.remove(path) if found_node.key == key
   end
 
   def nodes
@@ -63,12 +63,6 @@ class IntervalSkipList
       path[cur_level] = cur_node
     end
     cur_node.forward[0]
-  end
-
-  def remove_node(node, path)
-    0.upto(node.height - 1) do |i|
-      path[i].forward[i] = node.forward[i]
-    end
   end
 
   def make_path
@@ -96,13 +90,24 @@ class IntervalSkipList
       super(height)
       @key = key
       @eq_values = []
-      
+
+      update_forward_pointers(path)
+      promote_values(path)
+    end
+
+    def remove(path)
+      0.upto(height - 1) do |i|
+        path[i].forward[i] = forward[i]
+      end
+    end
+
+    protected
+
+    def update_forward_pointers(path)
       0.upto(height - 1) do |i|
         forward[i] = path[i].forward[i]
         path[i].forward[i] = self
       end
-
-      promote_values(path)
     end
 
     def promote_values(path)
@@ -134,7 +139,6 @@ class IntervalSkipList
       end
     end
 
-    protected
     def can_be_promoted_higher?(value, level)
       level < height - 1 && forward[level + 1] && forward[level + 1].eq_values.include?(value)
     end
