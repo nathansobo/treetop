@@ -258,13 +258,11 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
           end
 
           it "has no values at any level" do
-            pending "deletion upon promotion"
             node.values[0].should be_empty
             node.values[1].should be_empty
           end
 
           it "has :b as its only eq_values" do
-            pending "deletion upon promotion"
             node.eq_values.should have_value(:b)
           end
         end
@@ -358,13 +356,13 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
             end
 
             it "has no values on any level" do
-              pending "deletion upon promotion"
+              pending "ascending during insertion"
               node.values[0].should be_empty
               node.values[1].should be_empty
             end
 
             it "has :b as its only eq_value" do
-              pending "deletion upon promotion"
+              pending "ascending during insertion"
               node.eq_values.should have_value(:b)
             end
           end

@@ -120,7 +120,7 @@ class IntervalSkipList
         incoming_values.each do |value|
           if can_be_promoted_higher?(value, i)
             new_promoted.push(value)
-            # delete lower path
+            delete_value_from_path(value, i, forward[i+i])
           else
             values[i].push(value)
           end
@@ -141,6 +141,15 @@ class IntervalSkipList
 
     def can_be_promoted_higher?(value, level)
       level < height - 1 && forward[level + 1] && forward[level + 1].eq_values.include?(value)
+    end
+
+    def delete_value_from_path(value, level, terminus)
+      cur_node = forward[level]
+      until cur_node == terminus
+        cur_node.values[level].delete(value)
+        cur_node.eq_values.delete(value)
+        cur_node = cur_node.forward[level]
+      end
     end
   end
 end
