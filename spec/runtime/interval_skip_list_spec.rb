@@ -621,9 +621,9 @@ describe IntervalSkipList do
 end
 
 class IntervalSkipList
-  describe Node do
+  describe HeadNode do
     it "instantiated a forward array of nils of size equal to its height" do
-      node = Node.new(nil, 3)
+      node = HeadNode.new(3)
       node.forward.should == [nil, nil, nil]
     end
   end

@@ -2,7 +2,7 @@ class IntervalSkipList
   attr_reader :head
 
   def initialize
-    @head = Node.new(nil, max_height)
+    @head = HeadNode.new(max_height)
   end
 
   def max_height
@@ -33,7 +33,7 @@ class IntervalSkipList
     if found_node && found_node.key == key
       return found_node
     else
-      return make_node(key, path)
+      return Node.new(key, next_node_height, path)
     end
   end
 
@@ -65,16 +65,6 @@ class IntervalSkipList
     cur_node.forward[0]
   end
 
-  def make_node(key, path)
-    new_node = Node.new(key, next_node_height)
-    0.upto(new_node.height - 1) do |i|
-      new_node.forward[i] = path[i].forward[i]
-      path[i].forward[i] = new_node
-    end
-    new_node.promote_values(path)
-    return new_node
-  end
-
   def remove_node(node, path)
     0.upto(node.height - 1) do |i|
       path[i].forward[i] = node.forward[i]
@@ -89,15 +79,30 @@ class IntervalSkipList
     nil
   end
 
-  class Node
-    attr_reader :key, :height, :forward, :values, :eq_values
+  class HeadNode
+    attr_reader :height, :forward, :values
 
-    def initialize(key, height)
-      @key = key
+    def initialize(height)
       @height = height
       @forward = Array.new(height, nil)
       @values = Array.new(height) {|i| []}
+    end
+  end
+
+  class Node < HeadNode
+    attr_reader :key, :eq_values
+
+    def initialize(key, height, path)
+      super(height)
+      @key = key
       @eq_values = []
+      
+      0.upto(height - 1) do |i|
+        forward[i] = path[i].forward[i]
+        path[i].forward[i] = self
+      end
+
+      promote_values(path)
     end
 
     def promote_values(path)
