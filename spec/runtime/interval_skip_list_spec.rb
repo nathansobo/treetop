@@ -27,6 +27,10 @@ describe "it has nil forward pointers", :shared => true do
   end
 end
 
+class IntervalSkipList
+  public :insert_node, :delete, :head
+end
+
 describe IntervalSkipList do
   attr_reader :list
 

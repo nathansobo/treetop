@@ -1,6 +1,4 @@
 class IntervalSkipList
-  attr_reader :head
-
   def initialize
     @head = HeadNode.new(max_height)
   end
@@ -27,6 +25,19 @@ class IntervalSkipList
     end
   end
 
+  def nodes
+    nodes = []
+    cur_node = head.forward[0]
+    until cur_node.nil?
+      nodes << cur_node
+      cur_node = cur_node.forward[0]
+    end
+    nodes
+  end
+
+  protected
+  attr_reader :head
+  
   def insert_node(key)
     path = make_path
     found_node = find(key, path)
@@ -41,19 +52,8 @@ class IntervalSkipList
     path = make_path
     found_node = find(key, path)
     found_node.remove(path) if found_node.key == key
-  end
+  end  
 
-  def nodes
-    nodes = []
-    cur_node = head.forward[0]
-    until cur_node.nil?
-      nodes << cur_node
-      cur_node = cur_node.forward[0]
-    end
-    nodes
-  end
-
-  protected
   def find(key, path)
     cur_node = head
     (max_height - 1).downto(0) do |cur_level|
