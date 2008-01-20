@@ -71,6 +71,7 @@ class IntervalSkipList
       new_node.next[i] = path[i].next[i]
       path[i].next[i] = new_node
     end
+    promote_values(new_node, path)
     return new_node
   end
 
@@ -82,6 +83,13 @@ class IntervalSkipList
 
   def make_path
     Array.new(max_height, nil)
+  end
+
+  def promote_values(node, path)
+    0.upto(node.height - 1) do |i|
+      node.values[i].concat(path[i].values[i])
+      node.eq_values.concat(path[i].values[i])
+    end
   end
 
   def next_node_height
