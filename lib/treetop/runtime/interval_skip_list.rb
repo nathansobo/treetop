@@ -85,8 +85,6 @@ class IntervalSkipList
     Array.new(max_height, nil)
   end
 
-
-
   def next_node_height
     nil
   end
@@ -108,8 +106,9 @@ class IntervalSkipList
       0.upto(height - 1) do |i|
         incoming_values = path[i].values[i]
         eq_values.concat(incoming_values)
+
         incoming_values.each do |value|
-          if i < height - 1 && forward[i + 1] && forward[i + 1].eq_values.include?(value)
+          if can_be_promoted_higher?(value, i)
             new_promoted.push(value)
             # delete lower path
           else
@@ -118,7 +117,7 @@ class IntervalSkipList
         end
 
         promoted.each do |value|
-          if i < height - 1 && forward[i + 1] && forward[i + 1].eq_values.include?(value)
+          if can_be_promoted_higher?(value, i)
             new_promoted.push(value)
           else
             values[i].push(value)
@@ -128,6 +127,11 @@ class IntervalSkipList
         promoted = new_promoted
         new_promoted = []
       end
+    end
+
+    protected
+    def can_be_promoted_higher?(value, level)
+      level < height - 1 && forward[level + 1] && forward[level + 1].eq_values.include?(value)
     end
   end
 end
