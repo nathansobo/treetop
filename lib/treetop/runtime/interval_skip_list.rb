@@ -19,7 +19,7 @@ class IntervalSkipList
         cur_node = next_node
         return containing if cur_node.key == n
       end
-      containing.concat(cur_node.markers[cur_level])
+      containing.concat(cur_node.forward_markers[cur_level])
     end
     containing
   end
@@ -104,7 +104,7 @@ class IntervalSkipList
   end
 
   def mark_forward_path_at_level(node, level, marker)
-    node.markers[level].push(marker)
+    node.forward_markers[level].push(marker)
     next_node = node.forward[level]
     next_node.eq_markers.push(marker)
     node = next_node
@@ -121,12 +121,12 @@ class IntervalSkipList
   end
 
   class HeadNode
-    attr_reader :height, :forward, :markers
+    attr_reader :height, :forward, :forward_markers
 
     def initialize(height)
       @height = height
       @forward = Array.new(height, nil)
-      @markers = Array.new(height) {|i| []}
+      @forward_markers = Array.new(height) {|i| []}
     end
   end
 
@@ -161,7 +161,7 @@ class IntervalSkipList
       promoted = []
       new_promoted = []
       0.upto(height - 1) do |i|
-        incoming_markers = path[i].markers[i]
+        incoming_markers = path[i].forward_markers[i]
         eq_markers.concat(incoming_markers)
 
         incoming_markers.each do |marker|
@@ -169,7 +169,7 @@ class IntervalSkipList
             new_promoted.push(marker)
             delete_marker_from_path(marker, i, forward[i+i])
           else
-            markers[i].push(marker)
+            forward_markers[i].push(marker)
           end
         end
 
@@ -177,7 +177,7 @@ class IntervalSkipList
           if can_be_promoted_higher?(marker, i)
             new_promoted.push(marker)
           else
-            markers[i].push(marker)
+            forward_markers[i].push(marker)
           end
         end
 
@@ -193,7 +193,7 @@ class IntervalSkipList
     def delete_marker_from_path(marker, level, terminus)
       cur_node = forward[level]
       until cur_node == terminus
-        cur_node.markers[level].delete(marker)
+        cur_node.forward_markers[level].delete(marker)
         cur_node.eq_markers.delete(marker)
         cur_node = cur_node.forward[level]
       end

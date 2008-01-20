@@ -79,11 +79,11 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
       end
 
       it "has :a as its only marker at level 1" do
-        node.markers[1].should have_marker(:a)
+        node.forward_markers[1].should have_marker(:a)
       end
 
-      it "has no markers at level 0" do
-        node.markers[0].should be_empty
+      it "has no forward_markers at level 0" do
+        node.forward_markers[0].should be_empty
       end
 
       it "has no eq_markers" do
@@ -101,10 +101,10 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
         node.height.should == 3
       end
 
-      it "has no markers at any level" do
-        node.markers[0].should be_empty
-        node.markers[1].should be_empty
-        node.markers[2].should be_empty
+      it "has no forward markers at any level" do
+        node.forward_markers[0].should be_empty
+        node.forward_markers[1].should be_empty
+        node.forward_markers[2].should be_empty
       end
 
       it "has :a as its only eq_marker" do
@@ -143,12 +143,12 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
           node.height.should == 2
         end
 
-        it "has :a and :b as its only markers at level 1" do
-          node.markers[1].should have_markers(:a, :b)
+        it "has :a and :b as its only forward markers at level 1" do
+          node.forward_markers[1].should have_markers(:a, :b)
         end
 
-        it "has no markers at level 0" do
-          node.markers[0].should be_empty
+        it "has no forward markers at level 0" do
+          node.forward_markers[0].should be_empty
         end
 
         it "has no eq_markers" do
@@ -167,11 +167,11 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
         end
 
         it "has :a as its only marker at level 1" do
-          node.markers[1].should have_marker(:a)
+          node.forward_markers[1].should have_marker(:a)
         end
 
-        it "has no markers at level 0" do
-          node.markers[0].should be_empty
+        it "has no forward markers at level 0" do
+          node.forward_markers[0].should be_empty
         end
 
         it "has :a and :b as its only eq_markers" do
@@ -189,10 +189,10 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
           node.height.should == 3
         end
 
-        it "has no markers at any level" do
-          node.markers[0].should be_empty
-          node.markers[1].should be_empty
-          node.markers[2].should be_empty
+        it "has no forward markers at any level" do
+          node.forward_markers[0].should be_empty
+          node.forward_markers[1].should be_empty
+          node.forward_markers[2].should be_empty
         end
 
         it "has :a its only eq_marker" do
@@ -215,12 +215,12 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
             node.height.should == 2
           end
 
-          it "has :a, :b, :c as its only markers at level 1" do
-            node.markers[1].should have_markers(:a, :b, :c)
+          it "has :a, :b, :c as its only forward markers at level 1" do
+            node.forward_markers[1].should have_markers(:a, :b, :c)
           end
 
-          it "has no markers at level 0" do
-            node.markers[0].should be_empty
+          it "has no forward markers at level 0" do
+            node.forward_markers[0].should be_empty
           end
 
           it "has no eq_markers" do
@@ -239,15 +239,15 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
           end
 
           it "has :a as its only marker at level 2" do
-            node.markers[2].should have_marker(:a)
+            node.forward_markers[2].should have_marker(:a)
           end
 
           it "has :b as its only marker at level 1" do
-            node.markers[1].should have_marker(:b)
+            node.forward_markers[1].should have_marker(:b)
           end
           
-          it "has no markers at level 0" do
-            node.markers[0].should be_empty
+          it "has no forward markers at level 0" do
+            node.forward_markers[0].should be_empty
           end
 
           it "has :a, :b, and :c as its only eq_markers" do
@@ -265,9 +265,9 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
             node.height.should == 2
           end
 
-          it "has no markers at any level" do
-            node.markers[0].should be_empty
-            node.markers[1].should be_empty
+          it "has no forward markers at any level" do
+            node.forward_markers[0].should be_empty
+            node.forward_markers[1].should be_empty
           end
 
           it "has :b as its only eq_markers" do
@@ -285,10 +285,10 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
             node.height.should == 3
           end
 
-          it "has no markers at any level" do
-            node.markers[0].should be_empty
-            node.markers[1].should be_empty
-            node.markers[2].should be_empty
+          it "has no forward markers at any level" do
+            node.forward_markers[0].should be_empty
+            node.forward_markers[1].should be_empty
+            node.forward_markers[2].should be_empty
           end
 
           it "has :a as its only eq_marker" do
@@ -311,12 +311,12 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
               node.height.should == 2
             end
 
-            it "has :a, :b, :c, :d as its only markers at level 1" do
-              node.markers[1].should have_markers(:a, :b, :c, :d)
+            it "has :a, :b, :c, :d as its only forward markers at level 1" do
+              node.forward_markers[1].should have_markers(:a, :b, :c, :d)
             end
 
-            it "has no markers at level 0" do
-              node.markers[0].should be_empty
+            it "has no forward markers at level 0" do
+              node.forward_markers[0].should be_empty
             end
 
             it "has no eq_markers" do
@@ -334,16 +334,16 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
               node.height.should == 3
             end
 
-            it "has :a and :d as its only markers at level 2" do
-              node.markers[2].should have_markers(:a, :d)
+            it "has :a and :d as its only forward markers at level 2" do
+              node.forward_markers[2].should have_markers(:a, :d)
             end
 
             it "has :b as its only marker at level 1" do
-              node.markers[1].should have_marker(:b)
+              node.forward_markers[1].should have_marker(:b)
             end
 
-            it "has no markers at level 0" do
-              node.markers[0].should be_empty
+            it "has no forward markers at level 0" do
+              node.forward_markers[0].should be_empty
             end
 
             it "has :a, :b, :c, :d as its only eq_markers" do
@@ -362,8 +362,8 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
             end
 
             it "has no markers on any level" do
-              node.markers[0].should be_empty
-              node.markers[1].should be_empty
+              node.forward_markers[0].should be_empty
+              node.forward_markers[1].should be_empty
             end
 
             it "has :b as its only eq_marker" do
@@ -382,12 +382,12 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
             end
 
             it "has :d as its only marker at level 0" do
-              node.markers[0].should have_marker(:d)
+              node.forward_markers[0].should have_marker(:d)
             end
 
-            it "has no markers at levels 1 and 2" do
-              node.markers[1].should be_empty
-              node.markers[2].should be_empty
+            it "has no forward markers at levels 1 and 2" do
+              node.forward_markers[1].should be_empty
+              node.forward_markers[2].should be_empty
             end
 
             it "has :a, :d as its only eq_markers" do
@@ -405,8 +405,8 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
               node.height.should == 1
             end
 
-            it "has no markers at level 0" do
-              node.markers[0].should be_empty
+            it "has no forward markers at level 0" do
+              node.forward_markers[0].should be_empty
             end
 
             it "has :d as its only eq_marker" do
