@@ -192,11 +192,8 @@ describe IntervalSkipList do
           @node = list.nodes[0]
         end
 
-        it "has a key of 1" do
+        it "has a key of 1 and a height of 1" do
           node.key.should == 1
-        end
-
-        it "has a height of 1" do
           node.height.should == 1
         end
 
@@ -210,11 +207,8 @@ describe IntervalSkipList do
           @node = list.nodes[1]
         end
 
-        it "has a key of 2" do
+        it "has a key of 2 and a height of 3" do
           node.key.should == 2
-        end
-
-        it "has a height of 3" do
           node.height.should == 3
         end
 
@@ -223,12 +217,10 @@ describe IntervalSkipList do
         end
 
         it "has :a as its sole value at level 1" do
-          pending
           node.values[1].should == [:a]
         end
 
         it "has no values at level 0" do
-          pending
           node.values[0].should be_empty
         end
 
@@ -242,11 +234,8 @@ describe IntervalSkipList do
           @node = list.nodes[2]
         end
 
-        it "has a key of 5" do
+        it "has a key of 5 and a height of 2" do
           node.key.should == 5
-        end
-
-        it "has a height of 2" do
           node.height.should == 2
         end
 
@@ -260,11 +249,8 @@ describe IntervalSkipList do
           @node = list.nodes[3]
         end
 
-        it "has a key of 6" do
+        it "has a key of 6 and a height of 3" do
           node.key.should == 6
-        end
-
-        it "has a height of 3" do
           node.height.should == 3
         end
 
@@ -274,6 +260,8 @@ describe IntervalSkipList do
       end
     end
   end
+
+  # Node insertion
 
   describe " when nothing has been inserted" do
     specify "#empty? returns true" do

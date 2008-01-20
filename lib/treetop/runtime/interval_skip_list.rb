@@ -86,9 +86,30 @@ class IntervalSkipList
   end
 
   def promote_values(node, path)
+    promoted = []
+    new_promoted = []
     0.upto(node.height - 1) do |i|
-      node.values[i].concat(path[i].values[i])
-      node.eq_values.concat(path[i].values[i])
+      values = path[i].values[i]
+      node.eq_values.concat(values)
+      values.each do |value|
+        if i < node.height - 1 && node.next[i + 1] && node.next[i + 1].eq_values.include?(value)
+          new_promoted.push(value)
+          # delete lower path
+        else
+          node.values[i].push(value)
+        end
+      end
+
+      promoted.each do |value|
+        if i < node.height - 1 && node.next[i + 1] && node.next[i + 1].eq_values.include?(value)
+          new_promoted.push(value)
+        else
+          node.values[i].push(value)
+        end
+      end
+
+      promoted = new_promoted
+      new_promoted = []
     end
   end
 
