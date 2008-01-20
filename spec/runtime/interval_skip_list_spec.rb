@@ -106,6 +106,11 @@ describe IntervalSkipList do
           @node = list.nodes[0]
         end
 
+        it "has a key of 1 and a height of 1" do
+          node.key.should == 1
+          node.height.should == 1
+        end
+
         it "has :a as its sole value at level 0" do
           node.values[0].should == [:a]
         end
@@ -114,6 +119,11 @@ describe IntervalSkipList do
       describe " #nodes[1]" do
         before do
           @node = list.nodes[1]
+        end
+
+        it "has a key of 2 and a height of 1" do
+          node.key.should == 2
+          node.height.should == 1
         end
 
         it "has values :a and :b at level 0" do
@@ -133,6 +143,11 @@ describe IntervalSkipList do
           @node = list.nodes[2]
         end
 
+        it "has a key of 5 and a height of 1" do
+          node.key.should == 5
+          node.height.should == 1
+        end
+
         it "has :b as its sole value at level 0" do
           node.values[0].should == [:b]
         end
@@ -150,6 +165,11 @@ describe IntervalSkipList do
           @node = list.nodes[3]
         end
 
+        it "has a key of 6 and a height of 1" do
+          node.key.should == 6
+          node.height.should == 1
+        end
+
         it "has no values at level 0" do
           node.values[0].should be_empty
         end
@@ -160,103 +180,99 @@ describe IntervalSkipList do
       end
     end
 
-#    describe "when next_node_height returns 1, 2, 3, 3 in order" do
-#      def expected_node_heights
-#        [1, 2, 3, 3]
-#      end
-#
-#      describe "the first node in the list" do
-#        attr_reader :node
-#
-#        before do
-#          @node = list.nodes[0]
-#        end
-#
-#        it "has a key of 1" do
-#          node.key.should == 1
-#        end
-#
-#        it "has a height of 1" do
-#          node.height.should == 1
-#        end
-#
-#        it "has :a as its sole value at level 0" do
-#          node.values[0].should == [:a]
-#        end
-#      end
-#
-#      describe "the second node in the list" do
-#        attr_reader :node
-#
-#        before do
-#          @node = list.nodes[1]
-#        end
-#
-#        it "has a key of 2" do
-#          node.key.should == 2
-#        end
-#
-#        it "has a height of 3" do
-#          node.height.should == 3
-#        end
-#
-#        it "has :b as its sole value at level 2" do
-#          node.values[2].should == [:b]
-#        end
-#
-#        it "has :a as its sole value at level 1" do
-#          node.values[1].should == [:a]
-#        end
-#
-#        it "has no values at level 0" do
-#          node.values[0].should be_empty
-#        end
-#
-#        it "has :a as its sole eq_value" do
-#          node.eq_values.should == [:a]
-#        end
-#      end
-#
-#      describe "the third node in the list" do
-#        attr_reader :node
-#
-#        before do
-#          @node = list.nodes[2]
-#        end
-#
-#        it "has a key of 5" do
-#          node.key.should == 5
-#        end
-#
-#        it "has a height of 2" do
-#          node.height.should == 2
-#        end
-#
-#        it "has :a as its sole eq_value" do
-#          node.eq_values.should == [:a]
-#        end
-#      end
-#
-#      describe "the fourth node in the list" do
-#        attr_reader :node
-#
-#        before do
-#          @node = list.nodes[3]
-#        end
-#
-#        it "has a key of 6" do
-#          node.key.should == 6
-#        end
-#
-#        it "has a height of 3" do
-#          node.height.should == 3
-#        end
-#
-#        it "has :b as its sole eq_value" do
-#          node.eq_values.should == [:b]
-#        end
-#      end
-#    end
+    describe "when next_node_height returns 1, 2, 3, 3 in order" do
+      attr_reader :node
+
+      def expected_node_heights
+        [1, 2, 3, 3]
+      end
+
+      describe " #nodes[0]" do
+        before do
+          @node = list.nodes[0]
+        end
+
+        it "has a key of 1" do
+          node.key.should == 1
+        end
+
+        it "has a height of 1" do
+          node.height.should == 1
+        end
+
+        it "has :a as its sole value at level 0" do
+          node.values[0].should == [:a]
+        end
+      end
+
+      describe " #nodes[1]" do
+        before do
+          @node = list.nodes[1]
+        end
+
+        it "has a key of 2" do
+          node.key.should == 2
+        end
+
+        it "has a height of 3" do
+          node.height.should == 3
+        end
+
+        it "has :b as its sole value at level 2" do
+          node.values[2].should == [:b]
+        end
+
+        it "has :a as its sole value at level 1" do
+          pending
+          node.values[1].should == [:a]
+        end
+
+        it "has no values at level 0" do
+          pending
+          node.values[0].should be_empty
+        end
+
+        it "has :a as its sole eq_value" do
+          node.eq_values.should == [:a]
+        end
+      end
+
+      describe " #nodes[2]" do
+        before do
+          @node = list.nodes[2]
+        end
+
+        it "has a key of 5" do
+          node.key.should == 5
+        end
+
+        it "has a height of 2" do
+          node.height.should == 2
+        end
+
+        it "has :a as its sole eq_value" do
+          node.eq_values.should == [:a]
+        end
+      end
+
+      describe " #nodes[3]" do
+        before do
+          @node = list.nodes[3]
+        end
+
+        it "has a key of 6" do
+          node.key.should == 6
+        end
+
+        it "has a height of 3" do
+          node.height.should == 3
+        end
+
+        it "has :b as its sole eq_value" do
+          node.eq_values.should == [:b]
+        end
+      end
+    end
   end
 
   describe " when nothing has been inserted" do
