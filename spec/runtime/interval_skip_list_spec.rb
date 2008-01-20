@@ -89,6 +89,10 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
       it "has no markers" do
         node.markers.should be_empty
       end
+
+      it "is not an endpoint of any interval" do
+        node.endpoint_of.should be_empty
+      end
     end
 
     describe " #nodes[1]" do
@@ -109,6 +113,10 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
 
       it "has :a as its only marker" do
         node.markers.should have_marker(:a)
+      end
+
+      it "is an endpoint of only :a" do
+        node.endpoint_of.should have_marker(:a)
       end
     end
 
@@ -154,6 +162,10 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
         it "has no markers" do
           node.markers.should be_empty
         end
+
+        it "is not an endpoint of any interval" do
+          node.endpoint_of.should be_empty
+        end
       end
 
       describe " #nodes[1]" do
@@ -177,6 +189,10 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
         it "has :a and :b as its only markers" do
           node.markers.should have_markers(:a, :b)
         end
+
+        it "is an endpoint of only :b" do
+          node.endpoint_of.should have_marker(:b)
+        end
       end
 
       describe " #nodes[2]" do
@@ -197,6 +213,10 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
 
         it "has :a its only marker" do
           node.markers.should have_marker(:a)
+        end
+
+        it "is an endpoint of only :a" do
+          node.endpoint_of.should have_marker(:a)
         end
       end
 
@@ -226,6 +246,10 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
           it "has no markers" do
             node.markers.should be_empty
           end
+
+          it "is not an endpoint of any interval" do
+            node.endpoint_of.should be_empty
+          end
         end
 
         describe " #nodes[1]" do
@@ -253,6 +277,10 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
           it "has :a, :b, and :c as its only markers" do
             node.markers.should have_markers(:a, :b, :c)
           end
+
+          it "is an endpoint of only :c" do
+            node.endpoint_of.should have_marker(:c)
+          end
         end
 
         describe " #nodes[2]" do
@@ -272,6 +300,10 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
 
           it "has :b as its only markers" do
             node.markers.should have_marker(:b)
+          end
+
+          it "is an endpoint of only :b" do
+            node.endpoint_of.should have_marker(:b)
           end
         end
 
@@ -293,6 +325,10 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
 
           it "has :a as its only marker" do
             node.markers.should have_marker(:a)
+          end
+
+          it "is an endpoint of only :a" do
+            node.endpoint_of.should have_marker(:a)
           end
         end
 
@@ -322,6 +358,10 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
             it "has no markers" do
               node.markers.should be_empty
             end
+
+            it "is not an endpoint of any interval" do
+              node.endpoint_of.should be_empty
+            end
           end
 
           describe " #nodes[1]" do
@@ -349,6 +389,10 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
             it "has :a, :b, :c, :d as its only markers" do
               node.markers.should have_markers(:a, :b, :c, :d)
             end
+
+            it "is an endpoint of only :c" do
+              node.endpoint_of.should have_marker(:c)
+            end
           end
 
           describe " #nodes[2]" do
@@ -369,6 +413,10 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
             it "has :b as its only marker" do
               node.markers.should have_marker(:b)
             end
+
+            it "is an endpoint of only :b" do
+              node.endpoint_of.should have_marker(:b)
+            end      
           end
 
           describe " #nodes[3]" do
@@ -393,6 +441,10 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
             it "has :a, :d as its only markers" do
               node.markers.should have_markers(:a, :d)
             end
+
+            it "is an endpoint of only :a" do
+              node.endpoint_of.should have_marker(:a)
+            end
           end
 
           describe " #nodes[4]" do
@@ -411,6 +463,10 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
 
             it "has :d as its only marker" do
               node.markers.should have_marker(:d)
+            end
+
+            it "is an endpoint of only :d" do
+              node.endpoint_of.should have_marker(:d)
             end
           end
         end

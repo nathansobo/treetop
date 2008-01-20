@@ -27,6 +27,7 @@ class IntervalSkipList
   def insert(range, marker)
     first_node = insert_node(range.first)
     last_node = insert_node(range.last)
+    last_node.endpoint_of.push(marker)
 
     cur_node = first_node
     cur_level = first_node.height - 1
@@ -131,12 +132,13 @@ class IntervalSkipList
   end
 
   class Node < HeadNode
-    attr_reader :key, :markers
+    attr_reader :key, :markers, :endpoint_of
 
     def initialize(key, height, path)
       super(height)
       @key = key
       @markers = []
+      @endpoint_of = []
 
       update_forward_pointers(path)
       promote_markers(path)
