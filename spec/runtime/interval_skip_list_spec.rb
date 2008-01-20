@@ -117,6 +117,22 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
         list.insert(1..5, :b)
       end
 
+      describe ", #containing" do
+        it "returns only :a and :b from 2 through 4" do
+          (2..4).should contain_markers(:a, :b)
+        end
+
+        it "returns only :a from 5 through 6" do
+          pending
+          (5..6).should contain_marker(:a)
+        end
+        
+        it "returns nothing at 1 and 7" do
+          list.containing(1).should be_empty
+          list.containing(7).should be_empty
+        end
+      end
+
       describe " #nodes[0]" do
         before do
           @node = list.nodes[0]
