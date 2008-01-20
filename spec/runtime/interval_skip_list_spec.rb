@@ -19,9 +19,9 @@ describe "#nodes is an array of the three inserted nodes in key order", :shared 
   end
 end
 
-describe "it has nil next pointers", :shared => true do
-  it "has nil next pointers" do
-    inserted_node.next.each do |next_pointer|
+describe "it has nil forward pointers", :shared => true do
+  it "has nil forward pointers" do
+    inserted_node.forward.each do |next_pointer|
       next_pointer.should be_nil
     end
   end
@@ -283,9 +283,9 @@ describe IntervalSkipList do
         head.height.should == list.max_height
       end
 
-      it "has nil next pointers" do
+      it "has nil forward pointers" do
         0.upto(list.max_height - 1) do |i|
-          head.next[i].should be_nil
+          head.forward[i].should be_nil
         end
       end
     end
@@ -315,21 +315,21 @@ describe IntervalSkipList do
         @head = list.head
       end
 
-      it "has inserted_node.height next pointers pointing at the inserted node" do
+      it "has inserted_node.height forward pointers pointing at the inserted node" do
         0.upto(inserted_node.height - 1) do |i|
-          head.next[i].should == inserted_node
+          head.forward[i].should == inserted_node
         end
       end
 
-      it "has the rest of its next pointers pointing at nil" do
+      it "has the rest of its forward pointers pointing at nil" do
         inserted_node.height.upto(list.max_height - 1) do |i|
-          head.next[i].should == nil
+          head.forward[i].should == nil
         end
       end
     end
 
     describe "the inserted node" do
-      it_should_behave_like "it has nil next pointers"
+      it_should_behave_like "it has nil forward pointers"
 
       it "has a height of the expected_node_heights.first" do
         inserted_node.height.should == expected_node_heights.first
@@ -384,8 +384,8 @@ describe IntervalSkipList do
         inserted_node.height.should == expected_node_heights[0]
       end
 
-      it "has its single next pointer pointing at the second inserted node" do
-        inserted_node.next[0].should == inserted_nodes[1]
+      it "has its single forward pointer pointing at the second inserted node" do
+        inserted_node.forward[0].should == inserted_nodes[1]
       end
     end
 
@@ -396,7 +396,7 @@ describe IntervalSkipList do
         @inserted_node = inserted_nodes[1]
       end
 
-      it_should_behave_like "it has nil next pointers"
+      it_should_behave_like "it has nil forward pointers"
 
       it "has a key of 3" do
         inserted_node.key.should == 3
@@ -423,7 +423,7 @@ describe IntervalSkipList do
           inserted_node.should == list.nodes[0]
         end
 
-        it_should_behave_like "it has nil next pointers"
+        it_should_behave_like "it has nil forward pointers"
       end
     end
 
@@ -443,7 +443,7 @@ describe IntervalSkipList do
           inserted_node.should == list.nodes[0]
         end
 
-        it_should_behave_like "it has nil next pointers"
+        it_should_behave_like "it has nil forward pointers"
       end
     end
   end
@@ -482,8 +482,8 @@ describe IntervalSkipList do
         inserted_node.height.should == expected_node_heights[0]
       end
 
-      it "has its single next pointer pointing at the second inserted node" do
-        inserted_node.next[0].should == inserted_nodes[1]
+      it "has its single forward pointer pointing at the second inserted node" do
+        inserted_node.forward[0].should == inserted_nodes[1]
       end
     end
 
@@ -502,12 +502,12 @@ describe IntervalSkipList do
         inserted_node.height.should == expected_node_heights[1]
       end
 
-      it "has a next pointer at level 0 pointing to the third inserted node" do
-        inserted_node.next[0].should == inserted_nodes[2]
+      it "has a forward pointer at level 0 pointing to the third inserted node" do
+        inserted_node.forward[0].should == inserted_nodes[2]
       end
 
-      it "has nil next pointer at level 1" do
-        inserted_node.next[1].should be_nil
+      it "has nil forward pointer at level 1" do
+        inserted_node.forward[1].should be_nil
       end
     end
 
@@ -518,7 +518,7 @@ describe IntervalSkipList do
         @inserted_node = inserted_nodes[2]
       end
 
-      it_should_behave_like "it has nil next pointers"
+      it_should_behave_like "it has nil forward pointers"
 
       it "has a key of 3" do
         inserted_node.key.should == 7
@@ -535,8 +535,8 @@ describe IntervalSkipList do
       end
 
       specify "#head points at nil at levels 1 and 2" do
-        list.head.next[1].should be_nil
-        list.head.next[2].should be_nil
+        list.head.forward[1].should be_nil
+        list.head.forward[2].should be_nil
       end
 
       specify "#nodes contains the remaining nodes in order" do
@@ -571,7 +571,7 @@ describe IntervalSkipList do
         @inserted_node = inserted_nodes[0]
       end
 
-      it_should_behave_like "it has nil next pointers"
+      it_should_behave_like "it has nil forward pointers"
 
       it "has a key of 7" do
         inserted_node.key.should == 7
@@ -597,8 +597,8 @@ describe IntervalSkipList do
         inserted_node.height.should == expected_node_heights[1]
       end
 
-      it "has a next pointer at level 0 pointing to the second node in the list" do
-        inserted_node.next[0].should == list.nodes[1]
+      it "has a forward pointer at level 0 pointing to the second node in the list" do
+        inserted_node.forward[0].should == list.nodes[1]
       end
     end
 
@@ -622,9 +622,9 @@ end
 
 class IntervalSkipList
   describe Node do
-    it "instantiated a next array of nils of size equal to its height" do
+    it "instantiated a forward array of nils of size equal to its height" do
       node = Node.new(nil, 3)
-      node.next.should == [nil, nil, nil]
+      node.forward.should == [nil, nil, nil]
     end
   end
 end

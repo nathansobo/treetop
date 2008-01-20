@@ -10,7 +10,7 @@ class IntervalSkipList
   end
 
   def empty?
-    head.next[0].nil?
+    head.forward[0].nil?
   end
 
   def insert(range, value)
@@ -19,9 +19,9 @@ class IntervalSkipList
 
     cur_node = first_node
     cur_level = first_node.height - 1
-    while cur_node.next[cur_level] && cur_node.next[cur_level].key <= range.last
+    while cur_node.forward[cur_level] && cur_node.forward[cur_level].key <= range.last
       cur_node.values[cur_level].push(value)
-      next_node = cur_node.next[cur_level]
+      next_node = cur_node.forward[cur_level]
       next_node.eq_values.push(value)
       cur_node = next_node
     end
@@ -45,10 +45,10 @@ class IntervalSkipList
 
   def nodes
     nodes = []
-    cur_node = head.next[0]
+    cur_node = head.forward[0]
     until cur_node.nil?
       nodes << cur_node
-      cur_node = cur_node.next[0]
+      cur_node = cur_node.forward[0]
     end
     nodes
   end
@@ -57,19 +57,19 @@ class IntervalSkipList
   def find(key, path)
     cur_node = head
     (max_height - 1).downto(0) do |cur_level|
-      while (next_node = cur_node.next[cur_level]) && next_node.key < key
+      while (next_node = cur_node.forward[cur_level]) && next_node.key < key
         cur_node = next_node
       end
       path[cur_level] = cur_node
     end
-    cur_node.next[0]
+    cur_node.forward[0]
   end
 
   def make_node(key, path)
     new_node = Node.new(key, next_node_height)
     0.upto(new_node.height - 1) do |i|
-      new_node.next[i] = path[i].next[i]
-      path[i].next[i] = new_node
+      new_node.forward[i] = path[i].forward[i]
+      path[i].forward[i] = new_node
     end
     promote_values(new_node, path)
     return new_node
@@ -77,7 +77,7 @@ class IntervalSkipList
 
   def remove_node(node, path)
     0.upto(node.height - 1) do |i|
-      path[i].next[i] = node.next[i]
+      path[i].forward[i] = node.forward[i]
     end
   end
 
@@ -92,7 +92,7 @@ class IntervalSkipList
       values = path[i].values[i]
       node.eq_values.concat(values)
       values.each do |value|
-        if i < node.height - 1 && node.next[i + 1] && node.next[i + 1].eq_values.include?(value)
+        if i < node.height - 1 && node.forward[i + 1] && node.forward[i + 1].eq_values.include?(value)
           new_promoted.push(value)
           # delete lower path
         else
@@ -101,7 +101,7 @@ class IntervalSkipList
       end
 
       promoted.each do |value|
-        if i < node.height - 1 && node.next[i + 1] && node.next[i + 1].eq_values.include?(value)
+        if i < node.height - 1 && node.forward[i + 1] && node.forward[i + 1].eq_values.include?(value)
           new_promoted.push(value)
         else
           node.values[i].push(value)
@@ -118,12 +118,12 @@ class IntervalSkipList
   end
 
   class Node
-    attr_reader :key, :height, :next, :values, :eq_values
+    attr_reader :key, :height, :forward, :values, :eq_values
 
     def initialize(key, height)
       @key = key
       @height = height
-      @next = Array.new(height, nil)
+      @forward = Array.new(height, nil)
       @values = Array.new(height) {|i| []}
       @eq_values = []
     end
