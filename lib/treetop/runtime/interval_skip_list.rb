@@ -24,7 +24,7 @@ class IntervalSkipList
       cur_node = mark_forward_path_at_level(cur_node, cur_level, value)
     end
 
-    while cur_node.key < range.last
+    while node_inside_range?(cur_node, range)
       while can_descend_from?(cur_level) && next_node_at_level_outside_range?(cur_node, cur_level, range)
         cur_level -= 1 
       end
@@ -88,6 +88,10 @@ class IntervalSkipList
     level > 0
   end
 
+  def node_inside_range?(node, range)
+    node.key < range.last
+  end
+
   def next_node_at_level_inside_range?(node, level, range)
     node.forward[level] && node.forward[level].key <= range.last
   end
@@ -101,7 +105,6 @@ class IntervalSkipList
     next_node = node.forward[level]
     next_node.eq_values.push(value)
     node = next_node
-
   end
 
   class HeadNode
