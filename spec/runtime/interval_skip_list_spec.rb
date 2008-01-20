@@ -1,5 +1,9 @@
 require File.expand_path("#{File.dirname(__FILE__)}/../spec_helper")
 
+class IntervalSkipList
+  public :insert_node, :delete, :head
+end
+
 describe "#next_node_height is deterministic", :shared => true do
   before do
     node_heights = expected_node_heights.dup
@@ -25,10 +29,6 @@ describe "it has nil forward pointers", :shared => true do
       next_pointer.should be_nil
     end
   end
-end
-
-class IntervalSkipList
-  public :insert_node, :delete, :head
 end
 
 describe IntervalSkipList do
