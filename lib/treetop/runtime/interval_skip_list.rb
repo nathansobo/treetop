@@ -17,7 +17,9 @@ class IntervalSkipList
     (max_height - 1).downto(0) do |cur_level|
       while (next_node = cur_node.forward[cur_level]) && next_node.key <= n
         cur_node = next_node
-        return containing if cur_node.key == n
+        if cur_node.key == n
+          return containing + (cur_node.markers - cur_node.endpoint_of)
+        end
       end
       containing.concat(cur_node.forward_markers[cur_level])
     end

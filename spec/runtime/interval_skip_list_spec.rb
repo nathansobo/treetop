@@ -131,7 +131,6 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
         end
 
         it "returns only :a from 5 through 6" do
-          pending
           (5..6).should contain_marker(:a)
         end
         
