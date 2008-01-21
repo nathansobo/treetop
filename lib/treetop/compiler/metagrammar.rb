@@ -948,7 +948,7 @@ module Treetop
           prefix.compile(address, builder, self)
         end
     
-        def predicated_expression
+        def prefixed_expression
           atomic
         end
     
@@ -1275,7 +1275,7 @@ module Treetop
           prefix.compile(lexical_address, builder, self)
         end
     
-        def predicated_expression
+        def prefixed_expression
           elements[1]
         end
     

@@ -6,7 +6,7 @@ module Treetop
         begin_comment(parent_expression)
         use_vars :result, :start_index
         obtain_new_subexpression_address
-        parent_expression.predicated_expression.compile(subexpression_address, builder)
+        parent_expression.prefixed_expression.compile(subexpression_address, builder)
         builder.if__(subexpression_success?) { when_success }
         builder.else_ { when_failure }
         end_comment(parent_expression)
