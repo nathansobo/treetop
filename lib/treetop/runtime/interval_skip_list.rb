@@ -1,6 +1,7 @@
 class IntervalSkipList
   def initialize
     @head = HeadNode.new(max_height)
+    @ranges = {}
   end
 
   def max_height
@@ -27,7 +28,9 @@ class IntervalSkipList
   end
 
   def insert(range, marker)
+    ranges[marker] = range
     first_node = insert_node(range.first)
+    first_node.endpoint_of.push(marker)
     last_node = insert_node(range.last)
     last_node.endpoint_of.push(marker)
 
@@ -48,8 +51,37 @@ class IntervalSkipList
     end
   end
 
+  def delete(marker)
+    range = ranges[marker]
+    first_node = find(range.first)
+
+    cur_node = first_node
+    cur_level = first_node.height - 1
+    while next_node_at_level_inside_range?(cur_node, cur_level, range)
+      while can_ascend_from?(cur_node, cur_level) && next_node_at_level_inside_range?(cur_node, cur_level + 1, range)
+        cur_level += 1
+      end
+      cur_node = unmark_forward_path_at_level(cur_node, cur_level, marker)
+    end
+
+    while node_inside_range?(cur_node, range)
+      while can_descend_from?(cur_level) && next_node_at_level_outside_range?(cur_node, cur_level, range)
+        cur_level -= 1
+      end
+      cur_node = unmark_forward_path_at_level(cur_node, cur_level, marker)
+    end
+    last_node = cur_node
+
+
+    first_node.endpoint_of.delete(marker)
+    delete_node(first_node) if first_node.endpoint_of.empty?
+
+    last_node.endpoint_of.delete(marker)
+    delete_node(first_node) if first_node.endpoint_of.empty?
+  end
+
   protected
-  attr_reader :head
+  attr_reader :head, :ranges
   
   def insert_node(key)
     path = make_path
@@ -61,19 +93,19 @@ class IntervalSkipList
     end
   end
 
-  def delete(key)
+  def delete_node(key)
     path = make_path
     found_node = find(key, path)
     found_node.remove(path) if found_node.key == key
-  end  
+  end
   
-  def find(key, path)
+  def find(key, path = nil)
     cur_node = head
     (max_height - 1).downto(0) do |cur_level|
       while (next_node = cur_node.forward[cur_level]) && next_node.key < key
         cur_node = next_node
       end
-      path[cur_level] = cur_node
+      path[cur_level] = cur_node if path
     end
     cur_node.forward[0]
   end

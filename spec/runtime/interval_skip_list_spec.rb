@@ -2,7 +2,7 @@ require File.expand_path("#{File.dirname(__FILE__)}/../spec_helper")
 require File.expand_path("#{File.dirname(__FILE__)}/interval_skip_list_spec_helper")
 
 class IntervalSkipList
-  public :insert_node, :delete, :head, :nodes
+  public :insert_node, :delete_node, :head, :nodes
 end
 
 describe "#next_node_height is deterministic", :shared => true do
@@ -90,8 +90,8 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
         node.markers.should be_empty
       end
 
-      it "is not an endpoint of any interval" do
-        node.endpoint_of.should be_empty
+      it "is not an endpoint of only :a" do
+        node.endpoint_of.should have_marker(:a)
       end
     end
 
@@ -162,8 +162,8 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
           node.markers.should be_empty
         end
 
-        it "is not an endpoint of any interval" do
-          node.endpoint_of.should be_empty
+        it "is an endpoint of only :a and :b" do
+          node.endpoint_of.should have_markers(:a, :b)
         end
       end
 
@@ -177,7 +177,7 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
           node.height.should == 2
         end
 
-        it "has :a as its only marker at level 1" do
+        it "has :a as its only forward marker at level 1" do
           node.forward_markers[1].should have_marker(:a)
         end
 
@@ -265,8 +265,8 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
             node.markers.should be_empty
           end
 
-          it "is not an endpoint of any interval" do
-            node.endpoint_of.should be_empty
+          it "is an endpoint of only :a, :b, :c" do
+            node.endpoint_of.should have_markers(:a, :b, :c)
           end
         end
 
@@ -280,11 +280,11 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
             node.height.should == 3
           end
 
-          it "has :a as its only marker at level 2" do
+          it "has :a as its only forward marker at level 2" do
             node.forward_markers[2].should have_marker(:a)
           end
 
-          it "has :b as its only marker at level 1" do
+          it "has :b as its only forward marker at level 1" do
             node.forward_markers[1].should have_marker(:b)
           end
           
@@ -406,8 +406,8 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
               node.markers.should be_empty
             end
 
-            it "is not an endpoint of any interval" do
-              node.endpoint_of.should be_empty
+            it "is an endpoint of only :a, :b, :c, and :d" do
+              node.endpoint_of.should have_markers(:a, :b, :c, :d)
             end
           end
 
@@ -516,6 +516,95 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
               node.endpoint_of.should have_marker(:d)
             end
           end
+          
+#          describe ", and then :d is deleted" do
+#            before do
+#              list.delete(:d)
+#            end
+#
+#            it "has only 4 nodes" do
+#              list.nodes.size.should == 4
+#            end
+#
+#            describe " #nodes[0]" do
+#              before do
+#                @node = list.nodes[0]
+#              end
+#
+#              it "has :a, :b, and :c as its only forward markers at level 1" do
+#                node.forward_markers[1].should have_markers(:a, :b, :c)
+#              end
+#
+#              it "has no forward markers at level 0" do
+#                node.forward_markers[0].should be_empty
+#              end
+#            end
+#
+#            describe " #nodes[1]" do
+#              before do
+#                @node = list.nodes[1]
+#              end
+#
+#              it "has :a as its only forward marker at level 2" do
+#                node.forward_markers[2].should have_marker(:a)
+#              end
+#
+#              it "has :b as its only forward marker at level 1" do
+#                node.forward_markers[1].should have_marker(:b)
+#              end
+#
+#              it "has no forward markers at level 0" do
+#                node.forward_markers[0].should be_empty
+#              end
+#
+#              it "has :a, :b, and :c as its only markers" do
+#                node.markers.should have_markers(:a, :b, :c)
+#              end
+#
+#              it "is the endpoint of only :c" do
+#                node.endpoint_of.should have_marker(:c)
+#              end
+#            end
+#
+#            describe " #nodes[2]" do
+#              before do
+#                @node = list.nodes[2]
+#              end
+#
+#              it "has no forward markers at any level" do
+#                node.forward_markers[0].should be_empty
+#                node.forward_markers[1].should be_empty
+#              end
+#
+#              it "has :b as its only marker" do
+#                node.markers.should have_marker(:b)
+#              end
+#
+#              it "is the endpoint of only :b" do
+#                node.markers.endpoint_of.should have_marker(:b)
+#              end
+#            end
+#
+#            describe " #nodes[3]" do
+#              before do
+#                @node = list.nodes[3]
+#              end
+#
+#              it "has no forward markers at any level" do
+#                node.forward_markers[0].should be_empty
+#                node.forward_markers[1].should be_empty
+#                node.forward_markers[2].should be_empty
+#              end
+#
+#              it "has :a as its only marker" do
+#                node.markers.should have_marker(:a)
+#              end
+#
+#              it "is the endpoint of only :a" do
+#                node.markers.endpoint_of.should have_marker(:a)
+#              end
+#            end
+#          end
         end
       end
     end
@@ -602,7 +691,7 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
 
     describe "and subsequently deleted" do
       before do
-        list.delete(1)
+        list.delete_node(1)
       end
 
       specify "#empty? returns true" do
@@ -669,7 +758,7 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
 
     describe "and 1 is subsequently deleted" do
       before do
-        list.delete(1)
+        list.delete_node(1)
       end
 
       describe "the remaining node" do
@@ -689,7 +778,7 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
 
     describe "and 3 is subsequently deleted" do
       before do
-        list.delete(3)
+        list.delete_node(3)
       end
 
       describe "the remaining node" do
@@ -791,7 +880,7 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
 
     describe "and 3 is subsequently deleted" do
       before do
-        list.delete(3)
+        list.delete_node(3)
       end
 
       specify "#head points at nil at levels 1 and 2" do
