@@ -517,94 +517,94 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
             end
           end
           
-#          describe ", and then :d is deleted" do
-#            before do
-#              list.delete(:d)
-#            end
-#
-#            it "has only 4 nodes" do
-#              list.nodes.size.should == 4
-#            end
-#
-#            describe " #nodes[0]" do
-#              before do
-#                @node = list.nodes[0]
-#              end
-#
-#              it "has :a, :b, and :c as its only forward markers at level 1" do
-#                node.forward_markers[1].should have_markers(:a, :b, :c)
-#              end
-#
-#              it "has no forward markers at level 0" do
-#                node.forward_markers[0].should be_empty
-#              end
-#            end
-#
-#            describe " #nodes[1]" do
-#              before do
-#                @node = list.nodes[1]
-#              end
-#
-#              it "has :a as its only forward marker at level 2" do
-#                node.forward_markers[2].should have_marker(:a)
-#              end
-#
-#              it "has :b as its only forward marker at level 1" do
-#                node.forward_markers[1].should have_marker(:b)
-#              end
-#
-#              it "has no forward markers at level 0" do
-#                node.forward_markers[0].should be_empty
-#              end
-#
-#              it "has :a, :b, and :c as its only markers" do
-#                node.markers.should have_markers(:a, :b, :c)
-#              end
-#
-#              it "is the endpoint of only :c" do
-#                node.endpoint_of.should have_marker(:c)
-#              end
-#            end
-#
-#            describe " #nodes[2]" do
-#              before do
-#                @node = list.nodes[2]
-#              end
-#
-#              it "has no forward markers at any level" do
-#                node.forward_markers[0].should be_empty
-#                node.forward_markers[1].should be_empty
-#              end
-#
-#              it "has :b as its only marker" do
-#                node.markers.should have_marker(:b)
-#              end
-#
-#              it "is the endpoint of only :b" do
-#                node.markers.endpoint_of.should have_marker(:b)
-#              end
-#            end
-#
-#            describe " #nodes[3]" do
-#              before do
-#                @node = list.nodes[3]
-#              end
-#
-#              it "has no forward markers at any level" do
-#                node.forward_markers[0].should be_empty
-#                node.forward_markers[1].should be_empty
-#                node.forward_markers[2].should be_empty
-#              end
-#
-#              it "has :a as its only marker" do
-#                node.markers.should have_marker(:a)
-#              end
-#
-#              it "is the endpoint of only :a" do
-#                node.markers.endpoint_of.should have_marker(:a)
-#              end
-#            end
-#          end
+          describe ", and then :d is deleted" do
+            before do
+              list.delete(:d)
+            end
+
+            it "has only 4 nodes" do
+              list.nodes.size.should == 4
+            end
+
+            describe " #nodes[0]" do
+              before do
+                @node = list.nodes[0]
+              end
+
+              it "has :a, :b, and :c as its only forward markers at level 1" do
+                node.forward_markers[1].should have_markers(:a, :b, :c)
+              end
+
+              it "has no forward markers at level 0" do
+                node.forward_markers[0].should be_empty
+              end
+            end
+
+            describe " #nodes[1]" do
+              before do
+                @node = list.nodes[1]
+              end
+
+              it "has :a as its only forward marker at level 2" do
+                node.forward_markers[2].should have_marker(:a)
+              end
+
+              it "has :b as its only forward marker at level 1" do
+                node.forward_markers[1].should have_marker(:b)
+              end
+
+              it "has no forward markers at level 0" do
+                node.forward_markers[0].should be_empty
+              end
+
+              it "has :a, :b, and :c as its only markers" do
+                node.markers.should have_markers(:a, :b, :c)
+              end
+
+              it "is the endpoint of only :c" do
+                node.endpoint_of.should have_marker(:c)
+              end
+            end
+
+            describe " #nodes[2]" do
+              before do
+                @node = list.nodes[2]
+              end
+
+              it "has no forward markers at any level" do
+                node.forward_markers[0].should be_empty
+                node.forward_markers[1].should be_empty
+              end
+
+              it "has :b as its only marker" do
+                node.markers.should have_marker(:b)
+              end
+
+              it "is the endpoint of only :b" do
+                node.endpoint_of.should have_marker(:b)
+              end
+            end
+
+            describe " #nodes[3]" do
+              before do
+                @node = list.nodes[3]
+              end
+
+              it "has no forward markers at any level" do
+                node.forward_markers[0].should be_empty
+                node.forward_markers[1].should be_empty
+                node.forward_markers[2].should be_empty
+              end
+
+              it "has :a as its only marker" do
+                node.markers.should have_marker(:a)
+              end
+
+              it "is the endpoint of only :a" do
+                node.endpoint_of.should have_marker(:a)
+              end
+            end
+          end
         end
       end
     end

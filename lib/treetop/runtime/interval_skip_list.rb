@@ -53,7 +53,8 @@ class IntervalSkipList
 
   def delete(marker)
     range = ranges[marker]
-    first_node = find(range.first)
+    path_to_first_node = make_path
+    first_node = find(range.first, path_to_first_node)
 
     cur_node = first_node
     cur_level = first_node.height - 1
@@ -72,12 +73,17 @@ class IntervalSkipList
     end
     last_node = cur_node
 
-
     first_node.endpoint_of.delete(marker)
-    delete_node(first_node) if first_node.endpoint_of.empty?
+    if first_node.endpoint_of.empty?
+      first_node.delete(path_to_first_node)
+    end
 
     last_node.endpoint_of.delete(marker)
-    delete_node(first_node) if first_node.endpoint_of.empty?
+    if last_node.endpoint_of.empty?
+      path_to_last_node = make_path
+      find(range.last, path_to_last_node)
+      last_node.delete(path_to_last_node)
+    end
   end
 
   protected
@@ -96,16 +102,16 @@ class IntervalSkipList
   def delete_node(key)
     path = make_path
     found_node = find(key, path)
-    found_node.remove(path) if found_node.key == key
+    found_node.delete(path) if found_node.key == key
   end
   
-  def find(key, path = nil)
+  def find(key, path)
     cur_node = head
     (max_height - 1).downto(0) do |cur_level|
       while (next_node = cur_node.forward[cur_level]) && next_node.key < key
         cur_node = next_node
       end
-      path[cur_level] = cur_node if path
+      path[cur_level] = cur_node
     end
     cur_node.forward[0]
   end
@@ -185,7 +191,7 @@ class IntervalSkipList
       promote_markers(path)
     end
 
-    def remove(path)
+    def delete(path)
       0.upto(height - 1) do |i|
         path[i].forward[i] = forward[i]
       end
