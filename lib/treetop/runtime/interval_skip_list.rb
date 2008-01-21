@@ -145,6 +145,13 @@ class IntervalSkipList
     node = next_node
   end
 
+  def unmark_forward_path_at_level(node, level, marker)
+    node.forward_markers[level].delete(marker)
+    next_node = node.forward[level]
+    next_node.markers.delete(marker)
+    node = next_node
+  end
+
   def nodes
     nodes = []
     cur_node = head.forward[0]
