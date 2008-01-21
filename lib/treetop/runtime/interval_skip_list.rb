@@ -186,7 +186,6 @@ class IntervalSkipList
       @key = key
       @markers = []
       @endpoint_of = []
-
       update_forward_pointers(path)
       promote_markers(path)
     end
@@ -195,6 +194,7 @@ class IntervalSkipList
       0.upto(height - 1) do |i|
         path[i].forward[i] = forward[i]
       end
+      demote_markers(path)
     end
 
     protected
@@ -216,7 +216,7 @@ class IntervalSkipList
         incoming_markers.each do |marker|
           if can_be_promoted_higher?(marker, i)
             new_promoted.push(marker)
-            delete_marker_from_path(marker, i, forward[i+i])
+            forward[i].delete_marker_from_path(marker, i, forward[i+i])
           else
             forward_markers[i].push(marker)
           end
@@ -235,15 +235,44 @@ class IntervalSkipList
       end
     end
 
+    def demote_markers(path)
+      demoted = []
+      new_demoted = []
+      
+      (height - 1).downto(0) do |i|
+        forward_markers[i].each do |marker|
+          new_demoted.push(marker) unless path[i].forward_markers[i].include?(marker)
+        end
+
+        demoted.each do |marker|
+          forward[i].place_marker_on_path(marker, i, forward[i + 1])
+          # todo: make tests fail if this doesn't exist by making node with key 1 have height 1
+          # new_demoted.push(marker) unless path[i].forward_markers[i].include?(marker)
+        end
+
+        demoted = new_demoted
+        new_demoted = []
+      end
+    end
+
     def can_be_promoted_higher?(marker, level)
       level < height - 1 && forward[level + 1] && forward[level + 1].markers.include?(marker)
     end
 
     def delete_marker_from_path(marker, level, terminus)
-      cur_node = forward[level]
+      cur_node = self
       until cur_node == terminus
         cur_node.forward_markers[level].delete(marker)
         cur_node.markers.delete(marker)
+        cur_node = cur_node.forward[level]
+      end
+    end
+
+    def place_marker_on_path(marker, level, terminus)
+      cur_node = self
+      until cur_node == terminus
+        cur_node.forward_markers[level].push(marker)
+        cur_node.markers.push(marker)
         cur_node = cur_node.forward[level]
       end
     end

@@ -531,6 +531,11 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
                 @node = list.nodes[0]
               end
 
+              it "has a key of 1 and height of 2" do
+                node.key.should == 1
+                node.height.should == 2
+              end
+
               it "has :a, :b, and :c as its only forward markers at level 1" do
                 node.forward_markers[1].should have_markers(:a, :b, :c)
               end
@@ -543,6 +548,11 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
             describe " #nodes[1]" do
               before do
                 @node = list.nodes[1]
+              end
+
+              it "has a key of 3 and height of 3" do
+                node.key.should == 3
+                node.height.should == 3
               end
 
               it "has :a as its only forward marker at level 2" do
@@ -571,6 +581,11 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
                 @node = list.nodes[2]
               end
 
+              it "has a key of 5 and height of 2" do
+                node.key.should == 5
+                node.height.should == 2
+              end
+
               it "has no forward markers at any level" do
                 node.forward_markers[0].should be_empty
                 node.forward_markers[1].should be_empty
@@ -590,6 +605,11 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
                 @node = list.nodes[3]
               end
 
+              it "has a key of 7 and height of 3" do
+                node.key.should == 7
+                node.height.should == 3
+              end
+
               it "has no forward markers at any level" do
                 node.forward_markers[0].should be_empty
                 node.forward_markers[1].should be_empty
@@ -604,11 +624,154 @@ describe IntervalSkipList, " when #next_node_height returns 2, 3, 2, 3, 1 in ord
                 node.endpoint_of.should have_marker(:a)
               end
             end
+
+            describe ", and then :c is deleted" do
+              before do
+                list.delete(:c)
+              end
+
+              it "has only 3 nodes" do
+                list.nodes.size.should == 3
+              end
+
+              describe " #nodes[0]" do
+                before do
+                  @node = list.nodes[0]
+                end
+
+                it "has a key of 1 and height of 2" do
+                  node.key.should == 1
+                  node.height.should == 2
+                end
+
+                it "has :a and :b as its only forward markers at level 1" do
+                  node.forward_markers[1].should have_markers(:a, :b)
+                end
+
+                it "has no forward markers at level 0" do
+                  node.forward_markers[0].should be_empty
+                end
+
+                it "has no markers" do
+                  node.markers.should be_empty
+                end
+
+                it "is an endpoint of only :a and :b" do
+                  node.endpoint_of.should have_markers(:a, :b)
+                end
+              end
+
+              describe " #nodes[1]" do
+                before do
+                  @node = list.nodes[1]
+                end
+
+                it "has a key of 5 and height of 2" do
+                  node.key.should == 5
+                  node.height.should == 2
+                end
+
+                it "has :a as its only forward marker at level 1" do
+                  node.forward_markers[1].should have_marker(:a)
+                end
+
+                it "has no forward markers at level 0" do
+                  node.forward_markers[0].should be_empty
+                end
+
+                it "has :a and :b as its only markers" do
+                  node.markers.should have_markers(:a, :b)
+                end
+
+                it "is an endpoint of only :b" do
+                  node.endpoint_of.should have_marker(:b)
+                end
+              end
+
+              describe " #nodes[2]" do
+                before do
+                  @node = list.nodes[2]
+                end
+
+                it "has a key of 7 and height of 3" do
+                  node.key.should == 7
+                  node.height.should == 3
+                end
+
+                it "has no forward markers at any level" do
+                  node.forward_markers[0].should be_empty
+                  node.forward_markers[1].should be_empty
+                  node.forward_markers[2].should be_empty
+                end
+
+                it "has :a its only marker" do
+                  node.markers.should have_marker(:a)
+                end
+
+                it "is an endpoint of only :a" do
+                  node.endpoint_of.should have_marker(:a)
+                end
+              end
+            end
           end
         end
       end
     end
   end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   # Node insertion
 
