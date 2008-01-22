@@ -15,12 +15,6 @@ describe IntervalSkipList, " when #next_node_height returns 1, 3, 2, 3, 1 in ord
     [1, 3, 2, 3, 1]
   end
 
-  def confirm_containing_intervals(range, *markers)
-    (range.begin).upto(range.end) do |i|
-      list.containing(i).should have_markers(*markers)
-    end
-  end
-
   describe ", when :a is inserted on 1..7" do
     before do
       list.insert(1..7, :a)
