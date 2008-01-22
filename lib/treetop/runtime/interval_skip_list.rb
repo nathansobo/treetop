@@ -247,8 +247,7 @@ class IntervalSkipList
 
         demoted.each do |marker|
           forward[i].place_marker_on_path(marker, i, forward[i + 1])
-          # todo: make tests fail if this doesn't exist by making node with key 1 have height 1
-          # new_demoted.push(marker) unless path[i].forward_markers[i].include?(marker)
+          new_demoted.push(marker) unless path[i].forward_markers[i].include?(marker)
         end
 
         demoted = new_demoted
