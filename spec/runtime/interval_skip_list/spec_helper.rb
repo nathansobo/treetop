@@ -1,3 +1,16 @@
+
+class IntervalSkipList
+  public :insert_node, :delete_node, :nodes, :head
+end
+
+
+describe "#next_node_height is deterministic", :shared => true do
+  before do
+    node_heights = expected_node_heights.dup
+    stub(list).next_node_height { node_heights.shift }
+  end
+end
+
 module IntervalSkipListSpecHelper
   def contain_marker(marker)
     ContainMarkers.new(list, [marker])
