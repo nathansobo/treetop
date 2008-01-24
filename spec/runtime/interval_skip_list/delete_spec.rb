@@ -109,20 +109,20 @@ describe IntervalSkipList, " with nodes of height 3, 2, 1, 3, 1, 2, 3" do
         node.height.should == 3
       end
 
-      it "has :f as its only forward markers at level 2" do
-        node.forward_markers[2].should have_marker(:f)
+      it "has :f and :h as its only forward markers at level 2" do
+        node.forward_markers[2].should have_markers(:f, :h)
       end
 
       it "has :e as its only forward markers at level 1" do
         node.forward_markers[1].should have_marker(:e)
       end
 
-      it "has :d, :h as its only forward markers at level 0" do
-        node.forward_markers[0].should have_markers(:d, :h)
+      it "has :d, :g as its only forward markers at level 0" do
+        node.forward_markers[0].should have_markers(:d, :g)
       end
 
       it "has :c, :d, :e, :f, :g and :h as its only markers" do
-        node.markers.should have_markers(:c, :d, :e, :f, :h)
+        node.markers.should have_markers(:c, :d, :e, :f, :g, :h)
       end
     end
 
@@ -141,7 +141,7 @@ describe IntervalSkipList, " with nodes of height 3, 2, 1, 3, 1, 2, 3" do
       end
 
       it "has :d and :g as its only markers" do
-        node.markers.should have_marker(:d, :g)
+        node.markers.should have_markers(:d, :g)
       end
     end
 
@@ -161,7 +161,7 @@ describe IntervalSkipList, " with nodes of height 3, 2, 1, 3, 1, 2, 3" do
       end
 
       it "has :e as its only marker" do
-        node.markers.should have_marker(:e)
+        node.markers.should have_markers(:e)
       end
     end
 
@@ -181,8 +181,8 @@ describe IntervalSkipList, " with nodes of height 3, 2, 1, 3, 1, 2, 3" do
         node.forward_markers[2].should be_empty
       end
 
-      it "has :f as its only marker" do
-        node.markers.should have_marker(:f)
+      it "has :f and :h as its only markers" do
+        node.markers.should have_markers(:f, :h)
       end
     end
   end
@@ -203,11 +203,11 @@ describe IntervalSkipList, " with nodes of height 3, 2, 1, 3, 1, 2, 3" do
       end
 
       it "has :f as its only forward marker at level 2" do
-        node.forward_markers[2].should have_marker(:f)
+        node.forward_markers[2].should have_markers(:f)
         end
 
-      it "has :a, :b, :d, :e as its only forward markers at level 1" do
-        node.forward_markers[1].should have_markers(:a, :b, :d, :e)
+      it "has :a, :b, :d, :e, and :g as its only forward markers at level 1" do
+        node.forward_markers[1].should have_markers(:a, :b, :d, :e, :g)
       end
 
       it "has no forward markers at level 0" do
@@ -230,15 +230,15 @@ describe IntervalSkipList, " with nodes of height 3, 2, 1, 3, 1, 2, 3" do
       end
 
       it "has :e as its only forward marker at level 1" do
-        node.forward_markers[1].should have_marker(:e)
+        node.forward_markers[1].should have_markers(:e)
       end
 
-      it "has :b and :d as its only forward markers at level 0" do
-        node.forward_markers[0].should have_markers(:b, :d)
+      it "has :b, :d, and :g as its only forward markers at level 0" do
+        node.forward_markers[0].should have_markers(:b, :d, :g)
       end
 
-      it "has :b, :d, and :e as its only markers" do
-        node.markers.should have_markers(:b, :d, :e)
+      it "has :a, :b, :d, :e, and :g as its only markers" do
+        node.markers.should have_markers(:a, :b, :d, :e, :g)
       end
     end
 
@@ -252,12 +252,12 @@ describe IntervalSkipList, " with nodes of height 3, 2, 1, 3, 1, 2, 3" do
         node.height.should == 1
       end
 
-      it "has :b and :d as its only forward markers at level 0" do
-        node.forward_markers[0].should have_markers(:b, :d)
+      it "has :d, :g, and :h as its only forward markers at level 0" do
+        node.forward_markers[0].should have_markers(:d, :g, :h)
       end
 
-      it "has :b and :d as its only markers" do
-        node.markers.should have_markers(:b, :d)
+      it "has :b, :d, and :g as its only markers" do
+        node.markers.should have_markers(:b, :d, :g)
       end
     end
 
@@ -271,12 +271,12 @@ describe IntervalSkipList, " with nodes of height 3, 2, 1, 3, 1, 2, 3" do
         node.height.should == 1
       end
 
-      it "has :e as its only forward marker at level 0" do
-        node.forward_markers[0].should have_marker(:e)
+      it "has :h as its only forward marker at level 0" do
+        node.forward_markers[0].should have_markers(:h)
       end
 
-      it "has :d and :e as its only markers" do
-        node.markers.should have_markers(:d, :e)
+      it "has :d, :g, and :h as its only markers" do
+        node.markers.should have_markers(:d, :g, :h)
       end
     end
 
@@ -290,13 +290,16 @@ describe IntervalSkipList, " with nodes of height 3, 2, 1, 3, 1, 2, 3" do
         node.height.should == 2
       end
 
-      it "has no forward markers at any level" do
-        node.forward_markers[0].should be_empty
-        node.forward_markers[1].should be_empty
+      it "has :h as its only forward marker at level 1" do
+        node.forward_markers[1].should have_markers(:h)
       end
 
-      it "has :e as its only marker" do
-        node.markers.should have_marker(:e)
+      it "has no forward markers at level 0" do
+        node.forward_markers[0].should be_empty
+      end
+
+      it "has :e and :h as its only markers" do
+        node.markers.should have_markers(:e, :h)
       end
     end
 
@@ -316,8 +319,8 @@ describe IntervalSkipList, " with nodes of height 3, 2, 1, 3, 1, 2, 3" do
         node.forward_markers[2].should be_empty
       end
 
-      it "has :f as its only marker" do
-        node.markers.should have_marker(:f)
+      it "has :f and :h as its only markers" do
+        node.markers.should have_markers(:f, :h)
       end
     end
   end
