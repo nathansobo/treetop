@@ -239,20 +239,53 @@ class IntervalSkipList
     def demote_markers(path)
       demoted = []
       new_demoted = []
-      
+
+      (height - 1).downto(0) do |i|
+        incoming_markers = path[i].forward_markers[i].dup
+        incoming_markers.each do |marker|
+          unless node_in_range_reachable_from_level?(marker, i)
+            path[i].forward_markers[i].delete(marker)
+            new_demoted.push(marker)
+          end
+        end
+
+        demoted.each do |marker|
+          path[i+1].place_marker_on_inbound_path(marker, i, path[i])
+
+          if forward[i].markers.include?(marker)
+            path[i].forward_markers[i].push(marker)
+          else
+            new_demoted.push(marker)
+          end
+        end
+        
+        demoted = new_demoted
+        new_demoted = []
+      end
+
+      demoted = []
+      new_demoted = []
+
       (height - 1).downto(0) do |i|
         forward_markers[i].each do |marker|
           new_demoted.push(marker) unless path[i].forward_markers[i].include?(marker)
         end
 
         demoted.each do |marker|
-          forward[i].place_marker_on_path(marker, i, forward[i + 1])
+          forward[i].place_marker_on_outbound_path(marker, i, forward[i + 1])
           new_demoted.push(marker) unless path[i].forward_markers[i].include?(marker)
         end
 
         demoted = new_demoted
         new_demoted = []
       end
+    end
+
+    def node_in_range_reachable_from_level?(marker, level)
+      level.upto(height - 1) do |i|
+        return true if forward[i].markers.include?(marker)
+      end
+      false
     end
 
     def can_be_promoted_higher?(marker, level)
@@ -268,12 +301,21 @@ class IntervalSkipList
       end
     end
 
-    def place_marker_on_path(marker, level, terminus)
+    def place_marker_on_outbound_path(marker, level, terminus)
       cur_node = self
       until cur_node == terminus
         cur_node.forward_markers[level].push(marker)
         cur_node.markers.push(marker)
         cur_node = cur_node.forward[level]
+      end
+    end
+
+    def place_marker_on_inbound_path(marker, level, terminus)
+      cur_node = self
+      until cur_node == terminus
+        cur_node.forward_markers[level].push(marker)
+        cur_node = cur_node.forward[level]
+        cur_node.markers.push(marker)
       end
     end
   end
