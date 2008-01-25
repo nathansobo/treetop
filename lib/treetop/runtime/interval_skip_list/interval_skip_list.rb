@@ -12,6 +12,12 @@ class IntervalSkipList
     head.forward[0].nil?
   end
 
+  def expire(range, length_change)
+    containing(range.first).each do |marker|
+      delete(marker)
+    end
+  end
+
   def containing(n)
     containing = []
     cur_node = head
