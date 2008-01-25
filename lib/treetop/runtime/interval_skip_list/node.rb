@@ -12,6 +12,10 @@ class IntervalSkipList
       promote_markers(path)
     end
 
+    def all_forward_markers
+      markers.flatten
+    end
+
     def delete(path)
       0.upto(top_level) do |i|
         path[i].forward[i] = forward[i]

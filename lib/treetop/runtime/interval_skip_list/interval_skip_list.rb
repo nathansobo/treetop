@@ -13,33 +13,32 @@ class IntervalSkipList
   end
 
   def expire(range, length_change)
-    markers, start_node = containing(range.first)
-
-    markers.each do |marker|
+    expired_markers, first_node_after_range = overlapping(range)
+    expired_markers.each do |marker|
       delete(marker)
     end
 
-    cur_node = start_node
+    cur_node = first_node_after_range
     while cur_node do
       cur_node.key += length_change if cur_node.key >= range.last
       cur_node = cur_node.forward[0]
     end
   end
 
+  def overlapping(range)
+    markers, first_node = containing_with_node(range.first)
+    cur_node = first_node
+
+    begin
+      markers.concat(cur_node.forward_markers.flatten)
+      cur_node = cur_node.forward[0]
+    end while cur_node.key < range.last
+
+    return markers.uniq, cur_node
+  end
+
   def containing(n)
-    containing = []
-    cur_node = head
-    (max_height - 1).downto(0) do |cur_level|
-      while (next_node = cur_node.forward[cur_level]) && next_node.key <= n
-        cur_node = next_node
-        if cur_node.key == n
-          return containing + (cur_node.markers - cur_node.endpoint_of), cur_node
-        end
-      end
-      containing.concat(cur_node.forward_markers[cur_level])
-    end
-    
-    return containing, cur_node
+    containing_with_node(n).first
   end
 
   def insert(range, marker)
@@ -103,7 +102,7 @@ class IntervalSkipList
 
   protected
   attr_reader :head, :ranges
-  
+
   def insert_node(key)
     path = make_path
     found_node = find(key, path)
@@ -112,6 +111,22 @@ class IntervalSkipList
     else
       return Node.new(key, next_node_height, path)
     end
+  end  
+
+  def containing_with_node(n)
+    containing = []
+    cur_node = head
+    (max_height - 1).downto(0) do |cur_level|
+      while (next_node = cur_node.forward[cur_level]) && next_node.key <= n
+        cur_node = next_node
+        if cur_node.key == n
+          return containing + (cur_node.markers - cur_node.endpoint_of), cur_node
+        end
+      end
+      containing.concat(cur_node.forward_markers[cur_level])
+    end
+
+    return containing, cur_node
   end
 
   def delete_node(key)
