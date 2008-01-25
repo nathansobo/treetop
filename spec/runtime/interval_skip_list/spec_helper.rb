@@ -1,8 +1,8 @@
+require File.expand_path("#{File.dirname(__FILE__)}/../../spec_helper")
 
 class IntervalSkipList
   public :insert_node, :delete_node, :nodes, :head
 end
-
 
 describe "#next_node_height is deterministic", :shared => true do
   before do
@@ -80,3 +80,5 @@ module IntervalSkipListSpecHelper
     end
   end
 end
+
+require "#{File.dirname(__FILE__)}/palindromic_fixture"
