@@ -1,8 +1,6 @@
 dir = File.dirname(__FILE__)
 require 'rubygems'
 require 'benchmark'
-
-$LOAD_PATH.unshift(File.join(dir, '..', 'vendor', 'rspec', 'lib'))
 require 'spec'
 
 unless $bootstrapped_gen_1_metagrammar
