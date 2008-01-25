@@ -13,8 +13,16 @@ class IntervalSkipList
   end
 
   def expire(range, length_change)
-    containing(range.first).each do |marker|
+    markers, start_node = containing(range.first)
+
+    markers.each do |marker|
       delete(marker)
+    end
+
+    cur_node = start_node
+    while cur_node do
+      cur_node.key += length_change if cur_node.key >= range.last
+      cur_node = cur_node.forward[0]
     end
   end
 
@@ -25,12 +33,13 @@ class IntervalSkipList
       while (next_node = cur_node.forward[cur_level]) && next_node.key <= n
         cur_node = next_node
         if cur_node.key == n
-          return containing + (cur_node.markers - cur_node.endpoint_of)
+          return containing + (cur_node.markers - cur_node.endpoint_of), cur_node
         end
       end
       containing.concat(cur_node.forward_markers[cur_level])
     end
-    containing
+    
+    return containing, cur_node
   end
 
   def insert(range, marker)

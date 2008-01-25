@@ -1,6 +1,7 @@
 class IntervalSkipList
   class Node < HeadNode
-    attr_reader :key, :markers, :endpoint_of
+    attr_accessor :key
+    attr_reader :markers, :endpoint_of
 
     def initialize(key, height, path)
       super(height)
