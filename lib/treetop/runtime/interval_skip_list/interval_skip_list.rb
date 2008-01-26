@@ -14,21 +14,14 @@ class IntervalSkipList
 
   def expire(range, length_change)
     expired_markers, first_node_after_range = overlapping(range)
-    expired_markers.each do |marker|
-      delete(marker)
-    end
-
-    cur_node = first_node_after_range
-    while cur_node do
-      cur_node.key += length_change if cur_node.key >= range.last
-      cur_node = cur_node.forward[0]
-    end
+    expired_markers.each { |marker| delete(marker) }
+    first_node_after_range.propagate_length_change(length_change)    
   end
 
   def overlapping(range)
     markers, first_node = containing_with_node(range.first)
-    cur_node = first_node
 
+    cur_node = first_node
     begin
       markers.concat(cur_node.forward_markers.flatten)
       cur_node = cur_node.forward[0]

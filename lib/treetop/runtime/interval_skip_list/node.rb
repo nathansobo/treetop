@@ -23,6 +23,14 @@ class IntervalSkipList
       demote_markers(path)
     end
 
+    def propagate_length_change(length_change)
+      cur_node = self
+      while cur_node do
+        cur_node.key += length_change
+        cur_node = cur_node.forward[0]
+      end
+    end
+
     protected
 
     def update_forward_pointers(path)
