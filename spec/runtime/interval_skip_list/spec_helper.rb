@@ -1,7 +1,7 @@
 require File.expand_path("#{File.dirname(__FILE__)}/../../spec_helper")
 
 class IntervalSkipList
-  public :insert_node, :delete_node, :nodes, :head
+  public :insert_node, :delete_node, :nodes, :head, :next_node_height
 end
 
 describe "#next_node_height is deterministic", :shared => true do

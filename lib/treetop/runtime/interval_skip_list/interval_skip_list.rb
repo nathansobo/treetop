@@ -1,7 +1,10 @@
 class IntervalSkipList
+  attr_reader :probability
+
   def initialize
     @head = HeadNode.new(max_height)
     @ranges = {}
+    @probability = 0.5
   end
 
   def max_height
@@ -144,7 +147,11 @@ class IntervalSkipList
   end
 
   def next_node_height
-    nil
+    height = 1
+    while rand < probability && height < max_height
+      height += 1
+    end
+    height
   end
 
   def can_ascend_from?(node, level)
