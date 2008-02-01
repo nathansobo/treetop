@@ -15,7 +15,7 @@ end
 
 gemspec = Gem::Specification.new do |s|
   s.name = "treetop"
-  s.version = "1.2.0"
+  s.version = "1.2.1"
   s.author = "Nathan Sobo"
   s.email = "nathansobo@gmail.com"
   s.homepage = "http://functionalform.blogspot.com"
