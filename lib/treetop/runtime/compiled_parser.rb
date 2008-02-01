@@ -46,7 +46,7 @@ module Treetop
 
       protected
       
-      attr_reader :node_cache, :input_length
+      attr_reader :node_cache, :expirable_node_cache, :input_length
       attr_writer :index
               
       def prepare_to_parse(input)
@@ -54,6 +54,7 @@ module Treetop
         @input_length = input.length
         reset_index
         @node_cache = Hash.new {|hash, key| hash[key] = Hash.new}
+        @expirable_node_cache = NodeCache.new
         @terminal_failures = []
         @max_terminal_failure_index = 0
       end
