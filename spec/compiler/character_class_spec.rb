@@ -45,4 +45,12 @@ module CharacterClassSpec
       parse('"').should_not be_nil
     end
   end
+
+  describe "A character class containing a /" do
+    testing_expression "[/]"
+
+    it "matches a /" do
+      parse("/").should_not be_nil
+    end
+  end
 end
