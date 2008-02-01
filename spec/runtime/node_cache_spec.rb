@@ -37,14 +37,24 @@ module NodeCacheSpec
       end
 
       describe "#expire" do
-        it "deletes the stored result from the cache when expiring an overlapping interval" do
-          pending
+        it "deletes the stored result from the cache when expiring an exactly overlapping interval" do
           cache.should have_result('foo', 5)
           cache.expire(5..10, 0)
           cache.should_not have_result('foo', 5)
         end
-      end
 
+        it "deletes the stored result from the cache when expiring a partially overlapping interval" do
+          cache.should have_result('foo', 5)
+          cache.expire(8..14, 0)
+          cache.should_not have_result('foo', 5)
+        end
+
+        it "does not delete the stored result from the cache when expiring a non-overlapping interval" do
+          cache.should have_result('foo', 5)
+          cache.expire(3..5, 0)
+          cache.should have_result('foo', 5)
+        end
+      end
     end
 
     describe "with a nil parse result stored on a name and a zero-length interval" do
@@ -73,8 +83,32 @@ module NodeCacheSpec
       end
     end
 
-    describe "" do
+    describe "with a three results for the same rule stored on three seperate intervals" do
+      attr_reader :a, :b, :c
+      
+      before do
+        @a = Object.new
+        cache.store('foo', 0..5, a)
 
+        @b = Object.new
+        cache.store('foo', 3..10, b)
+
+        @c = Object.new
+        cache.store('foo', 7..13, c)
+      end
+
+      it "removes multiple results that overlap an expired range, correctly updating the survivng result with the length_change" do
+        cache.get('foo', 0).should == a
+        cache.get('foo', 3).should == b
+        cache.get('foo', 7).should == c
+
+        cache.expire(3..7, 5)
+
+        cache.should_not have_result('foo', 0)
+        cache.should_not have_result('foo', 3)
+        cache.should_not have_result('foo', 7)
+        cache.get('foo', 12).should == c
+      end
     end
 
 

@@ -28,4 +28,11 @@ describe Range do
       (1..10).intersects?(4..6).should be_true
     end
   end
+
+  describe "#transpose" do
+    it "returns a range whose start and end values are adjusted by the given amount" do
+      (1..5).transpose(5).should == (6..10)
+      (5..6).transpose(-2).should == (3..4)
+    end
+  end
 end
