@@ -44,20 +44,27 @@ describe "A grammar with a sequence of 3 nonterminals" do
   end
 
   it "correctly 'forgets' failures and recycles successfully parsed nodes preceding the failure" do
-    pending "this is not yet fleshed out"
-    input = "the green don"
+    pending "proper parse failure expiration"
+    
+    input = "the green dot"
 
     result = parser.parse(input)
     result.should be_nil
 
-    node = parser.send(:expirable_node_cache)
+    node_cache = parser.send(:expirable_node_cache)
+    the = node_cache.get(:the, 0)
+    the.text_value.should == "the"
 
-    input.gsub!('green', 'aquamarine')
-    parser.expire(5..9, 5)
+    green = node_cache.get(:color, 4)
+    green.text_value.should == "green"
 
+
+    input[12] = 'g'
+
+    parser.expire(12..13, 0)
     new_result = parser.reparse
-    new_result.should_not == result
+    new_result.should_not be_nil
     new_result.the.should == the
-    new_result.dog.should == dog
+    new_result.color.should == green
   end
 end
