@@ -51,7 +51,7 @@ module Treetop
       end
     
       def subexpression_success?
-        subexpression_result_var
+        "#{subexpression_result_var} && !#{subexpression_result_var}.instance_of?(TerminalParseFailure)"
       end
     
       def obtain_new_subexpression_address

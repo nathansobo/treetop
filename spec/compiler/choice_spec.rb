@@ -49,7 +49,7 @@ module ChoiceSpec
 
     it "successfully parses input matching any of the alternatives" do
       parse('foobarbaz').should_not be_nil
-      parse('bingbangboom').should_not be_nil
+      parse('bingbangboom').should_not be_nil 
     end
   end
 

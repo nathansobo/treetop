@@ -39,10 +39,11 @@ module ParsingRuleSpec
       parser._nt_bar
 
       node_cache.should have_result(:bar, 0)
-      node_cache.get(:bar, 0).should == nil
+      result = node_cache.get(:bar, 0)
+      result.should be_an_instance_of(Runtime::TerminalParseFailure)
 
       parser.send(:reset_index)
-      parser._nt_bar.should == nil
+      parser._nt_bar.should == result
       parser.index.should == 0
     end
   end

@@ -91,13 +91,14 @@ module Treetop
       end
     
       def terminal_parse_failure(expected_string)
-        return nil if index < max_terminal_failure_index
+        failure = TerminalParseFailure.new(index, expected_string)
+        return failure if index < max_terminal_failure_index
         if index > max_terminal_failure_index
           @max_terminal_failure_index = index
           @terminal_failures = []
         end
-        terminal_failures << TerminalParseFailure.new(index, expected_string)
-        return nil
+        terminal_failures << failure 
+        failure
       end
     end
   end
