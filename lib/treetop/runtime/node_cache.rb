@@ -26,8 +26,12 @@ module Treetop
             nodes.delete(stored_range.first)
             nil
           elsif stored_range.first >= range.last
-            nodes[stored_range.first + length_change] = nodes.delete(stored_range.first)
-            stored_range.transpose(length_change)
+            nodes_to_move = nodes.delete(stored_range.first)
+            nodes_to_move.each do |rule_name, node|
+              node.interval = node.interval.transpose(length_change) if node
+            end
+            nodes[stored_range.first + length_change] = nodes_to_move
+            new_range = stored_range.transpose(length_change)
           else
             stored_range
           end

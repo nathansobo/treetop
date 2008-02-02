@@ -14,10 +14,16 @@ module Treetop
 
       def parse(input, options = {})
         prepare_to_parse(input)
-        @index = options[:index] if options[:index]
-        result = send("_nt_#{root}")
-        return nil if (consume_all_input? && index != input.size)
-        return result
+        parse_root(options)
+      end
+
+      def reparse
+        reset_parse_state
+        parse_root
+      end
+
+      def expire(range, length_change)
+        expirable_node_cache.expire(range, length_change)
       end
 
       def failure_index
@@ -34,27 +40,37 @@ module Treetop
 
       def failure_reason
         return nil unless (tf = terminal_failures) && tf.size > 0
-	"Expected " +
-	  (tf.size == 1 ?
-	   tf[0].expected_string :
-           "one of #{tf.map{|f| f.expected_string}.uniq*', '}"
-	  ) +
-          " at line #{failure_line}, column #{failure_column} (byte #{failure_index+1})" +
-          " after #{input[index...failure_index]}"
+        "Expected " +
+          (tf.size == 1 ?
+           tf[0].expected_string :
+                 "one of #{tf.map{|f| f.expected_string}.uniq*', '}"
+          ) +
+                " at line #{failure_line}, column #{failure_column} (byte #{failure_index+1})" +
+                " after #{input[index...failure_index]}"
       end
-
 
       protected
       
       attr_reader :node_cache, :expirable_node_cache, :input_length
       attr_writer :index
-              
+
+      def parse_root(options = {})
+        @index = options[:index] if options[:index]
+        result = send("_nt_#{root}")
+        return nil if (consume_all_input? && index != input.size)
+        return result
+      end
+
       def prepare_to_parse(input)
         @input = input
-        @input_length = input.length
-        reset_index
         @node_cache = Hash.new {|hash, key| hash[key] = Hash.new}
         @expirable_node_cache = NodeCache.new
+        reset_parse_state
+      end
+
+      def reset_parse_state
+        reset_index
+        @input_length = input.length
         @terminal_failures = []
         @max_terminal_failure_index = 0
       end

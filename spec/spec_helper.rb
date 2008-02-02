@@ -94,6 +94,7 @@ module Treetop
 
     Spec::Example::ExampleGroupFactory.register(:compiler, self)
     Spec::Example::ExampleGroupFactory.register(:runtime, self)
+    Spec::Example::ExampleGroupFactory.register(:iterative_parsing, self)
   end
 end
 

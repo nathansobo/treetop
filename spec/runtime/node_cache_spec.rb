@@ -1,19 +1,22 @@
 require File.expand_path("#{File.dirname(__FILE__)}/../spec_helper")
 
 module NodeCacheSpec
-  describe Runtime::NodeCache do
-    attr_reader :cache
+  include Runtime
+
+  describe NodeCache do
+    attr_reader :cache, :input
 
     before do
-      @cache = Runtime::NodeCache.new
+      @cache = NodeCache.new
+      @input = ('A'..'Z').to_a.join
     end
 
     describe "with a non-nil parse result stored on a name and interval" do
       attr_reader :node
 
       before do
-        @node = Object.new
-        cache.store('foo', 5..10, node)
+        @node = SyntaxNode.new(input, 5..10)
+        cache.store('foo', node.interval, node)
       end
 
       describe "#get" do
@@ -87,14 +90,14 @@ module NodeCacheSpec
       attr_reader :a, :b, :c
       
       before do
-        @a = Object.new
-        cache.store('foo', 0..5, a)
+        @a = SyntaxNode.new(input, 0..5)
+        cache.store('foo', a.interval, a)
 
-        @b = Object.new
-        cache.store('foo', 3..10, b)
+        @b = SyntaxNode.new(input, 3..10)
+        cache.store('foo', b.interval, b)
 
-        @c = Object.new
-        cache.store('foo', 7..13, c)
+        @c = SyntaxNode.new(input, 7..13)
+        cache.store('foo', c.interval, c)
       end
 
       it "removes multiple results that overlap an expired range, correctly updating the survivng result with the length_change" do
@@ -108,6 +111,7 @@ module NodeCacheSpec
         cache.should_not have_result('foo', 3)
         cache.should_not have_result('foo', 7)
         cache.get('foo', 12).should == c
+        c.interval.should == (12..18)
       end
     end
 

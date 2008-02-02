@@ -1,8 +1,8 @@
 module Treetop
   module Runtime
     class SyntaxNode
-      attr_reader :input, :interval, :elements
-      attr_accessor :parent
+      attr_reader :input, :elements
+      attr_accessor :parent, :interval
 
       def initialize(input, interval, elements = nil)
         @input = input
