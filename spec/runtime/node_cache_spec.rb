@@ -86,7 +86,37 @@ module NodeCacheSpec
       end
     end
 
-    describe "with a three results for the same rule stored on three seperate intervals" do
+    describe "with results for different rules stored on non-overlapping intervals" do
+      attr_reader :the, :green, :dog, :sentence
+
+      before do
+        input = "the green dog"
+
+        @the = SyntaxNode.new(input, 0..3)
+        @green = SyntaxNode.new(input, 4..9)
+        @dog = SyntaxNode.new(input, 10..13)
+        @sentence = SyntaxNode.new(input, 0..13)
+
+        cache.store(:the, the.interval, the)
+        cache.store(:color, green.interval, green)
+        cache.store(:dog, dog.interval, dog)
+        cache.store(:sentence, sentence.interval, sentence)
+      end
+
+      it "removes a single result that overlaps an expired range, leaving undisturbed results intact" do
+        cache.should have_result(:the, 0)
+        cache.should have_result(:color, 4)
+        cache.should have_result(:dog, 10)
+
+        cache.expire(green.interval, 0)
+
+        cache.should have_result(:the, 0)
+        cache.should_not have_result(:color, 4)
+        cache.should have_result(:dog, 10)
+      end
+    end
+
+    describe "with three results for the same rule stored on three seperate overlapping intervals" do
       attr_reader :a, :b, :c
       
       before do
@@ -114,7 +144,5 @@ module NodeCacheSpec
         c.interval.should == (12..18)
       end
     end
-
-
   end
 end

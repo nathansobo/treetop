@@ -4,12 +4,12 @@ module Treetop
 
       def initialize
         @nodes = Hash.new {|h, k| h[k] = Hash.new }
-        @stored_ranges = []
+        @stored_nodes = []
       end
 
       def store(rule_name, range, result)
         nodes[range.first][rule_name] = result
-        stored_ranges.push(range)
+        stored_nodes.push(NodeStorage.new(rule_name, range))
       end
 
       def get(rule_name, start_index)
@@ -21,26 +21,34 @@ module Treetop
       end
 
       def expire(range, length_change)
-        stored_ranges.map! do |stored_range|
-          if stored_range.intersects?(range)
-            nodes.delete(stored_range.first)
+        stored_nodes.map! do |node_storage|
+          if node_storage.range.intersects?(range)
+            nodes[node_storage.range.first].delete(node_storage.rule_name)
             nil
-          elsif stored_range.first >= range.last
-            nodes_to_move = nodes.delete(stored_range.first)
-            nodes_to_move.each do |rule_name, node|
-              node.interval = node.interval.transpose(length_change) if node
-            end
-            nodes[stored_range.first + length_change] = nodes_to_move
-            new_range = stored_range.transpose(length_change)
+          elsif node_storage.range.first >= range.last
+            node_to_move = nodes[node_storage.range.first].delete(node_storage.rule_name)
+            node_to_move.interval = node_to_move.interval.transpose(length_change) if node_to_move
+            nodes[node_storage.range.first + length_change][node_storage.rule_name] = node_to_move
+            node_storage.range = node_storage.range.transpose(length_change) 
           else
-            stored_range
+            node_storage
           end
         end
-        stored_ranges.compact!
+        stored_nodes.compact!
       end
 
       protected
-      attr_reader :nodes, :stored_ranges
+      attr_reader :nodes, :stored_nodes
+    end
+
+    class NodeStorage
+      attr_reader :rule_name
+      attr_accessor :range
+
+      def initialize(rule_name, range)
+        @rule_name = rule_name
+        @range = range
+      end
     end
   end
 end
