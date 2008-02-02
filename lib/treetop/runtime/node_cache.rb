@@ -8,16 +8,16 @@ module Treetop
       end
 
       def store(rule_name, range, result)
-        nodes[range.first][rule_name] = result
+        nodes[rule_name][range.first] = result
         node_storages.push(NodeStorage.new(nodes, rule_name, range))
       end
 
       def get(rule_name, start_index)
-        nodes[start_index][rule_name]
+        nodes[rule_name][start_index]
       end
 
       def has_result?(rule_name, start_index)
-        nodes.has_key?(start_index) && nodes[start_index].has_key?(rule_name)
+        nodes[rule_name].has_key?(start_index)
       end
 
       def expire(range, length_change)
@@ -43,15 +43,15 @@ module Treetop
 
       def expire(expired_range, length_change)
         if range.intersects?(expired_range)
-          nodes[range.first].delete(rule_name)
+          nodes[rule_name].delete(range.first)
           return false
         end
 
         if range.first >= expired_range.last
-          node_to_move = nodes[range.first].delete(rule_name)
+          node_to_move = nodes[rule_name].delete(range.first)
           self.range = range.transpose(length_change)
           node_to_move.interval = range if node_to_move
-          nodes[range.first][rule_name] = node_to_move
+          nodes[rule_name][range.first] = node_to_move
         end
       end
     end
