@@ -4,12 +4,12 @@ module Treetop
 
       def initialize
         @nodes = Hash.new {|h, k| h[k] = Hash.new }
-        @stored_nodes = []
+        @node_storages = []
       end
 
       def store(rule_name, range, result)
         nodes[range.first][rule_name] = result
-        stored_nodes.push(NodeStorage.new(nodes, rule_name, range))
+        node_storages.push(NodeStorage.new(nodes, rule_name, range))
       end
 
       def get(rule_name, start_index)
@@ -21,14 +21,14 @@ module Treetop
       end
 
       def expire(range, length_change)
-        self.stored_nodes = stored_nodes.select do |node_storage|
+        self.node_storages = node_storages.select do |node_storage|
           node_storage.expire(range, length_change)
         end
       end
 
       protected
       attr_reader :nodes
-      attr_accessor :stored_nodes
+      attr_accessor :node_storages
     end
 
     class NodeStorage
