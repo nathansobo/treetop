@@ -9,7 +9,7 @@ module Treetop
 
       def store(rule_name, range, result)
         nodes[range.first][rule_name] = result
-        stored_nodes.push(NodeStorage.new(rule_name, range))
+        stored_nodes.push(NodeStorage.new(nodes, rule_name, range))
       end
 
       def get(rule_name, start_index)
@@ -21,33 +21,38 @@ module Treetop
       end
 
       def expire(range, length_change)
-        stored_nodes.map! do |node_storage|
-          if node_storage.range.intersects?(range)
-            nodes[node_storage.range.first].delete(node_storage.rule_name)
-            nil
-          elsif node_storage.range.first >= range.last
-            node_to_move = nodes[node_storage.range.first].delete(node_storage.rule_name)
-            node_to_move.interval = node_to_move.interval.transpose(length_change) if node_to_move
-            nodes[node_storage.range.first + length_change][node_storage.rule_name] = node_to_move
-            node_storage.range = node_storage.range.transpose(length_change) 
-          else
-            node_storage
-          end
+        self.stored_nodes = stored_nodes.select do |node_storage|
+          node_storage.expire(range, length_change)
         end
-        stored_nodes.compact!
       end
 
       protected
-      attr_reader :nodes, :stored_nodes
+      attr_reader :nodes
+      attr_accessor :stored_nodes
     end
 
     class NodeStorage
-      attr_reader :rule_name
+      attr_reader :nodes, :rule_name
       attr_accessor :range
 
-      def initialize(rule_name, range)
+      def initialize(nodes, rule_name, range)
+        @nodes = nodes
         @rule_name = rule_name
         @range = range
+      end
+
+      def expire(expired_range, length_change)
+        if range.intersects?(expired_range)
+          nodes[range.first].delete(rule_name)
+          return false
+        end
+
+        if range.first >= expired_range.last
+          node_to_move = nodes[range.first].delete(rule_name)
+          self.range = range.transpose(length_change)
+          node_to_move.interval = range if node_to_move
+          nodes[range.first][rule_name] = node_to_move
+        end
       end
     end
   end
