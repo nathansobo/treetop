@@ -87,7 +87,7 @@ module Treetop
       end
       
       def assign_failure(start_index_var)
-        assign_result("ParseFailure.new(#{start_index_var}..#{start_index_var})")
+        assign_result("ParseFailure.new(#{start_index_var}..max_terminal_failure_last_index)")
       end
     
       def var_initialization
