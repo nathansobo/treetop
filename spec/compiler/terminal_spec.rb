@@ -34,15 +34,4 @@ module TerminalSymbolSpec
       parse(" foo", :index =>  0).should be_nil
     end
   end
-
-  describe "a transient terminal symbol" do
-    testing_expression "~'foo'"
-
-    it "returns true upon parsing matching input prefixes at various indices" do
-      pending "transient terminal expressions"
-      parse("foo", :index => 0).should be_true
-      parse("-foo", :index => 1).should be_true
-      parse("---foo", :index => 3).should be_true
-    end
-  end
 end
