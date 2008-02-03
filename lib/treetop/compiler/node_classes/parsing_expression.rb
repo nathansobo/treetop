@@ -51,7 +51,7 @@ module Treetop
       end
     
       def subexpression_success?
-        "#{subexpression_result_var} && !#{subexpression_result_var}.instance_of?(TerminalParseFailure)"
+        "#{subexpression_result_var} && !#{subexpression_result_var}.is_a?(ParseFailure)"
       end
     
       def obtain_new_subexpression_address
@@ -87,7 +87,7 @@ module Treetop
       end
       
       def assign_failure(start_index_var)
-        assign_result("nil")
+        assign_result("ParseFailure.new(#{start_index_var})")
       end
     
       def var_initialization

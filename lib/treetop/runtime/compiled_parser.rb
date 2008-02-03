@@ -58,7 +58,8 @@ module Treetop
         @index = options[:index] if options[:index]
         result = send("_nt_#{root}")
         return nil if (consume_all_input? && index != input.size)
-        return result
+        return nil if result.is_a?(ParseFailure)
+        result
       end
 
       def prepare_to_parse(input)
