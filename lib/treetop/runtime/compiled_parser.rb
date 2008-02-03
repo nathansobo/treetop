@@ -3,7 +3,7 @@ module Treetop
     class CompiledParser
       include Treetop::Runtime
       
-      attr_reader :input, :index, :terminal_failures, :max_terminal_failure_index
+      attr_reader :input, :index, :terminal_failures, :max_terminal_failure_first_index, :max_terminal_failure_last_index
       attr_writer :root
       attr_accessor :consume_all_input
       alias :consume_all_input? :consume_all_input
@@ -27,7 +27,7 @@ module Treetop
       end
 
       def failure_index
-        max_terminal_failure_index
+        max_terminal_failure_first_index
       end
 
       def failure_line
@@ -73,7 +73,8 @@ module Treetop
         reset_index
         @input_length = input.length
         @terminal_failures = []
-        @max_terminal_failure_index = 0
+        @max_terminal_failure_first_index = 0
+        @max_terminal_failure_last_index = 0
       end
       
       def reset_index
@@ -87,18 +88,22 @@ module Treetop
           @index += 1
           result
         else
-          terminal_parse_failure("any character")
+          terminal_parse_failure("any character", 1)
         end
       end
     
-      def terminal_parse_failure(expected_string)
+      def terminal_parse_failure(expected_string, length=0)
+        last_index = index + length
         failure = TerminalParseFailure.new(index, expected_string)
-        return failure if index < max_terminal_failure_index
-        if index > max_terminal_failure_index
-          @max_terminal_failure_index = index
+        if last_index > max_terminal_failure_last_index
+          @max_terminal_failure_last_index = last_index
+        end
+        return failure if index < max_terminal_failure_first_index
+        if index > max_terminal_failure_first_index
+          @max_terminal_failure_first_index = index
           @terminal_failures = []
         end
-        terminal_failures << failure 
+        terminal_failures << failure
         failure
       end
     end

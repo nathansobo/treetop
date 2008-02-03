@@ -33,5 +33,11 @@ module TerminalSymbolSpec
     it "fails to parse nonmatching input at the index even if a match occurs later" do
       parse(" foo", :index =>  0).should be_nil
     end
+
+    it "upon a parse failure sets the #max_terminal_failure_first_index and #max_terminal_failure_last_index of the parser" do
+      parse("xxx").should be_nil
+      parser.max_terminal_failure_first_index.should == 0
+      parser.max_terminal_failure_last_index.should == 3
+    end
   end
 end

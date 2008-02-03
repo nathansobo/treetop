@@ -11,7 +11,7 @@ module Treetop
           builder << "@index += #{string_length}"
         end
         builder.else_ do
-          assign_result "terminal_parse_failure(#{text_value})"
+          assign_result "terminal_parse_failure(#{text_value}, #{text_value.length - 2})"
         end
       end
     end

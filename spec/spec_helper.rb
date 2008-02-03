@@ -13,6 +13,12 @@ Spec::Runner.configure do |config|
 end
 
 module Treetop
+  module Runtime
+    class CompiledParser
+      public :max_terminal_failure_first_index, :max_terminal_failure_last_index
+    end
+  end
+
   class TreetopExampleGroup < Spec::Example::ExampleGroup
     class << self
       attr_accessor :parser_class_under_test
