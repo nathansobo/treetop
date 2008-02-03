@@ -30,7 +30,7 @@ module IterativeParsingSpec
       @parser = self.class.const_get(:TestGrammarParser).new
     end
 
-    xit "recycles undisturbed nodes when the buffer expires" do
+    it "recycles undisturbed nodes when the buffer expires" do
       input = "the green dog"
 
       result = parser.parse(input)
