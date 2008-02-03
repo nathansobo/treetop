@@ -1,7 +1,9 @@
 require File.expand_path("#{File.dirname(__FILE__)}/../spec_helper")
 
 module TerminalSymbolSpec
-  class Foo < Treetop::Runtime::SyntaxNode
+  include Runtime
+
+  class Foo < SyntaxNode
   end
 
   describe "a terminal symbol followed by a node class declaration and a block" do
@@ -34,10 +36,16 @@ module TerminalSymbolSpec
       parse(" foo", :index =>  0).should be_nil
     end
 
-    it "upon a parse failure sets the #max_terminal_failure_first_index and #max_terminal_failure_last_index of the parser" do
+    it "upon a parse failure, sets the #max_terminal_failure_first_index and #max_terminal_failure_last_index of the parser" do
       parse("xxx").should be_nil
       parser.max_terminal_failure_first_index.should == 0
       parser.max_terminal_failure_last_index.should == 3
+    end
+
+    it "upon a parse failure, returns a TerminalParseFailure node with an interval spanning from the index of the failure to the end of the expected string" do
+      failure = parse("xxx", :return_parse_failure => true)
+      failure.should be_an_instance_of(TerminalParseFailure)
+      failure.interval.should == (0..3)
     end
   end
 end

@@ -3,8 +3,8 @@ module Treetop
     class TerminalParseFailure < ParseFailure
       attr_reader :expected_string
 
-      def initialize(index, expected_string)
-        super(index)
+      def initialize(interval, expected_string)
+        super(interval)
         @expected_string = expected_string
       end
 

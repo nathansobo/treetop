@@ -1,15 +1,19 @@
 module Treetop
   module Runtime
     class ParseFailure
-      attr_reader :index
+      attr_reader :interval
       attr_accessor :parent
 
-      def initialize(index)
-        @index = index
+      def initialize(interval)
+        @interval = interval
       end
 
-      def interval
-        index..index
+      def index
+        interval.first
+      end
+
+      def resume_index
+        interval.first
       end
     end
   end

@@ -62,9 +62,8 @@ module Treetop
 
     def parse(input, options = {})
       @parser = parser_class_under_test.new
-      unless options[:consume_all_input].nil?
-        parser.consume_all_input = options.delete(:consume_all_input)
-      end
+      parser.consume_all_input = options[:consume_all_input] if options.has_key?(:consume_all_input)
+      parser.return_parse_failure = options[:return_parse_failure] if options.has_key?(:return_parse_failure)
       result = parser.parse(input, options)
       yield result if block_given?
       result

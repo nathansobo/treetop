@@ -34,7 +34,7 @@ module Treetop
       def generate_cache_lookup(builder)
         builder.if_ "expirable_node_cache.has_result?(:#{name}, index)" do
           builder.assign 'cached', "expirable_node_cache.get(:#{name}, index)"
-          builder << '@index = cached.interval.end if cached'
+          builder << '@index = cached.resume_index if cached'
           builder << 'return cached'
         end
       end

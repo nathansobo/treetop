@@ -20,6 +20,10 @@ module SyntaxNodeSpec
     it "has itself as its only element" do
       node.elements.should be_nil
     end
+
+    it "reports the end of its interval as its #resume_index" do
+      node.resume_index.should == 3
+    end
   end
 
   describe "A new nonterminal syntax node" do
@@ -48,6 +52,10 @@ module SyntaxNodeSpec
       node.elements.each do |element|
         element.parent.should == node
       end
+    end
+
+    it "reports the end of its interval as its #resume_index" do
+      node.resume_index.should == 3
     end
   end
 end

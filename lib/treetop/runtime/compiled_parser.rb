@@ -5,8 +5,9 @@ module Treetop
       
       attr_reader :input, :index, :terminal_failures, :max_terminal_failure_first_index, :max_terminal_failure_last_index
       attr_writer :root
-      attr_accessor :consume_all_input
+      attr_accessor :consume_all_input, :return_parse_failure
       alias :consume_all_input? :consume_all_input
+      alias :return_parse_failure? :return_parse_failure
       
       def initialize
         self.consume_all_input = true
@@ -57,8 +58,14 @@ module Treetop
       def parse_root(options = {})
         @index = options[:index] if options[:index]
         result = send("_nt_#{root}")
+        if result.is_a?(ParseFailure)
+          if return_parse_failure?
+            return result
+          else
+            return nil
+          end
+        end
         return nil if (consume_all_input? && index != input.size)
-        return nil if result.is_a?(ParseFailure)
         result
       end
 
@@ -94,10 +101,10 @@ module Treetop
     
       def terminal_parse_failure(expected_string, length=0)
         last_index = index + length
-        failure = TerminalParseFailure.new(index, expected_string)
         if last_index > max_terminal_failure_last_index
           @max_terminal_failure_last_index = last_index
         end
+        failure = TerminalParseFailure.new(index..last_index, expected_string)
         return failure if index < max_terminal_failure_first_index
         if index > max_terminal_failure_first_index
           @max_terminal_failure_first_index = index

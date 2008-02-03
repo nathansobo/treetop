@@ -30,6 +30,10 @@ module Treetop
 	      interval.first == interval.last && interval.exclude_end?
       end
 
+      def resume_index
+        interval.last
+      end
+
       def extension_modules
         local_extensions =
           class <<self
