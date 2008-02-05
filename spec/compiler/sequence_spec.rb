@@ -65,6 +65,34 @@ module SequenceSpec
     end
   end
 
+  describe "A sequence of two expressions, one of which generates a max_terminal_failure_index that exceeds the second" do
+    testing_grammar %{
+      grammar TestGrammar
+
+        rule sequence
+          first ' ' second
+        end
+
+        rule first
+          'long terminal that fails' / 'foo'
+        end
+
+        rule second
+          'bar' / 'baz'
+        end
+      end
+    }
+
+    it "generates a failure for the second element with an interval that spans across the area in which the source of the failure could have occurred" do
+      pending "This exemplifies the need for sequences to isolate max terminal failure last indices from sibling nonterminals"
+      result = parse("foo bogus", :return_parse_failure => true)
+      result.should be_an_instance_of(Runtime::ParseFailure)
+      node_cache = parser.send(:expirable_node_cache)
+      failure = node_cache.get(:second, 4)
+      failure.interval.should == (4..7)
+    end
+  end
+  
   describe "Compiling a sequence containing various white-space errors" do
     it "should succeed on a valid sequence" do
       compiling_expression('foo:"foo" "bar" <SequenceSpec::Foo> { def a_method; end }').should_not raise_error
@@ -90,5 +118,4 @@ module SequenceSpec
       compiling_expression('foo:"foo" "bar" <SequenceSpec::Foo>{def a_method; end}').should raise_error(RuntimeError)
     end
   end
-
 end

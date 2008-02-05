@@ -19,7 +19,7 @@ module IterativeParsingSpec
         end
 
         rule dog
-          'dog'
+          'dog' / 'cat'
         end
       end
     }
@@ -47,10 +47,13 @@ module IterativeParsingSpec
     end
 
     it "expires corrected failures and recycles successfully parsed nodes preceding the failure" do
+      pending "This exemplifies the need for sequences to isolate max terminal failure last indices from sibling nonterminals"
       input = "the green dot"
 
       result = parser.parse(input)
       result.should be_nil
+
+      parser.max_terminal_failure_last_index.should == 13
 
       node_cache = parser.send(:expirable_node_cache)
       the = node_cache.get(:the, 0)
@@ -60,7 +63,7 @@ module IterativeParsingSpec
       green.text_value.should == "green"
 
       failure = node_cache.get(:dog, 10)
-      failure.should be_an_instance_of(TerminalParseFailure)
+      failure.should be_an_instance_of(ParseFailure)
       failure.interval.should == (10..13)
 
       input[12] = 'g'
@@ -75,5 +78,7 @@ module IterativeParsingSpec
       new_result.the.should == the
       new_result.color.should == green
     end
+
+    it "expires nodes whose successful parsing was predicated on other expired nodes"
   end
 end
