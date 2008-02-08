@@ -84,7 +84,6 @@ module SequenceSpec
     }
 
     it "generates a failure for the second element with an interval that spans across the area in which the source of the failure could have occurred" do
-      pending "This exemplifies the need for sequences to isolate max terminal failure last indices from sibling nonterminals"
       result = parse("foo bogus", :return_parse_failure => true)
       result.should be_an_instance_of(Runtime::ParseFailure)
       node_cache = parser.send(:expirable_node_cache)
