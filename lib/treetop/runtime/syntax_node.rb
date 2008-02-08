@@ -1,10 +1,11 @@
 module Treetop
   module Runtime
-    class SyntaxNode
+    class SyntaxNode < ParseResult
       attr_reader :input, :elements
-      attr_accessor :parent, :interval
+      attr_writer :interval
 
       def initialize(input, interval, elements = nil)
+        super(interval)
         @input = input
         @interval = interval
         if @elements = elements

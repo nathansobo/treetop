@@ -40,7 +40,8 @@ module Treetop
       end
       
       def generate_cache_storage(builder, result_var)
-        builder << "expirable_node_cache.store(:#{name}, #{result_var}.interval, #{result_var})"
+        builder << "#{result_var}.source_rule_name = :#{name}"
+        builder << "expirable_node_cache.store(#{result_var})"
       end
       
       def method_name

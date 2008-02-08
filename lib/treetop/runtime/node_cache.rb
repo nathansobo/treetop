@@ -7,9 +7,9 @@ module Treetop
         @node_storages = []
       end
 
-      def store(rule_name, range, result)
-        node_index[rule_name][range.first] = result
-        node_storages.push(NodeStorage.new(node_index, rule_name, range))
+      def store(result)
+        node_index[result.source_rule_name][result.interval.first] = result
+        node_storages.push(NodeStorage.new(node_index, result.source_rule_name, result.interval))
       end
 
       def get(rule_name, start_index)

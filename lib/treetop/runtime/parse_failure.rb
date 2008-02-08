@@ -1,13 +1,6 @@
 module Treetop
   module Runtime
-    class ParseFailure
-      attr_reader :interval
-      attr_accessor :parent
-
-      def initialize(interval)
-        @interval = interval
-      end
-
+    class ParseFailure < ParseResult
       def index
         interval.first
       end
