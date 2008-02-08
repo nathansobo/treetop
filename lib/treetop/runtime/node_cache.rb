@@ -23,7 +23,7 @@ module Treetop
 
       def expire(range, length_change)
         self.node_storages = node_storages.select do |node_storage|
-          node_storage.expire(range, length_change)
+          node_storage.reflect_buffer_change(range, length_change)
         end
       end
 

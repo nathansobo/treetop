@@ -1,16 +1,18 @@
 module Treetop
   module Runtime
     class ParseResult
-      attr_reader :interval
-      attr_accessor :parent, :source_rule_name, :node_index
+      attr_reader :interval, :dependent_results
+      attr_accessor :parent, :source_rule_name, :node_index, :propagate_expiration_to_parent
+      alias :propagate_expiration_to_parent? :propagate_expiration_to_parent
       
       def initialize(interval)
         @interval = interval
+        @dependent_results = []
       end
 
-      def expire(expired_interval, length_change)
+      def reflect_buffer_change(expired_interval, length_change)
         if interval.intersects?(expired_interval)
-          node_index[source_rule_name].delete(interval.first)
+          expire(false)
           return false
         end
 
@@ -19,6 +21,12 @@ module Treetop
           @interval = interval.transpose(length_change)
           node_index[source_rule_name][interval.first] = self
         end
+      end
+
+      def expire(propagate_to_parent)
+        node_index[source_rule_name].delete(interval.first) if node_index
+        dependent_results.each { |dependent_result| dependent_result.expire(true) }
+        parent.expire(true) if parent && propagate_to_parent
       end
     end
   end

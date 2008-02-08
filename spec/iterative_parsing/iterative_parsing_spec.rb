@@ -77,7 +77,40 @@ module IterativeParsingSpec
       new_result.the.should == the
       new_result.color.should == green
     end
+  end
 
-    it "expires nodes whose successful parsing was predicated on other expired nodes"
+  describe "A grammar with a parsing rule ending in a positive lookahead predicate" do
+    testing_grammar %{
+      grammar TestGrammar2
+
+        rule a
+          b 'baz'
+        end
+
+        rule b
+          'foo' c
+        end
+
+        rule c
+          'bar' &'baz'
+        end
+      end
+    }
+
+    it "expires portions of the tree that depend on the result of the predicated expression even if their intervals don't contain it" do
+      result = parse('foobarbaz')
+      result.should_not be_nil
+
+      node_cache = parser.send(:expirable_node_cache)
+      node_cache.should have_result(:a, 0)
+      node_cache.should have_result(:b, 0)
+      node_cache.should have_result(:c, 3)
+
+      node_cache.expire(7..8, 0)
+
+      node_cache.should_not have_result(:a, 0)
+      node_cache.should_not have_result(:b, 0)
+      node_cache.should_not have_result(:c, 3)
+    end
   end
 end
