@@ -2,7 +2,6 @@ module Treetop
   module Runtime
     class SyntaxNode < ParseResult
       attr_reader :input, :elements
-      attr_writer :interval
 
       def initialize(input, interval, elements = nil)
         super(interval)
