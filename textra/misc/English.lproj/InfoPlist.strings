@@ -1,0 +1,3 @@
+CFBundleName = "textra";
+CFBundleGetInfoString = "textra version 0.1, Copyright 2008 Nathan Sobo.";
+NSHumanReadableCopyright = "Copyright 2008 Nathan Sobo.";

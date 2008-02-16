@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+ENV['RUBYCOCOA_ROOT'] = File.join(File.dirname(__FILE__), '..')
+ENV['RUBYCOCOA_ENV'] = 'debug'
+ENV['DONT_START_RUBYCOCOA_APP'] = 'true'
+
+libs = "-r rubygems"
+libs << " -r rucola"
+libs << " -r #{ENV['RUBYCOCOA_ROOT']}/config/boot"
+exec "irb #{libs}"

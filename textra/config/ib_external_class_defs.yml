@@ -1,0 +1,13 @@
+# Interface Builder Class Definitions
+#
+# Interface Builder doesn't detect your custom classes by default.
+# Identify class heirarchies here and make sure you run `rake ib:update` 
+# to notice the changes in Interface Builder.
+#
+# NSObject:
+#   - MyController
+#   - MyOtherController
+# NSWindowController:
+#   - SomeWindowController:
+#       - SomeOtherController
+#
