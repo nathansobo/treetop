@@ -16,8 +16,7 @@ module NodeCacheSpec
 
       before do
         @node = SyntaxNode.new(input, 5..10)
-        node.source_rule_name = :foo
-        cache.store(node)
+        cache.store(:foo, node)
       end
 
       describe "#get" do
@@ -66,23 +65,15 @@ module NodeCacheSpec
 
       before do
         input = "the green dog"
-
         @the = SyntaxNode.new(input, 0..3)
-        the.source_rule_name = :the
-
         @green = SyntaxNode.new(input, 4..9)
-        green.source_rule_name = :color
-
         @dog = SyntaxNode.new(input, 10..13)
-        dog.source_rule_name = :dog
-
         @sentence = SyntaxNode.new(input, 0..13)
-        sentence.source_rule_name = :sentence
 
-        cache.store(the)
-        cache.store(green)
-        cache.store(dog)
-        cache.store(sentence)
+        cache.store(:the, the)
+        cache.store(:color, green)
+        cache.store(:dog, dog)
+        cache.store(:sentence, sentence)
       end
 
       it "removes a single result that overlaps an expired range, leaving undisturbed results intact" do
@@ -103,16 +94,13 @@ module NodeCacheSpec
       
       before do
         @a = SyntaxNode.new(input, 0..5)
-        a.source_rule_name = :foo
-        cache.store(a)
+        cache.store(:foo, a)
 
         @b = SyntaxNode.new(input, 3..10)
-        b.source_rule_name = :foo
-        cache.store(b)
+        cache.store(:foo, b)
 
         @c = SyntaxNode.new(input, 7..13)
-        c.source_rule_name = :foo
-        cache.store(c)
+        cache.store(:foo, c)
       end
 
       it "removes multiple results that overlap an expired range, correctly updating the survivng result with the length_change" do
@@ -127,6 +115,9 @@ module NodeCacheSpec
         cache.should_not have_result(:foo, 7)
         cache.get(:foo, 12).should == c
         c.interval.should == (12..18)
+
+        cache.expire(13..15, 0)
+        cache.should_not have_result(:foo, 12)
       end
     end
   end
