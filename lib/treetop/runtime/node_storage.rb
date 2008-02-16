@@ -7,6 +7,7 @@ module Treetop
         @rule_name = rule_name
         @result = result
         @node_index = node_index
+        result.storages.push(self)
       end
 
       def interval
