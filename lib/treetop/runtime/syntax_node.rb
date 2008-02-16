@@ -51,7 +51,7 @@ module Treetop
         interesting_methods = methods-[em.last ? em.last.methods : nil]-self.class.instance_methods
         im = interesting_methods.size > 0 ? " (#{interesting_methods.join(",")})" : ""
         tv = text_value
-        tv = "...#{tv[-20..-1]}" if tv.size > 20
+        tv = "...#{tv[-20..-1]}" if tv && tv.size > 20
 
         indent +
         self.class.to_s.sub(/.*:/,'') +

@@ -22,9 +22,13 @@ module Treetop
       end
 
       def expire(range, length_change)
+        debugger
         self.node_storages = node_storages.select do |node_storage|
+          #debugger if node_storage.interval == (0...1) || node_storage.interval == (0...2)
           node_storage.reflect_buffer_change(range, length_change)
         end
+        debugger
+        1
       end
 
       protected

@@ -21,6 +21,7 @@ module Treetop
           @interval = interval.transpose(length_change)
           node_index[source_rule_name][interval.first] = self
         end
+        true
       end
 
       def expire(propagate_to_parent)

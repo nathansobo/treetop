@@ -18,13 +18,17 @@ module Treetop
         parse_root(options)
       end
 
-      def reparse
+      def reparse(new_input=nil)
+        input.replace(new_input) if new_input
+        puts input
         reset_parse_state
         parse_root
       end
 
       def expire(range, length_change)
+        puts "Expiring #{range}, #{length_change}"
         expirable_node_cache.expire(range, length_change)
+        1
       end
 
       def failure_index
@@ -56,6 +60,7 @@ module Treetop
       attr_writer :index
 
       def parse_root(options = {})
+        puts input.size
         @index = options[:index] if options[:index]
         result = send("_nt_#{root}")
         if result.is_a?(ParseFailure)
@@ -100,7 +105,7 @@ module Treetop
       end
     
       def terminal_parse_failure(expected_string, length=0)
-        last_index = index + length
+        last_index = [index + length, input_length].min
         if last_index > max_terminal_failure_last_index
           @max_terminal_failure_last_index = last_index
         end
