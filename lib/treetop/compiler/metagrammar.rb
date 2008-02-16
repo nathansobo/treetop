@@ -2,39 +2,39 @@ module Treetop
   module Compiler
     module Metagrammar
       include Treetop::Runtime
-      
+
       def root
         @root || :treetop_file
       end
-      
+
       module TreetopFile0
         def prefix
           elements[0]
         end
-        
+
         def module_or_grammar
           elements[1]
         end
-        
+
         def suffix
           elements[2]
         end
       end
-      
+
       module TreetopFile1
         def compile
           prefix.text_value + module_or_grammar.compile + suffix.text_value
         end
       end
-      
+
       def _nt_treetop_file
         start_index = index
-        cached = node_cache[:treetop_file][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:treetop_file].has_key?(index)
+          cached = node_cache[:treetop_file][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0, s0 = index, []
         r2 = _nt_space
         if r2
@@ -76,57 +76,57 @@ module Treetop
           self.index = i0
           r0 = nil
         end
-        
+
         node_cache[:treetop_file][start_index] = r0
-        
+
         return r0
       end
-      
+
       module ModuleDeclaration0
         def space
           elements[1]
         end
-        
+
         def space
           elements[4]
         end
       end
-      
+
       module ModuleDeclaration1
         def space
           elements[0]
         end
-        
+
       end
-      
+
       module ModuleDeclaration2
         def prefix
           elements[0]
         end
-        
+
         def module_contents
           elements[1]
         end
-        
+
         def suffix
           elements[2]
         end
       end
-      
+
       module ModuleDeclaration3
         def compile
           prefix.text_value + module_contents.compile + suffix.text_value
         end
       end
-      
+
       def _nt_module_declaration
         start_index = index
-        cached = node_cache[:module_declaration][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:module_declaration].has_key?(index)
+          cached = node_cache[:module_declaration][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0, s0 = index, []
         i1, s1 = index, []
         if input.index('module', index) == index
@@ -222,39 +222,39 @@ module Treetop
           self.index = i0
           r0 = nil
         end
-        
+
         node_cache[:module_declaration][start_index] = r0
-        
+
         return r0
       end
-      
+
       module Grammar0
         def space
           elements[1]
         end
-        
+
         def grammar_name
           elements[2]
         end
-        
+
         def space
           elements[3]
         end
-        
+
         def declaration_sequence
           elements[4]
         end
-        
+
       end
-      
+
       def _nt_grammar
         start_index = index
-        cached = node_cache[:grammar][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:grammar].has_key?(index)
+          cached = node_cache[:grammar][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0, s0 = index, []
         if input.index('grammar', index) == index
           r1 = (SyntaxNode).new(input, index...(index + 7))
@@ -306,23 +306,23 @@ module Treetop
           self.index = i0
           r0 = nil
         end
-        
+
         node_cache[:grammar][start_index] = r0
-        
+
         return r0
       end
-      
+
       module GrammarName0
       end
-      
+
       def _nt_grammar_name
         start_index = index
-        cached = node_cache[:grammar_name][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:grammar_name].has_key?(index)
+          cached = node_cache[:grammar_name][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0, s0 = index, []
         if input.index(/[A-Z]/, index) == index
           r1 = (SyntaxNode).new(input, index...(index + 1))
@@ -351,32 +351,32 @@ module Treetop
           self.index = i0
           r0 = nil
         end
-        
+
         node_cache[:grammar_name][start_index] = r0
-        
+
         return r0
       end
-      
+
       module DeclarationSequence0
         def space
           elements[0]
         end
-        
+
         def declaration
           elements[1]
         end
       end
-      
+
       module DeclarationSequence1
         def head
           elements[0]
         end
-        
+
         def tail
           elements[1]
         end
       end
-      
+
       module DeclarationSequence2
         def declarations
           [head] + tail
@@ -386,20 +386,20 @@ module Treetop
           super.elements.map { |elt| elt.declaration }
         end
       end
-      
+
       module DeclarationSequence3
         def compile(builder)
         end
       end
-      
+
       def _nt_declaration_sequence
         start_index = index
-        cached = node_cache[:declaration_sequence][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:declaration_sequence].has_key?(index)
+          cached = node_cache[:declaration_sequence][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0 = index
         i1, s1 = index, []
         r2 = _nt_declaration
@@ -456,20 +456,20 @@ module Treetop
             r0 = nil
           end
         end
-        
+
         node_cache[:declaration_sequence][start_index] = r0
-        
+
         return r0
       end
-      
+
       def _nt_declaration
         start_index = index
-        cached = node_cache[:declaration][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:declaration].has_key?(index)
+          cached = node_cache[:declaration][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0 = index
         r1 = _nt_parsing_rule
         if r1
@@ -483,33 +483,33 @@ module Treetop
             r0 = nil
           end
         end
-        
+
         node_cache[:declaration][start_index] = r0
-        
+
         return r0
       end
-      
+
       module IncludeDeclaration0
         def space
           elements[1]
         end
-        
+
       end
-      
+
       module IncludeDeclaration1
         def compile(builder)
           builder << text_value
         end
       end
-      
+
       def _nt_include_declaration
         start_index = index
-        cached = node_cache[:include_declaration][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:include_declaration].has_key?(index)
+          cached = node_cache[:include_declaration][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0, s0 = index, []
         if input.index('include', index) == index
           r1 = (SyntaxNode).new(input, index...(index + 7))
@@ -571,43 +571,43 @@ module Treetop
           self.index = i0
           r0 = nil
         end
-        
+
         node_cache[:include_declaration][start_index] = r0
-        
+
         return r0
       end
-      
+
       module ParsingRule0
         def space
           elements[1]
         end
-        
+
         def nonterminal
           elements[2]
         end
-        
+
         def space
           elements[3]
         end
-        
+
         def parsing_expression
           elements[4]
         end
-        
+
         def space
           elements[5]
         end
-        
+
       end
-      
+
       def _nt_parsing_rule
         start_index = index
-        cached = node_cache[:parsing_rule][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:parsing_rule].has_key?(index)
+          cached = node_cache[:parsing_rule][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0, s0 = index, []
         if input.index('rule', index) == index
           r1 = (SyntaxNode).new(input, index...(index + 4))
@@ -654,20 +654,20 @@ module Treetop
           self.index = i0
           r0 = nil
         end
-        
+
         node_cache[:parsing_rule][start_index] = r0
-        
+
         return r0
       end
-      
+
       def _nt_parsing_expression
         start_index = index
-        cached = node_cache[:parsing_expression][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:parsing_expression].has_key?(index)
+          cached = node_cache[:parsing_expression][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0 = index
         r1 = _nt_choice
         if r1
@@ -686,28 +686,28 @@ module Treetop
             end
           end
         end
-        
+
         node_cache[:parsing_expression][start_index] = r0
-        
+
         return r0
       end
-      
+
       module Choice0
         def alternative
           elements[3]
         end
       end
-      
+
       module Choice1
         def head
           elements[0]
         end
-        
+
         def tail
           elements[1]
         end
       end
-      
+
       module Choice2
         def alternatives
           [head] + tail
@@ -721,15 +721,15 @@ module Treetop
           (alternatives.map {|alt| alt.inline_modules }).flatten
         end
       end
-      
+
       def _nt_choice
         start_index = index
-        cached = node_cache[:choice][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:choice].has_key?(index)
+          cached = node_cache[:choice][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0, s0 = index, []
         r1 = _nt_alternative
         s0 << r1
@@ -796,36 +796,36 @@ module Treetop
           self.index = i0
           r0 = nil
         end
-        
+
         node_cache[:choice][start_index] = r0
-        
+
         return r0
       end
-      
+
       module Sequence0
         def space
           elements[0]
         end
-        
+
         def labeled_sequence_primary
           elements[1]
         end
       end
-      
+
       module Sequence1
         def head
           elements[0]
         end
-        
+
         def tail
           elements[1]
         end
-        
+
         def node_class_declarations
           elements[2]
         end
       end
-      
+
       module Sequence2
         def sequence_elements
           [head] + tail
@@ -845,15 +845,15 @@ module Treetop
           node_class_declarations.inline_module_name
         end
       end
-      
+
       def _nt_sequence
         start_index = index
-        cached = node_cache[:sequence][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:sequence].has_key?(index)
+          cached = node_cache[:sequence][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0, s0 = index, []
         r1 = _nt_labeled_sequence_primary
         s0 << r1
@@ -900,20 +900,20 @@ module Treetop
           self.index = i0
           r0 = nil
         end
-        
+
         node_cache[:sequence][start_index] = r0
-        
+
         return r0
       end
-      
+
       def _nt_alternative
         start_index = index
-        cached = node_cache[:alternative][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:alternative].has_key?(index)
+          cached = node_cache[:alternative][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0 = index
         r1 = _nt_sequence
         if r1
@@ -927,22 +927,22 @@ module Treetop
             r0 = nil
           end
         end
-        
+
         node_cache[:alternative][start_index] = r0
-        
+
         return r0
       end
-      
+
       module Primary0
         def prefix
           elements[0]
         end
-        
+
         def atomic
           elements[1]
         end
       end
-      
+
       module Primary1
         def compile(address, builder, parent_expression=nil)
           prefix.compile(address, builder, self)
@@ -960,21 +960,21 @@ module Treetop
           nil
         end
       end
-      
+
       module Primary2
         def atomic
           elements[0]
         end
-        
+
         def suffix
           elements[1]
         end
-        
+
         def node_class_declarations
           elements[2]
         end
       end
-      
+
       module Primary3
         def compile(address, builder, parent_expression=nil)
           suffix.compile(address, builder, self)
@@ -996,17 +996,17 @@ module Treetop
           node_class_declarations.inline_module_name
         end
       end
-      
+
       module Primary4
         def atomic
           elements[0]
         end
-        
+
         def node_class_declarations
           elements[1]
         end
       end
-      
+
       module Primary5
         def compile(address, builder, parent_expression=nil)
           atomic.compile(address, builder, self)
@@ -1024,15 +1024,15 @@ module Treetop
           node_class_declarations.inline_module_name
         end
       end
-      
+
       def _nt_primary
         start_index = index
-        cached = node_cache[:primary][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:primary].has_key?(index)
+          cached = node_cache[:primary][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0 = index
         i1, s1 = index, []
         r2 = _nt_prefix
@@ -1097,22 +1097,22 @@ module Treetop
             end
           end
         end
-        
+
         node_cache[:primary][start_index] = r0
-        
+
         return r0
       end
-      
+
       module LabeledSequencePrimary0
         def label
           elements[0]
         end
-        
+
         def sequence_primary
           elements[1]
         end
       end
-      
+
       module LabeledSequencePrimary1
         def compile(lexical_address, builder)
           sequence_primary.compile(lexical_address, builder)
@@ -1132,15 +1132,15 @@ module Treetop
           end
         end
       end
-      
+
       def _nt_labeled_sequence_primary
         start_index = index
-        cached = node_cache[:labeled_sequence_primary][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:labeled_sequence_primary].has_key?(index)
+          cached = node_cache[:labeled_sequence_primary][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0, s0 = index, []
         r1 = _nt_label
         s0 << r1
@@ -1156,42 +1156,42 @@ module Treetop
           self.index = i0
           r0 = nil
         end
-        
+
         node_cache[:labeled_sequence_primary][start_index] = r0
-        
+
         return r0
       end
-      
+
       module Label0
         def alpha_char
           elements[0]
         end
-        
+
       end
-      
+
       module Label1
       end
-      
+
       module Label2
         def name
           elements[0].text_value
         end
       end
-      
+
       module Label3
         def name
           nil
         end
       end
-      
+
       def _nt_label
         start_index = index
-        cached = node_cache[:label][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:label].has_key?(index)
+          cached = node_cache[:label][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0 = index
         i1, s1 = index, []
         i2, s2 = index, []
@@ -1254,22 +1254,22 @@ module Treetop
             r0 = nil
           end
         end
-        
+
         node_cache[:label][start_index] = r0
-        
+
         return r0
       end
-      
+
       module SequencePrimary0
         def prefix
           elements[0]
         end
-        
+
         def atomic
           elements[1]
         end
       end
-      
+
       module SequencePrimary1
         def compile(lexical_address, builder)
           prefix.compile(lexical_address, builder, self)
@@ -1287,17 +1287,17 @@ module Treetop
           nil
         end
       end
-      
+
       module SequencePrimary2
         def atomic
           elements[0]
         end
-        
+
         def suffix
           elements[1]
         end
       end
-      
+
       module SequencePrimary3
         def compile(lexical_address, builder)
           suffix.compile(lexical_address, builder, self)
@@ -1315,15 +1315,15 @@ module Treetop
           nil
         end
       end
-      
+
       def _nt_sequence_primary
         start_index = index
-        cached = node_cache[:sequence_primary][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:sequence_primary].has_key?(index)
+          cached = node_cache[:sequence_primary][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0 = index
         i1, s1 = index, []
         r2 = _nt_prefix
@@ -1370,20 +1370,20 @@ module Treetop
             end
           end
         end
-        
+
         node_cache[:sequence_primary][start_index] = r0
-        
+
         return r0
       end
-      
+
       def _nt_suffix
         start_index = index
-        cached = node_cache[:suffix][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:suffix].has_key?(index)
+          cached = node_cache[:suffix][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0 = index
         r1 = _nt_repetition_suffix
         if r1
@@ -1397,20 +1397,20 @@ module Treetop
             r0 = nil
           end
         end
-        
+
         node_cache[:suffix][start_index] = r0
-        
+
         return r0
       end
-      
+
       def _nt_optional_suffix
         start_index = index
-        cached = node_cache[:optional_suffix][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:optional_suffix].has_key?(index)
+          cached = node_cache[:optional_suffix][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         if input.index('?', index) == index
           r0 = (Optional).new(input, index...(index + 1))
           @index += 1
@@ -1418,22 +1418,22 @@ module Treetop
           terminal_parse_failure('?')
           r0 = nil
         end
-        
+
         node_cache[:optional_suffix][start_index] = r0
-        
+
         return r0
       end
-      
+
       module NodeClassDeclarations0
         def node_class_expression
           elements[0]
         end
-        
+
         def trailing_inline_module
           elements[1]
         end
       end
-      
+
       module NodeClassDeclarations1
         def node_class_name
           node_class_expression.node_class_name
@@ -1451,15 +1451,15 @@ module Treetop
           inline_module.module_name if inline_module
         end
       end
-      
+
       def _nt_node_class_declarations
         start_index = index
-        cached = node_cache[:node_class_declarations][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:node_class_declarations].has_key?(index)
+          cached = node_cache[:node_class_declarations][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0, s0 = index, []
         r1 = _nt_node_class_expression
         s0 << r1
@@ -1475,20 +1475,20 @@ module Treetop
           self.index = i0
           r0 = nil
         end
-        
+
         node_cache[:node_class_declarations][start_index] = r0
-        
+
         return r0
       end
-      
+
       def _nt_repetition_suffix
         start_index = index
-        cached = node_cache[:repetition_suffix][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:repetition_suffix].has_key?(index)
+          cached = node_cache[:repetition_suffix][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0 = index
         if input.index('+', index) == index
           r1 = (OneOrMore).new(input, index...(index + 1))
@@ -1514,20 +1514,20 @@ module Treetop
             r0 = nil
           end
         end
-        
+
         node_cache[:repetition_suffix][start_index] = r0
-        
+
         return r0
       end
-      
+
       def _nt_prefix
         start_index = index
-        cached = node_cache[:prefix][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:prefix].has_key?(index)
+          cached = node_cache[:prefix][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0 = index
         if input.index('&', index) == index
           r1 = (AndPredicate).new(input, index...(index + 1))
@@ -1549,24 +1549,35 @@ module Treetop
           if r2
             r0 = r2
           else
-            self.index = i0
-            r0 = nil
+            if input.index('~', index) == index
+              r3 = (TransientPrefix).new(input, index...(index + 1))
+              @index += 1
+            else
+              terminal_parse_failure('~')
+              r3 = nil
+            end
+            if r3
+              r0 = r3
+            else
+              self.index = i0
+              r0 = nil
+            end
           end
         end
-        
+
         node_cache[:prefix][start_index] = r0
-        
+
         return r0
       end
-      
+
       def _nt_atomic
         start_index = index
-        cached = node_cache[:atomic][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:atomic].has_key?(index)
+          cached = node_cache[:atomic][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0 = index
         r1 = _nt_terminal
         if r1
@@ -1585,33 +1596,33 @@ module Treetop
             end
           end
         end
-        
+
         node_cache[:atomic][start_index] = r0
-        
+
         return r0
       end
-      
+
       module ParenthesizedExpression0
         def parsing_expression
           elements[2]
         end
-        
+
       end
-      
+
       module ParenthesizedExpression1
         def inline_modules
           parsing_expression.inline_modules
         end
       end
-      
+
       def _nt_parenthesized_expression
         start_index = index
-        cached = node_cache[:parenthesized_expression][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:parenthesized_expression].has_key?(index)
+          cached = node_cache[:parenthesized_expression][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0, s0 = index, []
         if input.index('(', index) == index
           r1 = (SyntaxNode).new(input, index...(index + 1))
@@ -1661,30 +1672,30 @@ module Treetop
           self.index = i0
           r0 = nil
         end
-        
+
         node_cache[:parenthesized_expression][start_index] = r0
-        
+
         return r0
       end
-      
+
       module Nonterminal0
         def alpha_char
           elements[0]
         end
-        
+
       end
-      
+
       module Nonterminal1
       end
-      
+
       def _nt_nonterminal
         start_index = index
-        cached = node_cache[:nonterminal][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:nonterminal].has_key?(index)
+          cached = node_cache[:nonterminal][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0, s0 = index, []
         i1 = index
         r2 = _nt_keyword_inside_grammar
@@ -1728,20 +1739,20 @@ module Treetop
           self.index = i0
           r0 = nil
         end
-        
+
         node_cache[:nonterminal][start_index] = r0
-        
+
         return r0
       end
-      
+
       def _nt_terminal
         start_index = index
-        cached = node_cache[:terminal][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:terminal].has_key?(index)
+          cached = node_cache[:terminal][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0 = index
         r1 = _nt_quoted_string
         if r1
@@ -1760,26 +1771,26 @@ module Treetop
             end
           end
         end
-        
+
         node_cache[:terminal][start_index] = r0
-        
+
         return r0
       end
-      
+
       module QuotedString0
         def string
           super.text_value
         end
       end
-      
+
       def _nt_quoted_string
         start_index = index
-        cached = node_cache[:quoted_string][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:quoted_string].has_key?(index)
+          cached = node_cache[:quoted_string][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0 = index
         r1 = _nt_single_quoted_string
         if r1
@@ -1795,30 +1806,30 @@ module Treetop
             r0 = nil
           end
         end
-        
+
         node_cache[:quoted_string][start_index] = r0
-        
+
         return r0
       end
-      
+
       module DoubleQuotedString0
       end
-      
+
       module DoubleQuotedString1
         def string
           elements[1]
         end
-        
+
       end
-      
+
       def _nt_double_quoted_string
         start_index = index
-        cached = node_cache[:double_quoted_string][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:double_quoted_string].has_key?(index)
+          cached = node_cache[:double_quoted_string][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0, s0 = index, []
         if input.index('"', index) == index
           r1 = (SyntaxNode).new(input, index...(index + 1))
@@ -1919,30 +1930,30 @@ module Treetop
           self.index = i0
           r0 = nil
         end
-        
+
         node_cache[:double_quoted_string][start_index] = r0
-        
+
         return r0
       end
-      
+
       module SingleQuotedString0
       end
-      
+
       module SingleQuotedString1
         def string
           elements[1]
         end
-        
+
       end
-      
+
       def _nt_single_quoted_string
         start_index = index
-        cached = node_cache[:single_quoted_string][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:single_quoted_string].has_key?(index)
+          cached = node_cache[:single_quoted_string][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0, s0 = index, []
         if input.index("'", index) == index
           r1 = (SyntaxNode).new(input, index...(index + 1))
@@ -2043,36 +2054,42 @@ module Treetop
           self.index = i0
           r0 = nil
         end
-        
+
         node_cache[:single_quoted_string][start_index] = r0
-        
+
         return r0
       end
-      
+
       module CharacterClass0
       end
-      
+
       module CharacterClass1
+      end
+
+      module CharacterClass2
+      end
+
+      module CharacterClass3
         def characters
           elements[1]
         end
-        
+
       end
-      
-      module CharacterClass2
+
+      module CharacterClass4
         def characters
           super.text_value
         end
       end
-      
+
       def _nt_character_class
         start_index = index
-        cached = node_cache[:character_class][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:character_class].has_key?(index)
+          cached = node_cache[:character_class][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0, s0 = index, []
         if input.index('[', index) == index
           r1 = (SyntaxNode).new(input, index...(index + 1))
@@ -2103,25 +2120,70 @@ module Treetop
             s3 << r4
             if r4
               i6 = index
-              if input.index('\]', index) == index
-                r7 = (SyntaxNode).new(input, index...(index + 2))
-                @index += 2
+              i7, s7 = index, []
+              if input.index('\\', index) == index
+                r8 = (SyntaxNode).new(input, index...(index + 1))
+                @index += 1
               else
-                terminal_parse_failure('\]')
+                terminal_parse_failure('\\')
+                r8 = nil
+              end
+              s7 << r8
+              if r8
+                if index < input_length
+                  r9 = (SyntaxNode).new(input, index...(index + 1))
+                  @index += 1
+                else
+                  terminal_parse_failure("any character")
+                  r9 = nil
+                end
+                s7 << r9
+              end
+              if s7.last
+                r7 = (SyntaxNode).new(input, i7...index, s7)
+                r7.extend(CharacterClass0)
+              else
+                self.index = i7
                 r7 = nil
               end
               if r7
                 r6 = r7
               else
-                if index < input_length
-                  r8 = (SyntaxNode).new(input, index...(index + 1))
+                i10, s10 = index, []
+                i11 = index
+                if input.index('\\', index) == index
+                  r12 = (SyntaxNode).new(input, index...(index + 1))
                   @index += 1
                 else
-                  terminal_parse_failure("any character")
-                  r8 = nil
+                  terminal_parse_failure('\\')
+                  r12 = nil
                 end
-                if r8
-                  r6 = r8
+                if r12
+                  r11 = nil
+                else
+                  self.index = i11
+                  r11 = SyntaxNode.new(input, index...index)
+                end
+                s10 << r11
+                if r11
+                  if index < input_length
+                    r13 = (SyntaxNode).new(input, index...(index + 1))
+                    @index += 1
+                  else
+                    terminal_parse_failure("any character")
+                    r13 = nil
+                  end
+                  s10 << r13
+                end
+                if s10.last
+                  r10 = (SyntaxNode).new(input, i10...index, s10)
+                  r10.extend(CharacterClass1)
+                else
+                  self.index = i10
+                  r10 = nil
+                end
+                if r10
+                  r6 = r10
                 else
                   self.index = i6
                   r6 = nil
@@ -2131,7 +2193,7 @@ module Treetop
             end
             if s3.last
               r3 = (SyntaxNode).new(input, i3...index, s3)
-              r3.extend(CharacterClass0)
+              r3.extend(CharacterClass2)
             else
               self.index = i3
               r3 = nil
@@ -2151,37 +2213,37 @@ module Treetop
           s0 << r2
           if r2
             if input.index(']', index) == index
-              r9 = (SyntaxNode).new(input, index...(index + 1))
+              r14 = (SyntaxNode).new(input, index...(index + 1))
               @index += 1
             else
               terminal_parse_failure(']')
-              r9 = nil
+              r14 = nil
             end
-            s0 << r9
+            s0 << r14
           end
         end
         if s0.last
           r0 = (CharacterClass).new(input, i0...index, s0)
-          r0.extend(CharacterClass1)
-          r0.extend(CharacterClass2)
+          r0.extend(CharacterClass3)
+          r0.extend(CharacterClass4)
         else
           self.index = i0
           r0 = nil
         end
-        
+
         node_cache[:character_class][start_index] = r0
-        
+
         return r0
       end
-      
+
       def _nt_anything_symbol
         start_index = index
-        cached = node_cache[:anything_symbol][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:anything_symbol].has_key?(index)
+          cached = node_cache[:anything_symbol][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         if input.index('.', index) == index
           r0 = (AnythingSymbol).new(input, index...(index + 1))
           @index += 1
@@ -2189,42 +2251,42 @@ module Treetop
           terminal_parse_failure('.')
           r0 = nil
         end
-        
+
         node_cache[:anything_symbol][start_index] = r0
-        
+
         return r0
       end
-      
+
       module NodeClassExpression0
       end
-      
+
       module NodeClassExpression1
         def space
           elements[0]
         end
-        
+
       end
-      
+
       module NodeClassExpression2
         def node_class_name
           elements[2].text_value
         end
       end
-      
+
       module NodeClassExpression3
         def node_class_name
           nil
         end
       end
-      
+
       def _nt_node_class_expression
         start_index = index
-        cached = node_cache[:node_class_expression][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:node_class_expression].has_key?(index)
+          cached = node_cache[:node_class_expression][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0 = index
         i1, s1 = index, []
         r2 = _nt_space
@@ -2325,22 +2387,22 @@ module Treetop
             r0 = nil
           end
         end
-        
+
         node_cache[:node_class_expression][start_index] = r0
-        
+
         return r0
       end
-      
+
       module TrailingInlineModule0
         def space
           elements[0]
         end
-        
+
         def inline_module
           elements[1]
         end
       end
-      
+
       module TrailingInlineModule1
         def inline_modules
           [inline_module]
@@ -2350,7 +2412,7 @@ module Treetop
           inline_module.module_name
         end
       end
-      
+
       module TrailingInlineModule2
         def inline_modules
           []
@@ -2364,15 +2426,15 @@ module Treetop
           nil
         end
       end
-      
+
       def _nt_trailing_inline_module
         start_index = index
-        cached = node_cache[:trailing_inline_module][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:trailing_inline_module].has_key?(index)
+          cached = node_cache[:trailing_inline_module][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0 = index
         i1, s1 = index, []
         r2 = _nt_space
@@ -2407,26 +2469,26 @@ module Treetop
             r0 = nil
           end
         end
-        
+
         node_cache[:trailing_inline_module][start_index] = r0
-        
+
         return r0
       end
-      
+
       module InlineModule0
       end
-      
+
       module InlineModule1
       end
-      
+
       def _nt_inline_module
         start_index = index
-        cached = node_cache[:inline_module][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:inline_module].has_key?(index)
+          cached = node_cache[:inline_module][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0, s0 = index, []
         if input.index('{', index) == index
           r1 = (SyntaxNode).new(input, index...(index + 1))
@@ -2509,23 +2571,23 @@ module Treetop
           self.index = i0
           r0 = nil
         end
-        
+
         node_cache[:inline_module][start_index] = r0
-        
+
         return r0
       end
-      
+
       module KeywordInsideGrammar0
       end
-      
+
       def _nt_keyword_inside_grammar
         start_index = index
-        cached = node_cache[:keyword_inside_grammar][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:keyword_inside_grammar].has_key?(index)
+          cached = node_cache[:keyword_inside_grammar][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0, s0 = index, []
         i1 = index
         if input.index('rule', index) == index
@@ -2571,23 +2633,23 @@ module Treetop
           self.index = i0
           r0 = nil
         end
-        
+
         node_cache[:keyword_inside_grammar][start_index] = r0
-        
+
         return r0
       end
-      
+
       module NonSpaceChar0
       end
-      
+
       def _nt_non_space_char
         start_index = index
-        cached = node_cache[:non_space_char][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:non_space_char].has_key?(index)
+          cached = node_cache[:non_space_char][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0, s0 = index, []
         i1 = index
         r2 = _nt_space
@@ -2615,40 +2677,40 @@ module Treetop
           self.index = i0
           r0 = nil
         end
-        
+
         node_cache[:non_space_char][start_index] = r0
-        
+
         return r0
       end
-      
+
       def _nt_alpha_char
         start_index = index
-        cached = node_cache[:alpha_char][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:alpha_char].has_key?(index)
+          cached = node_cache[:alpha_char][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         if input.index(/[A-Za-z_]/, index) == index
           r0 = (SyntaxNode).new(input, index...(index + 1))
           @index += 1
         else
           r0 = nil
         end
-        
+
         node_cache[:alpha_char][start_index] = r0
-        
+
         return r0
       end
-      
+
       def _nt_alphanumeric_char
         start_index = index
-        cached = node_cache[:alphanumeric_char][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:alphanumeric_char].has_key?(index)
+          cached = node_cache[:alphanumeric_char][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0 = index
         r1 = _nt_alpha_char
         if r1
@@ -2667,20 +2729,20 @@ module Treetop
             r0 = nil
           end
         end
-        
+
         node_cache[:alphanumeric_char][start_index] = r0
-        
+
         return r0
       end
-      
+
       def _nt_space
         start_index = index
-        cached = node_cache[:space][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:space].has_key?(index)
+          cached = node_cache[:space][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         s0, i0 = [], index
         loop do
           i1 = index
@@ -2708,26 +2770,26 @@ module Treetop
         else
           r0 = SyntaxNode.new(input, i0...index, s0)
         end
-        
+
         node_cache[:space][start_index] = r0
-        
+
         return r0
       end
-      
+
       module CommentToEol0
       end
-      
+
       module CommentToEol1
       end
-      
+
       def _nt_comment_to_eol
         start_index = index
-        cached = node_cache[:comment_to_eol][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:comment_to_eol].has_key?(index)
+          cached = node_cache[:comment_to_eol][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         i0, s0 = index, []
         if input.index('#', index) == index
           r1 = (SyntaxNode).new(input, index...(index + 1))
@@ -2794,34 +2856,34 @@ module Treetop
           self.index = i0
           r0 = nil
         end
-        
+
         node_cache[:comment_to_eol][start_index] = r0
-        
+
         return r0
       end
-      
+
       def _nt_white
         start_index = index
-        cached = node_cache[:white][index]
-        if cached
-          @index = cached.interval.end
+        if node_cache[:white].has_key?(index)
+          cached = node_cache[:white][index]
+          @index = cached.interval.end if cached
           return cached
         end
-        
+
         if input.index(/[ \t\n\r]/, index) == index
           r0 = (SyntaxNode).new(input, index...(index + 1))
           @index += 1
         else
           r0 = nil
         end
-        
+
         node_cache[:white][start_index] = r0
-        
+
         return r0
       end
-      
+
     end
-    
+
     class MetagrammarParser < Treetop::Runtime::CompiledParser
       include Metagrammar
     end
