@@ -64,7 +64,8 @@ module CharacterClassSpec
   end
 
   describe "A character class containing a hex escape" do
-    testing_expression "[\x41]"
+    slash = "\\"
+    testing_expression "[#{slash}x41]"
     it "matches that character only" do
       parse('A').should_not be_nil
       parse('\\').should be_nil
@@ -75,7 +76,8 @@ module CharacterClassSpec
   end
 
   describe "A character class containing an octal escape" do
-    testing_expression "[\101]"
+    slash = "\\"
+    testing_expression "[#{slash}101]"
     it "matches that character only" do
       parse('A').should_not be_nil
       parse('\\').should be_nil
@@ -85,7 +87,8 @@ module CharacterClassSpec
   end
 
   describe "A character class containing a \\c control-char escape" do
-    testing_expression "[\cC]"
+    slash = "\\"
+    testing_expression "[#{slash}cC]"
     it "matches that character only" do
       parse("\003").should_not be_nil
       parse('\\').should be_nil
@@ -95,7 +98,8 @@ module CharacterClassSpec
   end
 
   describe "A character class containing a \\C- control-char escape" do
-    testing_expression "[\C-C]"
+    slash = "\\"
+    testing_expression "[#{slash}C-C]"
     it "matches that character only" do
       parse("\003").should_not be_nil
       parse('\\').should be_nil
@@ -105,7 +109,8 @@ module CharacterClassSpec
   end
 
   describe "A character class containing a \\M- meta-char escape" do
-    testing_expression "[\M- ]"
+    slash = "\\"
+    testing_expression "[#{slash}M- ]"
     it "matches that character only" do
       parse("\240").should_not be_nil
       parse('\\').should be_nil
@@ -115,19 +120,9 @@ module CharacterClassSpec
     end
   end
 
-  describe "A character class containing a \\M-\\C- meta-control-char escape" do
-    testing_expression "[\M-\C-C]"
-    it "matches that character only" do
-      parse("\203").should_not be_nil
-      parse('\\').should be_nil
-      parse('M').should be_nil
-      parse('-').should be_nil
-      parse('C').should be_nil
-    end
-  end
-
   describe "A character class containing an escaped non-special character" do
-    testing_expression "[\y]"
+    slash = "\\"
+    testing_expression "[#{slash}y]"
     it "matches that character only" do
       parse("y").should_not be_nil
       parse('\\').should be_nil
@@ -147,7 +142,5 @@ module CharacterClassSpec
       parse("0").should be_nil
     end
   end
-
-  # describe "A character class containing Ruby string insertions" do
 
 end
