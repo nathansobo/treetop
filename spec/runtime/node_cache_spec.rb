@@ -120,5 +120,38 @@ module NodeCacheSpec
         cache.should_not have_result(:foo, 12)
       end
     end
+
+    describe "with a tree of results that is dependent upon a subsequent result" do
+      attr_reader :dependent_parent, :independent_child, :dependent_child, :depended_upon
+
+      before do
+        @dependent_parent = SyntaxNode.new(input, 0..5)
+        @independent_child = SyntaxNode.new(input, 0..3)
+        @dependent_child = SyntaxNode.new(input, 3..5)
+        @depended_upon = SyntaxNode.new(input, 5..10)
+        dependent_child.parent = dependent_parent
+        independent_child.parent = dependent_parent
+        depended_upon.dependent_results.push(dependent_child)
+
+        cache.store(:dependent_parent, dependent_parent)
+        cache.store(:independent_child, independent_child)
+        cache.store(:dependent_child, dependent_child)
+        cache.store(:depended_upon, depended_upon)
+      end
+
+      it "expires the immediate dependent result and all of its ancestors when the depended-upon result is expired" do
+        cache.should have_result(:dependent_parent, 0)
+        cache.should have_result(:independent_child, 0)
+        cache.should have_result(:dependent_child, 3)
+        cache.should have_result(:depended_upon, 5)
+
+        cache.expire(7..8, 0)
+
+        cache.should_not have_result(:dependent_parent, 0)
+        cache.should have_result(:independent_child, 0)
+        cache.should_not have_result(:dependent_child, 3)
+        cache.should_not have_result(:depended_upon, 5)
+      end
+    end
   end
 end

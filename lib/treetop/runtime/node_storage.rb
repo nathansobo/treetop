@@ -16,7 +16,7 @@ module Treetop
 
       def reflect_buffer_change(expired_interval, length_change)
         if interval.intersects?(expired_interval)
-          expire(false)
+          expire(true)
           return false
         end
 
@@ -29,10 +29,9 @@ module Treetop
         true
       end
 
-      def expire(propagate_to_parent)
+      def expire(propagate_to_result)
         node_index[rule_name].delete(interval.first) if node_index
-        #dependent_results.each { |dependent_result| dependent_result.expire(true) }
-        #parent.expire(true) if parent && propagate_to_parent
+        result.expire(false) if propagate_to_result
       end
     end
   end
