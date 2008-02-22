@@ -1,4 +1,3 @@
-
 module Treetop
   module Runtime
     class NodeCache
@@ -22,20 +21,20 @@ module Treetop
       end
 
       def expire(range, length_change)
-        puts "before vvvvvvvvvvvvvvvvvvvvvvv"
-        puts node_storages.inspect
-        pp   node_index
-        puts "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+#        puts "before vvvvvvvvvvvvvvvvvvvvvvv"
+#        puts node_storages.inspect
+#        pp   node_index
+#        puts "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
         
         self.node_storages = node_storages.select do |node_storage|
           #debugger if node_storage.interval == (0...1) || node_storage.interval == (0...2)
           node_storage.reflect_buffer_change(range, length_change)
         end
         
-        puts "after vvvvvvvvvvvvvvvvvvvvvvvv"
-        puts node_storages.inspect
-        pp   node_index
-        puts "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+#        puts "after vvvvvvvvvvvvvvvvvvvvvvvv"
+#        puts node_storages.inspect
+#        pp   node_index
+#        puts "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
       end
 
 

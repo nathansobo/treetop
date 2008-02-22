@@ -20,13 +20,13 @@ module Treetop
 
       def reparse(new_input=nil)
         input.replace(new_input) if new_input
-        puts input
+        #puts input
         reset_parse_state
         parse_root
       end
 
       def expire(range, length_change)
-        puts "Expiring #{range}, #{length_change}"
+        #puts "Expiring #{range}, #{length_change}"
         expirable_node_cache.expire(range, length_change)
         1
       end
@@ -60,7 +60,6 @@ module Treetop
       attr_writer :index
 
       def parse_root(options = {})
-        puts input.size
         @index = options[:index] if options[:index]
         result = send("_nt_#{root}")
         if result.is_a?(ParseFailure)
