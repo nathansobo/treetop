@@ -1,0 +1,84 @@
+#!/usr/bin/env ruby
+
+require 'fileutils'
+require 'net/http'
+
+RUCOLA_PLUGINS_URL = 'http://rucola.rubyforge.org/svn/extras/plugins/'
+PLUGIN_DIR = 'vendor/plugins'
+
+def get_plugin_index
+  return @rucola_plugins unless @rucola_plugins.nil?
+
+  rucola_plugin_index = Net::HTTP.get(URI.parse(RUCOLA_PLUGINS_URL + "plugin_index"))
+  
+  @rucola_plugins = {}
+  rucola_plugin_index.each_line do |line|
+    next if line.chomp.empty?
+    plugin_name, plugin_description = line.chomp.split("\t")
+    @rucola_plugins[plugin_name] = plugin_description
+  end
+  @rucola_plugins
+end
+
+def list_plugins
+  rucola_plugins = get_plugin_index
+  puts "Available plugins from #{RUCOLA_PLUGINS_URL} are:\n\n"
+  puts "- " << rucola_plugins.map { |name, desc| "#{name}: #{desc}" }.sort.join("\n\n- ") << "\n\n"
+  exit
+end
+
+def install_plugin(plugin)
+  if plugin.nil?
+    puts "Please specify the name of the plugin or the url to install from.", ''
+    banner
+  end
+  
+  unless plugin =~ /^[\w\+]+:\/\//
+    rucola_plugins = get_plugin_index
+    if rucola_plugins.has_key? plugin
+      url = RUCOLA_PLUGINS_URL + plugin
+      name = plugin
+    else
+      puts "No plugin was found for: #{plugin}", ''
+      list_plugins
+    end
+  else
+    url = plugin
+    name = url.split('/').last
+  end
+  
+  # do a checkout
+  FileUtils.mkdir_p PLUGIN_DIR unless File.exists? PLUGIN_DIR
+  IO.popen("svn co #{url} #{PLUGIN_DIR}/#{name}") do |process|
+    process.each_line { |line| puts line }
+  end
+  
+  # run install.rb if it exists
+  install_script = File.join(PLUGIN_DIR, name, 'install.rb')
+  if File.exists? install_script
+    puts "\n======================================================================================\n\n"
+    IO.popen("ruby #{install_script}") do |process|
+      process.each_line { |line| puts line }
+    end
+    puts ''
+  end
+end
+
+def banner
+  puts %{
+Usage: #{__FILE__} [options]
+Options:
+  list                        Lists all plugins from the Rucola plugin repository.
+  install PLUGIN              Installs PLUGIN from the Rucola plugins repository or a specific svn url.
+  }.strip
+  exit
+end
+
+banner if ARGV.empty?
+case ARGV[0]
+when 'list' then list_plugins
+when 'install' then install_plugin(ARGV[1])
+else
+  puts "Unknown option: #{ARGV[0]}", ''
+  banner
+end

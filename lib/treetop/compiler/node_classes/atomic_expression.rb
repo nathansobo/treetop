@@ -6,7 +6,8 @@ module Treetop
       end
       
       def single_quote(string)
-        "'#{string.gsub(/'$/, "\\'")}'"
+	# Double any backslashes, then backslash any single-quotes:
+	"'#{string.gsub(/\\/) { '\\\\' }.gsub(/'/) { "\\'"}}'"
       end
     end
   end

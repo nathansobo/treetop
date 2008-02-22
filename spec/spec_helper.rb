@@ -27,8 +27,8 @@ module Treetop
         testing_grammar(%{
           grammar Test
             rule expression_under_test
-              #{expression_under_test}
-            end
+	      }+expression_under_test+%{
+	    end
           end
         }.tabto(0))
       end

@@ -1,3 +1,7 @@
+#Google Group
+I've created a <a href="http://groups.google.com/group/treetop-dev">Google Group</a> as a better place to organize discussion and development.
+treetop-dev@google-groups.com
+
 #Contributing
 I like to try Rubinius's policy regarding commit rights. If you submit one patch worth integrating, I'll give you commit rights. We'll see how this goes, but I think it's a good policy.
 
