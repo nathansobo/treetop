@@ -28,6 +28,10 @@ module Treetop
 
         true
       end
+      
+      def inspect
+        "(:#{rule_name} - #{interval})"
+      end
 
       def expire(propagate_to_parent)
         node_index[rule_name].delete(interval.first) if node_index

@@ -8,6 +8,10 @@ module Treetop
       def resume_index
         interval.first
       end
+      
+      def inspect
+        "failure(#{interval})"
+      end
     end
   end
 end
