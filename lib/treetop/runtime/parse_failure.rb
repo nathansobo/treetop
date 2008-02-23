@@ -8,6 +8,10 @@ module Treetop
       def resume_index
         interval.first
       end
+
+      def inspect
+        "ParseFailure(interval=#{interval.inspect})"
+      end
     end
   end
 end

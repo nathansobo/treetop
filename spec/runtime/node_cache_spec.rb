@@ -15,7 +15,7 @@ module NodeCacheSpec
       attr_reader :node
 
       before do
-        @node = SyntaxNode.new(input, 5..10)
+        @node = SyntaxNode.new(input, 5...10)
         cache.store(:foo, node)
       end
 
@@ -93,13 +93,13 @@ module NodeCacheSpec
       attr_reader :a, :b, :c
       
       before do
-        @a = SyntaxNode.new(input, 0..5)
+        @a = SyntaxNode.new(input, 0...5)
         cache.store(:foo, a)
 
-        @b = SyntaxNode.new(input, 3..10)
+        @b = SyntaxNode.new(input, 3...10)
         cache.store(:foo, b)
 
-        @c = SyntaxNode.new(input, 7..13)
+        @c = SyntaxNode.new(input, 7...13)
         cache.store(:foo, c)
       end
 
@@ -125,10 +125,10 @@ module NodeCacheSpec
       attr_reader :dependent_parent, :independent_child, :dependent_child, :depended_upon
 
       before do
-        @dependent_parent = SyntaxNode.new(input, 0..5)
-        @independent_child = SyntaxNode.new(input, 0..3)
-        @dependent_child = SyntaxNode.new(input, 3..5)
-        @depended_upon = SyntaxNode.new(input, 5..10)
+        @dependent_parent = SyntaxNode.new(input, 0...5)
+        @independent_child = SyntaxNode.new(input, 0...3)
+        @dependent_child = SyntaxNode.new(input, 3...5)
+        @depended_upon = TerminalParseFailure.new(5..5, 'aint-there!')
         dependent_child.parent = dependent_parent
         independent_child.parent = dependent_parent
         depended_upon.dependent_results.push(dependent_child)
@@ -145,7 +145,7 @@ module NodeCacheSpec
         cache.should have_result(:dependent_child, 3)
         cache.should have_result(:depended_upon, 5)
 
-        cache.expire(7..8, 0)
+        cache.expire(5..5, 1)
 
         cache.should_not have_result(:dependent_parent, 0)
         cache.should have_result(:independent_child, 0)

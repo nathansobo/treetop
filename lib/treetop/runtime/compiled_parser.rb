@@ -100,17 +100,20 @@ module Treetop
       end
     
       def terminal_parse_failure(expected_string, length=0)
-        last_index = index + length
-        if last_index > max_terminal_failure_last_index
-          @max_terminal_failure_last_index = last_index
-        end
-        failure = TerminalParseFailure.new(index..last_index, expected_string)
-        return failure if index < max_terminal_failure_first_index
+        index_plus_length = index + length
+        @max_terminal_failure_last_index = index_plus_length if index_plus_length > max_terminal_failure_last_index
+        last_index = [index_plus_length, input_length].min
+        range = (index_plus_length > input_length) ? (index..last_index) : (index...last_index)
+
+        failure = TerminalParseFailure.new(range, expected_string)
+
         if index > max_terminal_failure_first_index
           @max_terminal_failure_first_index = index
-          @terminal_failures = []
+          @terminal_failures = [failure]
+        elsif index == max_terminal_failure_first_index
+          terminal_failures.push(failure)
         end
-        terminal_failures << failure
+
         failure
       end
     end

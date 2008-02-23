@@ -3,7 +3,7 @@ require File.expand_path("#{File.dirname(__FILE__)}/../spec_helper")
 module IterativeParsingSpec
   include Runtime
 
-  describe "A grammar with a sequence of 3 nonterminals" do
+  describe "A parser for a grammar with a sequence of 3 nonterminals" do
     testing_grammar %{
       grammar TestGrammar
         rule foo
@@ -63,7 +63,7 @@ module IterativeParsingSpec
 
       failure = node_cache.get(:dog, 10)
       failure.should be_an_instance_of(ParseFailure)
-      failure.interval.should == (10..13)
+      failure.interval.should == (10...13)
 
       input[12] = 'g'
 
@@ -75,11 +75,11 @@ module IterativeParsingSpec
 
       new_result.should_not be_nil
       new_result.the.should == the
-      new_result.color.should == green
+      new_result.color.should_not == green # the change might have caused 'aquamarine' to correctly parse
     end
   end
 
-  describe "A grammar with a parsing rule ending in a positive lookahead predicate" do
+  describe "A parser for a grammar with a parsing rule ending in a positive lookahead predicate" do
     testing_grammar %{
       grammar TestGrammar2
 
@@ -112,5 +112,52 @@ module IterativeParsingSpec
       node_cache.should_not have_result(:b, 0)
       node_cache.should_not have_result(:c, 3)
     end
+  end
+
+  describe "A parser for a simplified addition grammar" do
+    testing_grammar %{
+      grammar Addition
+        rule addition
+          number '+' addition / number
+        end
+
+        rule number
+          [0-9]
+        end
+      end
+    }
+
+    it "expires the results of choices that depend on failures that are invalidated as the user types" do
+      input = '1'
+      parse(input).should_not be_nil
+      node_cache.should have_result(:addition, 0)
+
+      pending "A better expiry strategy"
+
+      node_cache.should have_result(:number, 0)
+      node_cache.get(:number, 0).interval.should == (0...1)
+      node_storages = node_cache.send(:node_storages)
+
+      #p node_storages.map(&:interval)
+      #p node_storages.select {|storage| storage.interval == (1..1)}
+
+      input.replace('1+')
+      expire(1..1, 1)
+      node_cache.should_not have_result(:addition, 0)
+      node_cache.should have_result(:number, 0)
+      reparse.should be_nil
+      node_cache.get(:addition, 0).should be_an_instance_of(Runtime::ParseFailure)
+
+      input.replace('1+1')
+      expire(2..2, 1)
+      node_cache.should_not have_result(:addition, 0)
+      node_cache.should have_result(:number, 0)
+      reparse.should_not be_nil
+      node_cache.should have_result(:addition, 0)
+      node_cache.should have_result(:number, 0)
+      node_cache.should have_result(:addition, 2)
+      node_cache.should have_result(:number, 2)
+    end
+
   end
 end

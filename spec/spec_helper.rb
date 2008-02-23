@@ -69,6 +69,18 @@ module Treetop
       result
     end
 
+    def reparse
+      parser.reparse
+    end
+
+    def node_cache
+      parser.send(:expirable_node_cache)
+    end
+
+    def expire(range, length_change)
+      parser.expire(range, length_change)
+    end
+
     def compiling_grammar(grammar_under_test)
       lambda {
         grammar_node = parse_with_metagrammar(grammar_under_test.strip, :grammar)

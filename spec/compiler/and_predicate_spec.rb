@@ -26,7 +26,7 @@ module AndPredicateSpec
       node_cache = parser.send(:expirable_node_cache)
       node = node_cache.get(:__anonymous__, 0)
       node.should be_an_instance_of(TerminalParseFailure)
-      node.interval.should == (0..3)
+      node.interval.should == (0...3)
       node.dependent_results.should == [result]
     end
   end

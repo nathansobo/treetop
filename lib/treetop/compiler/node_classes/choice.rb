@@ -5,7 +5,9 @@ module Treetop
         super
         begin_comment(self)
         use_vars :result, :start_index
+        builder.assign "failed_alternatives", "[]"
         compile_alternatives(alternatives)
+        builder << "failed_alternatives.each { |alt| alt.dependent_results.push(#{result_var}) }"        
         end_comment(self)
       end
       
@@ -18,6 +20,8 @@ module Treetop
           extend_result_with_inline_module
         end
         builder.else_ do
+          builder.accumulate "failed_alternatives", subexpression_result_var
+          builder << "expirable_node_cache.store(:__anonymous__, #{subexpression_result_var})"          
           if alternatives.size == 1
             reset_index
             assign_failure start_index_var

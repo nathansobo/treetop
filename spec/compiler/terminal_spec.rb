@@ -36,6 +36,18 @@ module TerminalSymbolSpec
       parse(" foo", :index =>  0).should be_nil
     end
 
+    it "fails to parse when starting at the end of the buffer, producing a failure whose interval includes its endpoint" do
+      failure = parse("bla", :index => 3, :return_parse_failure => true)
+      failure.should be_an_instance_of(TerminalParseFailure)
+      failure.interval.should == (3..3)
+    end
+
+    it "fails to parse if the match runs off the end of the buffer, producing a failure whose interval includes its endpoint" do
+      failure = parse("fo", :return_parse_failure => true)
+      failure.should be_an_instance_of(TerminalParseFailure)
+      failure.interval.should == (0..2)
+    end
+
     it "upon a parse failure, sets the #max_terminal_failure_first_index and #max_terminal_failure_last_index of the parser" do
       parse("xxx").should be_nil
       parser.max_terminal_failure_first_index.should == 0
@@ -45,7 +57,7 @@ module TerminalSymbolSpec
     it "upon a parse failure, returns a TerminalParseFailure node with an interval spanning from the index of the failure to the end of the expected string" do
       failure = parse("xxx", :return_parse_failure => true)
       failure.should be_an_instance_of(TerminalParseFailure)
-      failure.interval.should == (0..3)
+      failure.interval.should == (0...3)
     end
   end
 end

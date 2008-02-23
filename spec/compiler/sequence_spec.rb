@@ -88,7 +88,7 @@ module SequenceSpec
       result.should be_an_instance_of(Runtime::ParseFailure)
       node_cache = parser.send(:expirable_node_cache)
       failure = node_cache.get(:second, 4)
-      failure.interval.should == (4..7)
+      failure.interval.should == (4...7)
     end
   end
   

@@ -11,6 +11,7 @@ class TextraDocument < Rucola::RCDocument
   end
   
   def textStorageWillProcessEditing(notification)
+    puts expiredRange
     parser.expire(expiredRange, changeInLength)
     parser.send(:input).replace(text)
     if parser.reparse
