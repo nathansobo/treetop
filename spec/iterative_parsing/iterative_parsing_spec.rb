@@ -47,6 +47,7 @@ module IterativeParsingSpec
     end
 
     it "expires corrected failures and recycles successfully parsed nodes preceding the failure" do
+      pending "new expiration strategy"
       input = "the green dot"
 
       result = parser.parse(input)

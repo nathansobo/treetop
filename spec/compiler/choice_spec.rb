@@ -42,19 +42,6 @@ module ChoiceSpec
       failure_2.expected_string == 'bar'
       failure_2.index.should == 0
     end
-
-    it "upon parsing a string matching the third alternative, stores the failure of the first two terminals in the node_cache and registers the result as dependent on them" do
-      result = parse('baz')
-
-      terminal_failures = parser.terminal_failures
-      stored_failures = node_cache.send(:node_storages).map(&:result)
-      stored_failures.size.should == 3
-      stored_failures.should include(terminal_failures[0])
-      stored_failures.should include(terminal_failures[1])
-
-      terminal_failures[0].dependent_results.should == [result]
-      terminal_failures[1].dependent_results.should == [result]
-    end
   end
 
   describe "A choice between sequences" do

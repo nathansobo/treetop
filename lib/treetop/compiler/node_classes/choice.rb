@@ -20,8 +20,6 @@ module Treetop
           extend_result_with_inline_module
         end
         builder.else_ do
-          builder.accumulate "failed_alternatives", subexpression_result_var
-          builder << "expirable_node_cache.store(:__anonymous__, #{subexpression_result_var})"          
           if alternatives.size == 1
             reset_index
             assign_failure start_index_var
