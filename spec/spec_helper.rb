@@ -21,7 +21,16 @@ module Treetop
 
   class TreetopExampleGroup < Spec::Example::ExampleGroup
     class << self
-      attr_accessor :parser_class_under_test
+      
+      attr_writer :parser_class_under_test
+      
+      def parser_class_under_test
+        if @parser_class_under_test
+          @parser_class_under_test
+        else
+          superclass.parser_class_under_test
+        end
+      end
 
       def testing_expression(expression_under_test)
         testing_grammar(%{
@@ -47,7 +56,6 @@ module Treetop
         raise parser.failure_reason unless node
         node
       end
-
     end
 
     attr_reader :parser

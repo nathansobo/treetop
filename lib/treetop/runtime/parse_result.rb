@@ -1,13 +1,14 @@
 module Treetop
   module Runtime
     class ParseResult
-      attr_reader :dependent_results, :storages
+      attr_reader :dependent_results, :storages, :dependencies
       attr_accessor :interval, :parent
       
       def initialize(interval)
         @interval = interval
         @dependent_results = []
         @storages = []
+        @dependencies = []
       end
 
       def expire(propagate_to_storages_and_parent)

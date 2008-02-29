@@ -6,10 +6,13 @@ module AndPredicateSpec
   describe "An &-predicated terminal symbol" do
     testing_expression '&"foo"'
 
-    it "successfully parses input matching the terminal symbol, returning an epsilon syntax node" do
+    it "successfully parses input matching the terminal symbol, returning an epsilon syntax node that depends on the result of the subexpression" do
       parse('foo', :consume_all_input => false) do |result|
         result.should_not be_nil
         result.interval.should == (0...0)
+        dependencies = result.dependencies
+        dependencies.size.should == 1
+        dependencies.first.text_value.should == 'foo'
       end
     end
 

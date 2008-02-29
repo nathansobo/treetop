@@ -24,6 +24,7 @@ module Treetop
       end
 
       def establish_expiration_dependence
+        builder.accumulate "#{result_var}.dependencies", subexpression_result_var
         builder.accumulate "#{subexpression_result_var}.dependent_results", result_var
         builder << "expirable_node_cache.store(:__anonymous__, #{subexpression_result_var})"
       end

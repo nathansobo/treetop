@@ -57,5 +57,21 @@ module SyntaxNodeSpec
     it "reports the end of its interval as its #resume_index" do
       node.resume_index.should == 3
     end
+    
+    it "does not report itself as epsilon if its interval isn't epsilon" do
+      node.should_not be_epsilon
+    end
+  end
+  
+  describe "A new epsilon syntax node" do
+    attr_reader :node
+    
+    before do
+      @node = Runtime::SyntaxNode.new('input', 4..4)
+    end
+    
+    it "reports itself as epsilon" do
+      node.should be_epsilon
+    end
   end
 end
