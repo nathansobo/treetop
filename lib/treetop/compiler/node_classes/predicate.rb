@@ -14,19 +14,13 @@ module Treetop
       
       def assign_failure
         super(start_index_var)
-        establish_expiration_dependence
+        accumulate_dependency subexpression_result_var
       end
       
       def assign_success
         reset_index
         assign_result epsilon_node
-        establish_expiration_dependence
-      end
-
-      def establish_expiration_dependence
         accumulate_dependency subexpression_result_var
-        builder.accumulate "#{subexpression_result_var}.dependent_results", result_var
-        builder << "expirable_node_cache.store(:__anonymous__, #{subexpression_result_var})"
       end
     end
     

@@ -98,6 +98,7 @@ module IterativeParsingSpec
     }
 
     it "expires portions of the tree that depend on the result of the predicated expression even if their intervals don't contain it" do
+      pending "new expiration strategy"
       result = parse('foobarbaz')
       result.should_not be_nil
 

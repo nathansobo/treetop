@@ -9,23 +9,6 @@ module NotPredicateSpec
     it "fails to parse input matching the terminal symbol" do
       parse('foo').should be_nil
     end
-    
-    it "stores the successful result of the predicated expression in the node cache with itself as a dependent expression" do
-      result = parse('foo', :consume_all_input => false, :return_parse_failure => true)
-      node_cache = parser.send(:expirable_node_cache)
-      node = node_cache.get(:__anonymous__, 0)
-      node.text_value.should == 'foo'
-      node.dependent_results.should == [result]
-    end
-
-    it "stores the failure of the predicated expression in the node cache with itself as a dependent expression" do
-      result = parse('bar', :consume_all_input => false, :return_parse_failure => true)
-      node_cache = parser.send(:expirable_node_cache)
-      node = node_cache.get(:__anonymous__, 0)
-      node.should be_an_instance_of(TerminalParseFailure)
-      node.interval.should == (0...3)
-      node.dependent_results.should == [result]
-    end
   end
 
   describe "A sequence of a terminal and an and another !-predicated terminal" do
