@@ -4,10 +4,41 @@ module NotPredicateSpec
   include Runtime
 
   describe "A !-predicated terminal" do
+    attr_reader :result
+    
     testing_expression '!"foo"'
 
-    it "fails to parse input matching the terminal symbol" do
-      parse('foo').should be_nil
+    describe "the result of parsing input matching the predicated subexpression" do  
+      before do
+        @result = parse('foo', :return_parse_failure => true)
+      end
+      
+      it "is not successful" do
+        result.should be_an_instance_of(Runtime::ParseFailure)
+      end
+      
+      it "depends on the successful result the subexpression" do
+        dependencies = result.dependencies
+        dependencies.size.should == 1
+        dependencies.first.text_value.should == 'foo'
+      end
+    end
+    
+    describe "the result of parsing input that does not match the predicated subexpression" do
+      before do
+        @result = parse('baz', :consume_all_input => false, :return_parse_failure => true)
+      end
+      
+      it "is an epsilon node" do
+        result.should be_epsilon
+      end
+      
+      it "depends on the failure of the subexpression" do
+        dependencies = result.dependencies
+        dependencies.size.should == 1
+        dependencies.first.should be_an_instance_of(Runtime::TerminalParseFailure)
+        dependencies.first.expected_string.should == 'foo'
+      end
     end
   end
 
@@ -33,19 +64,8 @@ module NotPredicateSpec
           result.dependencies.should == result.elements
         end
         
-        it "has the result of the first terminal as its first element" do
-          subresult = result.elements[0]
-          subresult.should be_terminal
-          subresult.text_value.should == 'foo'
-        end
-        
-        it "has the epsilon result of the predicated terminal as its second element, which depends on the failure of the predicated subexpression" do
-          subresult = result.elements[1]
-          subresult.should be_epsilon
-          dependencies = subresult.dependencies
-          dependencies.size.should == 1
-          dependencies.first.should be_an_instance_of(TerminalParseFailure)
-          dependencies.first.index.should == 3
+        it "has the epsilon result of the predicated terminal as its second element" do
+          result.elements[1].should be_epsilon
         end
       end
       
