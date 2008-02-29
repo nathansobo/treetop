@@ -12,7 +12,7 @@ module Treetop
             element.parent = self
           end
         end
-        @dependencies = []
+        @dependencies = elements || []
       end
 
       def terminal?

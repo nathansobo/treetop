@@ -7,7 +7,7 @@ module SequenceSpec
   describe "a sequence of labeled terminal symbols followed by a node class declaration and a block" do
     testing_expression 'foo:"foo" bar:"bar" baz:"baz" <SequenceSpec::Foo> { def a_method; end }'
 
-    it "upon successfully matching input, instantiates an instance of the declared node class with element accessor methods and the method from the inline module" do
+    it "upon successfully matching input, returns an instance of the declared node class with element accessor methods and the method from the inline module" do
       parse('foobarbaz') do |result|
         result.should_not be_nil
         result.should be_an_instance_of(Foo)
@@ -15,6 +15,12 @@ module SequenceSpec
         result.foo.text_value.should == 'foo'
         result.bar.text_value.should == 'bar'
         result.baz.text_value.should == 'baz'
+      end
+    end
+    
+    it "upon successfully matching input, returns an result with its child nodes as dependencies" do
+      parse('foobarbaz') do |result|
+        result.dependencies.should == result.elements
       end
     end
 
