@@ -1,7 +1,7 @@
 module Treetop
   module Runtime
     class SyntaxNode < ParseResult
-      attr_reader :input, :elements
+      attr_reader :input, :elements, :dependencies
 
       def initialize(input, interval, elements = nil)
         super(interval)
@@ -12,6 +12,7 @@ module Treetop
             element.parent = self
           end
         end
+        @dependencies = []
       end
 
       def terminal?

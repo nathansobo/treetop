@@ -12,6 +12,10 @@ module SyntaxNodeSpec
       node.should be_terminal
       node.should_not be_nonterminal
     end
+
+    it "has an empty dependencies array" do
+      node.dependencies.should == []
+    end
   
     it "has a text value based on the input and the interval" do
       node.text_value.should == "inp"
