@@ -17,7 +17,11 @@ module AnythingSymbolSpec
         end
       end
     end
-  
+
+    it "returns a SyntaxNode with no dependencies upon a successful parse" do
+      parse("x").dependencies.should be_empty
+    end
+
     it "fails to parse epsilon" do
       parse('').should be_nil
     end

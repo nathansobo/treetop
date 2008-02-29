@@ -32,6 +32,10 @@ module TerminalSymbolSpec
       end
     end
 
+    it "returns a SyntaxNode with no dependencies upon a successful parse" do
+      parse("foo").dependencies.should be_empty
+    end
+
     it "fails to parse nonmatching input at the index even if a match occurs later" do
       parse(" foo", :index =>  0).should be_nil
     end

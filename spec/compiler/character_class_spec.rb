@@ -20,6 +20,10 @@ module CharacterClassSpec
       result.should respond_to(:a_method)
     end
 
+    it "returns a SyntaxNode with no dependencies upon a successful parse" do
+      parse("A").dependencies.should be_empty
+    end
+
     it "does not match single characters outside of that range" do
       parse('8').should be_nil
       parse('a').should be_nil
