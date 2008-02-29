@@ -30,7 +30,6 @@ module Treetop
       end
     end
 
-  
     class ZeroOrMore < Repetition
       def compile(address, builder, parent_expression)
         super
@@ -50,6 +49,7 @@ module Treetop
         builder.else_ do
           assign_and_extend_result
         end
+        accumulate_dependency subexpression_result_var
         end_comment(parent_expression)
       end
     end
