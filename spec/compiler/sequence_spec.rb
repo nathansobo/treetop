@@ -7,14 +7,15 @@ module SequenceSpec
   describe "A sequence of labeled terminal symbols followed by a node class declaration and a block" do
     testing_expression 'foo:"foo" bar:"bar" baz:"baz" <SequenceSpec::Foo> { def a_method; end }'
     
-    describe "the result upon successfully matching input" do
+    describe "the result upon successfully matching input at index 3" do
       attr_reader :result
       before do
-        @result = parse('foobarbaz')
+        @result = parse('---foobarbaz', :index => 3)
       end
       
       it "is successful" do
         result.should_not be_nil
+        result.interval.first.should == 3
       end
       
       it "is an instance of the declared node class" do
@@ -33,14 +34,6 @@ module SequenceSpec
       
       it "has the sequence elements as its #dependencies" do
         result.dependencies.should == result.elements
-      end
-    end
-
-    it "successfully matches at a non-zero index" do
-      parse('---foobarbaz', :index => 3) do |result|
-        result.should_not be_nil
-        result.should be_nonterminal
-        (result.elements.map {|elt| elt.text_value}).join.should == 'foobarbaz'
       end
     end
 
@@ -103,6 +96,7 @@ module SequenceSpec
     end
   end
 
+  # TODO: NS - I don't think nonterminal failures need intervals after the new expiration strategy is in place
   describe "A sequence of two expressions, one of which generates a max_terminal_failure_index that exceeds the second" do
     testing_grammar %{
       grammar TestGrammar
