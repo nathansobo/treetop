@@ -7,8 +7,9 @@ module Treetop
         begin_comment(parent_expression)
         use_vars :result, :accumulator, :start_index
 
+        obtain_new_subexpression_address
+        builder.assign subexpression_result_var, 'nil'
         builder.loop do
-          obtain_new_subexpression_address
           repeated_expression.compile(subexpression_address, builder)
           builder.if__ subexpression_success? do
             accumulate_subexpression_result
@@ -34,6 +35,7 @@ module Treetop
       def compile(address, builder, parent_expression)
         super
         assign_and_extend_result
+        accumulate_dependency subexpression_result_var
         end_comment(parent_expression)
       end
     end
