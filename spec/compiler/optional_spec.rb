@@ -2,17 +2,39 @@ require File.expand_path("#{File.dirname(__FILE__)}/../spec_helper")
 
 module OptionalSpec
   describe "An optional terminal symbol" do
+    attr_reader :result
+    
     testing_expression '"foo"?'
   
-    it "parses input matching the terminal" do
-      parse('foo').should_not be_nil
+    describe "the result of parsing matching input" do
+      before do
+        @result = parse('foo')
+      end
+      
+      it "is the result of the optional subexpression" do
+        result.should be_terminal
+        result.text_value.should == 'foo'
+      end
     end
   
-    it "parses epsilon, recording a failure" do
-      parse('') do |result|
-        result.should_not be_nil
-        result.interval.should == (0...0)
-        
+    describe "upon parsing epsilon" do
+      before do
+        @result = parse('')
+      end
+      
+      describe "the result" do
+        it "is an epsilon node" do
+          result.should be_epsilon
+        end
+      
+        it "is dependent on the failure of the optional subexpression" do
+          dependencies = result.dependencies
+          dependencies.size.should == 1
+          dependencies.first.expected_string.should == 'foo'
+        end
+      end
+      
+      it "records the failure in #terminal_failures" do
         terminal_failures = parser.terminal_failures
         terminal_failures.size.should == 1
         failure = terminal_failures.first
@@ -20,12 +42,25 @@ module OptionalSpec
         failure.expected_string.should == 'foo'
       end
     end
-  
-    it "parses input not matching the terminal, returning an epsilon result and recording a failure" do
-      parse('bar', :consume_all_input => false) do |result|
-        result.should_not be_nil
-        result.interval.should == (0...0)
-        
+    
+    describe "upon parsing non-matching input" do
+      before do
+        @result = parse('baz', :consume_all_input => false)
+      end
+      
+      describe "the result" do
+        it "is an epsilon node" do
+          result.should be_epsilon
+        end
+      
+        it "is dependent on the failure of the optional subexpression" do
+          dependencies = result.dependencies
+          dependencies.size.should == 1
+          dependencies.first.expected_string.should == 'foo'
+        end
+      end
+      
+      it "records the failure in #terminal_failures" do
         terminal_failures = parser.terminal_failures
         terminal_failures.size.should == 1
         failure = terminal_failures.first

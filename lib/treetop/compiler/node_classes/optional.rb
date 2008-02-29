@@ -12,6 +12,7 @@ module Treetop
         end
         builder.else_ do
           assign_result epsilon_node
+          accumulate_dependency subexpression_result_var
         end
       end
     end
