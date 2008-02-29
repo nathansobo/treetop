@@ -37,7 +37,6 @@ module NotPredicateSpec
     
     describe "upon parsing input matching the first terminal and not the second" do
       attr_reader :result
-      
       before do
         @result = parse('foo')
       end

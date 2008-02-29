@@ -61,6 +61,10 @@ module Treetop
       def accumulate_subexpression_result
         builder.accumulate accumulator_var, subexpression_result_var
       end
+      
+      def accumulate_dependency(dependency)
+        builder.accumulate "#{result_var}.dependencies", dependency
+      end
     
       def assign_result(value_ruby)
         builder.assign result_var, value_ruby

@@ -7,7 +7,7 @@ module Treetop
         use_vars :result, :start_index, :accumulator
         compile_sequence_elements(sequence_elements)
         builder.assign '@max_terminal_failure_last_index', 'local_max_terminal_failure_last_index'
-        builder.if__ "#{accumulator_var}.last && !#{accumulator_var}.last.is_a?(ParseFailure)" do
+        builder.if__ "!#{accumulator_var}.last.is_a?(ParseFailure)" do
           assign_result "(#{node_class_name}).new(input, #{start_index_var}...index, #{accumulator_var})"
           extend_result sequence_element_accessor_module_name if sequence_element_accessor_module_name
           extend_result_with_inline_module
@@ -15,6 +15,7 @@ module Treetop
         builder.else_ do
           reset_index
           assign_failure start_index_var
+          accumulate_dependency "#{accumulator_var}.last"
         end
         end_comment(self)
       end

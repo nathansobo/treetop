@@ -4,22 +4,34 @@ module SequenceSpec
   class Foo < Treetop::Runtime::SyntaxNode
   end
 
-  describe "a sequence of labeled terminal symbols followed by a node class declaration and a block" do
+  describe "A sequence of labeled terminal symbols followed by a node class declaration and a block" do
     testing_expression 'foo:"foo" bar:"bar" baz:"baz" <SequenceSpec::Foo> { def a_method; end }'
-
-    it "upon successfully matching input, returns an instance of the declared node class with element accessor methods and the method from the inline module" do
-      parse('foobarbaz') do |result|
+    
+    describe "the result upon successfully matching input" do
+      attr_reader :result
+      before do
+        @result = parse('foobarbaz')
+      end
+      
+      it "is successful" do
         result.should_not be_nil
+      end
+      
+      it "is an instance of the declared node class" do
         result.should be_an_instance_of(Foo)
-        result.should respond_to(:a_method)
+      end
+      
+      it "has element accessor methods based on the labels" do
         result.foo.text_value.should == 'foo'
         result.bar.text_value.should == 'bar'
         result.baz.text_value.should == 'baz'
       end
-    end
-    
-    it "upon successfully matching input, returns an result with its child nodes as dependencies" do
-      parse('foobarbaz') do |result|
+      
+      it "has the method defined in the trailing block" do
+        result.should respond_to(:a_method)
+      end
+      
+      it "has the sequence elements as its #dependencies" do
         result.dependencies.should == result.elements
       end
     end
@@ -32,15 +44,35 @@ module SequenceSpec
       end
     end
 
-    it "fails to match non-matching input, recording the parse failure of first non-matching terminal" do
-      parse('---foobazbaz', :index => 3) do |result|
-        result.should be_nil
+    describe "upon failing to match input starting at index 3" do
+      attr_reader :result
+      
+      before do
+        @result = parse('---foobazbaz', :index => 3, :return_parse_failure => true)
+      end
+      
+      describe "the result" do
+        it "is not successful" do
+          result.should be_an_instance_of(Runtime::ParseFailure)
+        end
+        
+        it "depends on the failure of the first failing subexpression" do
+          dependencies = result.dependencies
+          dependencies.size.should == 1
+          dependencies.first.index.should == 6
+          dependencies.first.expected_string.should == 'bar'
+        end
+      end
+      
+      it "resets the parser index to where it was when parsing began" do
         parser.index.should == 3
+      end
+      
+      it "records the parse failure of the first failing terminal in #terminal_failures" do
         terminal_failures = parser.terminal_failures
         terminal_failures.size.should == 1
-        failure = terminal_failures.first
-        failure.index.should == 6
-        failure.expected_string.should == 'bar'
+        terminal_failures.first.index.should == 6
+        terminal_failures.first.expected_string.should == 'bar'
       end
     end
   end
