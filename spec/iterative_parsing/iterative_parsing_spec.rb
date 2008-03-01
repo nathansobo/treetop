@@ -47,7 +47,8 @@ module IterativeParsingSpec
     end
 
     it "expires corrected failures and recycles successfully parsed nodes preceding the failure" do
-      pending "new expiration strategy"
+      pending "choices"
+      
       input = "the green dot"
 
       result = parser.parse(input)
@@ -55,7 +56,6 @@ module IterativeParsingSpec
 
       parser.max_terminal_failure_last_index.should == 13
 
-      node_cache = parser.send(:expirable_node_cache)
       the = node_cache.get(:the, 0)
       the.text_value.should == "the"
 
@@ -65,9 +65,8 @@ module IterativeParsingSpec
       failure = node_cache.get(:dog, 10)
       failure.should be_an_instance_of(ParseFailure)
       failure.interval.should == (10...13)
-
+      
       input[12] = 'g'
-
 
       parser.expire(12..13, 0)
       node_cache.should_not have_result(:dog, 10)
@@ -76,7 +75,7 @@ module IterativeParsingSpec
 
       new_result.should_not be_nil
       new_result.the.should == the
-      new_result.color.should_not == green # the change might have caused 'aquamarine' to correctly parse
+      new_result.color.should_not == green
     end
   end
 

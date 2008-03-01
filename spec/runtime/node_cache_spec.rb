@@ -121,9 +121,7 @@ module NodeCacheSpec
       end
     end
 
-
     describe "when a result with direct dependencies has been stored with with an additional dependency on another result" do
-      
       attr_reader :child, :epsilon_node, :predication_result, :parent, :additional_dependency
       
       before do
