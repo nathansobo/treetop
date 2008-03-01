@@ -1,13 +1,13 @@
 module Treetop
   module Runtime
-    class NodeStorage
+    class Memoization
       attr_reader :rule_name, :result, :node_index
 
       def initialize(rule_name, result, node_index)
         @rule_name = rule_name
         @result = result
         @node_index = node_index
-        result.storages.push(self)
+        node_index[rule_name][result.interval.first] = result
       end
 
       def interval
@@ -29,9 +29,8 @@ module Treetop
         true
       end
 
-      def expire(propagate_to_result)
+      def expire
         node_index[rule_name].delete(interval.first) if node_index
-        result.expire(false) if propagate_to_result
       end
     end
   end

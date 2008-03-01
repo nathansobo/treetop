@@ -11,7 +11,7 @@ module NodeCacheSpec
       @input = ('A'..'Z').to_a.join
     end
 
-    describe "with a non-nil parse result stored on a name and interval" do
+    describe "with a parse result stored on a name and interval" do
       attr_reader :node
 
       before do
@@ -103,7 +103,7 @@ module NodeCacheSpec
         cache.store(:foo, c)
       end
 
-      it "removes multiple results that overlap an expired range, correctly updating the survivng result with the length_change" do
+      it "removes multiple results that overlap an expired range, correctly updating the surviving result with the length_change" do
         cache.get(:foo, 0).should == a
         cache.get(:foo, 3).should == b
         cache.get(:foo, 7).should == c
@@ -121,36 +121,41 @@ module NodeCacheSpec
       end
     end
 
-    describe "with a tree of results that is dependent upon a subsequent result" do
-      attr_reader :dependent_parent, :independent_child, :dependent_child, :depended_upon
 
+    describe "when a result with direct dependencies has been stored with with an additional dependency on another result" do
+      
+      attr_reader :child, :epsilon_node, :predication_result, :parent, :additional_dependency
+      
       before do
-        @dependent_parent = SyntaxNode.new(input, 0...5)
-        @independent_child = SyntaxNode.new(input, 0...3)
-        @dependent_child = SyntaxNode.new(input, 3...5)
-        @depended_upon = TerminalParseFailure.new(5..5, 'aint-there!')
-        dependent_child.parent = dependent_parent
-        independent_child.parent = dependent_parent
-        depended_upon.dependent_results.push(dependent_child)
+        @child = SyntaxNode.new(input, 0...5)
+        @epsilon_node = SyntaxNode.new(input, 5...5)
+        @predication_result = SyntaxNode.new(input, 5..8)
+        epsilon_node.dependencies.push(predication_result)
+        @parent = SyntaxNode.new(input, 0...5, [child, epsilon_node])
+        @additional_dependency = TerminalParseFailure.new(5...15, 'x' * 10)
 
-        cache.store(:dependent_parent, dependent_parent)
-        cache.store(:independent_child, independent_child)
-        cache.store(:dependent_child, dependent_child)
-        cache.store(:depended_upon, depended_upon)
+
+        parent.dependencies.should == [child, epsilon_node]
+        
+        cache.store(:foo, parent, [additional_dependency])
       end
 
-      it "expires the immediate dependent result and all of its ancestors when the depended-upon result is expired" do
-        cache.should have_result(:dependent_parent, 0)
-        cache.should have_result(:independent_child, 0)
-        cache.should have_result(:dependent_child, 3)
-        cache.should have_result(:depended_upon, 5)
-
-        cache.expire(5..5, 1)
-
-        cache.should_not have_result(:dependent_parent, 0)
-        cache.should have_result(:independent_child, 0)
-        cache.should_not have_result(:dependent_child, 3)
-        cache.should_not have_result(:depended_upon, 5)
+      it "expires the memoization when one of its direct dependencies is expired" do
+        cache.should have_result(:foo, 0)
+        cache.expire(3..3, 0)
+        cache.should_not have_result(:foo, 0)
+      end
+      
+      it "expires the memoization when a direct dependency of one of its direct dependencies is expired" do
+        cache.should have_result(:foo, 0)
+        cache.expire(7..7, 0)
+        cache.should_not have_result(:foo, 0)
+      end
+      
+      it "expired the memoization when the additional dependency is expired" do
+        cache.should have_result(:foo, 0)
+        cache.expire(12..12, 0)
+        cache.should_not have_result(:foo, 0)
       end
     end
   end

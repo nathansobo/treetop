@@ -4,12 +4,15 @@ module Treetop
 
       def initialize
         @node_index = Hash.new {|h, k| h[k] = Hash.new }
-        @node_storages = []
+        @registered_dependencies = []
       end
 
-      def store(rule_name, result)
-        node_index[rule_name][result.interval.first] = result
-        node_storages.push(NodeStorage.new(rule_name, result, node_index))
+      def store(rule_name, result, additional_dependencies = [])
+        memoization = Memoization.new(rule_name, result, node_index)
+        ([result] + additional_dependencies).each do |dependency|
+          register_dependency(dependency)
+          dependency.dependents.push(memoization)
+        end
       end
 
       def get(rule_name, start_index)
@@ -21,14 +24,27 @@ module Treetop
       end
 
       def expire(range, length_change)
-        self.node_storages = node_storages.select do |node_storage|
-          node_storage.reflect_buffer_change(range, length_change)
+        registered_dependencies.each do |dependency|
+          dependency.expire if dependency.interval.intersects?(range)
         end
       end
 
       protected
-      attr_reader :node_index
-      attr_accessor :node_storages
+      
+      def register_dependency(dependency)
+        return if dependency.registered?
+        if dependency.dependencies.empty?
+          registered_dependencies.push(dependency)
+        else
+          dependency.dependencies.each do |subdependency|
+            subdependency.dependents.push(dependency)
+            register_dependency(subdependency)
+          end
+        end
+        dependency.registered = true
+      end
+      
+      attr_reader :node_index, :registered_dependencies
     end
   end
 end
