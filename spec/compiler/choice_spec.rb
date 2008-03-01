@@ -17,6 +17,19 @@ module ChoiceSpec
       result.should_not be_nil
       result.should respond_to(:baz_method)
     end
+    
+    
+    it "upon parsing a string matching the first alternative, returns a Propagation with the result of the first alternative as its result"
+    
+    describe "upon parsing a string matching the second alternative" do
+      describe "the result" do
+        it "is an instance Propagation"
+        it "has the result of the second alternative as its #result"
+        it "has the failing result of the first alternative and the successful result of the second alternative as its dependencies"
+      end
+      
+      it "records the failure of the first terminal"
+    end
   
     it "upon parsing a string matching the second alternative, records the failure of the first terminal" do
       result = parse('bar')
@@ -26,7 +39,17 @@ module ChoiceSpec
       failure.expected_string.should == 'foo'
       failure.index.should == 0
     end
-  
+    
+    describe "upon parsing a string matching the third alternative" do
+      describe "the result" do
+        it "is an instance Propagation"
+        it "has the result of the third alternative as its #result"
+        it "has the failing results of the first and second alternatives and the successful result of the third alternative as its dependencies"
+      end
+      
+      it "records the failure of the first terminal and second terminals"
+    end
+    
     it "upon parsing a string matching the third alternative, records the failure of the first two terminals" do
       result = parse('baz')
       
