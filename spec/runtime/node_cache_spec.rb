@@ -102,7 +102,7 @@ module NodeCacheSpec
         @c = SyntaxNode.new(input, 7...13)
         cache.store(:foo, c)
       end
-
+      
       it "removes multiple results that overlap an expired range, correctly updating the surviving result with the length_change" do
         cache.get(:foo, 0).should == a
         cache.get(:foo, 3).should == b
@@ -134,7 +134,6 @@ module NodeCacheSpec
         @parent = SyntaxNode.new(input, 0...5, [child, epsilon_node])
         @additional_dependency = TerminalParseFailure.new(5...15, 'x' * 10)
 
-
         parent.dependencies.should == [child, epsilon_node]
         
         cache.store(:foo, parent, [additional_dependency])
@@ -156,6 +155,22 @@ module NodeCacheSpec
         cache.should have_result(:foo, 0)
         cache.expire(12..12, 0)
         cache.should_not have_result(:foo, 0)
+      end
+      
+      it "relocates the unexpired results when there is a change in buffer length" do
+        child_interval_before_expire = child.interval
+        epsilon_node_interval_before_expire = epsilon_node.interval
+        predication_result_interval_before_expire = predication_result.interval
+        parent_interval_before_expire = parent.interval
+        additional_dependency_interval_before_expire = additional_dependency.interval
+        
+        cache.expire(0..0, 5)
+        
+        child.interval.should == child_interval_before_expire.transpose(5)
+        epsilon_node.interval.should == epsilon_node_interval_before_expire.transpose(5)
+        predication_result.interval.should == predication_result_interval_before_expire.transpose(5)
+        parent.interval.should == parent_interval_before_expire.transpose(5)
+        additional_dependency.interval.should == additional_dependency_interval_before_expire.transpose(5)
       end
     end
   end
