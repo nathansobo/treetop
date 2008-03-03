@@ -3,16 +3,22 @@ module Treetop
     class SyntaxNode < ParseResult
       attr_reader :input, :elements
 
-      def initialize(input, interval, elements = nil)
+      def initialize(input, interval, child_results = nil)
         super(interval)
         @input = input
-        @interval = interval
-        if @elements = elements
-          elements.each do |element|
+        
+        if child_results
+          @dependencies = child_results
+          @elements = child_results.map do |child_result|
+            element = child_result.element
             element.parent = self
+            element
           end
         end
-        @dependencies = elements if elements
+      end
+
+      def element
+        self
       end
 
       def epsilon?
@@ -20,7 +26,7 @@ module Treetop
       end
 
       def terminal?
-        @elements.nil?
+        elements.nil?
       end
 
       def nonterminal?
@@ -37,18 +43,6 @@ module Treetop
 
       def resume_index
         interval.last
-      end
-
-      def extension_modules
-        local_extensions =
-          class <<self
-            included_modules-Object.included_modules
-          end
-        if local_extensions.size > 0
-          local_extensions
-        else
-          []    # There weren't any; must be a literal node
-        end
       end
 
       def inspect

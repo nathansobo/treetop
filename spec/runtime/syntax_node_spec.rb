@@ -1,11 +1,13 @@
 require File.expand_path("#{File.dirname(__FILE__)}/../spec_helper")
 
 module SyntaxNodeSpec
+  include Runtime
+
   describe "A new terminal syntax node" do
     attr_reader :node
 
     before do
-      @node = Runtime::SyntaxNode.new("input", 0...3)
+      @node = SyntaxNode.new("input", 0...3)
     end
   
     it "reports itself as terminal" do
@@ -26,13 +28,14 @@ module SyntaxNodeSpec
     end
   end
 
-  describe "A new nonterminal syntax node" do
-    attr_reader :node
+  describe "A new nonterminal syntax node instantiated with a SyntaxNode and a Propagation as its children" do
+    attr_reader :input, :child_node, :propagated_node, :elements, :node
 
     before do
-      @input = 'test input'
-      @elements = [Runtime::SyntaxNode.new('input', 0...3)]
-      @node = Runtime::SyntaxNode.new('input', 0...3, @elements)
+      input = 'input'
+      @child_node = SyntaxNode.new(input, 0...3)
+      @propagated_node = SyntaxNode.new(input, 3...5)
+      @node = SyntaxNode.new(input, 0...5, [child_node, Propagation.new(propagated_node)])
     end
 
     it "reports itself as nonterminal" do
@@ -41,11 +44,11 @@ module SyntaxNodeSpec
     end
   
     it "has a text value based on the input and the interval" do
-      node.text_value.should == "inp"
+      node.text_value.should == "input"
     end
   
-    it "has the elements with which it was instantiated" do
-      node.elements.should == @elements
+    it "eliminates the Propagation from its #elements" do
+      node.elements.should == [child_node, propagated_node]
     end
 
     it "sets itself as the parent of its elements" do
@@ -55,7 +58,7 @@ module SyntaxNodeSpec
     end
 
     it "reports the end of its interval as its #resume_index" do
-      node.resume_index.should == 3
+      node.resume_index.should == 5
     end
     
     it "does not report itself as epsilon if its interval isn't epsilon" do
@@ -67,7 +70,7 @@ module SyntaxNodeSpec
     attr_reader :node
     
     before do
-      @node = Runtime::SyntaxNode.new('input', 4..4)
+      @node = SyntaxNode.new('input', 4..4)
     end
     
     it "reports itself as epsilon" do
