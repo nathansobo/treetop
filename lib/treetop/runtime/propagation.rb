@@ -6,6 +6,7 @@ module Treetop
       def initialize(element)
         super(element.interval)
         @element = element
+        @dependencies = [element]
       end
     end
   end

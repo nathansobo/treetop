@@ -26,6 +26,10 @@ module SyntaxNodeSpec
     it "reports the end of its interval as its #resume_index" do
       node.resume_index.should == 3
     end
+
+    it "returns itself as its #element" do
+      node.element.should == node
+    end
   end
 
   describe "A new nonterminal syntax node instantiated with a SyntaxNode and a Propagation as its children" do
