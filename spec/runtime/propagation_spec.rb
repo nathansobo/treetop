@@ -18,7 +18,5 @@ module PropagationSpec
     it "returns the propagated SyntaxNode as its only dependency" do
       propagation.dependencies.should == [propagated_syntax_node]
     end
-
   end
-
 end

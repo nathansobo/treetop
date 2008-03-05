@@ -19,13 +19,41 @@ module ChoiceSpec
     end
     
     
-    it "upon parsing a string matching the first alternative, returns a Propagation with the result of the first alternative as its result"
+    it "upon parsing a string matching the first alternative, returns a Propagation with the result of the first alternative as its result" do
+      pending
+      result = parse('foo')
+      result.should be_an_instance_of(Runtime::Propagation)
+      result.element.should be_terminal
+      result.element.text_value.should == 'foo'
+    end
     
     describe "upon parsing a string matching the second alternative" do
+      attr_reader :result
+
+      before do
+        @result = parse('bar')
+      end
+
       describe "the result" do
-        it "is an instance Propagation"
-        it "has the result of the second alternative as its #result"
-        it "has the failing result of the first alternative and the successful result of the second alternative as its dependencies"
+        it "is an instance Propagation" do
+          pending
+          result.should be_an_instance_of(Runtime::Propagation)
+        end
+
+        it "has the result of the second alternative as its #element" do
+          pending
+          result.element.should be_terminal
+          result.element.text_value.should == 'bar'
+        end
+
+        it "has the failing result of the first alternative and the successful result of the second alternative as its dependencies" do
+          pending
+          dependencies = result.dependencies
+          dependencies.size.should == 2
+          dependencies[0].should be_an_instance_of(Runtime::TerminalParseFailure)
+          dependencies[0].expected_string.should == 'foo'
+          dependencies[1].should ==  result.element
+        end
       end
       
       it "records the failure of the first terminal"
