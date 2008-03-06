@@ -20,8 +20,7 @@ module ChoiceSpec
     
     
     it "upon parsing a string matching the first alternative, returns a Propagation with the result of the first alternative as its result" do
-      pending
-      result = parse('foo')
+      result = parse('foo', :return_propagations => true)
       result.should be_an_instance_of(Runtime::Propagation)
       result.element.should be_terminal
       result.element.text_value.should == 'foo'
@@ -31,67 +30,98 @@ module ChoiceSpec
       attr_reader :result
 
       before do
-        @result = parse('bar')
+        @result = parse('bar', :return_propagations => true)
       end
 
       describe "the result" do
         it "is an instance Propagation" do
-          pending
           result.should be_an_instance_of(Runtime::Propagation)
         end
 
         it "has the result of the second alternative as its #element" do
-          pending
           result.element.should be_terminal
           result.element.text_value.should == 'bar'
         end
 
-        it "has the failing result of the first alternative and the successful result of the second alternative as its dependencies" do
-          pending
+        it "has the successful result of the second alternative and the failing result of the first alternative as its dependencies" do
           dependencies = result.dependencies
           dependencies.size.should == 2
-          dependencies[0].should be_an_instance_of(Runtime::TerminalParseFailure)
-          dependencies[0].expected_string.should == 'foo'
-          dependencies[1].should ==  result.element
+          dependencies[0].should ==  result.element          
+          dependencies[1].should be_an_instance_of(Runtime::TerminalParseFailure)
+          dependencies[1].expected_string.should == 'foo'
         end
       end
       
-      it "records the failure of the first terminal"
+      it "records the failure of the first terminal" do
+        terminal_failures = parser.terminal_failures
+        terminal_failures.size.should == 1
+        failure = terminal_failures[0]
+        failure.expected_string.should == 'foo'
+        failure.index.should == 0
+      end
     end
-  
-    it "upon parsing a string matching the second alternative, records the failure of the first terminal" do
-      result = parse('bar')
-      terminal_failures = parser.terminal_failures
-      terminal_failures.size.should == 1
-      failure = terminal_failures[0]
-      failure.expected_string.should == 'foo'
-      failure.index.should == 0
-    end
-    
+
     describe "upon parsing a string matching the third alternative" do
+      attr_reader :result
+
+      before do
+        @result = parse("baz", :return_propagations => true)
+      end
+
       describe "the result" do
-        it "is an instance Propagation"
-        it "has the result of the third alternative as its #result"
-        it "has the failing results of the first and second alternatives and the successful result of the third alternative as its dependencies"
+        it "is an instance Propagation" do
+          result.should be_an_instance_of(Runtime::Propagation)
+        end
+
+        it "has the result of the third alternative as its #element" do
+          result.element.should be_terminal
+          result.element.text_value.should == 'baz'
+        end
+        
+        it "has  the successful result of the third alternative  and the failing results of the first and second alternatives as its dependencies" do
+          dependencies = result.dependencies
+          dependencies.size.should == 3
+          dependencies[0].should ==  result.element
+          dependencies[1].should be_an_instance_of(Runtime::TerminalParseFailure)
+          dependencies[1].expected_string.should == 'foo'
+          dependencies[2].should be_an_instance_of(Runtime::TerminalParseFailure)
+          dependencies[2].expected_string.should == 'bar'          
+        end
       end
       
-      it "records the failure of the first terminal and second terminals"
-    end
-    
-    it "upon parsing a string matching the third alternative, records the failure of the first two terminals" do
-      result = parse('baz')
-      
-      terminal_failures = parser.terminal_failures
-      
-      terminal_failures.size.should == 2
+      it "records the failure of the first terminal and second terminals" do
+        terminal_failures = parser.terminal_failures
 
-      failure_1 = terminal_failures[0]
-      failure_1.expected_string == 'foo'
-      failure_1.index.should == 0
-    
-      failure_2 = terminal_failures[1]
-      failure_2.expected_string == 'bar'
-      failure_2.index.should == 0
+        terminal_failures.size.should == 2
+
+        failure_1 = terminal_failures[0]
+        failure_1.expected_string == 'foo'
+        failure_1.index.should == 0
+
+        failure_2 = terminal_failures[1]
+        failure_2.expected_string == 'bar'
+        failure_2.index.should == 0        
+      end
+    end
+
+    describe "the result of parsing non-matching input" do
+      attr_reader :result
+      before do
+        @result = parse('cat', :return_parse_failure => true)
+      end
+
+      it "is a ParseFailure that depends on the failure of all 3 alternatives" do
+        result.should be_an_instance_of(Runtime::ParseFailure)
+        dependencies = result.dependencies
+
+        dependencies.size.should == 3
+        dependencies[0].should be_an_instance_of(Runtime::TerminalParseFailure)
+        dependencies[0].expected_string.should == 'foo'
+        dependencies[1].should be_an_instance_of(Runtime::TerminalParseFailure)
+        dependencies[1].expected_string.should == 'bar'
+        dependencies[2].should be_an_instance_of(Runtime::TerminalParseFailure)
+        dependencies[2].expected_string.should == 'baz'          
+      end
     end
   end
 
@@ -109,7 +139,7 @@ module ChoiceSpec
 
     it "extends a match of any of its subexpressions with a module created from the block" do
       ['a', 'b', 'c'].each do |letter|
-        parse(letter).should respond_to(:a_method)
+        parse(letter).element.should respond_to(:a_method)
       end
     end
   end
@@ -124,7 +154,7 @@ module ChoiceSpec
 
     it "extends a match of any of its subexpressions with a module created from the block" do
       ['a', 'b', 'c'].each do |letter|
-        parse(letter).should respond_to(:a_method)
+        parse(letter).element.should respond_to(:a_method)
       end
     end
   end

@@ -5,9 +5,10 @@ module Treetop
       
       attr_reader :input, :index, :terminal_failures, :max_terminal_failure_first_index, :max_terminal_failure_last_index
       attr_writer :root
-      attr_accessor :consume_all_input, :return_parse_failure
+      attr_accessor :consume_all_input, :return_parse_failure, :return_propagations
       alias :consume_all_input? :consume_all_input
       alias :return_parse_failure? :return_parse_failure
+      alias :return_propagations? :return_propagations
       
       def initialize
         self.consume_all_input = true
@@ -66,7 +67,12 @@ module Treetop
           end
         end
         return nil if (consume_all_input? && index != input.size)
-        result
+
+        if return_propagations?
+          result
+        else
+          result.element
+        end
       end
 
       def prepare_to_parse(input)

@@ -18,5 +18,9 @@ module PropagationSpec
     it "returns the propagated SyntaxNode as its only dependency" do
       propagation.dependencies.should == [propagated_syntax_node]
     end
+
+    it "proxies #resume_index to its element" do
+      propagation.resume_index.should == propagated_syntax_node.resume_index
+    end
   end
 end

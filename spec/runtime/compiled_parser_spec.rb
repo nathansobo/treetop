@@ -65,6 +65,18 @@ module CompiledParserSpec
       parser.failure_line.should == 1
       parser.failure_column.should == 1
     end
+
+    it "returns the element of the returned Propagation as the result of the parse" do
+      result = parse('a')
+      result.should be_an_instance_of(Runtime::SyntaxNode)
+      result.text_value.should == 'a'
+    end
+
+    it "returns a Propagation as the result of the parse if the :return_propagations is true" do
+      result = parse('a', :return_propagations => true)
+      result.should be_an_instance_of(Runtime::Propagation)
+      result.element.text_value.should == 'a'
+    end
   end
 
   describe Runtime::CompiledParser,  "#terminal_failures" do

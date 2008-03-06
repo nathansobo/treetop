@@ -8,6 +8,10 @@ module Treetop
         @element = element
         @dependencies = [element]
       end
+
+      def resume_index
+        element.resume_index
+      end
     end
   end
 end

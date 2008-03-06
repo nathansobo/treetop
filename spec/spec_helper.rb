@@ -72,6 +72,8 @@ module Treetop
       @parser = parser_class_under_test.new
       parser.consume_all_input = options[:consume_all_input] if options.has_key?(:consume_all_input)
       parser.return_parse_failure = options[:return_parse_failure] if options.has_key?(:return_parse_failure)
+      parser.return_propagations = options[:return_propagations] if options.has_key?(:return_propagations)
+
       result = parser.parse(input, options)
       yield result if block_given?
       result

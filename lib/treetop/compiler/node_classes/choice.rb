@@ -7,7 +7,7 @@ module Treetop
         use_vars :result, :start_index
         builder.assign "failed_alternatives", "[]"
         compile_alternatives(alternatives)
-        builder << "failed_alternatives.each { |alt| alt.dependent_results.push(#{result_var}) }"        
+        builder << "#{result_var}.dependencies.concat(failed_alternatives)"
         end_comment(self)
       end
       
@@ -18,8 +18,10 @@ module Treetop
           assign_result subexpression_result_var
           extend_result_with_declared_module
           extend_result_with_inline_module
+          assign_result "Propagation.new(#{result_var})"
         end
         builder.else_ do
+          builder.accumulate "failed_alternatives", subexpression_result_var          
           if alternatives.size == 1
             reset_index
             assign_failure start_index_var
