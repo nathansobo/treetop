@@ -47,8 +47,7 @@ module IterativeParsingSpec
     end
 
     it "expires corrected failures and recycles successfully parsed nodes preceding the failure" do
-      pending "choices"
-      
+
       input = "the green dot"
 
       result = parser.parse(input)
@@ -60,7 +59,7 @@ module IterativeParsingSpec
       the.text_value.should == "the"
 
       green = node_cache.get(:color, 4)
-      green.text_value.should == "green"
+      green.element.text_value.should == "green"
 
       failure = node_cache.get(:dog, 10)
       failure.should be_an_instance_of(ParseFailure)
@@ -70,6 +69,8 @@ module IterativeParsingSpec
 
       parser.expire(12..13, 0)
       node_cache.should_not have_result(:dog, 10)
+      node_cache.should_not have_result(:color, 4)
+      node_cache.should_not have_result(:foo, 0)
 
       new_result = parser.reparse
 
@@ -98,7 +99,6 @@ module IterativeParsingSpec
     }
 
     it "expires portions of the tree that depend on the result of the predicated expression even if their intervals don't contain it" do
-      pending "new expiration strategy"
       result = parse('foobarbaz')
       result.should_not be_nil
 
@@ -132,33 +132,31 @@ module IterativeParsingSpec
       input = '1'
       parse(input).should_not be_nil
       node_cache.should have_result(:addition, 0)
-
-      pending "A better expiry strategy"
-
       node_cache.should have_result(:number, 0)
-      node_cache.get(:number, 0).interval.should == (0...1)
-      node_storages = node_cache.send(:node_storages)
-
-      #p node_storages.map(&:interval)
-      #p node_storages.select {|storage| storage.interval == (1..1)}
 
       input.replace('1+')
       expire(1..1, 1)
+
       node_cache.should_not have_result(:addition, 0)
       node_cache.should have_result(:number, 0)
+
       reparse.should be_nil
-      node_cache.get(:addition, 0).should be_an_instance_of(Runtime::ParseFailure)
+
+      node_cache.should have_result(:addition, 0)
+      node_cache.should have_result(:number, 0)
 
       input.replace('1+1')
       expire(2..2, 1)
+
       node_cache.should_not have_result(:addition, 0)
       node_cache.should have_result(:number, 0)
+
       reparse.should_not be_nil
+
       node_cache.should have_result(:addition, 0)
       node_cache.should have_result(:number, 0)
       node_cache.should have_result(:addition, 2)
       node_cache.should have_result(:number, 2)
     end
-
   end
 end
