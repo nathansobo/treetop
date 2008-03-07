@@ -10,7 +10,7 @@ class Layout < Erector::Widget
         :type => "text/css",
         :href => "./screen.css"
         
-        text %(
+        rawtext %(
           <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
           </script>
           <script type="text/javascript">

@@ -1,6 +1,4 @@
 require 'rubygems'
-require 'facets/string/tabs'
-require 'facets/stylize'
 
 dir = File.dirname(__FILE__)
 

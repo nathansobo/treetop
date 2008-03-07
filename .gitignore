@@ -1,2 +1,6 @@
 *.gem
 textra/build
+*.iml
+*.iws
+*.ipr
+doc/site/*.*
