@@ -1,1 +1,4 @@
 *.gem
+*.iml
+*.iws
+*.ipr

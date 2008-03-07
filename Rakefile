@@ -15,7 +15,7 @@ end
 
 gemspec = Gem::Specification.new do |s|
   s.name = "treetop"
-  s.version = "1.2.2"
+  s.version = "1.2.3"
   s.author = "Nathan Sobo"
   s.email = "nathansobo@gmail.com"
   s.homepage = "http://functionalform.blogspot.com"
@@ -27,7 +27,6 @@ gemspec = Gem::Specification.new do |s|
   s.require_path = "lib"
   s.autorequire = "treetop"
   s.has_rdoc = false
-  s.add_dependency "facets", "=2.0.2"
   s.add_dependency "polyglot"
 end
 

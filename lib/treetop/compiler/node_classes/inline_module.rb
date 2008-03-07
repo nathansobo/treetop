@@ -4,7 +4,7 @@ module Treetop
       attr_reader :module_name
       
       def compile(index, rule, builder)
-        @module_name = "#{rule.name.camelize}#{index}"
+        @module_name = "#{rule.name.treetop_camelize}#{index}"
       end
     end
     
