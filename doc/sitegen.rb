@@ -42,7 +42,7 @@ class Layout < Erector::Widget
 
   def bluecloth(relative_path)
     File.open(File.join(File.dirname(__FILE__), relative_path)) do |file|
-      text BlueCloth.new(file.read).to_html
+      rawtext BlueCloth.new(file.read).to_html
     end
   end
 
