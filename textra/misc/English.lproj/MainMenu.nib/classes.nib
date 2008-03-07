@@ -33,14 +33,6 @@
 			<key>SUPERCLASS</key>
 			<string>NSObject</string>
 		</dict>
-		<dict>
-			<key>CLASS</key>
-			<string>RCWindowController</string>
-			<key>LANGUAGE</key>
-			<string>ObjC</string>
-			<key>SUPERCLASS</key>
-			<string>NSWindowController</string>
-		</dict>
 	</array>
 	<key>IBVersion</key>
 	<string>1</string>

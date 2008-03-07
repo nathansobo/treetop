@@ -1,3 +1,8 @@
+$LOAD_PATH.push(File.expand_path("#{File.dirname(__FILE__)}/../../lib"))
+require 'treetop'
+require 'ruby-debug'
+Treetop.load(Rucola::RCApp.path_for_asset("arithmetic"))
+require Rucola::RCApp.path_for_asset("arithmetic_node_classes")
 
 Rucola::Initializer.run do |config|
   # Settings specified in environment/release.rb and environment/debug.rb take precident
@@ -9,7 +14,4 @@ Rucola::Initializer.run do |config|
   # Use active_record bindings
   # config.use_active_record = true
   #
-  # In debug mode the Reloader will be used,
-  # if you want to turn it off/on explicitely use:
-  # config.use_reloader = false OR true
 end
