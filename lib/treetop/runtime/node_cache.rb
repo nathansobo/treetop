@@ -13,7 +13,7 @@ module Treetop
         memoization = Memoization.new(rule_name, result, node_index)
         memoization.dependencies = [result] + additional_dependencies
         memoization.dependencies.each do |dependency|
-          register_dependency(dependency)
+          register_result(dependency)
           dependency.memoizations.push(memoization)
         end
       end
@@ -27,37 +27,45 @@ module Treetop
       end
 
       def expire(range, length_change)
-        terminal_results.clone.each do |result|
+        @results_to_delete = []
+        @memoizations_to_expire = []
+
+        results.each do |result|
           result.expire if result.interval.intersects?(range)
         end
+
+        @results -= results_to_delete
+        memoizations_to_expire.uniq.each do |memoization|
+          memoization.expire
+        end
+
         results.each do |result|
           result.relocate(length_change) if result.interval.first >= range.last
         end
       end
-      
-      def delete_result(result)
-        terminal_results.delete(result)
-        results.delete(result)
+
+      def schedule_memoization_expiration(memoization)
+        memoizations_to_expire.push(memoization)
+      end
+
+      def schedule_result_deletion(result)
+        results_to_delete.push(result)
       end
 
       protected
       
-      def register_dependency(result)
+      def register_result(result)
         return if result.registered?
         result.node_cache = self
-        if result.dependencies.empty?
-          terminal_results.push(result)
-        else
-          result.dependencies.each do |subresult|
-            subresult.dependents.push(result)
-            register_dependency(subresult)
-          end
+        result.dependencies.each do |subresult|
+          subresult.dependents.push(result)
+          register_result(subresult)
         end
-        results.push(result)
         result.registered = true
+        results.push(result)
       end
       
-      attr_reader :node_index, :terminal_results
+      attr_reader :node_index, :results_to_delete, :memoizations_to_expire
     end
   end
 end

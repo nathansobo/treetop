@@ -29,6 +29,10 @@ module Treetop
         end
         rule_index.delete(interval.first)
       end
+      
+      def inspect
+        "#{rule_name}: #{result.inspect}"
+      end
     end
   end
 end

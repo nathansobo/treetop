@@ -1,3 +1,4 @@
+require 'pp'
 class TextraDocument < Rucola::RCDocument
 
   attr_reader :textStorage, :parser
@@ -12,11 +13,26 @@ class TextraDocument < Rucola::RCDocument
   
   def textStorageWillProcessEditing(notification)
     puts expiredRange
+    
+    node_cache = parser.send(:expirable_node_cache)
+    node_index = node_cache.send(:node_index)
+    
     parser.expire(expiredRange, changeInLength)
     parser.send(:input).replace(text)
-    if parser.reparse
+    
+    puts 'after expiry'
+    pp node_index
+
+    result = parser.reparse
+    puts 'after reparse'
+    pp node_index
+    
+    
+    
+    if result
       puts "true"
     else
+      puts 'no reason' unless parser.failure_reason
       puts parser.failure_reason
     end
   end

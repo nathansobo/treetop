@@ -13,8 +13,11 @@ module Treetop
       end
 
       def expire
-        node_cache.delete_result(self)
-        (dependents + memoizations).each { |dependent| dependent.expire }
+        node_cache.schedule_result_deletion(self)
+        memoizations.each do |memoization|
+          node_cache.schedule_memoization_expiration(memoization)
+        end
+        dependents.each { |dependent| dependent.expire }
       end
       
       def relocate(length_change)

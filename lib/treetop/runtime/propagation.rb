@@ -12,6 +12,10 @@ module Treetop
       def resume_index
         element.resume_index
       end
+      
+      def inspect
+        "Propagation(#{element.inspect})"
+      end
     end
   end
 end

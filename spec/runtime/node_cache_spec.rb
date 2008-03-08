@@ -59,6 +59,22 @@ module NodeCacheSpec
         end
       end
     end
+    
+    describe "with a SyntaxNode with two terminal children stored in it" do
+      attr_reader :number
+      
+      before do
+        input = '11'
+        @number = SyntaxNode.new(input, 0...2, [SyntaxNode.new(input, 0...1), SyntaxNode.new(input, 1...2)])
+        cache.store(:number, number)
+      end
+      
+      it "expires the storage of that node if an expiry occurs between its children" do
+        cache.should have_result(:number, 0)
+        cache.expire(1..1, 1)
+        cache.should_not have_result(:number, 0)
+      end
+    end
 
     describe "with results for different rules stored on non-overlapping intervals" do
       attr_reader :the, :green, :dog, :sentence

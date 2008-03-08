@@ -46,8 +46,12 @@ module Treetop
       end
 
       def inspect
-        ellipsis = text_value.length > 15 ? '...' : ''
-        "SyntaxNode(#{interval.inspect}, #{text_value[0..15]}#{ellipsis})"
+        if text_value
+          ellipsis = text_value.length > 15 ? '...' : ''
+          "SyntaxNode(#{interval.inspect}, #{text_value[0..15]}#{ellipsis})"
+        else
+          "SyntaxNode(text value is nil!)"
+        end
       end
     end
   end
