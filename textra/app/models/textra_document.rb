@@ -21,11 +21,11 @@ class TextraDocument < Rucola::RCDocument
     parser.send(:input).replace(text)
     
     puts 'after expiry'
-    pp node_index
+    p node_cache
 
     result = parser.reparse
     puts 'after reparse'
-    pp node_index
+    p node_cache
     
     
     

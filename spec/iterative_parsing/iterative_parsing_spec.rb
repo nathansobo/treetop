@@ -159,4 +159,79 @@ module IterativeParsingSpec
       node_cache.should have_result(:number, 2)
     end
   end
+
+  describe "A parser for a simplified addition grammar" do
+    testing_grammar %{
+      grammar Addition
+        rule addition
+          primary '+' addition / primary
+        end
+
+        rule primary
+          '(' addition ')' / number
+        end
+
+        rule number
+          [0-9]
+        end
+      end
+    }
+
+    it "expires the stale failure of addition as successive characters are added to the buffer" do
+      input = '('
+      parse(input).should be_nil
+      node_cache.should have_result(:addition, 0)
+      node_cache.should have_result(:primary, 0)
+      node_cache.should have_result(:number, 0)
+
+      expire(1..1, 1)
+      node_cache.should_not have_result(:addition, 0)
+      node_cache.should_not have_result(:primary, 0)
+      node_cache.should have_result(:number, 0)
+
+      input.replace('(1')
+      reparse.should be_nil
+      node_cache.should have_result(:addition, 0)
+      node_cache.should have_result(:addition, 1)
+      node_cache.should have_result(:primary, 0)
+      node_cache.should have_result(:primary, 1)
+      node_cache.should have_result(:number, 0)
+      node_cache.should have_result(:number, 1)
+      
+      expire(2..2, 1)
+      node_cache.should_not have_result(:addition, 0)
+      node_cache.should_not have_result(:addition, 1)
+      node_cache.should_not have_result(:primary, 0)
+      node_cache.should have_result(:primary, 1) # is this true?
+      node_cache.should have_result(:number, 0)
+      node_cache.should have_result(:number, 1)
+
+      input.replace('(1+')
+      reparse.should be_nil
+      node_cache.should have_result(:addition, 0)
+      node_cache.should have_result(:addition, 1)
+      node_cache.should have_result(:primary, 0)
+      node_cache.should have_result(:primary, 1)
+      node_cache.should have_result(:number, 0)
+      node_cache.should have_result(:number, 1)
+
+      expire(3..3, 1)
+      node_cache.should_not have_result(:addition, 0)
+      node_cache.should_not have_result(:addition, 1)
+      node_cache.should_not have_result(:addition, 2)
+      node_cache.should_not have_result(:primary, 0)
+      node_cache.should have_result(:primary, 1) # is this true?
+      node_cache.should_not have_result(:primary, 2)
+      node_cache.should have_result(:number, 0)
+      node_cache.should have_result(:number, 1)
+      node_cache.should_not have_result(:number, 2)
+
+      input.replace('(1+2')
+      reparse.should be_nil
+
+      expire(4..4, 1)
+      input.replace('(1+2)')
+      reparse.should_not be_nil
+    end
+  end
 end

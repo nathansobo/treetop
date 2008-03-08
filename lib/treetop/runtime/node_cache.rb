@@ -52,6 +52,18 @@ module Treetop
         results_to_delete.push(result)
       end
 
+      def inspect
+        s = ""
+        node_index.each do |rule_name, subhash|
+          s += "#{rule_name}: "
+          subhash.each do |i, v|
+            s += "#{i} => #{v.inspect}, "
+          end
+          s += "\n"
+        end
+        s
+      end
+
       protected
       
       def register_result(result)
