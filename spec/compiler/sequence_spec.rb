@@ -49,11 +49,13 @@ module SequenceSpec
           result.should be_an_instance_of(Runtime::ParseFailure)
         end
         
-        it "depends on the failure of the first failing subexpression" do
+        it "depends on the success of the first subexpression and failure of the second" do
           dependencies = result.dependencies
-          dependencies.size.should == 1
-          dependencies.first.index.should == 6
-          dependencies.first.expected_string.should == 'bar'
+          dependencies.size.should == 2
+          dependencies[0].interval.should == (3...6)
+          dependencies[0].text_value.should == 'foo'
+          dependencies[1].index.should == 6
+          dependencies[1].expected_string.should == 'bar'
         end
       end
       
