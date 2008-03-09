@@ -132,3 +132,12 @@ class Symbol
     end
   end
 end
+
+module PrintDependencies
+  def print_dependencies(r, indent = 0)
+    puts "  " * indent + r.inspect
+    r.dependencies.each do |d|
+      print_dependencies(d, indent + 1)
+    end
+  end
+end

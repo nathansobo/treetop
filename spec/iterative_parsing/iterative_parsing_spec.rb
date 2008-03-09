@@ -160,6 +160,33 @@ module IterativeParsingSpec
     end
   end
 
+  describe "A really simple grammar" do
+    include PrintDependencies
+
+    testing_grammar %{
+      grammar Addition
+        rule primary
+          '(' addition ')'
+        end
+
+        rule addition
+          number '+' number
+        end
+
+        rule number
+          [0-9]
+        end
+      end
+    }
+
+    xit "blah" do
+      result = parse('(1+', :return_parse_failure => true)
+      puts
+      print_dependencies(result)
+
+    end
+  end
+
   describe "A parser for a simplified addition grammar" do
     testing_grammar %{
       grammar Addition
@@ -177,9 +204,29 @@ module IterativeParsingSpec
       end
     }
 
-    it "expires the stale failure of addition as successive characters are added to the buffer" do
+    include PrintDependencies
+
+    it "constructs the correct parse failure" do
+      result = parse('(1+', :return_parse_failure => true)
+      puts
+      print_dependencies(result)
+
+      puts
+      print_dependencies(node_cache.get(:addition, 1))
+
+    end
+
+    xit "other one" do
+      result = parse('(1+', :return_parse_failure => true, :consume_all_input => false, :index => 1)
+      puts
+      print_dependencies(result)
+
+
+    end
+
+    xit "expires the stale failure of addition as successive characters are added to the buffer" do
       input = '('
-      parse(input).should be_nil
+      parse(input, :return_parse_failure => true, :return_propagations => true)
       node_cache.should have_result(:addition, 0)
       node_cache.should have_result(:primary, 0)
       node_cache.should have_result(:number, 0)
@@ -190,7 +237,7 @@ module IterativeParsingSpec
       node_cache.should have_result(:number, 0)
 
       input.replace('(1')
-      reparse.should be_nil
+      reparse
       node_cache.should have_result(:addition, 0)
       node_cache.should have_result(:addition, 1)
       node_cache.should have_result(:primary, 0)
@@ -202,12 +249,12 @@ module IterativeParsingSpec
       node_cache.should_not have_result(:addition, 0)
       node_cache.should_not have_result(:addition, 1)
       node_cache.should_not have_result(:primary, 0)
-      node_cache.should have_result(:primary, 1) # is this true?
+      node_cache.should have_result(:primary, 1)
       node_cache.should have_result(:number, 0)
       node_cache.should have_result(:number, 1)
 
       input.replace('(1+')
-      reparse.should be_nil
+      reparse
       node_cache.should have_result(:addition, 0)
       node_cache.should have_result(:addition, 1)
       node_cache.should have_result(:primary, 0)
@@ -216,6 +263,10 @@ module IterativeParsingSpec
       node_cache.should have_result(:number, 1)
 
       expire(3..3, 1)
+
+      puts
+      print_dependencies node_cache.get(:addition, 0)
+
       node_cache.should_not have_result(:addition, 0)
       node_cache.should_not have_result(:addition, 1)
       node_cache.should_not have_result(:addition, 2)
@@ -227,7 +278,7 @@ module IterativeParsingSpec
       node_cache.should_not have_result(:number, 2)
 
       input.replace('(1+2')
-      reparse.should be_nil
+      reparse
 
       expire(4..4, 1)
       input.replace('(1+2)')

@@ -11,6 +11,10 @@ module Treetop
       def to_s
         "String matching #{expected_string} expected."
       end
+
+      def inspect
+        "TerminalParseFailure(#{interval}, #{expected_string})"
+      end
     end
   end
 end
