@@ -9,6 +9,10 @@ class Range
   end
 
   def transpose(delta)
-    (first + delta)..(last + delta)
+    if exclude_end?
+      (first + delta)...(last + delta)
+    else
+      (first + delta)..(last + delta)
+    end
   end
 end

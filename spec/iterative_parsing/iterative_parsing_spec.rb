@@ -158,9 +158,11 @@ module IterativeParsingSpec
       node_cache.should have_result(:addition, 2)
       node_cache.should have_result(:number, 2)
     end
+
+
   end
 
-  describe "A parser for a simplified addition grammar" do
+  describe "A parser for a simplified addition grammar with parenthesized expressions" do
     testing_grammar %{
       grammar Addition
         rule addition
@@ -236,6 +238,30 @@ module IterativeParsingSpec
       expire(4..4, 1)
       input.replace('(1+2)')
       reparse.should_not be_nil
+    end
+
+
+  end
+
+  describe "The full Arithmetic grammar" do
+    attr_reader :parser_class_under_test
+    before do
+      dir = File.dirname(__FILE__)
+      require "#{dir}/arithmetic"
+      @parser_class_under_test = ArithmeticParser
+    end
+
+    it "successfully parses a problematic series of inputs without stack overflow" do
+      input = '(1)'
+      parse(input).should_not be_nil
+
+      input.replace('((1)')
+      expire(0..0, 1)
+      parser.reparse.should be_nil
+
+      input.replace('((1))')
+      expire(4..4, 1)
+      parser.reparse.should_not be_nil
     end
   end
 end

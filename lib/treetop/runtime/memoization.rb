@@ -20,7 +20,10 @@ module Treetop
       end
 
       def relocate(length_change)
-        rule_index[interval.first + length_change] = rule_index.delete(interval.first)
+        if rule_index[interval.first] == result
+          rule_index.delete(interval.first)
+        end
+        rule_index[interval.first + length_change] = result 
       end
 
       def expire

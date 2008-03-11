@@ -130,7 +130,7 @@ module NodeCacheSpec
         cache.should_not have_result(:foo, 3)
         cache.should_not have_result(:foo, 7)
         cache.get(:foo, 12).should == c
-        c.interval.should == (12..18)
+        c.interval.should == (12...18)
 
         cache.expire(13..15, 0)
         cache.should_not have_result(:foo, 12)
@@ -185,6 +185,25 @@ module NodeCacheSpec
         predication_result.interval.should == predication_result_interval_before_expire.transpose(5)
         parent.interval.should == parent_interval_before_expire.transpose(5)
         additional_dependency.interval.should == additional_dependency_interval_before_expire.transpose(5)
+      end
+    end
+
+    describe "with a results for the same rule with intervals 1..2 and 2..3" do
+      attr_reader :result_1, :result_2
+
+      before do
+        @result_1 = ParseFailure.new(1..2)
+        @result_2 = ParseFailure.new(2..3)
+        cache.store(:foo, result_1)
+        cache.store(:foo, result_2)
+      end
+
+      it "correctly relocates both results without one clobbering the other when it is relocated" do
+        cache.get(:foo, 1).should == result_1
+        cache.get(:foo, 2).should == result_2
+        cache.expire(0..0, 1)
+        cache.get(:foo, 2).should == result_1
+        cache.get(:foo, 3).should == result_2
       end
     end
   end
