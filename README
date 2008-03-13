@@ -29,8 +29,8 @@ The first rule becomes the *root* of the grammar, causing its expression to be m
     Treetop.load 'my_grammar'
     
     parser = MyGrammarParser.new
-    puts parser.parse('hello chomsky').success?         # => true
-    puts parser.parse('silly generativists!').success?  # => false
+    puts parser.parse('hello chomsky')         # => Treetop::Runtime::SyntaxNode
+    puts parser.parse('silly generativists!')  # => nil
 
 Users of *regular expressions* will find parsing expressions familiar. They share the same basic purpose, matching strings against patterns. However, parsing expressions can recognize a broader category of languages than their less expressive brethren. Before we get into demonstrating that, lets cover some basics. At first parsing expressions won't seem much different. Trust that they are.
 
@@ -50,9 +50,9 @@ Ordered choices are *composite expressions*, which allow for any of several sube
     end
     
     # fragment of use_grammar.rb
-    puts parser.parse('hello chomsky').success?         # => true
-    puts parser.parse('hello lambek').success?          # => true
-    puts parser.parse('silly generativists!').success?  # => false
+    puts parser.parse('hello chomsky')         # => Treetop::Runtime::SyntaxNode
+    puts parser.parse('hello lambek')          # => Treetop::Runtime::SyntaxNode
+    puts parser.parse('silly generativists!')  # => nil
     
 Sequences
 ---------
