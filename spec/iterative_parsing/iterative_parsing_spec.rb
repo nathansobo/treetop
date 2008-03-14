@@ -267,6 +267,11 @@ module IterativeParsingSpec
       expire(2..2, 1)
       node_cache.should_not have_result(:number, 1)
       parser.reparse.should_not be_nil
+
+      input.replace('(122)')
+      expire(3..3, 1)
+      node_cache.should_not have_result(:number, 1)
+      parser.reparse.should_not be_nil
     end
   end
 end

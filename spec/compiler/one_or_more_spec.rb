@@ -18,7 +18,11 @@ module OneOrMoreSpec
         it "is a failure" do
           result.should be_an_instance_of(Runtime::ParseFailure)
         end
-        
+
+        it "has an interval that includes the site of the failure of the repeated subexpression" do
+          result.interval.should == (0..0)
+        end
+
         it "depends on the failure of the repeated subexpression" do
           dependencies = result.dependencies
           dependencies.size.should == 1
@@ -50,7 +54,11 @@ module OneOrMoreSpec
         it "responds to the method defined in the inline block" do
           result.should respond_to(:a_method)
         end
-        
+
+        it "has an interval that includes the site of the repetition-terminating failure" do
+          result.interval.should == (0..6)
+        end
+
         it "depends on the 2 successful parsings and one failed parsing of the repeated subexpression" do
           dependencies = result.dependencies
           dependencies.size.should == 3

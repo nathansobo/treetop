@@ -25,7 +25,7 @@ module Treetop
       end
       
       def assign_and_extend_result
-        assign_result "#{node_class_name}.new(input, #{start_index_var}...index, #{accumulator_var})"
+        assign_result "#{node_class_name}.new(input, #{start_index_var}..index, #{accumulator_var})"
         extend_result_with_inline_module
       end
     end

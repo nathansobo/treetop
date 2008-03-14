@@ -22,7 +22,11 @@ module ZeroOrMoreSpec
         it "responds to the method defined in the inline block" do
           result.should respond_to(:a_method)
         end
-        
+
+        it "has an interval that includes the site of the repetition-terminating failure" do
+          result.interval.should == (0..0)
+        end
+
         it "depends on failure of the repeated subexpression" do
           dependencies = result.dependencies
           dependencies.size.should == 1
@@ -55,7 +59,11 @@ module ZeroOrMoreSpec
         it "responds to the method defined in the inline block" do
           result.should respond_to(:a_method)
         end
-        
+
+        it "has an interval that includes the site of the repetition-terminating failure" do
+          result.interval.should == (0..6)
+        end
+
         it "depends on the 2 successful parsings and one failed parsing of the repeated subexpression" do
           dependencies = result.dependencies
           dependencies.size.should == 3
@@ -82,10 +90,10 @@ module ZeroOrMoreSpec
   describe "Zero or more of a sequence" do
     testing_expression '("foo" "bar")*'
   
-    it "resets the index appropriately following partially matcing input" do
+    it "returns a result that whose interval inclusively ends at the site of the repetition-terminating failure" do
       parse('foobarfoo', :consume_all_input => false) do |result|
         result.should_not be_nil
-        result.interval.should == (0...6)
+        result.interval.should == (0..6)
       end
     end
   end
