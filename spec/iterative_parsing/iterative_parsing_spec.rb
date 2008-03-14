@@ -158,8 +158,6 @@ module IterativeParsingSpec
       node_cache.should have_result(:addition, 2)
       node_cache.should have_result(:number, 2)
     end
-
-
   end
 
   describe "A parser for a simplified addition grammar with parenthesized expressions" do
@@ -178,9 +176,6 @@ module IterativeParsingSpec
         end
       end
     }
-
-    include PrintDependencies
-
 
     it "expires the stale failure of addition as successive characters are added to the buffer" do
       input = '('
@@ -239,15 +234,15 @@ module IterativeParsingSpec
       input.replace('(1+2)')
       reparse.should_not be_nil
     end
-
-
   end
 
-  describe "The full Arithmetic grammar" do
+  describe "A parser for the full The full arithmetic grammar" do
+    include PrintDependencies
+
     attr_reader :parser_class_under_test
     before do
       dir = File.dirname(__FILE__)
-      require "#{dir}/arithmetic"
+      Treetop.load "#{dir}/arithmetic"
       @parser_class_under_test = ArithmeticParser
     end
 
@@ -261,6 +256,19 @@ module IterativeParsingSpec
 
       input.replace('((1))')
       expire(4..4, 1)
+      parser.reparse.should_not be_nil
+    end
+    
+    it "successfully expires repetitions when the site of the repetition-terminating failure is disturbed" do
+      pending "Better expiration of repetitions and other nodes that depend on failure at the end"
+      input = '(1)'
+      parse(input).should_not be_nil
+
+      print_dependencies(node_cache.get(:number, 1))
+
+      input.replace('(12)')
+      expire(2..2, 1)
+      node_cache.should_not have_result(:number, 1)
       parser.reparse.should_not be_nil
     end
   end
