@@ -22,8 +22,12 @@ module SyntaxNodeSpec
     it "has a text value based on the input and the interval" do
       node.text_value.should == "inp"
     end
-  
-    it "reports the end of its interval as its #resume_index" do
+
+    it "reports the first of its interval as its #index" do
+      node.index.should == node.interval.first
+    end
+
+    it "reports the last of its interval as its #resume_index" do
       node.resume_index.should == 3
     end
 

@@ -90,9 +90,8 @@ module Treetop
         "SyntaxNode.new(input, index...index)"
       end
       
-      def assign_failure(start_index_var)
-        builder << "failure_range = (max_terminal_failure_last_index > input_length) ? (#{start_index_var}..max_terminal_failure_last_index) : (#{start_index_var}...max_terminal_failure_last_index)"
-        assign_result("ParseFailure.new(failure_range)")
+      def assign_failure(start_index_var, precipitating_result)
+        assign_result("ParseFailure.new(#{start_index_var}..#{precipitating_result}.index)")
       end
     
       def var_initialization

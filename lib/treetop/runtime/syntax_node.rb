@@ -41,6 +41,10 @@ module Treetop
 	      interval.first == interval.last && interval.exclude_end?
       end
 
+      def index
+        interval.first
+      end
+
       def resume_index
         interval.last
       end

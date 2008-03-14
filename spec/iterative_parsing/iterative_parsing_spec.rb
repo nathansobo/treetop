@@ -63,7 +63,7 @@ module IterativeParsingSpec
 
       failure = node_cache.get(:dog, 10)
       failure.should be_an_instance_of(ParseFailure)
-      failure.interval.should == (10...13)
+      failure.interval.should == (10..10)
       
       input[12] = 'g'
 

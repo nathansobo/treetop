@@ -48,7 +48,11 @@ module SequenceSpec
         it "is not successful" do
           result.should be_an_instance_of(Runtime::ParseFailure)
         end
-        
+
+        it "has an interval that includes the start index of failure of the second subexpression" do
+          result.interval.should == (3..6)
+        end
+
         it "depends on the success of the first subexpression and failure of the second" do
           dependencies = result.dependencies
           dependencies.size.should == 2
@@ -95,34 +99,6 @@ module SequenceSpec
         result.bar.text_value.should == 'bar'
         result.baz.should == 'overridebaz'
       end
-    end
-  end
-
-  # TODO: NS - I don't think nonterminal failures need intervals after the new expiration strategy is in place
-  describe "A sequence of two expressions, one of which generates a max_terminal_failure_index that exceeds the second" do
-    testing_grammar %{
-      grammar TestGrammar
-
-        rule sequence
-          first ' ' second
-        end
-
-        rule first
-          'long terminal that fails' / 'foo'
-        end
-
-        rule second
-          'bar' / 'baz'
-        end
-      end
-    }
-
-    it "generates a failure for the second element with an interval that spans across the area in which the source of the failure could have occurred" do
-      result = parse("foo bogus", :return_parse_failure => true)
-      result.should be_an_instance_of(Runtime::ParseFailure)
-      node_cache = parser.send(:expirable_node_cache)
-      failure = node_cache.get(:second, 4)
-      failure.interval.should == (4...7)
     end
   end
   
