@@ -28,4 +28,16 @@ module PropagationSpec
       propagation.epsilon?
     end
   end
+
+  describe "A new Propagation instantiated with an epsilon result" do
+    attr_reader :epsilon, :propagation
+    before do
+      @epsilon = SyntaxNode.new('input', 3...3)
+      @propagation = Propagation.new(epsilon)
+    end
+
+    it "includes its endpoint to reflect a dependency on this buffer site that isn't shared by the propagated node" do
+      propagation.interval.should == (epsilon.interval.first..epsilon.interval.last)
+    end
+  end
 end

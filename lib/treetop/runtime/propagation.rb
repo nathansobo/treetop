@@ -1,10 +1,11 @@
 module Treetop
   module Runtime
     class Propagation < ParseResult
-      attr_reader :element
-      
+      attr_reader :element, :interval
+
       def initialize(element)
-        super(element.interval)
+        interval = element.epsilon? ? (element.interval.first..element.interval.last) : element.interval
+        super(interval)
         @element = element
         @dependencies = [element]
       end

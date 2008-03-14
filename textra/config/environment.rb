@@ -1,7 +1,7 @@
 $LOAD_PATH.push(File.expand_path("#{File.dirname(__FILE__)}/../../lib"))
 require 'treetop'
-#Treetop.load(Rucola::RCApp.path_for_asset("arithmetic"))
-require Rucola::RCApp.path_for_asset("arithmetic")
+Treetop.load(Rucola::RCApp.path_for_asset("arithmetic"))
+#require Rucola::RCApp.path_for_asset("arithmetic")
 require Rucola::RCApp.path_for_asset("arithmetic_node_classes")
 
 Rucola::Initializer.run do |config|

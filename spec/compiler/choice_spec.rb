@@ -37,7 +37,7 @@ module ChoiceSpec
         it "is an instance Propagation" do
           result.should be_an_instance_of(Runtime::Propagation)
         end
-
+        
         it "has the result of the second alternative as its #element" do
           result.element.should be_terminal
           result.element.text_value.should == 'bar'
@@ -155,6 +155,34 @@ module ChoiceSpec
     it "extends a match of any of its subexpressions with a module created from the block" do
       ['a', 'b', 'c'].each do |letter|
         parse(letter).element.should respond_to(:a_method)
+      end
+    end
+  end
+
+  describe "A choice between a terminal and epsilon" do
+    testing_expression "'a' / ''"
+
+    attr_reader :input, :result
+
+    describe "upon parsing epsilon" do
+      before do
+        @input = "  "
+        @result = parse(input, :consume_all_input => false, :return_propagations => true)
+      end
+
+      it "is dependent on the start index of the failure of the first alternative" do
+        result.interval.should == (0..0)
+      end
+
+      it "is expired if a character is inserted, and not relocated" do
+        node_cache.should have_result(:expression_under_test, 0)
+
+        input.replace('aa  ')
+        expire(0..0, 2)
+
+        node_cache.should_not have_result(:expression_under_test, 0)
+        node_cache.should_not have_result(:expression_under_test, 1)
+        reparse.should_not be_nil
       end
     end
   end
