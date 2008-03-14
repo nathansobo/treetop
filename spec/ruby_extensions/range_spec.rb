@@ -16,6 +16,10 @@ describe Range do
       (5..5).intersects?(1..5).should be_true
     end
 
+    it "is false for an endpoint-inclusive interval whose #first is == to the argument's #last" do
+      (5..10).intersects?(1..5).should be_false
+    end
+
     it "is false for an interval whose #first is >= than the argument's #last" do
       (11...15).intersects?(5..10).should be_false
       (10...15).intersects?(5..10).should be_false

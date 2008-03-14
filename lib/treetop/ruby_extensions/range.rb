@@ -3,7 +3,7 @@ class Range
     if exclude_end?
       return false if last <= other_range.first || first >= other_range.last
     else
-      return false if last < other_range.first || first > other_range.last
+      return false if last < other_range.first || (first >= other_range.last && first != last)
     end
     true
   end
