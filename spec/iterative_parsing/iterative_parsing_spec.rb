@@ -260,11 +260,8 @@ module IterativeParsingSpec
     end
     
     it "successfully expires repetitions when the site of the repetition-terminating failure is disturbed" do
-      pending "Better expiration of repetitions and other nodes that depend on failure at the end"
       input = '(1)'
       parse(input).should_not be_nil
-
-      print_dependencies(node_cache.get(:number, 1))
 
       input.replace('(12)')
       expire(2..2, 1)

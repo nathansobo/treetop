@@ -22,5 +22,10 @@ module PropagationSpec
     it "proxies #resume_index to its element" do
       propagation.resume_index.should == propagated_syntax_node.resume_index
     end
+
+    it "proxies #epsilon? to its element" do
+      mock.proxy(propagated_syntax_node).epsilon?
+      propagation.epsilon?
+    end
   end
 end

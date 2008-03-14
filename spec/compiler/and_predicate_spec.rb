@@ -4,13 +4,14 @@ module AndPredicateSpec
   include Runtime
 
   describe "An &-predicated terminal symbol" do
-    attr_reader :result
-    
     testing_expression '&"foo"'
+
+    attr_reader :input, :result
 
     describe "the result of parsing input matching the predicated subexpression" do
       before do
-        @result = parse('foo', :consume_all_input => false)
+        @input = 'foo'
+        @result = parse(input, :consume_all_input => false)
       end
 
       it "is an epsilon node" do
@@ -46,10 +47,11 @@ module AndPredicateSpec
     testing_expression '"foo" &"bar"'
     
     describe "the result of parsing input that matches both terminals" do
-      attr_reader :result
+      attr_reader :input, :result
       
       before do
-        @result = parse('foobar', :consume_all_input => false)
+        @input = 'foobar'
+        @result = parse(input, :consume_all_input => false)
       end
       
       it "is successful" do
@@ -64,16 +66,98 @@ module AndPredicateSpec
       it "depends on its elements" do
         result.dependencies.should == result.elements
       end
+
+      it "is expired when a character is inserted between 'foo' and 'bar'" do
+        node_cache.should have_result(:expression_under_test, 0)
+        input.replace('fooxbar')
+        expire(3..3, 1)
+        node_cache.should_not have_result(:expression_under_test, 0)
+      end
     end
-    
-    it "fails to parse input matching only the first terminal, recording a terminal failure at index 3" do
-      parse('foo') do |result|
+
+    describe "upon parsing input that matches the first terminal but not the second" do
+      attr_reader :input, :result
+      before do
+        @input = 'foolish'
+        @result = parse(input)
+      end
+
+      it "results is a failure" do
         result.should be_nil
+      end
+
+      it "records a terminal failure at index 3" do
         terminal_failures = parser.terminal_failures
         terminal_failures.size.should == 1
-        failure = terminal_failures[0]
-        failure.index.should == 3
-        failure.expected_string.should == 'bar'
+        terminal_failures.first.index.should == 3
+        terminal_failures.first.expected_string.should == 'bar'
+      end
+
+      it "will subsequently expire the result if input is inserted at index 3" do
+        node_cache.should have_result(:expression_under_test, 0)
+
+        input.replace('foobarlish')
+        node_cache.expire(3..3, 3)
+
+        node_cache.should_not have_result(:expression_under_test, 0)
+        parser.consume_all_input = false
+        reparse.should_not be_nil
+      end
+    end
+
+    describe "the result of parsing input that matches only the first terminal" do
+      attr_reader :input, :result
+      
+      before do
+        @input = 'foo'
+        @result = parse(input)
+      end
+
+      it "the result is a failure" do
+        result.should be_nil
+      end
+
+      it "a terminal failure is recorded at index 3" do
+        terminal_failures = parser.terminal_failures
+        terminal_failures.size.should == 1
+        terminal_failures.first.index.should == 3
+        terminal_failures.first.expected_string.should == 'bar'
+      end
+
+      it "will subsequently expire the result if input is inserted at index 3" do
+        node_cache.should have_result(:expression_under_test, 0)
+
+        input.replace('foobar')
+        node_cache.expire(3..3, 3)
+
+        node_cache.should_not have_result(:expression_under_test, 0)
+      end
+    end
+  end
+
+  describe "An expression for a character not followed by a space" do
+    testing_expression "'a' &(!' ' .)"
+
+    attr_reader :input, :result
+
+    describe "after parsing that character followed by a space" do
+      before do
+        @input = "a "
+        @result = parse(input, :consume_all_input => false)
+      end
+
+      it "results in a failure" do
+        result.should be_nil
+      end
+
+      it "expires the failure when a character is subsequently inserted between the character and the space" do
+        node_cache.should have_result(:expression_under_test, 0)
+
+        input.replace('ab ')
+        parser.expire(1..1, 1)
+
+        node_cache.should_not have_result(:expression_under_test, 0)
+        reparse.should_not be_nil
       end
     end
   end
