@@ -13,7 +13,7 @@ module Treetop
       end
       
       def assign_failure
-        super(start_index_var, subexpression_result_var)
+        super(start_index_var)
         accumulate_dependency subexpression_result_var
       end
       

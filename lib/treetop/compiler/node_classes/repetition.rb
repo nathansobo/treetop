@@ -44,7 +44,7 @@ module Treetop
         super
         builder.if__ "#{accumulator_var}.empty?" do
           reset_index
-          assign_failure start_index_var, subexpression_result_var
+          assign_failure start_index_var
         end
         builder.else_ do
           assign_and_extend_result

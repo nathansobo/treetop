@@ -24,7 +24,7 @@ module Treetop
           builder.accumulate "failed_alternatives", subexpression_result_var          
           if alternatives.size == 1
             reset_index
-            assign_failure start_index_var, subexpression_result_var
+            assign_failure start_index_var
           else
             compile_alternatives(alternatives[1..-1])
           end

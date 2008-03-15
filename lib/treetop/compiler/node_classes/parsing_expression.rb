@@ -91,8 +91,8 @@ module Treetop
         "SyntaxNode.new(input, index#{elipsis}index)"
       end
       
-      def assign_failure(start_index_var, precipitating_result)
-        assign_result("ParseFailure.new(#{start_index_var}..#{precipitating_result}.index)")
+      def assign_failure(start_index_var)
+        assign_result("ParseFailure.new(#{start_index_var}..index)")
       end
     
       def var_initialization

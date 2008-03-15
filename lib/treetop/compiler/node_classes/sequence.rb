@@ -14,8 +14,8 @@ module Treetop
           extend_result_with_inline_module
         end
         builder.else_ do
+          assign_failure start_index_var
           reset_index
-          assign_failure start_index_var, "#{accumulator_var}.last"
           builder << "#{result_var}.dependencies.concat(#{accumulator_var})"
         end
         end_comment(self)
