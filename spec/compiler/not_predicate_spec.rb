@@ -45,14 +45,34 @@ module NotPredicateSpec
   describe "A sequence of a terminal and an and another !-predicated terminal" do
     testing_expression '"foo" !"bar"'
 
-    it "fails to match input matching both terminals" do
-      parse('foobar').should be_nil
+    describe "the result of parsing input matching the first and second terminals" do
+      attr_reader :result, :input
+
+      before do
+        @input = 'foobar'
+        @result = parse(input, :return_parse_failure => true, :consume_all_input => false)
+      end
+
+      it "is a failure" do
+        result.should be_an_instance_of(Runtime::ParseFailure)
+      end
+
+      it "is expired when a character is inserted between the terminals" do
+        node_cache.should have_result(:expression_under_test, 0)
+
+        input.replace('foolbar')
+        node_cache.expire(3..3, 1)
+
+        node_cache.should_not have_result(:expression_under_test, 0)
+      end
     end
+
     
     describe "upon parsing input matching the first terminal and not the second" do
-      attr_reader :result
+      attr_reader :input, :result
       before do
-        @result = parse('foo')
+        @input = 'foo'
+        @result = parse(input)
       end
       
       describe "the result" do
@@ -67,6 +87,16 @@ module NotPredicateSpec
         it "has the epsilon result of the predicated terminal as its second element" do
           result.elements[1].should be_epsilon
         end
+
+        it "is expired if anything is inserted immediately after it" do
+          node_cache.should have_result(:expression_under_test, 0)
+
+          input.replace('foobar')
+          node_cache.expire(3..3, 3)
+
+          node_cache.should_not have_result(:expression_under_test, 0)
+          reparse.should be_nil
+        end
       end
       
       it "stores the parse failure of the predicated terminal in the #terminal_failures array" do
@@ -76,6 +106,7 @@ module NotPredicateSpec
         terminal_failures.first.expected_string.should == 'bar'
       end
     end
+
   end
 
   describe "A !-predicated sequence" do

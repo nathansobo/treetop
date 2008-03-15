@@ -11,7 +11,7 @@ module Treetop
           assign_result subexpression_result_var
         end
         builder.else_ do
-          assign_result epsilon_node
+          assign_result epsilon_node(true)
           accumulate_dependency subexpression_result_var
         end
       end

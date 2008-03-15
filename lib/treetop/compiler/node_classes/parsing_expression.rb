@@ -86,8 +86,9 @@ module Treetop
         builder.assign 'self.index', start_index_var
       end
       
-      def epsilon_node
-        "SyntaxNode.new(input, index...index)"
+      def epsilon_node(include_endpoint = false)
+        elipsis = include_endpoint ? '..' : '...'
+        "SyntaxNode.new(input, index#{elipsis}index)"
       end
       
       def assign_failure(start_index_var, precipitating_result)

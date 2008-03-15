@@ -18,8 +18,11 @@ module OptionalSpec
     end
   
     describe "upon parsing epsilon" do
+      attr_reader :input
+
       before do
-        @result = parse('')
+        @input = ''
+        @result = parse(input)
       end
       
       describe "the result" do
@@ -31,6 +34,19 @@ module OptionalSpec
           dependencies = result.dependencies
           dependencies.size.should == 1
           dependencies.first.expected_string.should == 'foo'
+        end
+
+        it "includes its endpoint, which is the site of the failure to parse the optional expression" do
+          result.interval.should == (0..0)
+        end
+
+        it "is expired when something is inserted at the site at which the optional expression was originally not found" do
+          node_cache.should have_result(:expression_under_test, 0)
+
+          input.replace('foo')
+          node_cache.expire(0..0, 3)
+
+          node_cache.should_not have_result(:expression_under_test, 0)
         end
       end
       
