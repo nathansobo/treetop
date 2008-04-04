@@ -64,16 +64,12 @@ module ZeroOrMoreSpec
           result.interval.should == (0..6)
         end
 
-        it "depends on the 2 successful parsings and one failed parsing of the repeated subexpression" do
+        it "depends on the failed parsing of the repeated subexpression" do
           dependencies = result.dependencies
-          dependencies.size.should == 3
-          dependencies[0].text_value.should == 'foo'
-          dependencies[0].interval.should == (0...3)
-          dependencies[1].text_value.should == 'foo'
-          dependencies[1].interval.should == (3...6)
-          dependencies[2].should be_an_instance_of(Runtime::TerminalParseFailure)
-          dependencies[2].index.should == 6
-          dependencies[2].expected_string.should == 'foo'
+          dependencies.size.should == 1
+          dependencies.first.should be_an_instance_of(Runtime::TerminalParseFailure)
+          dependencies.first.index.should == 6
+          dependencies.first.expected_string.should == 'foo'
         end
       end
 

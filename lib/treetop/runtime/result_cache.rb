@@ -64,10 +64,19 @@ module Treetop
       def register_result(result)
         return if result.registered?
         result.result_cache = self
+
+        if result.child_results
+          result.child_results.each do |child_result|
+            child_result.parent = result
+            register_result(child_result)
+          end
+        end
+
         result.dependencies.each do |subresult|
           subresult.dependents.push(result)
           register_result(subresult)
         end
+
         result.registered = true
         results.push(result)
       end

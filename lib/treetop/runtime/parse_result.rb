@@ -1,7 +1,7 @@
 module Treetop
   module Runtime
     class ParseResult
-      attr_reader :dependent_results, :dependencies, :dependents, :memoizations
+      attr_reader :dependent_results, :dependencies, :child_results, :dependents, :memoizations
       attr_accessor :interval, :parent, :registered, :result_cache
       alias :registered? :registered
       

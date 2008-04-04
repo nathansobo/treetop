@@ -6,15 +6,8 @@ module Treetop
       def initialize(input, interval, child_results = nil)
         super(interval)
         @input = input
-        
-        if child_results
-          @dependencies = child_results
-          @elements = child_results.map do |child_result|
-            element = child_result.element
-            element.parent = self
-            element
-          end
-        end
+        @child_results = child_results
+        set_elements_from_child_results_and_become_parent if child_results
       end
 
       def element
@@ -55,6 +48,22 @@ module Treetop
           "SyntaxNode(#{interval.inspect}, #{text_value[0..15]}#{ellipsis})"
         else
           "SyntaxNode(text value is nil!)"
+        end
+      end
+
+      def expire
+        super
+        parent.expire if parent
+      end
+
+      protected
+      def set_elements_from_child_results_and_become_parent
+        @elements = []
+        child_results.each do |child_result|
+          child_result.parent = self
+          element = child_result.element
+          element.parent = self
+          elements.push(element)
         end
       end
     end

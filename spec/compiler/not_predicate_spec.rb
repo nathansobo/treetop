@@ -80,10 +80,6 @@ module NotPredicateSpec
           result.should_not be_nil
         end
         
-        it "has its elements as dependencies" do
-          result.dependencies.should == result.elements
-        end
-        
         it "has the epsilon result of the predicated terminal as its second element" do
           result.elements[1].should be_epsilon
         end

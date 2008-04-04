@@ -31,10 +31,6 @@ module SequenceSpec
       it "has the method defined in the trailing block" do
         result.should respond_to(:a_method)
       end
-      
-      it "has the sequence elements as its #dependencies" do
-        result.dependencies.should == result.elements
-      end
     end
 
     describe "upon failing to match input starting at index 3" do

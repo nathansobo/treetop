@@ -149,7 +149,7 @@ module ResultCacheSpec
         @non_local_dependency = TerminalParseFailure.new(5...15, 'x' * 10)
 
         parent.dependencies.push(non_local_dependency)
-        parent.dependencies.should == [child, epsilon_node, non_local_dependency]
+        parent.dependencies.should == [non_local_dependency]
 
         cache.store_result(:foo, parent)
       end

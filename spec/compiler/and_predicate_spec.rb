@@ -63,10 +63,6 @@ module AndPredicateSpec
         result.elements[1].should be_epsilon
       end
       
-      it "depends on its elements" do
-        result.dependencies.should == result.elements
-      end
-
       it "is expired when a character is inserted between 'foo' and 'bar'" do
         result_cache.should have_result(:expression_under_test, 0)
         input.replace('fooxbar')
