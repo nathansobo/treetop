@@ -3,11 +3,11 @@ require File.expand_path("#{File.dirname(__FILE__)}/../spec_helper")
 module NodeCacheSpec
   include Runtime
 
-  describe NodeCache do
+  describe ResultCache do
     attr_reader :cache, :input
 
     before do
-      @cache = NodeCache.new
+      @cache = ResultCache.new
       @input = ('A'..'Z').to_a.join
     end
 
@@ -19,9 +19,9 @@ module NodeCacheSpec
         cache.store(:foo, node)
       end
 
-      describe "#get" do
+      describe "#get_result" do
         it "returns the stored result given the correct name and start index" do
-          cache.get(:foo, 5).should == node
+          cache.get_result(:foo, 5).should == node
         end
       end
 
@@ -120,16 +120,16 @@ module NodeCacheSpec
       end
       
       it "removes multiple results that overlap an expired range, correctly updating the surviving result with the length_change" do
-        cache.get(:foo, 0).should == a
-        cache.get(:foo, 3).should == b
-        cache.get(:foo, 7).should == c
+        cache.get_result(:foo, 0).should == a
+        cache.get_result(:foo, 3).should == b
+        cache.get_result(:foo, 7).should == c
 
         cache.expire(3..7, 5)
 
         cache.should_not have_result(:foo, 0)
         cache.should_not have_result(:foo, 3)
         cache.should_not have_result(:foo, 7)
-        cache.get(:foo, 12).should == c
+        cache.get_result(:foo, 12).should == c
         c.interval.should == (12...18)
 
         cache.expire(13..15, 0)
@@ -200,11 +200,11 @@ module NodeCacheSpec
       end
 
       it "correctly relocates both results without one clobbering the other when it is relocated" do
-        cache.get(:foo, 1).should == result_1
-        cache.get(:foo, 2).should == result_2
+        cache.get_result(:foo, 1).should == result_1
+        cache.get_result(:foo, 2).should == result_2
         cache.expire(0..0, 1)
-        cache.get(:foo, 2).should == result_1
-        cache.get(:foo, 3).should == result_2
+        cache.get_result(:foo, 2).should == result_1
+        cache.get_result(:foo, 3).should == result_2
       end
     end
   end

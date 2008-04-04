@@ -14,8 +14,8 @@ class TextraDocument < Rucola::RCDocument
   def textStorageWillProcessEditing(notification)
     puts expiredRange
     
-    node_cache = parser.send(:expirable_node_cache)
-    node_index = node_cache.send(:node_index)
+    node_cache = parser.send(:expirable_result_cache)
+    result_index = node_cache.send(:result_index)ao
     
     parser.expire(expiredRange, changeInLength)
     parser.send(:input).replace(text)

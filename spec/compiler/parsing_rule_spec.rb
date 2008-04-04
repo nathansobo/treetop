@@ -14,13 +14,13 @@ module ParsingRuleSpec
     it "stores and retrieves successful results for that rule in its node cache, correctly updating the index upon retrieval" do
       parser = self.class.const_get(:FooParser).new
       parser.send(:prepare_to_parse, 'baz')
-      node_cache = parser.send(:expirable_node_cache)
+      node_cache = parser.send(:expirable_result_cache)
 
       node_cache.should_not have_result(:bar, 0)
     
       parser._nt_bar
     
-      cached_node = node_cache.get(:bar, 0)
+      cached_node = node_cache.get_result(:bar, 0)
       cached_node.should be_an_instance_of(Runtime::SyntaxNode)
       cached_node.text_value.should == 'baz'
     
@@ -32,14 +32,14 @@ module ParsingRuleSpec
     it "stores and retrieves failed results for that rule in its node cache" do
       parser = self.class.const_get(:FooParser).new
       parser.send(:prepare_to_parse, 'bogus')
-      node_cache = parser.send(:expirable_node_cache)
+      node_cache = parser.send(:expirable_result_cache)
 
       node_cache.should_not have_result(:bar, 0)
 
       parser._nt_bar
 
       node_cache.should have_result(:bar, 0)
-      result = node_cache.get(:bar, 0)
+      result = node_cache.get_result(:bar, 0)
       result.should be_an_instance_of(Runtime::TerminalParseFailure)
 
       parser.send(:reset_index)

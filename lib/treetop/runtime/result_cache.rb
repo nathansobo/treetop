@@ -1,26 +1,24 @@
 module Treetop
   module Runtime
-    class NodeCache
+    class ResultCache
       attr_reader :results
       
       def initialize
-        @node_index = Hash.new {|h, k| h[k] = Hash.new }
-        @terminal_results = []
+        @result_index = Hash.new {|h, k| h[k] = Hash.new }
         @results = []
       end
 
       def store(rule_name, result)
-        memoization = Memoization.new(rule_name, result, node_index)
-        result.memoizations.push(memoization)
+        result.memoizations.push(Memoization.new(rule_name, result, result_index))
         register_result(result)
       end
 
-      def get(rule_name, start_index)
-        node_index[rule_name][start_index]
+      def get_result(rule_name, start_index)
+        result_index[rule_name][start_index]
       end
 
       def has_result?(rule_name, start_index)
-        node_index[rule_name].has_key?(start_index)
+        result_index[rule_name].has_key?(start_index)
       end
 
       def expire(range, length_change)
@@ -51,7 +49,7 @@ module Treetop
 
       def inspect
         s = ""
-        node_index.each do |rule_name, subhash|
+        result_index.each do |rule_name, subhash|
           s += "#{rule_name}: "
           subhash.each do |i, v|
             s += "#{i} => #{v.inspect}, "
@@ -65,7 +63,7 @@ module Treetop
       
       def register_result(result)
         return if result.registered?
-        result.node_cache = self
+        result.result_cache = self
         result.dependencies.each do |subresult|
           subresult.dependents.push(result)
           register_result(subresult)
@@ -74,7 +72,7 @@ module Treetop
         results.push(result)
       end
       
-      attr_reader :node_index, :results_to_delete, :memoizations_to_expire
+      attr_reader :result_index, :results_to_delete, :memoizations_to_expire
     end
   end
 end

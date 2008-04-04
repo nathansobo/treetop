@@ -2,7 +2,7 @@ module Treetop
   module Runtime
     class ParseResult
       attr_reader :dependent_results, :dependencies, :dependents, :memoizations
-      attr_accessor :interval, :parent, :registered, :node_cache
+      attr_accessor :interval, :parent, :registered, :result_cache
       alias :registered? :registered
       
       def initialize(interval)
@@ -13,9 +13,9 @@ module Treetop
       end
 
       def expire
-        node_cache.schedule_result_deletion(self)
+        result_cache.schedule_result_deletion(self)
         memoizations.each do |memoization|
-          node_cache.schedule_memoization_expiration(memoization)
+          result_cache.schedule_memoization_expiration(memoization)
         end
         dependents.each { |dependent| dependent.expire }
       end

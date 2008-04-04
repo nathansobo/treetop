@@ -1,13 +1,13 @@
 module Treetop
   module Runtime
     class Memoization
-      attr_reader :rule_name, :result, :node_index
+      attr_reader :rule_name, :result, :result_index
       attr_accessor :dependencies
 
-      def initialize(rule_name, result, node_index)
+      def initialize(rule_name, result, result_index)
         @rule_name = rule_name
         @result = result
-        @node_index = node_index
+        @result_index = result_index
         rule_index[interval.first] = result
       end
 
@@ -16,7 +16,7 @@ module Treetop
       end
 
       def rule_index
-        node_index[rule_name]
+        result_index[rule_name]
       end
 
       def relocate(length_change)

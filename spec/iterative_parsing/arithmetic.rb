@@ -7,8 +7,8 @@ module Arithmetic
 
   def _nt_expression
     start_index = index
-    if expirable_node_cache.has_result?(:expression, index)
-      cached = expirable_node_cache.get(:expression, index)
+    if expirable_result_cache.has_result?(:expression, index)
+      cached = expirable_result_cache.get_result(:expression, index)
       @index = cached.resume_index if cached
       return cached
     end
@@ -34,7 +34,7 @@ module Arithmetic
     end
     r0.dependencies.concat(failed_alternatives)
 
-    expirable_node_cache.store(:expression, r0)
+    expirable_result_cache.store(:expression, r0)
 
     return r0
   end
@@ -63,8 +63,8 @@ module Arithmetic
 
   def _nt_comparative
     start_index = index
-    if expirable_node_cache.has_result?(:comparative, index)
-      cached = expirable_node_cache.get(:comparative, index)
+    if expirable_result_cache.has_result?(:comparative, index)
+      cached = expirable_result_cache.get_result(:comparative, index)
       @index = cached.resume_index if cached
       return cached
     end
@@ -119,7 +119,7 @@ module Arithmetic
       r0.dependencies.concat(s0)
     end
 
-    expirable_node_cache.store(:comparative, r0)
+    expirable_result_cache.store(:comparative, r0)
 
     return r0
   end
@@ -132,8 +132,8 @@ module Arithmetic
 
   def _nt_equality_op
     start_index = index
-    if expirable_node_cache.has_result?(:equality_op, index)
-      cached = expirable_node_cache.get(:equality_op, index)
+    if expirable_result_cache.has_result?(:equality_op, index)
+      cached = expirable_result_cache.get_result(:equality_op, index)
       @index = cached.resume_index if cached
       return cached
     end
@@ -146,7 +146,7 @@ module Arithmetic
       r0 = terminal_parse_failure('==', 2)
     end
 
-    expirable_node_cache.store(:equality_op, r0)
+    expirable_result_cache.store(:equality_op, r0)
 
     return r0
   end
@@ -175,8 +175,8 @@ module Arithmetic
 
   def _nt_additive
     start_index = index
-    if expirable_node_cache.has_result?(:additive, index)
-      cached = expirable_node_cache.get(:additive, index)
+    if expirable_result_cache.has_result?(:additive, index)
+      cached = expirable_result_cache.get_result(:additive, index)
       @index = cached.resume_index if cached
       return cached
     end
@@ -250,7 +250,7 @@ module Arithmetic
     end
     r0.dependencies.concat(failed_alternatives)
 
-    expirable_node_cache.store(:additive, r0)
+    expirable_result_cache.store(:additive, r0)
 
     return r0
   end
@@ -269,8 +269,8 @@ module Arithmetic
 
   def _nt_additive_op
     start_index = index
-    if expirable_node_cache.has_result?(:additive_op, index)
-      cached = expirable_node_cache.get(:additive_op, index)
+    if expirable_result_cache.has_result?(:additive_op, index)
+      cached = expirable_result_cache.get_result(:additive_op, index)
       @index = cached.resume_index if cached
       return cached
     end
@@ -308,7 +308,7 @@ module Arithmetic
     end
     r0.dependencies.concat(failed_alternatives)
 
-    expirable_node_cache.store(:additive_op, r0)
+    expirable_result_cache.store(:additive_op, r0)
 
     return r0
   end
@@ -337,8 +337,8 @@ module Arithmetic
 
   def _nt_multitive
     start_index = index
-    if expirable_node_cache.has_result?(:multitive, index)
-      cached = expirable_node_cache.get(:multitive, index)
+    if expirable_result_cache.has_result?(:multitive, index)
+      cached = expirable_result_cache.get_result(:multitive, index)
       @index = cached.resume_index if cached
       return cached
     end
@@ -412,7 +412,7 @@ module Arithmetic
     end
     r0.dependencies.concat(failed_alternatives)
 
-    expirable_node_cache.store(:multitive, r0)
+    expirable_result_cache.store(:multitive, r0)
 
     return r0
   end
@@ -431,8 +431,8 @@ module Arithmetic
 
   def _nt_multitive_op
     start_index = index
-    if expirable_node_cache.has_result?(:multitive_op, index)
-      cached = expirable_node_cache.get(:multitive_op, index)
+    if expirable_result_cache.has_result?(:multitive_op, index)
+      cached = expirable_result_cache.get_result(:multitive_op, index)
       @index = cached.resume_index if cached
       return cached
     end
@@ -470,7 +470,7 @@ module Arithmetic
     end
     r0.dependencies.concat(failed_alternatives)
 
-    expirable_node_cache.store(:multitive_op, r0)
+    expirable_result_cache.store(:multitive_op, r0)
 
     return r0
   end
@@ -498,8 +498,8 @@ module Arithmetic
 
   def _nt_primary
     start_index = index
-    if expirable_node_cache.has_result?(:primary, index)
-      cached = expirable_node_cache.get(:primary, index)
+    if expirable_result_cache.has_result?(:primary, index)
+      cached = expirable_result_cache.get_result(:primary, index)
       @index = cached.resume_index if cached
       return cached
     end
@@ -591,7 +591,7 @@ module Arithmetic
     end
     r0.dependencies.concat(failed_alternatives)
 
-    expirable_node_cache.store(:primary, r0)
+    expirable_result_cache.store(:primary, r0)
 
     return r0
   end
@@ -608,8 +608,8 @@ module Arithmetic
 
   def _nt_variable
     start_index = index
-    if expirable_node_cache.has_result?(:variable, index)
-      cached = expirable_node_cache.get(:variable, index)
+    if expirable_result_cache.has_result?(:variable, index)
+      cached = expirable_result_cache.get_result(:variable, index)
       @index = cached.resume_index if cached
       return cached
     end
@@ -639,7 +639,7 @@ module Arithmetic
     end
     r0.dependencies << r1
 
-    expirable_node_cache.store(:variable, r0)
+    expirable_result_cache.store(:variable, r0)
 
     return r0
   end
@@ -655,8 +655,8 @@ module Arithmetic
 
   def _nt_number
     start_index = index
-    if expirable_node_cache.has_result?(:number, index)
-      cached = expirable_node_cache.get(:number, index)
+    if expirable_result_cache.has_result?(:number, index)
+      cached = expirable_result_cache.get_result(:number, index)
       @index = cached.resume_index if cached
       return cached
     end
@@ -734,15 +734,15 @@ module Arithmetic
     end
     r0.dependencies.concat(failed_alternatives)
 
-    expirable_node_cache.store(:number, r0)
+    expirable_result_cache.store(:number, r0)
 
     return r0
   end
 
   def _nt_space
     start_index = index
-    if expirable_node_cache.has_result?(:space, index)
-      cached = expirable_node_cache.get(:space, index)
+    if expirable_result_cache.has_result?(:space, index)
+      cached = expirable_result_cache.get_result(:space, index)
       @index = cached.resume_index if cached
       return cached
     end
@@ -765,7 +765,7 @@ module Arithmetic
     r0 = SyntaxNode.new(input, i0...index, s0)
     r0.dependencies << r1
 
-    expirable_node_cache.store(:space, r0)
+    expirable_result_cache.store(:space, r0)
 
     return r0
   end

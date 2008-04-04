@@ -25,7 +25,7 @@ module Treetop
       end
 
       def expire(range, length_change)
-        expirable_node_cache.expire(range, length_change)
+        expirable_result_cache.expire(range, length_change)
       end
 
       def failure_index
@@ -53,7 +53,7 @@ module Treetop
 
       protected
       
-      attr_reader :node_cache, :expirable_node_cache, :input_length
+      attr_reader :node_cache, :expirable_result_cache, :input_length
       attr_writer :index
 
       def parse_root(options = {})
@@ -78,7 +78,7 @@ module Treetop
       def prepare_to_parse(input)
         @input = input
         @node_cache = Hash.new {|hash, key| hash[key] = Hash.new}
-        @expirable_node_cache = NodeCache.new
+        @expirable_result_cache = ResultCache.new
         reset_parse_state
       end
 

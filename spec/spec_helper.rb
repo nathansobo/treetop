@@ -84,7 +84,7 @@ module Treetop
     end
 
     def node_cache
-      parser.send(:expirable_node_cache)
+      parser.send(:expirable_result_cache)
     end
 
     def expire(range, length_change)

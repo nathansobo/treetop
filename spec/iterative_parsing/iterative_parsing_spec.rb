@@ -55,13 +55,13 @@ module IterativeParsingSpec
 
       parser.max_terminal_failure_last_index.should == 13
 
-      the = node_cache.get(:the, 0)
+      the = node_cache.get_result(:the, 0)
       the.text_value.should == "the"
 
-      green = node_cache.get(:color, 4)
+      green = node_cache.get_result(:color, 4)
       green.element.text_value.should == "green"
 
-      failure = node_cache.get(:dog, 10)
+      failure = node_cache.get_result(:dog, 10)
       failure.should be_an_instance_of(ParseFailure)
       failure.interval.should == (10..10)
       
@@ -102,7 +102,7 @@ module IterativeParsingSpec
       result = parse('foobarbaz')
       result.should_not be_nil
 
-      node_cache = parser.send(:expirable_node_cache)
+      node_cache = parser.send(:expirable_result_cache)
       node_cache.should have_result(:a, 0)
       node_cache.should have_result(:b, 0)
       node_cache.should have_result(:c, 3)
