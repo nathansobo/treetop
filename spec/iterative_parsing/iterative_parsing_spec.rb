@@ -55,22 +55,22 @@ module IterativeParsingSpec
 
       parser.max_terminal_failure_last_index.should == 13
 
-      the = node_cache.get_result(:the, 0)
+      the = result_cache.get_result(:the, 0)
       the.text_value.should == "the"
 
-      green = node_cache.get_result(:color, 4)
+      green = result_cache.get_result(:color, 4)
       green.element.text_value.should == "green"
 
-      failure = node_cache.get_result(:dog, 10)
+      failure = result_cache.get_result(:dog, 10)
       failure.should be_an_instance_of(ParseFailure)
       failure.interval.should == (10..10)
       
       input[12] = 'g'
 
       parser.expire(12..13, 0)
-      node_cache.should_not have_result(:dog, 10)
-      node_cache.should_not have_result(:color, 4)
-      node_cache.should_not have_result(:foo, 0)
+      result_cache.should_not have_result(:dog, 10)
+      result_cache.should_not have_result(:color, 4)
+      result_cache.should_not have_result(:foo, 0)
 
       new_result = parser.reparse
 
@@ -102,16 +102,16 @@ module IterativeParsingSpec
       result = parse('foobarbaz')
       result.should_not be_nil
 
-      node_cache = parser.send(:expirable_result_cache)
-      node_cache.should have_result(:a, 0)
-      node_cache.should have_result(:b, 0)
-      node_cache.should have_result(:c, 3)
+      result_cache = parser.send(:expirable_result_cache)
+      result_cache.should have_result(:a, 0)
+      result_cache.should have_result(:b, 0)
+      result_cache.should have_result(:c, 3)
 
-      node_cache.expire(7..8, 0)
+      result_cache.expire(7..8, 0)
 
-      node_cache.should_not have_result(:a, 0)
-      node_cache.should_not have_result(:b, 0)
-      node_cache.should_not have_result(:c, 3)
+      result_cache.should_not have_result(:a, 0)
+      result_cache.should_not have_result(:b, 0)
+      result_cache.should_not have_result(:c, 3)
     end
   end
 
@@ -131,32 +131,32 @@ module IterativeParsingSpec
     it "expires the results of choices that depend on failures that are invalidated as the user types" do
       input = '1'
       parse(input).should_not be_nil
-      node_cache.should have_result(:addition, 0)
-      node_cache.should have_result(:number, 0)
+      result_cache.should have_result(:addition, 0)
+      result_cache.should have_result(:number, 0)
 
       input.replace('1+')
       expire(1..1, 1)
 
-      node_cache.should_not have_result(:addition, 0)
-      node_cache.should have_result(:number, 0)
+      result_cache.should_not have_result(:addition, 0)
+      result_cache.should have_result(:number, 0)
 
       reparse.should be_nil
 
-      node_cache.should have_result(:addition, 0)
-      node_cache.should have_result(:number, 0)
+      result_cache.should have_result(:addition, 0)
+      result_cache.should have_result(:number, 0)
 
       input.replace('1+1')
       expire(2..2, 1)
 
-      node_cache.should_not have_result(:addition, 0)
-      node_cache.should have_result(:number, 0)
+      result_cache.should_not have_result(:addition, 0)
+      result_cache.should have_result(:number, 0)
 
       reparse.should_not be_nil
 
-      node_cache.should have_result(:addition, 0)
-      node_cache.should have_result(:number, 0)
-      node_cache.should have_result(:addition, 2)
-      node_cache.should have_result(:number, 2)
+      result_cache.should have_result(:addition, 0)
+      result_cache.should have_result(:number, 0)
+      result_cache.should have_result(:addition, 2)
+      result_cache.should have_result(:number, 2)
     end
   end
 
@@ -180,52 +180,52 @@ module IterativeParsingSpec
     it "expires the stale failure of addition as successive characters are added to the buffer" do
       input = '('
       parse(input, :return_parse_failure => true, :return_propagations => true)
-      node_cache.should have_result(:addition, 0)
-      node_cache.should have_result(:primary, 0)
-      node_cache.should have_result(:number, 0)
+      result_cache.should have_result(:addition, 0)
+      result_cache.should have_result(:primary, 0)
+      result_cache.should have_result(:number, 0)
 
       expire(1..1, 1)
-      node_cache.should_not have_result(:addition, 0)
-      node_cache.should_not have_result(:primary, 0)
-      node_cache.should have_result(:number, 0)
+      result_cache.should_not have_result(:addition, 0)
+      result_cache.should_not have_result(:primary, 0)
+      result_cache.should have_result(:number, 0)
 
       input.replace('(1')
       reparse
-      node_cache.should have_result(:addition, 0)
-      node_cache.should have_result(:addition, 1)
-      node_cache.should have_result(:primary, 0)
-      node_cache.should have_result(:primary, 1)
-      node_cache.should have_result(:number, 0)
-      node_cache.should have_result(:number, 1)
+      result_cache.should have_result(:addition, 0)
+      result_cache.should have_result(:addition, 1)
+      result_cache.should have_result(:primary, 0)
+      result_cache.should have_result(:primary, 1)
+      result_cache.should have_result(:number, 0)
+      result_cache.should have_result(:number, 1)
       
       expire(2..2, 1)
-      node_cache.should_not have_result(:addition, 0)
-      node_cache.should_not have_result(:addition, 1)
-      node_cache.should_not have_result(:primary, 0)
-      node_cache.should have_result(:primary, 1)
-      node_cache.should have_result(:number, 0)
-      node_cache.should have_result(:number, 1)
+      result_cache.should_not have_result(:addition, 0)
+      result_cache.should_not have_result(:addition, 1)
+      result_cache.should_not have_result(:primary, 0)
+      result_cache.should have_result(:primary, 1)
+      result_cache.should have_result(:number, 0)
+      result_cache.should have_result(:number, 1)
 
       input.replace('(1+')
       reparse
-      node_cache.should have_result(:addition, 0)
-      node_cache.should have_result(:addition, 1)
-      node_cache.should have_result(:primary, 0)
-      node_cache.should have_result(:primary, 1)
-      node_cache.should have_result(:number, 0)
-      node_cache.should have_result(:number, 1)
+      result_cache.should have_result(:addition, 0)
+      result_cache.should have_result(:addition, 1)
+      result_cache.should have_result(:primary, 0)
+      result_cache.should have_result(:primary, 1)
+      result_cache.should have_result(:number, 0)
+      result_cache.should have_result(:number, 1)
 
       expire(3..3, 1)
 
-      node_cache.should_not have_result(:addition, 0)
-      node_cache.should_not have_result(:addition, 1)
-      node_cache.should_not have_result(:addition, 2)
-      node_cache.should_not have_result(:primary, 0)
-      node_cache.should have_result(:primary, 1) # is this true?
-      node_cache.should_not have_result(:primary, 2)
-      node_cache.should have_result(:number, 0)
-      node_cache.should have_result(:number, 1)
-      node_cache.should_not have_result(:number, 2)
+      result_cache.should_not have_result(:addition, 0)
+      result_cache.should_not have_result(:addition, 1)
+      result_cache.should_not have_result(:addition, 2)
+      result_cache.should_not have_result(:primary, 0)
+      result_cache.should have_result(:primary, 1) # is this true?
+      result_cache.should_not have_result(:primary, 2)
+      result_cache.should have_result(:number, 0)
+      result_cache.should have_result(:number, 1)
+      result_cache.should_not have_result(:number, 2)
 
       input.replace('(1+2')
       reparse
@@ -266,12 +266,12 @@ module IterativeParsingSpec
       input.replace('(12)')
       expire(2..2, 1)
 
-      node_cache.should_not have_result(:number, 1)
+      result_cache.should_not have_result(:number, 1)
       parser.reparse.should_not be_nil
 
       input.replace('(122)')
       expire(3..3, 1)
-      node_cache.should_not have_result(:number, 1)
+      result_cache.should_not have_result(:number, 1)
       parser.reparse.should_not be_nil
     end
   end

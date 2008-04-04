@@ -175,13 +175,13 @@ module ChoiceSpec
       end
 
       it "is expired if a character is inserted, and not relocated" do
-        node_cache.should have_result(:expression_under_test, 0)
+        result_cache.should have_result(:expression_under_test, 0)
 
         input.replace('aa  ')
         expire(0..0, 2)
 
-        node_cache.should_not have_result(:expression_under_test, 0)
-        node_cache.should_not have_result(:expression_under_test, 1)
+        result_cache.should_not have_result(:expression_under_test, 0)
+        result_cache.should_not have_result(:expression_under_test, 1)
         reparse.should_not be_nil
       end
     end

@@ -68,10 +68,10 @@ module AndPredicateSpec
       end
 
       it "is expired when a character is inserted between 'foo' and 'bar'" do
-        node_cache.should have_result(:expression_under_test, 0)
+        result_cache.should have_result(:expression_under_test, 0)
         input.replace('fooxbar')
         expire(3..3, 1)
-        node_cache.should_not have_result(:expression_under_test, 0)
+        result_cache.should_not have_result(:expression_under_test, 0)
       end
     end
 
@@ -94,12 +94,12 @@ module AndPredicateSpec
       end
 
       it "will subsequently expire the result if input is inserted at index 3" do
-        node_cache.should have_result(:expression_under_test, 0)
+        result_cache.should have_result(:expression_under_test, 0)
 
         input.replace('foobarlish')
-        node_cache.expire(3..3, 3)
+        result_cache.expire(3..3, 3)
 
-        node_cache.should_not have_result(:expression_under_test, 0)
+        result_cache.should_not have_result(:expression_under_test, 0)
         parser.consume_all_input = false
         reparse.should_not be_nil
       end
@@ -125,12 +125,12 @@ module AndPredicateSpec
       end
 
       it "will subsequently expire the result if input is inserted at index 3" do
-        node_cache.should have_result(:expression_under_test, 0)
+        result_cache.should have_result(:expression_under_test, 0)
 
         input.replace('foobar')
-        node_cache.expire(3..3, 3)
+        result_cache.expire(3..3, 3)
 
-        node_cache.should_not have_result(:expression_under_test, 0)
+        result_cache.should_not have_result(:expression_under_test, 0)
       end
     end
   end
@@ -151,12 +151,12 @@ module AndPredicateSpec
       end
 
       it "expires the failure when a character is subsequently inserted between the character and the space" do
-        node_cache.should have_result(:expression_under_test, 0)
+        result_cache.should have_result(:expression_under_test, 0)
 
         input.replace('ab ')
         parser.expire(1..1, 1)
 
-        node_cache.should_not have_result(:expression_under_test, 0)
+        result_cache.should_not have_result(:expression_under_test, 0)
         reparse.should_not be_nil
       end
     end

@@ -58,12 +58,12 @@ module NotPredicateSpec
       end
 
       it "is expired when a character is inserted between the terminals" do
-        node_cache.should have_result(:expression_under_test, 0)
+        result_cache.should have_result(:expression_under_test, 0)
 
         input.replace('foolbar')
-        node_cache.expire(3..3, 1)
+        result_cache.expire(3..3, 1)
 
-        node_cache.should_not have_result(:expression_under_test, 0)
+        result_cache.should_not have_result(:expression_under_test, 0)
       end
     end
 
@@ -89,12 +89,12 @@ module NotPredicateSpec
         end
 
         it "is expired if anything is inserted immediately after it" do
-          node_cache.should have_result(:expression_under_test, 0)
+          result_cache.should have_result(:expression_under_test, 0)
 
           input.replace('foobar')
-          node_cache.expire(3..3, 3)
+          result_cache.expire(3..3, 3)
 
-          node_cache.should_not have_result(:expression_under_test, 0)
+          result_cache.should_not have_result(:expression_under_test, 0)
           reparse.should be_nil
         end
       end

@@ -41,12 +41,12 @@ module OptionalSpec
         end
 
         it "is expired when something is inserted at the site at which the optional expression was originally not found" do
-          node_cache.should have_result(:expression_under_test, 0)
+          result_cache.should have_result(:expression_under_test, 0)
 
           input.replace('foo')
-          node_cache.expire(0..0, 3)
+          result_cache.expire(0..0, 3)
 
-          node_cache.should_not have_result(:expression_under_test, 0)
+          result_cache.should_not have_result(:expression_under_test, 0)
         end
       end
       

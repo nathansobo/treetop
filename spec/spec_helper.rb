@@ -83,7 +83,7 @@ module Treetop
       parser.reparse
     end
 
-    def node_cache
+    def result_cache
       parser.send(:expirable_result_cache)
     end
 
