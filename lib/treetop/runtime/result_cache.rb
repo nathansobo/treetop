@@ -8,7 +8,7 @@ module Treetop
         @results = []
       end
 
-      def store(rule_name, result)
+      def store_result(rule_name, result)
         result.memoizations.push(Memoization.new(rule_name, result, result_index))
         register_result(result)
       end

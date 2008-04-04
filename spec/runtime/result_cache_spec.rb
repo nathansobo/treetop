@@ -16,7 +16,7 @@ module ResultCacheSpec
 
       before do
         @node = SyntaxNode.new(input, 5...10)
-        cache.store(:foo, node)
+        cache.store_result(:foo, node)
       end
 
       describe "#get_result" do
@@ -66,7 +66,7 @@ module ResultCacheSpec
       before do
         input = '11'
         @number = SyntaxNode.new(input, 0...2, [SyntaxNode.new(input, 0...1), SyntaxNode.new(input, 1...2)])
-        cache.store(:number, number)
+        cache.store_result(:number, number)
       end
       
       it "expires the storage of that node if an expiry occurs between its children" do
@@ -86,10 +86,10 @@ module ResultCacheSpec
         @dog = SyntaxNode.new(input, 10..13)
         @sentence = SyntaxNode.new(input, 0..13)
 
-        cache.store(:the, the)
-        cache.store(:color, green)
-        cache.store(:dog, dog)
-        cache.store(:sentence, sentence)
+        cache.store_result(:the, the)
+        cache.store_result(:color, green)
+        cache.store_result(:dog, dog)
+        cache.store_result(:sentence, sentence)
       end
 
       it "removes a single result that overlaps an expired range, leaving undisturbed results intact" do
@@ -110,13 +110,13 @@ module ResultCacheSpec
       
       before do
         @a = SyntaxNode.new(input, 0...5)
-        cache.store(:foo, a)
+        cache.store_result(:foo, a)
 
         @b = SyntaxNode.new(input, 3...10)
-        cache.store(:foo, b)
+        cache.store_result(:foo, b)
 
         @c = SyntaxNode.new(input, 7...13)
-        cache.store(:foo, c)
+        cache.store_result(:foo, c)
       end
       
       it "removes multiple results that overlap an expired range, correctly updating the surviving result with the length_change" do
@@ -151,7 +151,7 @@ module ResultCacheSpec
         parent.dependencies.push(non_local_dependency)
         parent.dependencies.should == [child, epsilon_node, non_local_dependency]
 
-        cache.store(:foo, parent)
+        cache.store_result(:foo, parent)
       end
 
       it "expires the memoization when one of its children is expired" do
@@ -195,8 +195,8 @@ module ResultCacheSpec
       before do
         @result_1 = ParseFailure.new(1..2)
         @result_2 = ParseFailure.new(2..3)
-        cache.store(:foo, result_1)
-        cache.store(:foo, result_2)
+        cache.store_result(:foo, result_1)
+        cache.store_result(:foo, result_2)
       end
 
       it "correctly relocates both results without one clobbering the other when it is relocated" do

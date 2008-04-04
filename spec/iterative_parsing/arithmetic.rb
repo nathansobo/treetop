@@ -34,7 +34,7 @@ module Arithmetic
     end
     r0.dependencies.concat(failed_alternatives)
 
-    expirable_result_cache.store(:expression, r0)
+    expirable_result_cache.store_result(:expression, r0)
 
     return r0
   end
@@ -119,7 +119,7 @@ module Arithmetic
       r0.dependencies.concat(s0)
     end
 
-    expirable_result_cache.store(:comparative, r0)
+    expirable_result_cache.store_result(:comparative, r0)
 
     return r0
   end
@@ -146,7 +146,7 @@ module Arithmetic
       r0 = terminal_parse_failure('==', 2)
     end
 
-    expirable_result_cache.store(:equality_op, r0)
+    expirable_result_cache.store_result(:equality_op, r0)
 
     return r0
   end
@@ -250,7 +250,7 @@ module Arithmetic
     end
     r0.dependencies.concat(failed_alternatives)
 
-    expirable_result_cache.store(:additive, r0)
+    expirable_result_cache.store_result(:additive, r0)
 
     return r0
   end
@@ -308,7 +308,7 @@ module Arithmetic
     end
     r0.dependencies.concat(failed_alternatives)
 
-    expirable_result_cache.store(:additive_op, r0)
+    expirable_result_cache.store_result(:additive_op, r0)
 
     return r0
   end
@@ -412,7 +412,7 @@ module Arithmetic
     end
     r0.dependencies.concat(failed_alternatives)
 
-    expirable_result_cache.store(:multitive, r0)
+    expirable_result_cache.store_result(:multitive, r0)
 
     return r0
   end
@@ -470,7 +470,7 @@ module Arithmetic
     end
     r0.dependencies.concat(failed_alternatives)
 
-    expirable_result_cache.store(:multitive_op, r0)
+    expirable_result_cache.store_result(:multitive_op, r0)
 
     return r0
   end
@@ -591,7 +591,7 @@ module Arithmetic
     end
     r0.dependencies.concat(failed_alternatives)
 
-    expirable_result_cache.store(:primary, r0)
+    expirable_result_cache.store_result(:primary, r0)
 
     return r0
   end
@@ -639,7 +639,7 @@ module Arithmetic
     end
     r0.dependencies << r1
 
-    expirable_result_cache.store(:variable, r0)
+    expirable_result_cache.store_result(:variable, r0)
 
     return r0
   end
@@ -734,7 +734,7 @@ module Arithmetic
     end
     r0.dependencies.concat(failed_alternatives)
 
-    expirable_result_cache.store(:number, r0)
+    expirable_result_cache.store_result(:number, r0)
 
     return r0
   end
@@ -765,7 +765,7 @@ module Arithmetic
     r0 = SyntaxNode.new(input, i0...index, s0)
     r0.dependencies << r1
 
-    expirable_result_cache.store(:space, r0)
+    expirable_result_cache.store_result(:space, r0)
 
     return r0
   end
