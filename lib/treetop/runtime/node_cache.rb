@@ -9,9 +9,9 @@ module Treetop
         @results = []
       end
 
-      def store(rule_name, result, additional_dependencies = [])
+      def store(rule_name, result)
         memoization = Memoization.new(rule_name, result, node_index)
-        memoization.dependencies = [result] + additional_dependencies
+        memoization.dependencies = [result]
         memoization.dependencies.each do |dependency|
           register_result(dependency)
           dependency.memoizations.push(memoization)

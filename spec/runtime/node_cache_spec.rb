@@ -137,8 +137,8 @@ module NodeCacheSpec
       end
     end
 
-    describe "when a result with direct dependencies has been stored with with an additional dependency on another result" do
-      attr_reader :child, :epsilon_node, :predication_result, :parent, :additional_dependency
+    describe "when a result with children has been stored with with a non-local dependency on another result" do
+      attr_reader :child, :epsilon_node, :predication_result, :parent, :non_local_dependency
       
       before do
         @child = SyntaxNode.new(input, 0...5)
@@ -146,26 +146,27 @@ module NodeCacheSpec
         @predication_result = SyntaxNode.new(input, 5..8)
         epsilon_node.dependencies.push(predication_result)
         @parent = SyntaxNode.new(input, 0...5, [child, epsilon_node])
-        @additional_dependency = TerminalParseFailure.new(5...15, 'x' * 10)
+        @non_local_dependency = TerminalParseFailure.new(5...15, 'x' * 10)
 
-        parent.dependencies.should == [child, epsilon_node]
-        
-        cache.store(:foo, parent, [additional_dependency])
+        parent.dependencies.push(non_local_dependency)
+        parent.dependencies.should == [child, epsilon_node, non_local_dependency]
+
+        cache.store(:foo, parent)
       end
 
-      it "expires the memoization when one of its direct dependencies is expired" do
+      it "expires the memoization when one of its children is expired" do
         cache.should have_result(:foo, 0)
         cache.expire(3..3, 0)
         cache.should_not have_result(:foo, 0)
       end
       
-      it "expires the memoization when a direct dependency of one of its direct dependencies is expired" do
+      it "expires the memoization when a child of one of its children is expired" do
         cache.should have_result(:foo, 0)
         cache.expire(7..7, 0)
         cache.should_not have_result(:foo, 0)
       end
       
-      it "expired the memoization when the additional dependency is expired" do
+      it "expired the memoization when the non-local dependency is expired" do
         cache.should have_result(:foo, 0)
         cache.expire(12..12, 0)
         cache.should_not have_result(:foo, 0)
@@ -176,7 +177,7 @@ module NodeCacheSpec
         epsilon_node_interval_before_expire = epsilon_node.interval
         predication_result_interval_before_expire = predication_result.interval
         parent_interval_before_expire = parent.interval
-        additional_dependency_interval_before_expire = additional_dependency.interval
+        non_local_dependency_interval_before_expire = non_local_dependency.interval
         
         cache.expire(0..0, 5)
         
@@ -184,7 +185,7 @@ module NodeCacheSpec
         epsilon_node.interval.should == epsilon_node_interval_before_expire.transpose(5)
         predication_result.interval.should == predication_result_interval_before_expire.transpose(5)
         parent.interval.should == parent_interval_before_expire.transpose(5)
-        additional_dependency.interval.should == additional_dependency_interval_before_expire.transpose(5)
+        non_local_dependency.interval.should == non_local_dependency_interval_before_expire.transpose(5)
       end
     end
 
