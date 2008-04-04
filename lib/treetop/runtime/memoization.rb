@@ -27,9 +27,7 @@ module Treetop
       end
 
       def expire
-        dependencies.each do |dependency|
-          dependency.memoizations.delete(self)
-        end
+        result.memoizations.delete(self)
         rule_index.delete(interval.first)
       end
       
