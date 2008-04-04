@@ -1,6 +1,6 @@
 require File.expand_path("#{File.dirname(__FILE__)}/../spec_helper")
 
-module NodeCacheSpec
+module ResultCacheSpec
   include Runtime
 
   describe ResultCache do
