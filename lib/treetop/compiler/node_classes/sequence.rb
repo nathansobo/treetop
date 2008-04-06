@@ -8,7 +8,7 @@ module Treetop
         compile_sequence_elements(sequence_elements)
         builder.assign '@max_terminal_failure_last_index', 'local_max_terminal_failure_last_index'
         builder.if__ "!#{accumulator_var}.last.is_a?(ParseFailure)" do
-          builder.assign "interval", "#{accumulator_var}.last.epsilon? ? #{start_index_var}..index : #{start_index_var}...index"
+          builder.assign "interval", "#{accumulator_var}.last.interval.exclude_end? ? #{start_index_var}...index : #{start_index_var}..index"
           assign_result "(#{node_class_name}).new(input, interval, #{accumulator_var})"
           extend_result sequence_element_accessor_module_name if sequence_element_accessor_module_name
           extend_result_with_inline_module

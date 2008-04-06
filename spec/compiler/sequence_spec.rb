@@ -72,7 +72,7 @@ module SequenceSpec
     end
   end
 
-  describe "a sequence of non-terminals" do
+  describe "A sequence of non-terminals" do
     testing_grammar %{
       grammar TestGrammar
         rule sequence
@@ -97,7 +97,51 @@ module SequenceSpec
       end
     end
   end
+
+  describe "A sequence whose last subexpression may include its endpoint" do
+    describe "when its last subexpression is optional" do
+      testing_expression "'a' 'c'?"
+
+      it "when the the optional subexpression results in epsilon, produces a result that includes its endpoint" do
+        parse('a').interval.should == (0..1)
+      end
+    end
+
+    describe "when its last subexpression is a zero or more" do
+      testing_expression "'a' 'c'*"
   
+      it "includes its endpoint when the result of its last subexpression does" do
+        parse('a').interval.should == (0..1)
+      end
+    end
+
+    describe "when its last subexpression is a one or more" do
+      testing_expression "'a' 'c'+"
+
+      it "includes its endpoint when the result of its last subexpression does" do
+        parse('ac').interval.should == (0..2)
+      end
+    end
+
+    describe "when its last subexpression is another sequence whose results may include its endpoint" do
+      testing_grammar %{
+        grammar EndpointInclusion
+          rule foo
+            'a' bar
+          end
+
+          rule bar
+            'b' 'c'?
+          end
+        end
+      }
+
+      it "includes its endpoint when the result of its last subexpression does" do
+        parse('ab').interval.should == (0..2)
+      end
+    end
+  end
+
   describe "Compiling a sequence containing various white-space errors" do
     it "should succeed on a valid sequence" do
       compiling_expression('foo:"foo" "bar" <SequenceSpec::Foo> { def a_method; end }').should_not raise_error

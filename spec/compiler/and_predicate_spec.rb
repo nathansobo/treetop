@@ -14,9 +14,9 @@ module AndPredicateSpec
         @result = parse(input, :consume_all_input => false)
       end
 
-      it "is an epsilon node" do
+      it "is an epsilon node that includes its endpoint" do
         result.should be_epsilon
-        result.interval.should == (0...0)
+        result.interval.should == (0..0)
       end
       
       it "depends on the result of the predicated subexpression" do

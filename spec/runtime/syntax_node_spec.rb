@@ -73,7 +73,7 @@ module SyntaxNodeSpec
       node.should_not be_epsilon
     end
   end
-  
+
   describe "A new epsilon syntax node" do
     attr_reader :node
     
