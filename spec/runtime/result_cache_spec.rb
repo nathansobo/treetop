@@ -189,6 +189,26 @@ module ResultCacheSpec
       end
     end
 
+    describe "with a result with with a grandchild that has a non-local dependency stored in it" do
+      attr_reader :parent, :child, :grandchild, :dependency
+
+      before do
+        @grandchild = SyntaxNode.new(input,   3..5)
+        @dependency = SyntaxNode.new(input, 5...8)
+        grandchild.dependencies.push(dependency)
+        @child = SyntaxNode.new(input, 0..5, [SyntaxNode.new(input, 0...3), grandchild])
+        @parent = SyntaxNode.new(input, 0..5, [child])
+
+        cache.store_result(:foo, parent)
+      end
+
+      it "expires the result when the non-local dependency of its grandchild is expired" do
+        cache.should have_result(:foo, 0)
+        cache.expire(7..7, 1)
+        cache.should_not have_result(:foo, 0)
+      end
+    end
+
     describe "with a results for the same rule with intervals 1..2 and 2..3" do
       attr_reader :result_1, :result_2
 

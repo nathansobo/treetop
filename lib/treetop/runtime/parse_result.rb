@@ -12,12 +12,12 @@ module Treetop
         @memoizations = []
       end
 
-      def expire
+      def expire(expire_parent=false)
         result_cache.schedule_result_deletion(self)
         memoizations.each do |memoization|
           result_cache.schedule_memoization_expiration(memoization)
         end
-        dependents.each { |dependent| dependent.expire }
+        dependents.each { |dependent| dependent.expire(true) }
       end
       
       def relocate(length_change)
