@@ -26,7 +26,7 @@ module Treetop
         rule_index[interval.first + length_change] = result 
       end
 
-      def expire
+      def release
         result.memoizations.delete(self)
         rule_index.delete(interval.first)
         result.release

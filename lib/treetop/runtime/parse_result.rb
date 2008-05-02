@@ -48,15 +48,20 @@ module Treetop
 
 
       def expire(expire_parent=false)
-        memoizations.each do |memoization|
-          result_cache.schedule_memoization_expiration(memoization)
-        end
+        schedule_release_of_memoizations
         dependents.each { |dependent| dependent.expire(true) }
       end
       
       def relocate(length_change)
         memoizations.each { |memoization| memoization.relocate(length_change) }
         @interval = interval.transpose(length_change)
+      end
+
+      protected
+      def schedule_release_of_memoizations
+        memoizations.each do |memoization|
+          result_cache.schedule_memoization_release(memoization)
+        end
       end
     end
   end

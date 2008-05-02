@@ -27,8 +27,8 @@ module Treetop
         relocate_remaining_results(range, length_change)
       end
 
-      def schedule_memoization_expiration(memoization)
-        memoizations_to_expire.push(memoization)
+      def schedule_memoization_release(memoization)
+        memoizations_to_release.push(memoization)
       end
 
       def inspect
@@ -45,18 +45,18 @@ module Treetop
 
       protected
 
-      attr_reader :result_index, :memoizations_to_expire
+      attr_reader :result_index, :memoizations_to_release
 
       def detect_and_expire_intersected_results(range)
-        @memoizations_to_expire = []
+        @memoizations_to_release = []
         results.each do |result|
           result.expire if result.interval.intersects?(range)
         end
       end
 
       def release_expired_memoizations
-        memoizations_to_expire.uniq.each do |memoization|
-          memoization.expire
+        memoizations_to_release.uniq.each do |memoization|
+          memoization.release
         end
       end
 
