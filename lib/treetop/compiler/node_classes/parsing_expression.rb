@@ -63,7 +63,7 @@ module Treetop
       end
       
       def accumulate_dependency(dependency)
-        builder.accumulate "#{result_var}.dependencies", dependency
+        builder << "#{result_var}.add_dependencies([#{dependency}])"
       end
     
       def assign_result(value_ruby)

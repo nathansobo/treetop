@@ -7,7 +7,7 @@ module Treetop
         use_vars :result, :start_index
         builder.assign "failed_alternatives", "[]"
         compile_alternatives(alternatives)
-        builder << "#{result_var}.dependencies.concat(failed_alternatives)"
+        builder << "#{result_var}.add_dependencies(failed_alternatives)"
         end_comment(self)
       end
       

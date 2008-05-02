@@ -144,11 +144,11 @@ module ResultCacheSpec
         @child = SyntaxNode.new(input, 0...5)
         @epsilon_node = SyntaxNode.new(input, 5...5)
         @predication_result = SyntaxNode.new(input, 5..8)
-        epsilon_node.dependencies.push(predication_result)
+        epsilon_node.add_dependencies([predication_result])
         @parent = SyntaxNode.new(input, 0...5, [child, epsilon_node])
         @non_local_dependency = TerminalParseFailure.new(5...15, 'x' * 10)
 
-        parent.dependencies.push(non_local_dependency)
+        parent.add_dependencies([non_local_dependency])
         parent.dependencies.should == [non_local_dependency]
 
         cache.store_result(:foo, parent)
@@ -195,7 +195,7 @@ module ResultCacheSpec
       before do
         @grandchild = SyntaxNode.new(input,   3..5)
         @dependency = SyntaxNode.new(input, 5...8)
-        grandchild.dependencies.push(dependency)
+        grandchild.add_dependencies([dependency])
         @child = SyntaxNode.new(input, 0..5, [SyntaxNode.new(input, 0...3), grandchild])
         @parent = SyntaxNode.new(input, 0..5, [child])
 

@@ -10,7 +10,7 @@ module Treetop
 
       def store_result(rule_name, result)
         result.memoizations.push(Memoization.new(rule_name, result, result_index))
-        register_result(result)
+        result.retain(self)
       end
 
       def get_result(rule_name, start_index)
@@ -60,27 +60,6 @@ module Treetop
       end
 
       protected
-      
-      def register_result(result)
-        return if result.registered?
-        result.result_cache = self
-
-        if result.child_results
-          result.child_results.each do |child_result|
-            child_result.parent = result
-            register_result(child_result)
-          end
-        end
-
-        result.dependencies.each do |subresult|
-          subresult.dependents.push(result)
-          register_result(subresult)
-        end
-
-        result.registered = true
-        results.push(result)
-      end
-      
       attr_reader :result_index, :results_to_delete, :memoizations_to_expire
     end
   end
