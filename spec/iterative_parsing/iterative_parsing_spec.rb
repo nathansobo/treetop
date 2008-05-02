@@ -35,10 +35,14 @@ module IterativeParsingSpec
 
       result = parser.parse(input)
       the = result.the
+      color = result.color
       dog = result.dog
 
       input.gsub!('green', 'aquamarine')
       parser.expire(5..9, 5)
+      result_cache.results.should include(the)
+      result_cache.results.should_not include(color)
+      result_cache.results.should include(dog)
 
       new_result = parser.reparse
       new_result.should_not == result

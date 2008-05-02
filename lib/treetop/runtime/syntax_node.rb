@@ -51,7 +51,6 @@ module Treetop
         end
       end
 
-
       def expire(expire_parent=false)
         super
         parent.expire(expire_parent) if expire_parent && parent

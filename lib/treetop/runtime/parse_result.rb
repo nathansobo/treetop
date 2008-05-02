@@ -46,7 +46,6 @@ module Treetop
         (child_results || []) + dependencies
       end
 
-
       def expire(expire_parent=false)
         schedule_release_of_memoizations
         dependents.each { |dependent| dependent.expire(true) }

@@ -11,7 +11,7 @@ module ResultCacheSpec
       @input = ('A'..'Z').to_a.join
     end
 
-    describe "with a parse result stored on a name and interval" do
+    describe "containing a result on a name and interval" do
       attr_reader :node
 
       before do
@@ -60,7 +60,7 @@ module ResultCacheSpec
       end
     end
     
-    describe "with a SyntaxNode with two terminal children stored in it" do
+    describe "containing a SyntaxNode with two terminal children" do
       attr_reader :number
       
       before do
@@ -76,7 +76,7 @@ module ResultCacheSpec
       end
     end
 
-    describe "with results for different rules stored on non-overlapping intervals" do
+    describe "containing results for different rules on non-overlapping intervals" do
       attr_reader :the, :green, :dog, :sentence
 
       before do
@@ -105,7 +105,7 @@ module ResultCacheSpec
       end
     end
 
-    describe "with three results for the same rule stored on three seperate overlapping intervals" do
+    describe "containing three results from the same rule on three seperate overlapping intervals" do
       attr_reader :a, :b, :c
       
       before do
@@ -137,7 +137,7 @@ module ResultCacheSpec
       end
     end
 
-    describe "when a result with children has been stored with with a non-local dependency on another result" do
+    describe "containing a result with children and a non-local dependency on another result" do
       attr_reader :child, :epsilon_node, :predication_result, :parent, :non_local_dependency
       
       before do
@@ -189,7 +189,7 @@ module ResultCacheSpec
       end
     end
 
-    describe "with a result with with a grandchild that has a non-local dependency stored in it" do
+    describe "containing a result that has a grandchild that has a non-local dependency" do
       attr_reader :parent, :child, :grandchild, :dependency
 
       before do
@@ -209,7 +209,7 @@ module ResultCacheSpec
       end
     end
 
-    describe "with a results for the same rule with intervals 1..2 and 2..3" do
+    describe "containing one result that ends where another starts" do
       attr_reader :result_1, :result_2
 
       before do
@@ -225,6 +225,33 @@ module ResultCacheSpec
         cache.expire(0..0, 1)
         cache.get_result(:foo, 2).should == result_1
         cache.get_result(:foo, 3).should == result_2
+      end
+    end
+
+    describe "containing a memoization for a result with a child that is also memoized" do
+      attr_reader :normal_child_1, :normal_child_2, :memoized_child, :parent
+      before do
+        @normal_child_1 = SyntaxNode.new(input, 0...5)
+        @memoized_child = SyntaxNode.new(input, 5...10)
+        @normal_child_2 = SyntaxNode.new(input, 10...15)
+        @parent = SyntaxNode.new(input, 0...10, [normal_child_1, memoized_child, normal_child_2])
+
+        cache.store_result(:foo, parent)
+        cache.store_result(:bar, memoized_child)
+      end
+
+      it "when the parent memoization is expired releases the all children of the associated result except for the one that is tied to the other memoization" do
+        cache.results.should include(normal_child_1)
+        cache.results.should include(memoized_child)
+        cache.results.should include(normal_child_2)
+
+        cache.expire(3..4, 0)
+
+        cache.results.should_not include(normal_child_1)
+        cache.results.should include(memoized_child)
+        cache.results.should_not include(normal_child_2)
+
+        cache.get_result(:bar, 5).should == memoized_child
       end
     end
   end
