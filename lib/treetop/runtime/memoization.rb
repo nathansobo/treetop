@@ -29,6 +29,7 @@ module Treetop
       def expire
         result.memoizations.delete(self)
         rule_index.delete(interval.first)
+        result.release
       end
       
       def inspect

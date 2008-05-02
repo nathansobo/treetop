@@ -17,6 +17,20 @@ module ParseResultSpec
     end
   end
 
+  describe "it releases the result's child results and dependencies", :shared => true do
+    it "releases the result's child results" do
+      child_results.each do |child_result|
+        mock.proxy(child_result).release
+      end
+      result.release
+    end
+
+    it "releases the result's dependencies" do
+      mock.proxy(dependency).release
+      result.release
+    end
+  end
+
   describe ParseResult do
     attr_reader :input
     before do
@@ -100,5 +114,52 @@ module ParseResultSpec
       end
     end
 
+    describe "#release" do
+      attr_reader :result_cache, :child_results, :dependency, :result
+
+      before do
+        @result_cache = ResultCache.new
+
+        @child_results = [SyntaxNode.new(input, 0..5), SyntaxNode.new(input, 5..10)]
+        @dependency = SyntaxNode.new(input, 10..15)
+        @result = SyntaxNode.new(input, 0..10, child_results)
+        result.add_dependencies([dependency])
+      end
+
+      describe "when the result has been retained twice" do
+        before do
+          result.retain(result_cache)
+          result.retain(result_cache)
+        end
+
+        it "decrements the refcount" do
+          result.refcount.should == 2
+          result.release
+          result.refcount.should == 1
+        end
+
+        it_should_behave_like "it releases the result's child results and dependencies"
+      end
+
+      describe "when the result has been retained once" do
+        before do
+          result.retain(result_cache)
+        end
+
+        it "decrements the refcount to 0" do
+          result.refcount.should == 1
+          result.release
+          result.refcount.should == 0
+        end
+
+        it "removes the result from the ResultCache in which it was retained" do
+          result_cache.results.should include(result)
+          result.release
+          result_cache.results.should_not include(result)
+        end
+
+        it_should_behave_like "it releases the result's child results and dependencies"
+      end
+    end
   end
 end

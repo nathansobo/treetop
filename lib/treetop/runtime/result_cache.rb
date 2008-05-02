@@ -22,29 +22,13 @@ module Treetop
       end
 
       def expire(range, length_change)
-        @results_to_delete = []
-        @memoizations_to_expire = []
-
-        results.each do |result|
-          result.expire if result.interval.intersects?(range)
-        end
-
-        @results -= results_to_delete
-        memoizations_to_expire.uniq.each do |memoization|
-          memoization.expire
-        end
-
-        results.each do |result|
-          result.relocate(length_change) if result.interval.first >= range.last
-        end
+        detect_and_expire_intersected_results(range)
+        release_expired_memoizations
+        relocate_remaining_results(range, length_change)
       end
 
       def schedule_memoization_expiration(memoization)
         memoizations_to_expire.push(memoization)
-      end
-
-      def schedule_result_deletion(result)
-        results_to_delete.push(result)
       end
 
       def inspect
@@ -60,7 +44,27 @@ module Treetop
       end
 
       protected
-      attr_reader :result_index, :results_to_delete, :memoizations_to_expire
+
+      attr_reader :result_index, :memoizations_to_expire
+
+      def detect_and_expire_intersected_results(range)
+        @memoizations_to_expire = []
+        results.each do |result|
+          result.expire if result.interval.intersects?(range)
+        end
+      end
+
+      def release_expired_memoizations
+        memoizations_to_expire.uniq.each do |memoization|
+          memoization.expire
+        end
+      end
+
+      def relocate_remaining_results(range, length_change)
+        results.each do |result|
+          result.relocate(length_change) if result.interval.first >= range.last
+        end
+      end
     end
   end
 end

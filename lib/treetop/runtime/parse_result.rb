@@ -26,19 +26,28 @@ module Treetop
           @result_cache = result_cache
         end
 
-        if child_results
-          child_results.each do |child_result|
-            child_result.retain(result_cache)
-          end
-        end
-        dependencies.each do |dependency|
-          dependency.retain(result_cache)
+        descendants.each do |descendant|
+          descendant.retain(result_cache)
         end
         @refcount += 1
       end
+      
+      def release
+        descendants.each do |descendant|
+          descendant.release
+        end
+        @refcount -= 1
+        if refcount == 0
+          result_cache.results.delete(self)
+        end
+      end
+
+      def descendants
+        (child_results || []) + dependencies
+      end
+
 
       def expire(expire_parent=false)
-        result_cache.schedule_result_deletion(self)
         memoizations.each do |memoization|
           result_cache.schedule_memoization_expiration(memoization)
         end
