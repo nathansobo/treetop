@@ -15,7 +15,7 @@ class TextraDocument < Rucola::RCDocument
     puts expiredRange
     
     node_cache = parser.send(:expirable_result_cache)
-    result_index = node_cache.send(:result_index)ao
+    result_index = node_cache.send(:result_index)
     
     parser.expire(expiredRange, changeInLength)
     parser.send(:input).replace(text)
@@ -27,8 +27,7 @@ class TextraDocument < Rucola::RCDocument
     puts 'after reparse'
     p node_cache
     
-    
-    
+        
     if result
       puts "true"
     else
