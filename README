@@ -15,6 +15,7 @@ The first step in using Treetop is defining a grammar in a file with the `.treet
 Next, you start filling your grammar with rules. Each rule associates a name with a parsing expression, like the following:
 
     # my_grammar.treetop
+    # You can use a .tt extension instead if you wish
     grammar MyGrammar
       rule hello
         'hello chomsky'
@@ -27,6 +28,8 @@ The first rule becomes the *root* of the grammar, causing its expression to be m
     require 'rubygems'
     require 'treetop'
     Treetop.load 'my_grammar'
+    # or just:
+    # require 'my_grammar'                     # This works because Polyglot hooks "require" to find and load Treetop files
     
     parser = MyGrammarParser.new
     puts parser.parse('hello chomsky')         # => Treetop::Runtime::SyntaxNode
@@ -53,7 +56,9 @@ Ordered choices are *composite expressions*, which allow for any of several sube
     puts parser.parse('hello chomsky')         # => Treetop::Runtime::SyntaxNode
     puts parser.parse('hello lambek')          # => Treetop::Runtime::SyntaxNode
     puts parser.parse('silly generativists!')  # => nil
-    
+
+Note that once a choice rule has matched the text using a particular alternative at a particular location in the input and hence has succeeded, that choice will never be reconsidered, even if the chosen alternative causes another rule to fail where a later alternative wouldn't have. It's always a later alternative, since the first to succeed is final - why keep looking when you've found what you wanted? This is a feature of PEG parsers that you need to understand if you're going to succeed in using Treetop. In order to memoize success and failures, such decisions cannot be reversed. Luckily Treetop provides a variety of clever ways you can tell it to avoid making the wrong decisions. But more on that later.
+
 Sequences
 ---------
 Sequences are composed of other parsing expressions separated by spaces. Using sequences, we can tighten up the above grammar.
@@ -65,7 +70,9 @@ Sequences are composed of other parsing expressions separated by spaces. Using s
       end
     end
 
-Node the use of parentheses to override the default precedence rules, which bind sequences more tightly than choices.
+Note the use of parentheses to override the default precedence rules, which bind sequences more tightly than choices.
+
+Once the whole sequence has been matched, the result is memoized and the details of the match will not be reconsidered for that location in the input.
 
 Nonterminal Symbols
 -------------------
@@ -94,6 +101,47 @@ The true power of this facility, however, is unleashed when writing *recursive e
 
 The `parens` expression simply states that a `parens` is a set of parentheses surrounding another `parens` expression or, if that doesn't match, the empty string. If you are uncomfortable with recursion, its time to get comfortable, because it is the basis of language. Here's a tip: Don't try and imagine the parser circling round and round through the same rule. Instead, imagine the rule is *already* defined while you are defining it. If you imagine that `parens` already matches a string of matching parentheses, then its easy to think of `parens` as an open and closing parentheses around another set of matching parentheses, which conveniently, you happen to be defining. You know that `parens` is supposed to represent a string of matched parentheses, so trust in that meaning, even if you haven't fully implemented it yet.
 
+Repetition
+----------
+Any item in a rule may be followed by a '+' or a '*' character, signifying one-or-more and zero-or-more occurrences of that item. Beware though; the match is greedy, and if it matches too many items and causes subsequent items in the sequence to fail, the number matched will never be reconsidered. Here's a simple example of a rule that will never succeed:
+
+    # toogreedy.treetop
+    grammar TooGreedy
+      rule a_s
+      	'a'* 'a'
+      end
+    end
+
+The 'a'* will always eat up any 'a's that follow, and the subsequent 'a' will find none there, so the whole rule will fail. You might need to use lookahead to avoid matching too much.
+
+Negative Lookahead
+------------------
+
+When you need to ensure that the following item *doesn't* match in some case where it might otherwise, you can use negat!ve lookahead, which is an item preceeded by a ! - here's an example:
+
+    # postcondition.treetop
+    grammar PostCondition
+      rule conditional_sentence
+        ( !conditional_keyword word )+ conditional_keyword [ \t]+ word*
+      end
+
+      rule word
+        ([a-zA-Z]+ [ \t]+) 
+      end
+
+      rule conditional_keyword
+        'if' / 'while' / 'until'
+      end
+    end
+
+Even though the rule `word` would match any of the conditional keywords, the first words of a conditional_sentence must not be conditional_keywords. The negative lookahead prevents that matching, and prevents the repetition from matching too much input. Note that the lookahead may be a grammar rule of any complexity, including one that isn't used elsewhere in your grammar.
+
+Positive lookahead
+------------------
+
+Sometimes you want an item to match, but only if the *following* text would match some pattern. You don't want to consume that following text, but if it's not there, you want this rule to fail. You can append a positive lookahead like this to a rule by appending the lookahead rule preceeded by an & character.
+
+
 
 Features to cover in the talk
 =============================
@@ -114,5 +162,3 @@ Features to cover in the talk
 * Use of super within within labels
 * Grammar composition with include
 * Use of super with grammar composition
-
-
