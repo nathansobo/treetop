@@ -7,6 +7,7 @@ class Layout < Erector::Widget
     end
 
     def generate_site
+      FileUtils.mkdir_p(site_dir)
       @@page_classes.each do |page_class|
         page_class.generate_html unless page_class.abstract?
         puts page_class
@@ -28,7 +29,7 @@ class Layout < Erector::Widget
     end
 
     def absolutize(relative_path)
-      File.join(File.dirname(__FILE__), "site", relative_path)
+      File.join(site_dir, relative_path)
     end
 
     def abstract
@@ -37,6 +38,10 @@ class Layout < Erector::Widget
 
     def abstract?
       @abstract
+    end
+
+    def site_dir
+      File.join(File.dirname(__FILE__), "site")
     end
   end
 
