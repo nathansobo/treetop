@@ -6,23 +6,30 @@ module Treetop
           target_file.write(ruby_source(source_path))
         end
       end
-      
-      def ruby_source(source_path)
-        File.open(source_path) do |source_file|
-          parser = MetagrammarParser.new
-          result = parser.parse(source_file.read)
-          unless result
-            raise RuntimeError.new(parser.failure_reason)
-          end
-          result.compile
+
+      # compile a string containing treetop source
+      def ruby_source_string(s)
+        parser = MetagrammarParser.new
+        result = parser.parse(s)
+        unless result
+          raise RuntimeError.new(parser.failure_reason)
         end
+        result.compile
       end
     end
   end
 
+  # compile a treetop source file and load it
   def self.load(path)
     adjusted_path = path =~ /\.(treetop|tt)\Z/ ? path : path + '.treetop'
+    File.open(adjusted_path) do |source_file|
+      load_string(source_file.read)
+    end
+  end
+
+  # compile a treetop source string and load it
+  def self.load_string(s)
     compiler = Treetop::Compiler::GrammarCompiler.new
-    Object.class_eval(compiler.ruby_source(adjusted_path))
+    Object.class_eval(compiler.ruby_source_string(s))
   end
 end
