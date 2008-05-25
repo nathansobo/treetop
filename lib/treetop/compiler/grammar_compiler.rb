@@ -7,7 +7,12 @@ module Treetop
         end
       end
 
-      # compile a string containing treetop source
+      # compile a treetop file into ruby
+      def ruby_source(source_path)
+        ruby_source_string(File.read(source_path))
+      end
+
+      # compile a string containing treetop source into ruby
       def ruby_source_string(s)
         parser = MetagrammarParser.new
         result = parser.parse(s)

@@ -39,6 +39,15 @@ describe Compiler::GrammarCompiler do
   specify "compilation of a single file without writing it to an output file" do
     compiler.ruby_source(source_path_with_treetop_extension).should_not be_nil
   end
+  
+  specify "ruby_source_string compiles a grammar stored in string" do
+    compiler.ruby_source_string(File.read(source_path_with_treetop_extension)).should_not be_nil
+  end
+
+  specify "Treetop.load_string compiles and evaluates a source grammar stored in string" do
+    Treetop.load_string File.read(source_path_with_treetop_extension)
+    Test::GrammarParser.new.parse('foo').should_not be_nil
+  end
 
   specify "Treetop.load compiles and evaluates a source grammar with a .treetop extension" do    
     Treetop.load source_path_with_treetop_extension
