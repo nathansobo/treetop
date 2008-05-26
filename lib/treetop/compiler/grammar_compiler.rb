@@ -9,11 +9,11 @@ module Treetop
 
       # compile a treetop file into ruby
       def ruby_source(source_path)
-        ruby_source_string(File.read(source_path))
+        ruby_source_from_string(File.read(source_path))
       end
 
       # compile a string containing treetop source into ruby
-      def ruby_source_string(s)
+      def ruby_source_from_string(s)
         parser = MetagrammarParser.new
         result = parser.parse(s)
         unless result
@@ -28,13 +28,13 @@ module Treetop
   def self.load(path)
     adjusted_path = path =~ /\.(treetop|tt)\Z/ ? path : path + '.treetop'
     File.open(adjusted_path) do |source_file|
-      load_string(source_file.read)
+      load_from_string(source_file.read)
     end
   end
 
   # compile a treetop source string and load it
-  def self.load_string(s)
+  def self.load_from_string(s)
     compiler = Treetop::Compiler::GrammarCompiler.new
-    Object.class_eval(compiler.ruby_source_string(s))
+    Object.class_eval(compiler.ruby_source_from_string(s))
   end
 end

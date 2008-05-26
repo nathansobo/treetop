@@ -40,12 +40,12 @@ describe Compiler::GrammarCompiler do
     compiler.ruby_source(source_path_with_treetop_extension).should_not be_nil
   end
   
-  specify "ruby_source_string compiles a grammar stored in string" do
-    compiler.ruby_source_string(File.read(source_path_with_treetop_extension)).should_not be_nil
+  specify "ruby_source_from_string compiles a grammar stored in string" do
+    compiler.ruby_source_from_string(File.read(source_path_with_treetop_extension)).should_not be_nil
   end
 
-  specify "Treetop.load_string compiles and evaluates a source grammar stored in string" do
-    Treetop.load_string File.read(source_path_with_treetop_extension)
+  specify "Treetop.load_from_string compiles and evaluates a source grammar stored in string" do
+    Treetop.load_from_string File.read(source_path_with_treetop_extension)
     Test::GrammarParser.new.parse('foo').should_not be_nil
   end
 
