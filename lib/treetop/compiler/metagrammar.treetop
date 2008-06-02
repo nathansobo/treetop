@@ -393,7 +393,7 @@ module Treetop
       end
 
       rule comment_to_eol
-        '#' (!"\n" .)+
+        '#' (!"\n" .)*
       end
 
       rule white

@@ -141,7 +141,7 @@ module Treetop
           r3 = _nt_space
           s1 << r3
           if r3
-            if input.index(/[A-Z]/, index) == index
+            if input.index(Regexp.new('[A-Z]'), index) == index
               r4 = (SyntaxNode).new(input, index...(index + 1))
               @index += 1
             else
@@ -324,7 +324,7 @@ module Treetop
         end
 
         i0, s0 = index, []
-        if input.index(/[A-Z]/, index) == index
+        if input.index(Regexp.new('[A-Z]'), index) == index
           r1 = (SyntaxNode).new(input, index...(index + 1))
           @index += 1
         else
@@ -523,7 +523,7 @@ module Treetop
           r2 = _nt_space
           s0 << r2
           if r2
-            if input.index(/[A-Z]/, index) == index
+            if input.index(Regexp.new('[A-Z]'), index) == index
               r3 = (SyntaxNode).new(input, index...(index + 1))
               @index += 1
             else
@@ -2508,7 +2508,7 @@ module Treetop
             else
               i5, s5 = index, []
               i6 = index
-              if input.index(/[{}]/, index) == index
+              if input.index(Regexp.new('[{}]'), index) == index
                 r7 = (SyntaxNode).new(input, index...(index + 1))
                 @index += 1
               else
@@ -2691,7 +2691,7 @@ module Treetop
           return cached
         end
 
-        if input.index(/[A-Za-z_]/, index) == index
+        if input.index(Regexp.new('[A-Za-z_]'), index) == index
           r0 = (SyntaxNode).new(input, index...(index + 1))
           @index += 1
         else
@@ -2716,7 +2716,7 @@ module Treetop
         if r1
           r0 = r1
         else
-          if input.index(/[0-9]/, index) == index
+          if input.index(Regexp.new('[0-9]'), index) == index
             r2 = (SyntaxNode).new(input, index...(index + 1))
             @index += 1
           else
@@ -2841,12 +2841,7 @@ module Treetop
               break
             end
           end
-          if s2.empty?
-            self.index = i2
-            r2 = nil
-          else
-            r2 = SyntaxNode.new(input, i2...index, s2)
-          end
+          r2 = SyntaxNode.new(input, i2...index, s2)
           s0 << r2
         end
         if s0.last
@@ -2870,7 +2865,7 @@ module Treetop
           return cached
         end
 
-        if input.index(/[ \t\n\r]/, index) == index
+        if input.index(Regexp.new('[ \\t\\n\\r]'), index) == index
           r0 = (SyntaxNode).new(input, index...(index + 1))
           @index += 1
         else
