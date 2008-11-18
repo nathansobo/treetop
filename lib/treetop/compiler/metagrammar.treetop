@@ -18,7 +18,7 @@ module Treetop
       end
 
       rule grammar
-        'grammar' space grammar_name space declaration_sequence space? 'end' <Grammar>
+        'grammar' space grammar_name space ('do' space)? declaration_sequence space? 'end' <Grammar>
       end
 
       rule grammar_name
@@ -55,7 +55,7 @@ module Treetop
       end
 
       rule parsing_rule
-        'rule' space nonterminal space parsing_expression space 'end' <ParsingRule>
+        'rule' space nonterminal space ('do' space)? parsing_expression space 'end' <ParsingRule>
       end
 
       rule parsing_expression

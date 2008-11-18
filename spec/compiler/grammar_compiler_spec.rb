@@ -7,8 +7,10 @@ describe Compiler::GrammarCompiler do
 
     dir = File.dirname(__FILE__)
     @source_path_with_treetop_extension = "#{dir}/test_grammar.treetop"
+    @source_path_with_do = "#{dir}/test_grammar_do.treetop"
     @source_path_with_tt_extension = "#{dir}/test_grammar.tt"
     @target_path = "#{dir}/test_grammar.rb"
+    @target_path_with_do = "#{dir}/test_grammar_do.rb"
     @alternate_target_path = "#{dir}/test_grammar_alt.rb"
     delete_target_files
   end
@@ -67,9 +69,15 @@ describe Compiler::GrammarCompiler do
     Test::GrammarParser.new.parse('foo').should_not be_nil
   end
 
+  specify "grammars with 'do' compile" do
+    compiler.compile(source_path_with_do)
+    require target_path_with_do
+    Test::GrammarParser.new.parse('foo').should_not be_nil
+  end
 
   def delete_target_files
     File.delete(target_path) if File.exists?(target_path)
+    File.delete(target_path_with_do) if File.exists?(target_path_with_do)
     File.delete(alternate_target_path) if File.exists?(alternate_target_path)
   end
 end

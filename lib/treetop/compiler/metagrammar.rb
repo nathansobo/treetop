@@ -232,6 +232,12 @@ module Treetop
         def space
           elements[1]
         end
+      end
+
+      module Grammar1
+        def space
+          elements[1]
+        end
 
         def grammar_name
           elements[2]
@@ -242,7 +248,7 @@ module Treetop
         end
 
         def declaration_sequence
-          elements[4]
+          elements[5]
         end
 
       end
@@ -274,25 +280,53 @@ module Treetop
               r4 = _nt_space
               s0 << r4
               if r4
-                r5 = _nt_declaration_sequence
+                i6, s6 = index, []
+                if input.index('do', index) == index
+                  r7 = (SyntaxNode).new(input, index...(index + 2))
+                  @index += 2
+                else
+                  terminal_parse_failure('do')
+                  r7 = nil
+                end
+                s6 << r7
+                if r7
+                  r8 = _nt_space
+                  s6 << r8
+                end
+                if s6.last
+                  r6 = (SyntaxNode).new(input, i6...index, s6)
+                  r6.extend(Grammar0)
+                else
+                  self.index = i6
+                  r6 = nil
+                end
+                if r6
+                  r5 = r6
+                else
+                  r5 = SyntaxNode.new(input, index...index)
+                end
                 s0 << r5
                 if r5
-                  r7 = _nt_space
-                  if r7
-                    r6 = r7
-                  else
-                    r6 = SyntaxNode.new(input, index...index)
-                  end
-                  s0 << r6
-                  if r6
-                    if input.index('end', index) == index
-                      r8 = (SyntaxNode).new(input, index...(index + 3))
-                      @index += 3
+                  r9 = _nt_declaration_sequence
+                  s0 << r9
+                  if r9
+                    r11 = _nt_space
+                    if r11
+                      r10 = r11
                     else
-                      terminal_parse_failure('end')
-                      r8 = nil
+                      r10 = SyntaxNode.new(input, index...index)
                     end
-                    s0 << r8
+                    s0 << r10
+                    if r10
+                      if input.index('end', index) == index
+                        r12 = (SyntaxNode).new(input, index...(index + 3))
+                        @index += 3
+                      else
+                        terminal_parse_failure('end')
+                        r12 = nil
+                      end
+                      s0 << r12
+                    end
                   end
                 end
               end
@@ -301,7 +335,7 @@ module Treetop
         end
         if s0.last
           r0 = (Grammar).new(input, i0...index, s0)
-          r0.extend(Grammar0)
+          r0.extend(Grammar1)
         else
           self.index = i0
           r0 = nil
@@ -581,6 +615,12 @@ module Treetop
         def space
           elements[1]
         end
+      end
+
+      module ParsingRule1
+        def space
+          elements[1]
+        end
 
         def nonterminal
           elements[2]
@@ -591,11 +631,11 @@ module Treetop
         end
 
         def parsing_expression
-          elements[4]
+          elements[5]
         end
 
         def space
-          elements[5]
+          elements[6]
         end
 
       end
@@ -627,20 +667,48 @@ module Treetop
               r4 = _nt_space
               s0 << r4
               if r4
-                r5 = _nt_parsing_expression
+                i6, s6 = index, []
+                if input.index('do', index) == index
+                  r7 = (SyntaxNode).new(input, index...(index + 2))
+                  @index += 2
+                else
+                  terminal_parse_failure('do')
+                  r7 = nil
+                end
+                s6 << r7
+                if r7
+                  r8 = _nt_space
+                  s6 << r8
+                end
+                if s6.last
+                  r6 = (SyntaxNode).new(input, i6...index, s6)
+                  r6.extend(ParsingRule0)
+                else
+                  self.index = i6
+                  r6 = nil
+                end
+                if r6
+                  r5 = r6
+                else
+                  r5 = SyntaxNode.new(input, index...index)
+                end
                 s0 << r5
                 if r5
-                  r6 = _nt_space
-                  s0 << r6
-                  if r6
-                    if input.index('end', index) == index
-                      r7 = (SyntaxNode).new(input, index...(index + 3))
-                      @index += 3
-                    else
-                      terminal_parse_failure('end')
-                      r7 = nil
+                  r9 = _nt_parsing_expression
+                  s0 << r9
+                  if r9
+                    r10 = _nt_space
+                    s0 << r10
+                    if r10
+                      if input.index('end', index) == index
+                        r11 = (SyntaxNode).new(input, index...(index + 3))
+                        @index += 3
+                      else
+                        terminal_parse_failure('end')
+                        r11 = nil
+                      end
+                      s0 << r11
                     end
-                    s0 << r7
                   end
                 end
               end
@@ -649,7 +717,7 @@ module Treetop
         end
         if s0.last
           r0 = (ParsingRule).new(input, i0...index, s0)
-          r0.extend(ParsingRule0)
+          r0.extend(ParsingRule1)
         else
           self.index = i0
           r0 = nil
