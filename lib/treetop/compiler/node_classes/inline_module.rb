@@ -3,7 +3,7 @@ module Treetop
     module InlineModuleMixin
       attr_reader :module_name
       
-      def compile(index, rule, builder)
+      def compile(index, builder, rule)
         @module_name = "#{rule.name.treetop_camelize}#{index}"
       end
     end
@@ -12,7 +12,7 @@ module Treetop
 
       include InlineModuleMixin
       
-      def compile(index, rule, builder)
+      def compile(index, builder, rule)
         super
         builder.module_declaration(module_name) do
           builder << ruby_code.gsub(/\A\n/, '').rstrip

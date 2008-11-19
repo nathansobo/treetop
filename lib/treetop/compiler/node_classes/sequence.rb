@@ -50,7 +50,7 @@ module Treetop
         @sequence_elements = sequence_elements
       end
       
-      def compile(index, rule, builder)
+      def compile(index, builder, rule)
         super
         builder.module_declaration(module_name) do
           sequence_elements.each_with_index do |element, index|

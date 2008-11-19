@@ -9,7 +9,7 @@ module Treetop
       
       def compile_inline_module_declarations(builder)
         parsing_expression.inline_modules.each_with_index do |inline_module, i|
-          inline_module.compile(i, self, builder)
+          inline_module.compile(i, builder, self)
           builder.newline
         end
       end
