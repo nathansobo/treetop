@@ -70,14 +70,14 @@ describe Compiler::GrammarCompiler do
   end
 
   specify "grammars with 'do' compile" do
-    compiler.compile(source_path_with_do)
-    require target_path_with_do
+    compiler.compile(@source_path_with_do)
+    require @target_path_with_do
     Test::GrammarParser.new.parse('foo').should_not be_nil
   end
 
   def delete_target_files
     File.delete(target_path) if File.exists?(target_path)
-    File.delete(target_path_with_do) if File.exists?(target_path_with_do)
+    File.delete(@target_path_with_do) if File.exists?(@target_path_with_do)
     File.delete(alternate_target_path) if File.exists?(alternate_target_path)
   end
 end
