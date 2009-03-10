@@ -1,6 +1,7 @@
+require "lib/treetop/version"
 $gemspec = Gem::Specification.new do |s|
   s.name = "treetop"
-  s.version = "1.2.5"
+  s.version = Treetop::VERSION::STRING
   s.author = "Nathan Sobo"
   s.email = "nathansobo@gmail.com"
   s.homepage = "http://functionalform.blogspot.com"

@@ -1,0 +1,9 @@
+== 1.2.5 2009-03-10
+
+* 1 minor enhancement:
+  * Extensions may always be modules, instead of sometimes modules, sometimes classes
+
+== 0.0.1 2008-05-21
+
+* 1 major enhancement:
+  * Initial release
