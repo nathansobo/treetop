@@ -39,6 +39,27 @@ module SequenceSpec
     end
   end
 
+  module ModFoo
+  def mod_method; end
+  end
+
+  describe "a sequence of labeled terminal symbols followed by a node module declaration and a block" do
+    testing_expression 'foo:"foo" bar:"bar" baz:"baz" <SequenceSpec::ModFoo> { def a_method; end }'
+
+    it "upon successfully matching input, instantiates a syntax node and extends it with the declared module, element accessor methods, and the method from the inline module" do
+      parse('foobarbaz') do |result|
+        result.should_not be_nil
+        result.should respond_to(:mod_method)
+        result.should be_an_instance_of(Treetop::Runtime::SyntaxNode)
+        result.should be_a_kind_of(ModFoo)
+        result.should respond_to(:a_method)
+        result.foo.text_value.should == 'foo'
+        result.bar.text_value.should == 'bar'
+        result.baz.text_value.should == 'baz'
+      end
+    end
+  end
+
   describe "a sequence of non-terminals" do
     testing_grammar %{
       grammar TestGrammar

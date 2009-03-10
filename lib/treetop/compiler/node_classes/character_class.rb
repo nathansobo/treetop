@@ -5,7 +5,7 @@ module Treetop
         super
         
         builder.if__ "input.index(Regexp.new(#{single_quote(text_value)}), index) == index" do
-          assign_result "(#{node_class_name}).new(input, index...(index + 1))"
+          assign_result "instantiate_node(#{node_class_name},input, index...(index + 1))"
           extend_result_with_inline_module
           builder << "@index += 1"
         end

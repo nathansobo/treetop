@@ -34,6 +34,42 @@ module CharacterClassSpec
     end
   end
 
+  module ModFoo
+  end
+
+  describe "a character class followed by a node module declaration and a block" do
+
+    testing_expression "[A-Z] <CharacterClassSpec::ModFoo> { def a_method; end }"
+
+    it "matches single characters within that range, returning instances of SyntaxNode extended by the specified module" do
+      result = parse('A')
+      result.should be_an_instance_of(Treetop::Runtime::SyntaxNode)
+      result.should be_a_kind_of(ModFoo)
+      result.should respond_to(:a_method)
+      result = parse('N')
+      result.should be_an_instance_of(Treetop::Runtime::SyntaxNode)
+      result.should be_a_kind_of(ModFoo)
+      result.should respond_to(:a_method)
+      result = parse('Z')
+      result.should be_an_instance_of(Treetop::Runtime::SyntaxNode)
+      result.should be_a_kind_of(ModFoo)
+      result.should respond_to(:a_method)
+    end
+
+    it "does not match single characters outside of that range" do
+      parse('8').should be_nil
+      parse('a').should be_nil
+    end
+
+    it "matches a single character within that range at index 1" do
+      parse(' A', :index => 1).should_not be_nil
+    end
+
+    it "fails to match a single character out of that range at index 1" do
+      parse(' 1', :index => 1).should be_nil
+    end
+  end
+
   describe "A character class containing quotes" do
     testing_expression "[\"']"
 

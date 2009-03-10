@@ -27,7 +27,7 @@ module Treetop
       end
 
       def empty?
-	      interval.first == interval.last && interval.exclude_end?
+        interval.first == interval.last && interval.exclude_end?
       end
 
       def extension_modules

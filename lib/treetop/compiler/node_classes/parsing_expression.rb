@@ -83,7 +83,7 @@ module Treetop
       end
       
       def epsilon_node
-        "SyntaxNode.new(input, index...index)"
+        "instantiate_node(SyntaxNode,input, index...index)"
       end
       
       def assign_failure(start_index_var)

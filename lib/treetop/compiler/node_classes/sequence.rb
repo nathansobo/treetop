@@ -7,7 +7,7 @@ module Treetop
         use_vars :result, :start_index, :accumulator
         compile_sequence_elements(sequence_elements)
         builder.if__ "#{accumulator_var}.last" do
-          assign_result "(#{node_class_name}).new(input, #{start_index_var}...index, #{accumulator_var})"
+          assign_result "instantiate_node(#{node_class_name},input, #{start_index_var}...index, #{accumulator_var})"
           extend_result sequence_element_accessor_module_name if sequence_element_accessor_module_name
           extend_result_with_inline_module
         end

@@ -64,12 +64,20 @@ module Treetop
       
       def parse_anything(node_class = SyntaxNode, inline_module = nil)
         if index < input.length
-          result = node_class.new(input, index...(index + 1))
+          result = instantiate_node(node_class,input, index...(index + 1))
           result.extend(inline_module) if inline_module
           @index += 1
           result
         else
           terminal_parse_failure("any character")
+        end
+      end
+    
+      def instantiate_node(node_type,*args)
+        if node_type.respond_to? :new 
+          node_type.new(*args)
+        else
+          SyntaxNode.new(*args).extend(node_type)
         end
       end
     
