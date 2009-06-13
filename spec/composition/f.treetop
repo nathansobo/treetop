@@ -1,0 +1,11 @@
+require "e"
+
+module Test
+  grammar F
+    include E
+    
+    rule f
+      e 'f'
+    end
+  end
+end

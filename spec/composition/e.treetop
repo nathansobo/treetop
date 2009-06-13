@@ -1,13 +1,11 @@
-require File.dirname(__FILE__) + "/a"
-require File.dirname(__FILE__) + "/b"
-
 module Test
   grammar E
-    include A
-    include B
-    
     rule e
-      a b 'e'
+      'e'
+    end
+    
+    rule inherit
+      'super'
     end
   end
 end

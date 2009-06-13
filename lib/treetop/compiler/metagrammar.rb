@@ -8,6 +8,10 @@ module Treetop
       end
 
       module TreetopFile0
+        def require_statement
+          elements[0]
+        end
+
         def prefix
           elements[1]
         end
@@ -23,7 +27,7 @@ module Treetop
 
       module TreetopFile1
         def compile
-          prefix.text_value + module_or_grammar.compile + suffix.text_value
+          require_statement.text_value + prefix.text_value + module_or_grammar.compile + suffix.text_value
         end
       end
 
@@ -102,12 +106,6 @@ module Treetop
 
       end
 
-      module RequireStatement1
-        def compile
-          text_value
-        end
-      end
-
       def _nt_require_statement
         start_index = index
         if node_cache[:require_statement].has_key?(index)
@@ -169,7 +167,6 @@ module Treetop
         if s0.last
           r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
           r0.extend(RequireStatement0)
-          r0.extend(RequireStatement1)
         else
           self.index = i0
           r0 = nil

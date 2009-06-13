@@ -27,14 +27,14 @@ module GrammarCompositionSpec
   describe "composed grammar chaining with require" do
     before do
       $: << File.dirname(__FILE__)
-      # Load e with polyglot:
-      require 'e'
+      # Load f with polyglot:
+      require 'f'
   
-      @e = ::Test::EParser.new
+      @f = ::Test::FParser.new
     end
     
-    specify "rules in E have access to rules defined in A and B" do
-      @e.parse('abe').should_not be_nil
+    specify "rules in F have access to rule defined in E" do
+      @f.parse('ef').should_not be_nil
     end
     
   end
