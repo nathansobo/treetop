@@ -26,15 +26,14 @@ module GrammarCompositionSpec
   
   describe "composed grammar chaining with require" do
     before do
-      $: << File.dirname(__FILE__)
-      # Load f with polyglot:
-      require 'f'
+      # Load f with polyglot without using the load path:
+      require File.dirname(__FILE__) + '/f'
   
       @f = ::Test::FParser.new
     end
     
     specify "rules in F have access to rule defined in E" do
-      @f.parse('ef').should_not be_nil
+      @f.parse('abcef').should_not be_nil
     end
     
   end

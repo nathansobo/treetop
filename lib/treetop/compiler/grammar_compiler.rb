@@ -28,7 +28,9 @@ module Treetop
   def self.load(path)
     adjusted_path = path =~ /\.(treetop|tt)\Z/ ? path : path + '.treetop'
     File.open(adjusted_path) do |source_file|
-      load_from_string(source_file.read)
+      source = source_file.read
+      source.gsub!(/__FILE__/, %Q{"#{adjusted_path}"})
+      load_from_string(source)
     end
   end
 

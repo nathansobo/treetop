@@ -1,5 +1,9 @@
+require File.dirname(__FILE__) + "/../c"
+
 module Test
   grammar E
+    include C
+    
     rule e
       'e'
     end
