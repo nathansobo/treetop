@@ -1,0 +1,13 @@
+require File.dirname(__FILE__) + "/a"
+require File.dirname(__FILE__) + "/b"
+
+module Test
+  grammar E
+    include A
+    include B
+    
+    rule e
+      a b 'e'
+    end
+  end
+end

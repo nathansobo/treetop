@@ -23,4 +23,19 @@ module GrammarCompositionSpec
       @d.parse('superkeywordworks').should_not be_nil
     end
   end
+  
+  describe "composed grammar chaining with require" do
+    before do
+      $: << File.dirname(__FILE__)
+      # Load e with polyglot:
+      require 'e'
+  
+      @e = ::Test::EParser.new
+    end
+    
+    specify "rules in E have access to rules defined in A and B" do
+      @e.parse('abe').should_not be_nil
+    end
+    
+  end
 end
