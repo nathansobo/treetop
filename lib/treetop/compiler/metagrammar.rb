@@ -9,6 +9,12 @@ module Treetop
 
       module TreetopFile0
         def require_statement
+          elements[1]
+        end
+      end
+
+      module TreetopFile1
+        def requires
           elements[0]
         end
 
@@ -25,9 +31,9 @@ module Treetop
         end
       end
 
-      module TreetopFile1
+      module TreetopFile2
         def compile
-          require_statement.text_value + prefix.text_value + module_or_grammar.compile + suffix.text_value
+          requires.text_value + prefix.text_value + module_or_grammar.compile + suffix.text_value
         end
       end
 
@@ -42,7 +48,25 @@ module Treetop
         i0, s0 = index, []
         s1, i1 = [], index
         loop do
-          r2 = _nt_require_statement
+          i2, s2 = index, []
+          r4 = _nt_space
+          if r4
+            r3 = r4
+          else
+            r3 = instantiate_node(SyntaxNode,input, index...index)
+          end
+          s2 << r3
+          if r3
+            r5 = _nt_require_statement
+            s2 << r5
+          end
+          if s2.last
+            r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
+            r2.extend(TreetopFile0)
+          else
+            self.index = i2
+            r2 = nil
+          end
           if r2
             s1 << r2
           else
@@ -52,43 +76,43 @@ module Treetop
         r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
         s0 << r1
         if r1
-          r4 = _nt_space
-          if r4
-            r3 = r4
+          r7 = _nt_space
+          if r7
+            r6 = r7
           else
-            r3 = instantiate_node(SyntaxNode,input, index...index)
+            r6 = instantiate_node(SyntaxNode,input, index...index)
           end
-          s0 << r3
-          if r3
-            i5 = index
-            r6 = _nt_module_declaration
-            if r6
-              r5 = r6
+          s0 << r6
+          if r6
+            i8 = index
+            r9 = _nt_module_declaration
+            if r9
+              r8 = r9
             else
-              r7 = _nt_grammar
-              if r7
-                r5 = r7
+              r10 = _nt_grammar
+              if r10
+                r8 = r10
               else
-                self.index = i5
-                r5 = nil
+                self.index = i8
+                r8 = nil
               end
             end
-            s0 << r5
-            if r5
-              r9 = _nt_space
-              if r9
-                r8 = r9
+            s0 << r8
+            if r8
+              r12 = _nt_space
+              if r12
+                r11 = r12
               else
-                r8 = instantiate_node(SyntaxNode,input, index...index)
+                r11 = instantiate_node(SyntaxNode,input, index...index)
               end
-              s0 << r8
+              s0 << r11
             end
           end
         end
         if s0.last
           r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
-          r0.extend(TreetopFile0)
           r0.extend(TreetopFile1)
+          r0.extend(TreetopFile2)
         else
           self.index = i0
           r0 = nil
@@ -123,18 +147,18 @@ module Treetop
         end
         s0 << r1
         if r1
-          if input.index("require ", index) == index
-            r3 = instantiate_node(SyntaxNode,input, index...(index + 8))
-            @index += 8
+          if input.index("require", index) == index
+            r3 = instantiate_node(SyntaxNode,input, index...(index + 7))
+            @index += 7
           else
-            terminal_parse_failure("require ")
+            terminal_parse_failure("require")
             r3 = nil
           end
           s0 << r3
           if r3
             s4, i4 = [], index
             loop do
-              if input.index(Regexp.new('[^\\n\\r]'), index) == index
+              if input.index(Regexp.new('[ \\t]'), index) == index
                 r5 = instantiate_node(SyntaxNode,input, index...(index + 1))
                 @index += 1
               else
@@ -154,13 +178,36 @@ module Treetop
             end
             s0 << r4
             if r4
-              if input.index(Regexp.new('[\\n\\r]'), index) == index
-                r6 = instantiate_node(SyntaxNode,input, index...(index + 1))
-                @index += 1
-              else
+              s6, i6 = [], index
+              loop do
+                if input.index(Regexp.new('[^\\n\\r]'), index) == index
+                  r7 = instantiate_node(SyntaxNode,input, index...(index + 1))
+                  @index += 1
+                else
+                  r7 = nil
+                end
+                if r7
+                  s6 << r7
+                else
+                  break
+                end
+              end
+              if s6.empty?
+                self.index = i6
                 r6 = nil
+              else
+                r6 = instantiate_node(SyntaxNode,input, i6...index, s6)
               end
               s0 << r6
+              if r6
+                if input.index(Regexp.new('[\\n\\r]'), index) == index
+                  r8 = instantiate_node(SyntaxNode,input, index...(index + 1))
+                  @index += 1
+                else
+                  r8 = nil
+                end
+                s0 << r8
+              end
             end
           end
         end

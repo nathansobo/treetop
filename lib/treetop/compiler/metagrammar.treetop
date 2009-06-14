@@ -2,15 +2,15 @@ module Treetop
   module Compiler
     grammar Metagrammar
       rule treetop_file
-        require_statement:require_statement* prefix:space? module_or_grammar:(module_declaration / grammar) suffix:space? {
+        requires:(space? require_statement)* prefix:space? module_or_grammar:(module_declaration / grammar) suffix:space? {
           def compile
-            require_statement.text_value + prefix.text_value + module_or_grammar.compile + suffix.text_value
+            requires.text_value + prefix.text_value + module_or_grammar.compile + suffix.text_value
           end
         }
       end
       
       rule require_statement
-        prefix:space? "require " [^\n\r]+ [\n\r]
+        prefix:space? "require" [ \t]+ [^\n\r]+ [\n\r]
       end
       
       rule module_declaration

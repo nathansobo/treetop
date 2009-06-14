@@ -1,5 +1,7 @@
+
 require "a"
-require File.dirname(__FILE__) + "/b"
+
+require	File.dirname(__FILE__) + "/b"
 require File.dirname(__FILE__) + "/subfolder/e_includes_c"
 
 module Test

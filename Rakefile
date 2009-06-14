@@ -4,7 +4,6 @@ require 'rake'
 $LOAD_PATH.unshift(File.join(dir, 'vendor', 'rspec', 'lib'))
 require 'spec/rake/spectask'
 
-Gem::manage_gems
 require 'rake/gempackagetask'
 
 task :default => :spec
