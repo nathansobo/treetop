@@ -103,7 +103,7 @@ module Treetop
         address_space.reset_addresses
       end
       
-      protected
+      private
       
       def indent
         " " * level
