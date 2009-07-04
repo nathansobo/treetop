@@ -1,0 +1,12 @@
+grammar SeqPar
+ 
+  rule statement
+      'par' ' ' (statement ' ')+ 'end'
+    / 'seq' ' ' (statement ' ')+ 'end'
+    / 'ndt' ' ' (statement ' ')+ 'end'
+    / 'fit' ' ' (statement ' ')+ 'end'
+    / 'art' ' ' (statement ' ')+ 'end'
+    / [A-Z] [a-zA-z0-9]*
+  end
+ 
+end
