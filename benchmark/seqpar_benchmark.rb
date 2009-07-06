@@ -13,6 +13,9 @@ require 'benchmark'
 
 srand(47562) # So it runs the same each time
 
+class Array; def sum; inject( nil ) { |sum,x| sum ? sum+x : x }; end; end
+class Array; def mean; sum / size; end; end
+
 class SeqParBenchmark
   
   OPERATORS = ["seq", "fit", "art"*5, "par", "sequence"]
@@ -82,6 +85,20 @@ class SeqParBenchmark
       number_by_size.keys.sort.each do |size|
         dat << "#{size} #{(time_by_size[size]/number_by_size[size]).truncate}\n"
       end
+    end
+    
+    if File.exists?(File.join(@where, 'before.dat'))
+      before = {}
+      performance_increase = []
+      File.foreach(File.join(@where, 'before.dat')) do |line|
+        size, time = line.split(' ')
+        before[size] = time
+      end
+      File.foreach(File.join(@where, 'after.dat')) do |line|
+        size, time = line.split(' ')
+        performance_increase << before[size].to_i - time.to_i
+      end
+      puts "Average performance increase: #{performance_increase.mean} ms"
     end
   end
   
