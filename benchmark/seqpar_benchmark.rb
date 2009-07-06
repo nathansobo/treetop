@@ -15,7 +15,7 @@ srand(47562) # So it runs the same each time
 
 class SeqParBenchmark
   
-  OPERATORS = ["ndt", "fit", "art", "par", "seq"]
+  OPERATORS = ["seq", "fit", "art"*5, "par", "sequence"]
   
   # Loads the grammar and returns a parser
   def initialize
@@ -66,7 +66,7 @@ class SeqParBenchmark
   def benchmark
     number_by_size = Hash.new {|h,k| h[k] = 0}
     time_by_size = Hash.new {|h,k| h[k] = 0}
-    0.upto(200) do |i|
+    0.upto(250) do |i|
       input = generate
       length = input.length
       puts "Launching #{i}: #{input.length}"
