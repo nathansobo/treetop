@@ -8,7 +8,7 @@ module Treetop
         @input = input
         @interval = interval
         if @elements = elements
-          @elements.delete(true)
+          @comprehensive_elements = @elements unless @elements.delete(true)
           @elements.each do |element|
             element.parent = self
           end
@@ -17,15 +17,15 @@ module Treetop
 
       def elements
         return @elements if terminal?
-        # fill in any gaps in the sequence (lazy instantiation)
-        interval.each do |index|
+        # fill in any gaps in the sequence (lazy instantiation) if needed
+        @comprehensive_elements ||= interval.inject(@elements) do |elements, index|
           unless @elements.any? {|element| element.interval.include?(index) }
             node = SyntaxNode.new(input, index...(index + 1))
             node.parent = self
-            @elements << node
+            elements << node
           end
+          elements
         end
-        @elements
       end
 
       def terminal?
