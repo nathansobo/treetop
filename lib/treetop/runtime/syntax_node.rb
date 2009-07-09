@@ -1,17 +1,31 @@
 module Treetop
   module Runtime
     class SyntaxNode
-      attr_reader :input, :interval, :elements
+      attr_reader :input, :interval
       attr_accessor :parent
 
       def initialize(input, interval, elements = nil)
         @input = input
         @interval = interval
         if @elements = elements
-          elements.each do |element|
+          @elements.delete(true)
+          @elements.each do |element|
             element.parent = self
           end
         end
+      end
+
+      def elements
+        return @elements if terminal?
+        # fill in any gaps in the sequence (lazy instantiation)
+        interval.each do |index|
+          unless @elements.any? {|element| element.interval.include?(index) }
+            node = SyntaxNode.new(input, index...(index + 1))
+            node.parent = self
+            @elements << node
+          end
+        end
+        @elements
       end
 
       def terminal?

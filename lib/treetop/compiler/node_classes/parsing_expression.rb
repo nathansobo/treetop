@@ -21,6 +21,10 @@ module Treetop
         parent_expression && parent_expression.inline_module_name
       end
       
+      def decorated?
+        parent_expression && (parent_expression.node_class_name || parent_expression.node_class_name || parent_expression.inline_module_name)
+      end
+      
       def optional_arg(arg)
         if arg
           ", #{arg}"
@@ -88,6 +92,10 @@ module Treetop
       
       def assign_failure(start_index_var)
         assign_result("nil")
+      end
+      
+      def assign_lazily_instantiated_node
+        assign_result("true")
       end
     
       def var_initialization

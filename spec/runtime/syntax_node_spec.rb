@@ -50,4 +50,19 @@ module SyntaxNodeSpec
       end
     end
   end
+  
+  describe "A new nonterminal syntax node with all children lazily instantiated" do
+    attr_reader :node
+
+    before do
+      @input = 'test input'
+      @node = Runtime::SyntaxNode.new('input', 0...3, [true, true, true])
+    end
+    
+    it "should lazily instantiate its child nodes" do
+      node.elements.size.should == 3
+      node.elements.first.interval.should == (0...1)
+      node.elements.first.parent.should == @node
+    end
+  end
 end
