@@ -25,7 +25,7 @@ module Treetop
             elements << node
           end
           elements
-        end
+        end.sort
       end
 
       def terminal?
@@ -42,6 +42,10 @@ module Treetop
 
       def empty?
         interval.first == interval.last && interval.exclude_end?
+      end
+      
+      def <=>(other)
+        self.interval.first <=> other.interval.first
       end
 
       def extension_modules

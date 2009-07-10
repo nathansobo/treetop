@@ -235,5 +235,13 @@ module CharacterClassSpec
       result.elements.size.should == 2
     end
   end
+  
+  describe "a character class with a label mixed with other expressions" do
+    testing_expression 'upper:([A-Z]) "b"'
+    it "returns the correct element for the labeled expression" do
+      result = parse('Ab')
+      result.upper.text_value.should == "A"
+    end
+  end
 
 end
