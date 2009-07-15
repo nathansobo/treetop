@@ -5,3 +5,4 @@
 doc/site/*.*
 benchmark/*.dat
 benchmark/*.log
+*~
