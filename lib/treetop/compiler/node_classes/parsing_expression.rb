@@ -79,7 +79,7 @@ module Treetop
       end
     
       def reset_index
-        builder.assign 'self.index', start_index_var
+        builder.assign '@index', start_index_var
       end
       
       def epsilon_node
