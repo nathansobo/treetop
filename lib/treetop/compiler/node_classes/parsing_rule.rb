@@ -27,7 +27,7 @@ module Treetop
           builder.newline
           generate_cache_storage(builder, result_var)
           builder.newline          
-          builder << "return #{result_var}"
+          builder << result_var
         end
       end
       
