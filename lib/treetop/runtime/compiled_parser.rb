@@ -87,7 +87,7 @@ module Treetop
           rx = @regexps[terminal] ||= Regexp.new(terminal)
           input.index(rx, index) == index
         else
-          input[index] == terminal[0] && input.index(terminal, index) == index
+          input[index, terminal.size] == terminal
         end
       end
     
