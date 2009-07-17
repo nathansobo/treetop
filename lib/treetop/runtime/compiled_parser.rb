@@ -54,6 +54,7 @@ module Treetop
         @input_length = input.length
         reset_index
         @node_cache = Hash.new {|hash, key| hash[key] = Hash.new}
+        @regexps = {}
         @terminal_failures = []
         @max_terminal_failure_index = 0
       end
@@ -78,6 +79,17 @@ module Treetop
           node_type.new(*args)
         else
           SyntaxNode.new(*args).extend(node_type)
+        end
+      end
+    
+      def has_terminal?(terminal, regex, index)
+        if regex
+          rx = @regexps[terminal] ||= Regexp.new(terminal)
+          input.index(rx, index) == index
+        else
+          0.upto(terminal.length-1) do |i|
+            return false unless input[index+i]==terminal[i]
+          end
         end
       end
     
