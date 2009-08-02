@@ -204,7 +204,8 @@ module CharacterClassSpec
     testing_expression '[A-Z] "a"'
     it "lazily instantiates a node for the character" do
       result = parse('Aa')
-      result.instance_variable_get("@elements").size.should == 1
+      result.instance_variable_get("@elements").should include(true)
+      result.elements.should_not include(true)
       result.elements.size.should == 2
     end
   end
@@ -213,7 +214,8 @@ module CharacterClassSpec
     testing_expression '([A-Z] <CharacterClassSpec::Foo>) "a"'
     it "actively generates a node for the character because it has a node class declared" do
       result = parse('Aa')
-      result.instance_variable_get("@elements").size.should == 2
+      result.instance_variable_get("@elements").should_not include(true)
+      result.elements.should_not include(true)
       result.elements.size.should == 2
     end
   end
@@ -222,7 +224,8 @@ module CharacterClassSpec
     testing_expression '([A-Z] <CharacterClassSpec::ModFoo>) "a"'
     it "actively generates a node for the character because it has a node module declared" do
       result = parse('Aa')
-      result.instance_variable_get("@elements").size.should == 2
+      result.instance_variable_get("@elements").should_not include(true)
+      result.elements.should_not include(true)
       result.elements.size.should == 2
     end
   end
@@ -231,7 +234,8 @@ module CharacterClassSpec
     testing_expression '([A-Z] { def a_method; end }) "a"'
     it "actively generates a node for the character because it has an inline block" do
       result = parse('Aa')
-      result.instance_variable_get("@elements").size.should == 2
+      result.instance_variable_get("@elements").should_not include(true)
+      result.elements.should_not include(true)
       result.elements.size.should == 2
     end
   end
@@ -241,6 +245,19 @@ module CharacterClassSpec
     it "returns the correct element for the labeled expression" do
       result = parse('Ab')
       result.upper.text_value.should == "A"
+      result.elements.size.should == 2
+    end
+  end
+  
+  describe "a character class repetition mixed with other expressions" do
+    testing_expression '[A-Z]+ "a"'
+    it "lazily instantiates a node for the character" do
+      result = parse('ABCa')
+      result.elements[0].instance_variable_get("@elements").should include(true)
+      result.elements[0].elements.should_not include(true)
+      result.elements[0].elements.size.should == 3
+      result.elements.size.should == 2
+      result.elements.inspect.should == %Q{[SyntaxNode offset=0, "ABC":\n  SyntaxNode offset=0, "A"\n  SyntaxNode offset=1, "B"\n  SyntaxNode offset=2, "C", SyntaxNode offset=3, "a"]}
     end
   end
 

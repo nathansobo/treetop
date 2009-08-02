@@ -7,25 +7,21 @@ module Treetop
       def initialize(input, interval, elements = nil)
         @input = input
         @interval = interval
-        if @elements = elements
-          @comprehensive_elements = @elements unless @elements.delete(true)
-          @elements.each do |element|
-            element.parent = self
-          end
-        end
+        @elements = elements
       end
 
       def elements
         return @elements if terminal?
-        # fill in any gaps in the sequence (lazy instantiation) if needed
-        @comprehensive_elements ||= interval.inject(@elements) do |elements, index|
-          unless @elements.any? {|element| element.interval.include?(index) }
-            node = SyntaxNode.new(input, index...(index + 1))
-            node.parent = self
-            elements << node
+        # replace the character class placeholders in the sequence (lazy instantiation)
+        last_element = nil
+        @comprehensive_elements ||= @elements.map do |element|
+          if element == true
+            index = last_element ? last_element.interval.last : interval.first
+            element = SyntaxNode.new(input, index...(index + 1))
           end
-          elements
-        end.sort
+          element.parent = self
+          last_element = element
+        end
       end
 
       def terminal?
@@ -75,7 +71,7 @@ module Treetop
           im +
           (elements && elements.size > 0 ?
             ":" +
-              (@elements||[]).map{|e|
+              (elements||[]).map{|e|
           begin
             "\n"+e.inspect(indent+"  ")
           rescue  # Defend against inspect not taking a parameter
