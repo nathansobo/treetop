@@ -261,4 +261,10 @@ module CharacterClassSpec
     end
   end
 
+  describe "A character containing UTF-8 characters" do
+    testing_expression "[æøå]"
+    it "recognizes the UTF-8 characters" do
+      parse("ø").should_not be_nil
+    end
+  end
 end

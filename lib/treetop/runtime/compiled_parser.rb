@@ -88,7 +88,7 @@ module Treetop
     
       def has_terminal?(terminal, regex, index)
         if regex
-          rx = @regexps[terminal] ||= Regexp.new(terminal)
+          rx = @regexps[terminal] ||= Regexp.new(terminal, nil, 'u')
           input.index(rx, index) == index
         else
           input[index, terminal.size] == terminal
