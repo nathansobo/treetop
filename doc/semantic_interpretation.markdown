@@ -45,7 +45,7 @@ Methods can be added to the nodes instantiated by the successful match of an exp
       end
     end
 
-Note that each alternative expression is followed by a block containing a method definition. A `depth` method is defined on both expressions. The recursive `depth` method defined in the block following the first expression determines the depth of the nested parentheses and adds one two it. The base case is implemented in the block following the second expression; a single character has a depth of 0.
+Note that each alternative expression is followed by a block containing a method definition. A `depth` method is defined on both expressions. The recursive `depth` method defined in the block following the first expression determines the depth of the nested parentheses and adds one to it. The base case is implemented in the block following the second expression; a single character has a depth of 0.
 
 
 ###Custom `SyntaxNode` Subclass Declarations
