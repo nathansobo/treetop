@@ -1,6 +1,8 @@
 require 'rubygems'
 require 'erector'
 require "#{File.dirname(__FILE__)}/sitegen"
+require 'fileutils'
+require 'bluecloth'
 
 class Layout < Erector::Widget
   def render
