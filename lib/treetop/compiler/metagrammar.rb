@@ -162,7 +162,7 @@ module Treetop
             s4, i4 = [], index
             loop do
               if has_terminal?('\G[ \\t]', true, index)
-                r5 = instantiate_node(SyntaxNode,input, index...(index + 1))
+                r5 = true
                 @index += 1
               else
                 r5 = nil
@@ -184,7 +184,7 @@ module Treetop
               s6, i6 = [], index
               loop do
                 if has_terminal?('\G[^\\n\\r]', true, index)
-                  r7 = instantiate_node(SyntaxNode,input, index...(index + 1))
+                  r7 = true
                   @index += 1
                 else
                   r7 = nil
@@ -204,7 +204,7 @@ module Treetop
               s0 << r6
               if r6
                 if has_terminal?('\G[\\n\\r]', true, index)
-                  r8 = instantiate_node(SyntaxNode,input, index...(index + 1))
+                  r8 = true
                   @index += 1
                 else
                   r8 = nil
@@ -287,7 +287,7 @@ module Treetop
           s1 << r3
           if r3
             if has_terminal?('\G[A-Z]', true, index)
-              r4 = instantiate_node(SyntaxNode,input, index...(index + 1))
+              r4 = true
               @index += 1
             else
               r4 = nil
@@ -504,7 +504,7 @@ module Treetop
 
         i0, s0 = index, []
         if has_terminal?('\G[A-Z]', true, index)
-          r1 = instantiate_node(SyntaxNode,input, index...(index + 1))
+          r1 = true
           @index += 1
         else
           r1 = nil
@@ -703,7 +703,7 @@ module Treetop
           s0 << r2
           if r2
             if has_terminal?('\G[A-Z]', true, index)
-              r3 = instantiate_node(SyntaxNode,input, index...(index + 1))
+              r3 = true
               @index += 1
             else
               r3 = nil
@@ -2722,7 +2722,7 @@ module Treetop
               i5, s5 = index, []
               i6 = index
               if has_terminal?('\G[{}]', true, index)
-                r7 = instantiate_node(SyntaxNode,input, index...(index + 1))
+                r7 = true
                 @index += 1
               else
                 r7 = nil
@@ -2930,7 +2930,7 @@ module Treetop
           r0 = r1
         else
           if has_terminal?('\G[0-9]', true, index)
-            r2 = instantiate_node(SyntaxNode,input, index...(index + 1))
+            r2 = true
             @index += 1
           else
             r2 = nil
