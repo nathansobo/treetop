@@ -26,7 +26,6 @@ module SyntaxNodeSpec
     attr_reader :node
 
     before do
-      @input = 'test input'
       @elements = [Runtime::SyntaxNode.new('input', 0...3)]
       @node = Runtime::SyntaxNode.new('input', 0...3, @elements)
     end
@@ -47,6 +46,31 @@ module SyntaxNodeSpec
     it "sets itself as the parent of its elements" do
       node.elements.each do |element|
         element.parent.should == node
+      end
+    end
+  end
+  
+  describe "A new nonterminal syntax node with all children lazily instantiated" do
+    attr_reader :node
+    
+    it "should lazily instantiate its child nodes" do
+      @node = Runtime::SyntaxNode.new('input', 0...3, [true, true, true])
+      node.elements.size.should == 3
+      node.elements.first.interval.should == (0...1)
+      node.elements.first.parent.should == node
+    end
+    
+    it "should lazily replace stand-in child nodes around real ones" do
+      @input = "input"
+      child1 = Runtime::SyntaxNode.new(@input, 1...2)
+      child2 = Runtime::SyntaxNode.new(@input, 3...4)
+      @node = Runtime::SyntaxNode.new(@input, 0...5, [true, child1, true, child2, true])
+      node.elements.size.should == 5
+      
+      node.elements[0].interval.should == (0...1)
+      node.elements[0].parent.should == node
+      0.upto(4) do |index|
+        node.elements[index].text_value.should == @input[index, 1]
       end
     end
   end

@@ -3,7 +3,7 @@ module Treetop
     class CompiledParser
       include Treetop::Runtime
       
-      attr_reader :input, :index, :terminal_failures, :max_terminal_failure_index
+      attr_reader :input, :index, :max_terminal_failure_index
       attr_writer :root
       attr_accessor :consume_all_input
       alias :consume_all_input? :consume_all_input
@@ -25,22 +25,26 @@ module Treetop
       end
 
       def failure_line
-        terminal_failures && input.line_of(failure_index)
+        @terminal_failures && input.line_of(failure_index)
       end
 
       def failure_column
-        terminal_failures && input.column_of(failure_index)
+        @terminal_failures && input.column_of(failure_index)
       end
 
       def failure_reason
         return nil unless (tf = terminal_failures) && tf.size > 0
-	"Expected " +
-	  (tf.size == 1 ?
-	   tf[0].expected_string :
-           "one of #{tf.map{|f| f.expected_string}.uniq*', '}"
-	  ) +
-          " at line #{failure_line}, column #{failure_column} (byte #{failure_index+1})" +
-          " after #{input[index...failure_index]}"
+        "Expected " +
+          (tf.size == 1 ?
+           tf[0].expected_string :
+                 "one of #{tf.map{|f| f.expected_string}.uniq*', '}"
+          ) +
+                " at line #{failure_line}, column #{failure_column} (byte #{failure_index+1})" +
+                " after #{input[index...failure_index]}"
+      end
+      
+      def terminal_failures
+        @terminal_failures.map! {|tf_ary| TerminalParseFailure.new(*tf_ary) }
       end
 
 
@@ -97,7 +101,7 @@ module Treetop
           @max_terminal_failure_index = index
           @terminal_failures = []
         end
-        terminal_failures << TerminalParseFailure.new(index, expected_string)
+        @terminal_failures << [index, expected_string]
         return nil
       end
     end
