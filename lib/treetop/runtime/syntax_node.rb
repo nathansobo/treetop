@@ -3,6 +3,9 @@ module Treetop
     class SyntaxNode
       attr_reader :input, :interval
       attr_accessor :parent
+      attr_reader :dot_id
+
+      @@dot_id_counter = 0
 
       def initialize(input, interval, elements = nil)
         @input = input
@@ -22,6 +25,11 @@ module Treetop
           element.parent = self
           last_element = element
         end
+
+        @dot_id = @@dot_id_counter
+        @@dot_id_counter += 1
+
+        @comprehensive_elements
       end
 
       def terminal?
@@ -80,6 +88,26 @@ module Treetop
               }.join("") :
             ""
           )
+      end
+
+      def write_dot(io)
+        io.puts "node#{dot_id} [label=\"#{text_value}\"];"
+        if nonterminal? then
+          elements.each do
+            |x|
+            io.puts "node#{dot_id} -> node#{x.dot_id};"
+            x.write_dot(io)
+          end
+        end
+      end
+
+      def write_dot_file(fname)
+        File.open(fname + ".dot","w") do
+          |file|
+          file.puts "digraph G {"
+          write_dot(file)
+          file.puts "}"
+        end
       end
     end
   end
