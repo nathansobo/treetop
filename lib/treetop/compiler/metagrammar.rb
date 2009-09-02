@@ -162,8 +162,9 @@ module Treetop
             s4, i4 = [], index
             loop do
               if has_terminal?('\G[ \\t]', true, index)
+                next_character = index + input[index..-1].match(/\A(.)/um).end(1)
                 r5 = true
-                @index += 1
+                @index = next_character
               else
                 r5 = nil
               end
@@ -184,8 +185,9 @@ module Treetop
               s6, i6 = [], index
               loop do
                 if has_terminal?('\G[^\\n\\r]', true, index)
+                  next_character = index + input[index..-1].match(/\A(.)/um).end(1)
                   r7 = true
-                  @index += 1
+                  @index = next_character
                 else
                   r7 = nil
                 end
@@ -204,8 +206,9 @@ module Treetop
               s0 << r6
               if r6
                 if has_terminal?('\G[\\n\\r]', true, index)
+                  next_character = index + input[index..-1].match(/\A(.)/um).end(1)
                   r8 = true
-                  @index += 1
+                  @index = next_character
                 else
                   r8 = nil
                 end
@@ -287,8 +290,9 @@ module Treetop
           s1 << r3
           if r3
             if has_terminal?('\G[A-Z]', true, index)
+              next_character = index + input[index..-1].match(/\A(.)/um).end(1)
               r4 = true
-              @index += 1
+              @index = next_character
             else
               r4 = nil
             end
@@ -504,8 +508,9 @@ module Treetop
 
         i0, s0 = index, []
         if has_terminal?('\G[A-Z]', true, index)
+          next_character = index + input[index..-1].match(/\A(.)/um).end(1)
           r1 = true
-          @index += 1
+          @index = next_character
         else
           r1 = nil
         end
@@ -703,8 +708,9 @@ module Treetop
           s0 << r2
           if r2
             if has_terminal?('\G[A-Z]', true, index)
+              next_character = index + input[index..-1].match(/\A(.)/um).end(1)
               r3 = true
-              @index += 1
+              @index = next_character
             else
               r3 = nil
             end
@@ -1175,6 +1181,28 @@ module Treetop
       end
 
       module Primary2
+        def prefix
+          elements[0]
+        end
+
+        def predicate_block
+          elements[2]
+        end
+      end
+
+      module Primary3
+        def compile(address, builder, parent_expression=nil)
+          prefix.compile(address, builder, self)
+        end
+        def prefixed_expression
+          predicate_block
+        end
+        def inline_modules
+          []
+        end
+      end
+
+      module Primary4
         def atomic
           elements[0]
         end
@@ -1188,7 +1216,7 @@ module Treetop
         end
       end
 
-      module Primary3
+      module Primary5
         def compile(address, builder, parent_expression=nil)
           suffix.compile(address, builder, self)
         end
@@ -1210,7 +1238,7 @@ module Treetop
         end
       end
 
-      module Primary4
+      module Primary6
         def atomic
           elements[0]
         end
@@ -1220,7 +1248,7 @@ module Treetop
         end
       end
 
-      module Primary5
+      module Primary7
         def compile(address, builder, parent_expression=nil)
           atomic.compile(address, builder, self)
         end
@@ -1266,14 +1294,19 @@ module Treetop
           r0 = r1
         else
           i4, s4 = index, []
-          r5 = _nt_atomic
+          r5 = _nt_prefix
           s4 << r5
           if r5
-            r6 = _nt_suffix
+            r7 = _nt_space
+            if r7
+              r6 = r7
+            else
+              r6 = instantiate_node(SyntaxNode,input, index...index)
+            end
             s4 << r6
             if r6
-              r7 = _nt_node_class_declarations
-              s4 << r7
+              r8 = _nt_predicate_block
+              s4 << r8
             end
           end
           if s4.last
@@ -1287,26 +1320,49 @@ module Treetop
           if r4
             r0 = r4
           else
-            i8, s8 = index, []
-            r9 = _nt_atomic
-            s8 << r9
+            i9, s9 = index, []
+            r10 = _nt_atomic
+            s9 << r10
+            if r10
+              r11 = _nt_suffix
+              s9 << r11
+              if r11
+                r12 = _nt_node_class_declarations
+                s9 << r12
+              end
+            end
+            if s9.last
+              r9 = instantiate_node(SyntaxNode,input, i9...index, s9)
+              r9.extend(Primary4)
+              r9.extend(Primary5)
+            else
+              @index = i9
+              r9 = nil
+            end
             if r9
-              r10 = _nt_node_class_declarations
-              s8 << r10
-            end
-            if s8.last
-              r8 = instantiate_node(SyntaxNode,input, i8...index, s8)
-              r8.extend(Primary4)
-              r8.extend(Primary5)
+              r0 = r9
             else
-              @index = i8
-              r8 = nil
-            end
-            if r8
-              r0 = r8
-            else
-              @index = i0
-              r0 = nil
+              i13, s13 = index, []
+              r14 = _nt_atomic
+              s13 << r14
+              if r14
+                r15 = _nt_node_class_declarations
+                s13 << r15
+              end
+              if s13.last
+                r13 = instantiate_node(SyntaxNode,input, i13...index, s13)
+                r13.extend(Primary6)
+                r13.extend(Primary7)
+              else
+                @index = i13
+                r13 = nil
+              end
+              if r13
+                r0 = r13
+              else
+                @index = i0
+                r0 = nil
+              end
             end
           end
         end
@@ -1502,6 +1558,28 @@ module Treetop
       end
 
       module SequencePrimary2
+        def prefix
+          elements[0]
+        end
+
+        def predicate_block
+          elements[2]
+        end
+      end
+
+      module SequencePrimary3
+        def compile(address, builder, parent_expression=nil)
+          prefix.compile(address, builder, self)
+        end
+        def prefixed_expression
+          predicate_block
+        end
+        def inline_modules
+          []
+        end
+      end
+
+      module SequencePrimary4
         def atomic
           elements[0]
         end
@@ -1511,7 +1589,7 @@ module Treetop
         end
       end
 
-      module SequencePrimary3
+      module SequencePrimary5
         def compile(lexical_address, builder)
           suffix.compile(lexical_address, builder, self)
         end
@@ -1557,11 +1635,20 @@ module Treetop
           r0 = r1
         else
           i4, s4 = index, []
-          r5 = _nt_atomic
+          r5 = _nt_prefix
           s4 << r5
           if r5
-            r6 = _nt_suffix
+            r7 = _nt_space
+            if r7
+              r6 = r7
+            else
+              r6 = instantiate_node(SyntaxNode,input, index...index)
+            end
             s4 << r6
+            if r6
+              r8 = _nt_predicate_block
+              s4 << r8
+            end
           end
           if s4.last
             r4 = instantiate_node(SyntaxNode,input, i4...index, s4)
@@ -1574,12 +1661,31 @@ module Treetop
           if r4
             r0 = r4
           else
-            r7 = _nt_atomic
-            if r7
-              r0 = r7
+            i9, s9 = index, []
+            r10 = _nt_atomic
+            s9 << r10
+            if r10
+              r11 = _nt_suffix
+              s9 << r11
+            end
+            if s9.last
+              r9 = instantiate_node(SyntaxNode,input, i9...index, s9)
+              r9.extend(SequencePrimary4)
+              r9.extend(SequencePrimary5)
             else
-              @index = i0
-              r0 = nil
+              @index = i9
+              r9 = nil
+            end
+            if r9
+              r0 = r9
+            else
+              r12 = _nt_atomic
+              if r12
+                r0 = r12
+              else
+                @index = i0
+                r0 = nil
+              end
             end
           end
         end
@@ -2094,8 +2200,9 @@ module Treetop
                   r6 = r8
                 else
                   if index < input_length
-                    r9 = instantiate_node(SyntaxNode,input, index...(index + 1))
-                    @index += 1
+                    next_character = index + input[index..-1].match(/\A(.)/um).end(1)
+                    r9 = instantiate_node(SyntaxNode,input, index...next_character)
+                    @index = next_character
                   else
                     terminal_parse_failure("any character")
                     r9 = nil
@@ -2218,8 +2325,9 @@ module Treetop
                   r6 = r8
                 else
                   if index < input_length
-                    r9 = instantiate_node(SyntaxNode,input, index...(index + 1))
-                    @index += 1
+                    next_character = index + input[index..-1].match(/\A(.)/um).end(1)
+                    r9 = instantiate_node(SyntaxNode,input, index...next_character)
+                    @index = next_character
                   else
                     terminal_parse_failure("any character")
                     r9 = nil
@@ -2344,8 +2452,9 @@ module Treetop
               s7 << r8
               if r8
                 if index < input_length
-                  r9 = instantiate_node(SyntaxNode,input, index...(index + 1))
-                  @index += 1
+                  next_character = index + input[index..-1].match(/\A(.)/um).end(1)
+                  r9 = instantiate_node(SyntaxNode,input, index...next_character)
+                  @index = next_character
                 else
                   terminal_parse_failure("any character")
                   r9 = nil
@@ -2380,8 +2489,9 @@ module Treetop
                 s10 << r11
                 if r11
                   if index < input_length
-                    r13 = instantiate_node(SyntaxNode,input, index...(index + 1))
-                    @index += 1
+                    next_character = index + input[index..-1].match(/\A(.)/um).end(1)
+                    r13 = instantiate_node(SyntaxNode,input, index...next_character)
+                    @index = next_character
                   else
                     terminal_parse_failure("any character")
                     r13 = nil
@@ -2534,8 +2644,9 @@ module Treetop
               s5 << r6
               if r6
                 if index < input_length
-                  r8 = instantiate_node(SyntaxNode,input, index...(index + 1))
-                  @index += 1
+                  next_character = index + input[index..-1].match(/\A(.)/um).end(1)
+                  r8 = instantiate_node(SyntaxNode,input, index...next_character)
+                  @index = next_character
                 else
                   terminal_parse_failure("any character")
                   r8 = nil
@@ -2688,6 +2799,46 @@ module Treetop
         r0
       end
 
+      module PredicateBlock0
+        def inline_module
+          elements[1]
+        end
+      end
+
+      def _nt_predicate_block
+        start_index = index
+        if node_cache[:predicate_block].has_key?(index)
+          cached = node_cache[:predicate_block][index]
+          @index = cached.interval.end if cached
+          return cached
+        end
+
+        i0, s0 = index, []
+        if has_terminal?('', false, index)
+          r1 = instantiate_node(SyntaxNode,input, index...(index + 0))
+          @index += 0
+        else
+          terminal_parse_failure('')
+          r1 = nil
+        end
+        s0 << r1
+        if r1
+          r2 = _nt_inline_module
+          s0 << r2
+        end
+        if s0.last
+          r0 = instantiate_node(PredicateBlock,input, i0...index, s0)
+          r0.extend(PredicateBlock0)
+        else
+          @index = i0
+          r0 = nil
+        end
+
+        node_cache[:predicate_block][start_index] = r0
+
+        r0
+      end
+
       module InlineModule0
       end
 
@@ -2722,8 +2873,9 @@ module Treetop
               i5, s5 = index, []
               i6 = index
               if has_terminal?('\G[{}]', true, index)
+                next_character = index + input[index..-1].match(/\A(.)/um).end(1)
                 r7 = true
-                @index += 1
+                @index = next_character
               else
                 r7 = nil
               end
@@ -2736,8 +2888,9 @@ module Treetop
               s5 << r6
               if r6
                 if index < input_length
-                  r8 = instantiate_node(SyntaxNode,input, index...(index + 1))
-                  @index += 1
+                  next_character = index + input[index..-1].match(/\A(.)/um).end(1)
+                  r8 = instantiate_node(SyntaxNode,input, index...next_character)
+                  @index = next_character
                 else
                   terminal_parse_failure("any character")
                   r8 = nil
@@ -2875,8 +3028,9 @@ module Treetop
         s0 << r1
         if r1
           if index < input_length
-            r3 = instantiate_node(SyntaxNode,input, index...(index + 1))
-            @index += 1
+            next_character = index + input[index..-1].match(/\A(.)/um).end(1)
+            r3 = instantiate_node(SyntaxNode,input, index...next_character)
+            @index = next_character
           else
             terminal_parse_failure("any character")
             r3 = nil
@@ -2905,8 +3059,9 @@ module Treetop
         end
 
         if has_terminal?('\G[A-Za-z_]', true, index)
-          r0 = instantiate_node(SyntaxNode,input, index...(index + 1))
-          @index += 1
+          next_character = index + input[index..-1].match(/\A(.)/um).end(1)
+          r0 = instantiate_node(SyntaxNode, input, index...next_character)
+          @index = next_character
         else
           r0 = nil
         end
@@ -2930,8 +3085,9 @@ module Treetop
           r0 = r1
         else
           if has_terminal?('\G[0-9]', true, index)
+            next_character = index + input[index..-1].match(/\A(.)/um).end(1)
             r2 = true
-            @index += 1
+            @index = next_character
           else
             r2 = nil
           end
@@ -3033,8 +3189,9 @@ module Treetop
             s3 << r4
             if r4
               if index < input_length
-                r6 = instantiate_node(SyntaxNode,input, index...(index + 1))
-                @index += 1
+                next_character = index + input[index..-1].match(/\A(.)/um).end(1)
+                r6 = instantiate_node(SyntaxNode,input, index...next_character)
+                @index = next_character
               else
                 terminal_parse_failure("any character")
                 r6 = nil
@@ -3079,8 +3236,9 @@ module Treetop
         end
 
         if has_terminal?('\G[ \\t\\n\\r]', true, index)
-          r0 = instantiate_node(SyntaxNode,input, index...(index + 1))
-          @index += 1
+          next_character = index + input[index..-1].match(/\A(.)/um).end(1)
+          r0 = instantiate_node(SyntaxNode, input, index...next_character)
+          @index = next_character
         else
           r0 = nil
         end

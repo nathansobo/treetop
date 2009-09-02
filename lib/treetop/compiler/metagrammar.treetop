@@ -127,6 +127,18 @@ module Treetop
           end
         }
         /
+	prefix space? predicate_block {
+          def compile(address, builder, parent_expression=nil)
+            prefix.compile(address, builder, self)
+          end
+          def prefixed_expression
+            predicate_block
+          end
+          def inline_modules
+            []
+          end
+        }
+        /
         atomic suffix node_class_declarations {
           def compile(address, builder, parent_expression=nil)
             suffix.compile(address, builder, self)
@@ -220,6 +232,18 @@ module Treetop
       
           def inline_module_name
             nil
+          end
+        }
+        /
+        prefix space? predicate_block {
+          def compile(address, builder, parent_expression=nil)
+            prefix.compile(address, builder, self)
+          end
+          def prefixed_expression
+            predicate_block
+          end
+          def inline_modules
+            []
           end
         }
         /
@@ -321,7 +345,7 @@ module Treetop
       end
 
       rule character_class
-	'[' characters:(!']' ('\\' . /!'\\' .))+ ']' <CharacterClass> {
+        '[' characters:(!']' ('\\' . /!'\\' .))+ ']' <CharacterClass> {
           def characters
             super.text_value
           end
@@ -370,6 +394,10 @@ module Treetop
             nil
           end
         }
+      end
+
+      rule predicate_block
+        '' inline_module <PredicateBlock>
       end
 
       rule inline_module
