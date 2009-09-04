@@ -6,3 +6,5 @@ doc/site/*.*
 benchmark/*.dat
 benchmark/*.log
 *~
+.DS_Store
+pkg
