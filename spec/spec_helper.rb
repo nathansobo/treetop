@@ -64,6 +64,10 @@ module Treetop
       result
     end
 
+    def parse_multibyte(input, options = {})
+      parse(input.mb_chars, options)
+    end
+
     def compiling_grammar(grammar_under_test)
       lambda {
         grammar_node = parse_with_metagrammar(grammar_under_test.strip, :grammar)

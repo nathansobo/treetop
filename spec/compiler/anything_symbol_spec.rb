@@ -21,15 +21,8 @@ module AnythingSymbolSpec
     it "fails to parse epsilon" do
       parse('').should be_nil
     end
-    
-    describe "an anything symbol" do
-      testing_expression '.'
-      it "matches an UTF-8 character" do
-        parse("ø").should_not be_nil
-      end
-    end
   end
-
+    
   module ModFoo
   end
 
