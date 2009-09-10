@@ -11,7 +11,6 @@ TREETOP_ROOT = File.join(dir, 'treetop')
 require File.join(TREETOP_ROOT, "ruby_extensions")
 require File.join(TREETOP_ROOT, "runtime")
 require File.join(TREETOP_ROOT, "compiler")
-require File.join(TREETOP_ROOT, "syntax")
 
 require 'polyglot'
 Polyglot.register(Treetop::VALID_GRAMMAR_EXT, Treetop)
