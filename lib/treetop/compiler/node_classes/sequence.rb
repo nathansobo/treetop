@@ -53,10 +53,10 @@ module Treetop
       def compile(index, builder, rule)
         super
         builder.module_declaration(module_name) do
-          elements_by_name = sequence_elements.inject({}){|h,e| (h[e.label_name] ||= []) << e; h}
+          elements_by_name = sequence_elements.inject({}){|h,e| (h[e.label_name.to_s] ||= []) << e; h}
           sequence_elements.each_with_index do |element, index|
             if element.label_name
-              repetitions = elements_by_name[element.label_name]
+              repetitions = elements_by_name[element.label_name.to_s]
               label_name = element.label_name + (repetitions.size > 1 ? (repetitions.index(element)+1).to_s : "")
               builder.method_declaration(label_name) do
                 builder << "elements[#{index}]"

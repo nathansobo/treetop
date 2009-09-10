@@ -96,7 +96,7 @@ class SeqParBenchmark
       end
       File.foreach(File.join(@where, 'after.dat')) do |line|
         size, time = line.split(' ')
-        performance_increases << (before[size].to_f - time.to_f) / before[size].to_f unless time == "0"
+        performance_increases << (before[size].to_f - time.to_f) / before[size].to_f unless time == "0" || before[size] == "0"
       end
       puts "Average performance increase: #{performance_increases.mean * 100}%"
     end
