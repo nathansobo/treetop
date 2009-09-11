@@ -30,6 +30,7 @@ module MultibyteCharsSpec
     testing_expression '[æøå]+ "a"'
     it "lazily instantiates a node for the character" do
       result = parse_multibyte('æøåa')
+      pending "Multibyte support is not supported in Ruby 1.8.6" if RUBY_VERSION =~ /^1\.8.6/
       result.elements[0].instance_variable_get("@elements").should include(true)
       result.elements[0].elements.should_not include(true)
       result.elements[0].elements.size.should == 3

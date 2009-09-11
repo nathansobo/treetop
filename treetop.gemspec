@@ -1,4 +1,4 @@
-require "lib/treetop/version"
+require "treetop/version"
 $gemspec = Gem::Specification.new do |s|
   s.name = "treetop"
   s.version = Treetop::VERSION::STRING
