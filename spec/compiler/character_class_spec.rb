@@ -156,15 +156,17 @@ module CharacterClassSpec
     end
   end
 
-  describe "A character class containing a \\M- meta-char escape" do
-    slash = "\\"
-    testing_expression "[#{slash}M- ]"
-    it "matches that character only" do
-      parse("\240").should_not be_nil
-      parse('\\').should be_nil
-      parse('M').should be_nil
-      parse('-').should be_nil
-      parse(' ').should be_nil
+  if RUBY_VERSION =~ /\A1\.8\./
+    describe "A character class containing a \\M- meta-char escape" do
+      slash = "\\"
+      testing_expression "[#{slash}M- ]"
+      it "matches that character only" do
+        parse("\240").should_not be_nil
+        parse('\\').should be_nil
+        parse('M').should be_nil
+        parse('-').should be_nil
+        parse(' ').should be_nil
+      end
     end
   end
 

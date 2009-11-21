@@ -17,3 +17,7 @@ load "./treetop.gemspec"
 Rake::GemPackageTask.new($gemspec) do |pkg|
   pkg.need_tar = true
 end
+
+task :version do
+  puts RUBY_VERSION
+end
