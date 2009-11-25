@@ -262,5 +262,15 @@ module CharacterClassSpec
       result.elements.inspect.should == %Q{[SyntaxNode offset=0, "ABC":\n  SyntaxNode offset=0, "A"\n  SyntaxNode offset=1, "B"\n  SyntaxNode offset=2, "C", SyntaxNode offset=3, "a"]}
     end
   end
+  
+  describe "a character class that gets cached because of a choice" do
+    testing_expression "[A-Z] 'a' / [A-Z]"
+    
+    it "generates a node for the lazily-instantiated character when it is the primary node" do
+      result = parse('A')
+      result.should be_a(Treetop::Runtime::SyntaxNode)
+      result.elements.should be_nil
+    end
+  end
 
 end
