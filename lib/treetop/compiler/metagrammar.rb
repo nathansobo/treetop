@@ -44,7 +44,10 @@ module Treetop
         start_index = index
         if node_cache[:treetop_file].has_key?(index)
           cached = node_cache[:treetop_file][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -137,7 +140,10 @@ module Treetop
         start_index = index
         if node_cache[:require_statement].has_key?(index)
           cached = node_cache[:require_statement][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -162,9 +168,8 @@ module Treetop
             s4, i4 = [], index
             loop do
               if has_terminal?('\G[ \\t]', true, index)
-                next_character = index + input[index..-1].match(/\A(.)/um).end(1)
                 r5 = true
-                @index = next_character
+                @index += 1
               else
                 r5 = nil
               end
@@ -185,9 +190,8 @@ module Treetop
               s6, i6 = [], index
               loop do
                 if has_terminal?('\G[^\\n\\r]', true, index)
-                  next_character = index + input[index..-1].match(/\A(.)/um).end(1)
                   r7 = true
-                  @index = next_character
+                  @index += 1
                 else
                   r7 = nil
                 end
@@ -206,9 +210,8 @@ module Treetop
               s0 << r6
               if r6
                 if has_terminal?('\G[\\n\\r]', true, index)
-                  next_character = index + input[index..-1].match(/\A(.)/um).end(1)
                   r8 = true
-                  @index = next_character
+                  @index += 1
                 else
                   r8 = nil
                 end
@@ -271,7 +274,10 @@ module Treetop
         start_index = index
         if node_cache[:module_declaration].has_key?(index)
           cached = node_cache[:module_declaration][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -290,9 +296,8 @@ module Treetop
           s1 << r3
           if r3
             if has_terminal?('\G[A-Z]', true, index)
-              next_character = index + input[index..-1].match(/\A(.)/um).end(1)
               r4 = true
-              @index = next_character
+              @index += 1
             else
               r4 = nil
             end
@@ -406,7 +411,10 @@ module Treetop
         start_index = index
         if node_cache[:grammar].has_key?(index)
           cached = node_cache[:grammar][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -502,15 +510,17 @@ module Treetop
         start_index = index
         if node_cache[:grammar_name].has_key?(index)
           cached = node_cache[:grammar_name][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
         i0, s0 = index, []
         if has_terminal?('\G[A-Z]', true, index)
-          next_character = index + input[index..-1].match(/\A(.)/um).end(1)
           r1 = true
-          @index = next_character
+          @index += 1
         else
           r1 = nil
         end
@@ -580,7 +590,10 @@ module Treetop
         start_index = index
         if node_cache[:declaration_sequence].has_key?(index)
           cached = node_cache[:declaration_sequence][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -650,7 +663,10 @@ module Treetop
         start_index = index
         if node_cache[:declaration].has_key?(index)
           cached = node_cache[:declaration][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -690,7 +706,10 @@ module Treetop
         start_index = index
         if node_cache[:include_declaration].has_key?(index)
           cached = node_cache[:include_declaration][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -708,9 +727,8 @@ module Treetop
           s0 << r2
           if r2
             if has_terminal?('\G[A-Z]', true, index)
-              next_character = index + input[index..-1].match(/\A(.)/um).end(1)
               r3 = true
-              @index = next_character
+              @index += 1
             else
               r3 = nil
             end
@@ -795,7 +813,10 @@ module Treetop
         start_index = index
         if node_cache[:parsing_rule].has_key?(index)
           cached = node_cache[:parsing_rule][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -883,7 +904,10 @@ module Treetop
         start_index = index
         if node_cache[:parsing_expression].has_key?(index)
           cached = node_cache[:parsing_expression][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -945,7 +969,10 @@ module Treetop
         start_index = index
         if node_cache[:choice].has_key?(index)
           cached = node_cache[:choice][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -1069,7 +1096,10 @@ module Treetop
         start_index = index
         if node_cache[:sequence].has_key?(index)
           cached = node_cache[:sequence][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -1129,7 +1159,10 @@ module Treetop
         start_index = index
         if node_cache[:alternative].has_key?(index)
           cached = node_cache[:alternative][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -1270,7 +1303,10 @@ module Treetop
         start_index = index
         if node_cache[:primary].has_key?(index)
           cached = node_cache[:primary][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -1406,7 +1442,10 @@ module Treetop
         start_index = index
         if node_cache[:labeled_sequence_primary].has_key?(index)
           cached = node_cache[:labeled_sequence_primary][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -1457,7 +1496,10 @@ module Treetop
         start_index = index
         if node_cache[:label].has_key?(index)
           cached = node_cache[:label][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -1611,7 +1653,10 @@ module Treetop
         start_index = index
         if node_cache[:sequence_primary].has_key?(index)
           cached = node_cache[:sequence_primary][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -1699,7 +1744,10 @@ module Treetop
         start_index = index
         if node_cache[:suffix].has_key?(index)
           cached = node_cache[:suffix][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -1726,7 +1774,10 @@ module Treetop
         start_index = index
         if node_cache[:optional_suffix].has_key?(index)
           cached = node_cache[:optional_suffix][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -1775,7 +1826,10 @@ module Treetop
         start_index = index
         if node_cache[:node_class_declarations].has_key?(index)
           cached = node_cache[:node_class_declarations][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -1804,7 +1858,10 @@ module Treetop
         start_index = index
         if node_cache[:repetition_suffix].has_key?(index)
           cached = node_cache[:repetition_suffix][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -1843,7 +1900,10 @@ module Treetop
         start_index = index
         if node_cache[:prefix].has_key?(index)
           cached = node_cache[:prefix][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -1893,7 +1953,10 @@ module Treetop
         start_index = index
         if node_cache[:atomic].has_key?(index)
           cached = node_cache[:atomic][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -1938,7 +2001,10 @@ module Treetop
         start_index = index
         if node_cache[:parenthesized_expression].has_key?(index)
           cached = node_cache[:parenthesized_expression][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -2011,7 +2077,10 @@ module Treetop
         start_index = index
         if node_cache[:nonterminal].has_key?(index)
           cached = node_cache[:nonterminal][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -2068,7 +2137,10 @@ module Treetop
         start_index = index
         if node_cache[:terminal].has_key?(index)
           cached = node_cache[:terminal][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -2106,7 +2178,10 @@ module Treetop
         start_index = index
         if node_cache[:quoted_string].has_key?(index)
           cached = node_cache[:quoted_string][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -2145,7 +2220,10 @@ module Treetop
         start_index = index
         if node_cache[:double_quoted_string].has_key?(index)
           cached = node_cache[:double_quoted_string][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -2200,9 +2278,8 @@ module Treetop
                   r6 = r8
                 else
                   if index < input_length
-                    next_character = index + input[index..-1].match(/\A(.)/um).end(1)
-                    r9 = instantiate_node(SyntaxNode,input, index...next_character)
-                    @index = next_character
+                    r9 = instantiate_node(SyntaxNode,input, index...(index + 1))
+                    @index += 1
                   else
                     terminal_parse_failure("any character")
                     r9 = nil
@@ -2270,7 +2347,10 @@ module Treetop
         start_index = index
         if node_cache[:single_quoted_string].has_key?(index)
           cached = node_cache[:single_quoted_string][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -2325,9 +2405,8 @@ module Treetop
                   r6 = r8
                 else
                   if index < input_length
-                    next_character = index + input[index..-1].match(/\A(.)/um).end(1)
-                    r9 = instantiate_node(SyntaxNode,input, index...next_character)
-                    @index = next_character
+                    r9 = instantiate_node(SyntaxNode,input, index...(index + 1))
+                    @index += 1
                   else
                     terminal_parse_failure("any character")
                     r9 = nil
@@ -2407,7 +2486,10 @@ module Treetop
         start_index = index
         if node_cache[:character_class].has_key?(index)
           cached = node_cache[:character_class][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -2452,9 +2534,8 @@ module Treetop
               s7 << r8
               if r8
                 if index < input_length
-                  next_character = index + input[index..-1].match(/\A(.)/um).end(1)
-                  r9 = instantiate_node(SyntaxNode,input, index...next_character)
-                  @index = next_character
+                  r9 = instantiate_node(SyntaxNode,input, index...(index + 1))
+                  @index += 1
                 else
                   terminal_parse_failure("any character")
                   r9 = nil
@@ -2489,9 +2570,8 @@ module Treetop
                 s10 << r11
                 if r11
                   if index < input_length
-                    next_character = index + input[index..-1].match(/\A(.)/um).end(1)
-                    r13 = instantiate_node(SyntaxNode,input, index...next_character)
-                    @index = next_character
+                    r13 = instantiate_node(SyntaxNode,input, index...(index + 1))
+                    @index += 1
                   else
                     terminal_parse_failure("any character")
                     r13 = nil
@@ -2563,7 +2643,10 @@ module Treetop
         start_index = index
         if node_cache[:anything_symbol].has_key?(index)
           cached = node_cache[:anything_symbol][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -2606,7 +2689,10 @@ module Treetop
         start_index = index
         if node_cache[:node_class_expression].has_key?(index)
           cached = node_cache[:node_class_expression][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -2644,9 +2730,8 @@ module Treetop
               s5 << r6
               if r6
                 if index < input_length
-                  next_character = index + input[index..-1].match(/\A(.)/um).end(1)
-                  r8 = instantiate_node(SyntaxNode,input, index...next_character)
-                  @index = next_character
+                  r8 = instantiate_node(SyntaxNode,input, index...(index + 1))
+                  @index += 1
                 else
                   terminal_parse_failure("any character")
                   r8 = nil
@@ -2755,7 +2840,10 @@ module Treetop
         start_index = index
         if node_cache[:trailing_inline_module].has_key?(index)
           cached = node_cache[:trailing_inline_module][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -2809,7 +2897,10 @@ module Treetop
         start_index = index
         if node_cache[:predicate_block].has_key?(index)
           cached = node_cache[:predicate_block][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -2849,7 +2940,10 @@ module Treetop
         start_index = index
         if node_cache[:inline_module].has_key?(index)
           cached = node_cache[:inline_module][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -2873,9 +2967,8 @@ module Treetop
               i5, s5 = index, []
               i6 = index
               if has_terminal?('\G[{}]', true, index)
-                next_character = index + input[index..-1].match(/\A(.)/um).end(1)
                 r7 = true
-                @index = next_character
+                @index += 1
               else
                 r7 = nil
               end
@@ -2888,9 +2981,8 @@ module Treetop
               s5 << r6
               if r6
                 if index < input_length
-                  next_character = index + input[index..-1].match(/\A(.)/um).end(1)
-                  r8 = instantiate_node(SyntaxNode,input, index...next_character)
-                  @index = next_character
+                  r8 = instantiate_node(SyntaxNode,input, index...(index + 1))
+                  @index += 1
                 else
                   terminal_parse_failure("any character")
                   r8 = nil
@@ -2950,7 +3042,10 @@ module Treetop
         start_index = index
         if node_cache[:keyword_inside_grammar].has_key?(index)
           cached = node_cache[:keyword_inside_grammar][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -3012,7 +3107,10 @@ module Treetop
         start_index = index
         if node_cache[:non_space_char].has_key?(index)
           cached = node_cache[:non_space_char][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -3028,9 +3126,8 @@ module Treetop
         s0 << r1
         if r1
           if index < input_length
-            next_character = index + input[index..-1].match(/\A(.)/um).end(1)
-            r3 = instantiate_node(SyntaxNode,input, index...next_character)
-            @index = next_character
+            r3 = instantiate_node(SyntaxNode,input, index...(index + 1))
+            @index += 1
           else
             terminal_parse_failure("any character")
             r3 = nil
@@ -3054,14 +3151,16 @@ module Treetop
         start_index = index
         if node_cache[:alpha_char].has_key?(index)
           cached = node_cache[:alpha_char][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
         if has_terminal?('\G[A-Za-z_]', true, index)
-          next_character = index + input[index..-1].match(/\A(.)/um).end(1)
-          r0 = instantiate_node(SyntaxNode, input, index...next_character)
-          @index = next_character
+          r0 = instantiate_node(SyntaxNode,input, index...(index + 1))
+          @index += 1
         else
           r0 = nil
         end
@@ -3075,7 +3174,10 @@ module Treetop
         start_index = index
         if node_cache[:alphanumeric_char].has_key?(index)
           cached = node_cache[:alphanumeric_char][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -3085,9 +3187,8 @@ module Treetop
           r0 = r1
         else
           if has_terminal?('\G[0-9]', true, index)
-            next_character = index + input[index..-1].match(/\A(.)/um).end(1)
             r2 = true
-            @index = next_character
+            @index += 1
           else
             r2 = nil
           end
@@ -3108,7 +3209,10 @@ module Treetop
         start_index = index
         if node_cache[:space].has_key?(index)
           cached = node_cache[:space][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -3155,7 +3259,10 @@ module Treetop
         start_index = index
         if node_cache[:comment_to_eol].has_key?(index)
           cached = node_cache[:comment_to_eol][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -3189,9 +3296,8 @@ module Treetop
             s3 << r4
             if r4
               if index < input_length
-                next_character = index + input[index..-1].match(/\A(.)/um).end(1)
-                r6 = instantiate_node(SyntaxNode,input, index...next_character)
-                @index = next_character
+                r6 = instantiate_node(SyntaxNode,input, index...(index + 1))
+                @index += 1
               else
                 terminal_parse_failure("any character")
                 r6 = nil
@@ -3231,14 +3337,16 @@ module Treetop
         start_index = index
         if node_cache[:white].has_key?(index)
           cached = node_cache[:white][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
         if has_terminal?('\G[ \\t\\n\\r]', true, index)
-          next_character = index + input[index..-1].match(/\A(.)/um).end(1)
-          r0 = instantiate_node(SyntaxNode, input, index...next_character)
-          @index = next_character
+          r0 = instantiate_node(SyntaxNode,input, index...(index + 1))
+          @index += 1
         else
           r0 = nil
         end
