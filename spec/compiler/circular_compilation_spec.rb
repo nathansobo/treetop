@@ -1,5 +1,6 @@
 require File.expand_path("#{File.dirname(__FILE__)}/../spec_helper")
 BENCHMARK = false
+METAGRAMMAR_PATH = File.join(TREETOP_ROOT, 'compiler', 'metagrammar.treetop')
 
 module CircularCompilationSpec
   describe "a parser for the metagrammar" do
