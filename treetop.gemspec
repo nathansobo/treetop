@@ -13,6 +13,6 @@ $gemspec = Gem::Specification.new do |s|
   s.require_path = "lib"
   s.autorequire = "treetop"
   s.has_rdoc = false
-  s.add_dependency "polyglot", ">= 0.2.5"
+  s.add_dependency "polyglot", ">= 0.3.0"
 end
 
