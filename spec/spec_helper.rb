@@ -105,5 +105,5 @@ class Symbol
     lambda do |x|
       x.send(self)
     end
-  end
+  end unless method_defined?(:to_proc)
 end
