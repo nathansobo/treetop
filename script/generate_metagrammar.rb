@@ -1,10 +1,9 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
-dir = File.dirname(__FILE__)
-require File.join(dir, '..', 'lib', 'treetop', 'bootstrap_gen_1_metagrammar')
+require File.expand_path('../../lib/treetop/bootstrap_gen_1_metagrammar', __FILE__)
 
-GENERATED_METAGRAMMAR_PATH = File.join(TREETOP_ROOT, 'compiler', 'metagrammar.rb')
+GENERATED_METAGRAMMAR_PATH = File.expand_path('../../lib/treetop/compiler/metagrammar.rb')
 
 File.open(METAGRAMMAR_PATH) do |source_file|
   File.open(GENERATED_METAGRAMMAR_PATH, 'w') do |target_file|

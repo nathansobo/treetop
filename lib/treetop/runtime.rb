@@ -1,5 +1,6 @@
-dir = File.dirname(__FILE__)
-require "#{dir}/runtime/compiled_parser"
-require "#{dir}/runtime/syntax_node"
-require "#{dir}/runtime/terminal_parse_failure"
-require "#{dir}/runtime/interval_skip_list"
+require 'treetop/ruby_extensions'
+
+require 'treetop/runtime/compiled_parser'
+require 'treetop/runtime/syntax_node'
+require 'treetop/runtime/terminal_parse_failure'
+require 'treetop/runtime/interval_skip_list'

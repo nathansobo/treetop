@@ -2,28 +2,25 @@
 # into the environment by compiling the current metagrammar.treetop using a trusted version of Treetop.
 
 require 'rubygems'
-dir = File.dirname(__FILE__)
 
 TREETOP_VERSION_REQUIRED_TO_BOOTSTRAP = '>= 1.1.5'
 
 # Loading trusted version of Treetop to compile the compiler
 gem_spec = Gem.source_index.find_name('treetop', TREETOP_VERSION_REQUIRED_TO_BOOTSTRAP).last
 raise "Install a Treetop Gem version #{TREETOP_VERSION_REQUIRED_TO_BOOTSTRAP} to bootstrap." unless gem_spec
-trusted_treetop_path = gem_spec.full_gem_path
-require File.join(trusted_treetop_path, 'lib', 'treetop')
+require "#{gem_spec.full_gem_path}/lib/treetop"
 
 # Relocating trusted version of Treetop to Trusted::Treetop
 Trusted = Module.new
 Trusted::Treetop = Treetop
 Object.send(:remove_const, :Treetop)
-Object.send(:remove_const, :TREETOP_ROOT)
 
 # Requiring version of Treetop that is under test
 $exclude_metagrammar = true
-require File.expand_path(File.join(dir, '..', 'treetop'))
+require File.expand_path('../treetop')
 
 # Compile and evaluate freshly generated metagrammar source
-METAGRAMMAR_PATH = File.join(TREETOP_ROOT, 'compiler', 'metagrammar.treetop')
+METAGRAMMAR_PATH = File.expand_path('../compiler/metagrammar.treetop', __FILE__)
 compiled_metagrammar_source = Trusted::Treetop::Compiler::GrammarCompiler.new.ruby_source(METAGRAMMAR_PATH)
 Object.class_eval(compiled_metagrammar_source)
 

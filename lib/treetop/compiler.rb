@@ -1,6 +1,7 @@
-dir = File.dirname(__FILE__)
-require File.join(dir, *%w[compiler lexical_address_space])
-require File.join(dir, *%w[compiler ruby_builder])
-require File.join(dir, *%w[compiler node_classes])
-require File.join(dir, *%w[compiler metagrammar]) unless defined?($exclude_metagrammar)
-require File.join(dir, *%w[compiler grammar_compiler])
+require 'treetop/ruby_extensions'
+
+require 'treetop/compiler/lexical_address_space'
+require 'treetop/compiler/ruby_builder'
+require 'treetop/compiler/node_classes'
+require 'treetop/compiler/metagrammar' unless defined?($exclude_metagrammar)
+require 'treetop/compiler/grammar_compiler'
