@@ -63,6 +63,7 @@ module Treetop
     end
 
     def parse_multibyte(input, options = {})
+      require 'active_support/all'
       parse(input.mb_chars, options)
     end
 
