@@ -1,4 +1,4 @@
-require File.expand_path("#{File.dirname(__FILE__)}/../spec_helper")
+require 'spec_helper'
 
 module TerminalSymbolSpec
   class Foo < Treetop::Runtime::SyntaxNode

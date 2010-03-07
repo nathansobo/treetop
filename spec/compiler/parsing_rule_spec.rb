@@ -1,4 +1,4 @@
-require File.expand_path("#{File.dirname(__FILE__)}/../spec_helper")
+require 'spec_helper'
 
 module ParsingRuleSpec
   describe "a grammar with one parsing rule" do

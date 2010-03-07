@@ -1,5 +1,4 @@
-require File.expand_path("#{File.dirname(__FILE__)}/../../spec_helper")
-require File.expand_path("#{File.dirname(__FILE__)}/spec_helper")
+require 'runtime/interval_skip_list/spec_helper'
 
 describe "The palindromic fixture" do
   it_should_behave_like "the palindromic fixture"

@@ -1,9 +1,9 @@
-dir = File.dirname(__FILE__)
 require 'rubygems'
 require 'benchmark'
 require 'spec'
 
-require File.join(dir, '..', 'lib', 'treetop')
+$LOAD_PATH.unshift File.expand_path('../../lib')
+require 'treetop'
 include Treetop
 
 Spec::Runner.configure do |config|

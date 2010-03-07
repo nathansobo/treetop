@@ -4,7 +4,7 @@ require 'digest/sha1'
 # Treetop library versions, not a previously installed gem
 ENV['PATH'] = File.expand_path(File.dirname(__FILE__) + '../../../bin' +
                               File::PATH_SEPARATOR + ENV['PATH'])
-$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + '../../../lib'))
+$LOAD_PATH.unshift(File.expand_path('../../../../lib', __FILE__))
 
 describe "The 'tt' comand line compiler" do
 

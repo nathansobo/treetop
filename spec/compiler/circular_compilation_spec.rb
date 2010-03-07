@@ -1,4 +1,5 @@
-require File.expand_path("#{File.dirname(__FILE__)}/../spec_helper")
+require 'spec_helper'
+
 BENCHMARK = false
 METAGRAMMAR_PATH = File.expand_path('../../../lib/treetop/compiler/metagrammar.treetop', __FILE__)
 
