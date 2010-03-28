@@ -1,4 +1,4 @@
-require File.expand_path("#{File.dirname(__FILE__)}/spec_helper")
+require 'runtime/interval_skip_list/spec_helper'
 
 describe IntervalSkipList, " when #next_node_height returns 1, 3, 2, 3, 1 in order" do
   include IntervalSkipListSpecHelper

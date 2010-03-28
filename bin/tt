@@ -5,10 +5,11 @@ require 'rubygems'
 $LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + "/../lib"))
 require 'treetop'
 require 'treetop/version'
+require 'treetop/polyglot'
 
 options = {}
 parser = OptionParser.new do |opts|
-  exts = Treetop::VALID_GRAMMAR_EXT.collect { |i| '.' + i }
+  exts = Treetop::Polyglot::VALID_GRAMMAR_EXT.collect { |i| '.' + i }
 
   opts.banner = "Treetop Parsing Expression Grammar (PEG) Comand Line Compiler"
   opts.define_head "Usage: tt [options] grammar_file[#{exts.join('|')}] ..."
@@ -57,7 +58,7 @@ end
 
 def grammar_exist?(filename)
   if File.extname(filename).empty?
-    Treetop::VALID_GRAMMAR_EXT.each do |ext|
+    Treetop::Polyglot::VALID_GRAMMAR_EXT.each do |ext|
       fn_ext = "#{filename}.#{ext}"
       return true if File.exist?(fn_ext) && !File.zero?(fn_ext)
     end
@@ -67,7 +68,7 @@ end
 
 def full_grammar_filename(filename)
   return filename if !File.extname(filename).empty?
-  Treetop::VALID_GRAMMAR_EXT.each do |ext|
+  Treetop::Polyglot::VALID_GRAMMAR_EXT.each do |ext|
     fn_ext = "#{filename}.#{ext}"
     return fn_ext if File.exist?(fn_ext) && !File.zero?(fn_ext)
   end
@@ -96,7 +97,7 @@ while !file_list.empty?
 
   # try to compile
   treetop_file = full_grammar_filename(treetop_file)
-  std_output_file = treetop_file.gsub(Treetop::VALID_GRAMMAR_EXT_REGEXP, '.rb')
+  std_output_file = treetop_file.gsub(Treetop::Polyglot::VALID_GRAMMAR_EXT_REGEXP, '.rb')
 
   if options[:out_file]
     # explicit output file name option; never overwrite unless forced
