@@ -17,6 +17,10 @@
 	<key>patterns</key>
 	<array>
 		<dict>
+			<key>include</key>
+			<string>#comment</string>
+		</dict>
+		<dict>
 			<key>begin</key>
 			<string>^(grammar) ([A-Z]\w+)</string>
 			<key>beginCaptures</key>
@@ -47,8 +51,12 @@
 			<key>patterns</key>
 			<array>
 				<dict>
+					<key>include</key>
+					<string>#comment</string>
+				</dict>
+				<dict>
 					<key>begin</key>
-					<string>\b(rule)\b (.+)$</string>
+					<string>\b(rule)\b (\w+)</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>1</key>
@@ -76,6 +84,10 @@
 					<string>meta.rule.treetop</string>
 					<key>patterns</key>
 					<array>
+						<dict>
+							<key>include</key>
+							<string>#comment</string>
+						</dict>
 						<dict>
 							<key>include</key>
 							<string>#strings</string>
@@ -202,6 +214,21 @@
 					</array>
 				</dict>
 			</array>
+		</dict>
+		<key>comment</key>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.comment.treetop</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>(#).*$\n?</string>
+			<key>name</key>
+			<string>comment.line.number-sign.treetop</string>
 		</dict>
 		<key>strings</key>
 		<dict>
