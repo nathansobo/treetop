@@ -1,3 +1,5 @@
+require 'treetop/ruby_extensions/string'
+
 module Treetop
   module Compiler
     class RubyBuilder
