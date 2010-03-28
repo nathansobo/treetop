@@ -7,7 +7,7 @@ module Treetop
       include Treetop::Runtime
 
       def root
-        @root || :treetop_file
+        @root ||= :treetop_file
       end
 
       module TreetopFile0
