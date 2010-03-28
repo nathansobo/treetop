@@ -4,9 +4,7 @@ require 'benchmark'
 require 'spec'
 require 'polyglot'
 
-unless $bootstrapped_gen_1_metagrammar
-  load File.join(dir, '..', 'lib', 'treetop', 'bootstrap_gen_1_metagrammar.rb')
-end
+require File.join(dir, '..', 'lib', 'treetop')
 include Treetop
 
 Spec::Runner.configure do |config|
