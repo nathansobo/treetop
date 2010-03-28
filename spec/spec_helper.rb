@@ -1,10 +1,10 @@
-dir = File.dirname(__FILE__)
 require 'rubygems'
 require 'benchmark'
 require 'spec'
 require 'polyglot'
 
-require File.join(dir, '..', 'lib', 'treetop')
+$LOAD_PATH.unshift File.expand_path('../../lib')
+require 'treetop'
 include Treetop
 
 Spec::Runner.configure do |config|
@@ -64,6 +64,7 @@ module Treetop
     end
 
     def parse_multibyte(input, options = {})
+      require 'active_support/all'
       parse(input.mb_chars, options)
     end
 
@@ -105,5 +106,5 @@ class Symbol
     lambda do |x|
       x.send(self)
     end
-  end
+  end unless method_defined?(:to_proc)
 end

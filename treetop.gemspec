@@ -1,4 +1,4 @@
-require "treetop/version"
+require File.expand_path("../lib/treetop/version", __FILE__)
 $gemspec = Gem::Specification.new do |s|
   s.name = "treetop"
   s.version = Treetop::VERSION::STRING

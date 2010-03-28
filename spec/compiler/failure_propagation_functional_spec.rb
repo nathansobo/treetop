@@ -1,4 +1,4 @@
-require File.expand_path("#{File.dirname(__FILE__)}/../spec_helper")
+require 'spec_helper'
 
 describe "An expression for braces surrounding zero or more letters followed by semicolons" do
   testing_expression "'{' ([a-z] ';')* '}'"

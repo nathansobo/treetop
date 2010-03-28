@@ -1,15 +1,7 @@
 #!ruby19
 # encoding: utf-8
 
-require File.expand_path("#{File.dirname(__FILE__)}/../spec_helper")
-
-# Require ActiveSupport for multibyte strings
-begin
-  require 'active_support'
-rescue
-  gem 'activesupport'
-  require 'active_support'
-end
+require 'spec_helper'
 
 module MultibyteCharsSpec
   describe "an anything symbol" do
