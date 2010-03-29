@@ -2,12 +2,12 @@ module Treetop
   module Runtime
     class CompiledParser
       include Treetop::Runtime
-      
+
       attr_reader :input, :index, :max_terminal_failure_index
       attr_writer :root
       attr_accessor :consume_all_input
       alias :consume_all_input? :consume_all_input
-      
+
       def initialize
         self.consume_all_input = true
       end
@@ -43,17 +43,21 @@ module Treetop
                 " at line #{failure_line}, column #{failure_column} (byte #{failure_index+1})" +
                 " after #{input[index...failure_index]}"
       end
-      
+
       def terminal_failures
-        @terminal_failures.map! {|tf_ary| TerminalParseFailure.new(*tf_ary) }
+        if @terminal_failures.empty? || @terminal_failures[0].is_a?(TerminalParseFailure)
+          @terminal_failures
+        else
+          @terminal_failures.map! {|tf_ary| TerminalParseFailure.new(*tf_ary) }
+        end
       end
 
 
       protected
-      
+
       attr_reader :node_cache, :input_length
       attr_writer :index
-              
+
       def prepare_to_parse(input)
         @input = input
         @input_length = input.length
@@ -63,11 +67,11 @@ module Treetop
         @terminal_failures = []
         @max_terminal_failure_index = 0
       end
-      
+
       def reset_index
         @index = 0
       end
-      
+
       def parse_anything(node_class = SyntaxNode, inline_module = nil)
         if index < input.length
           result = instantiate_node(node_class,input, index...(index + 1))
@@ -78,15 +82,15 @@ module Treetop
           terminal_parse_failure("any character")
         end
       end
-    
+
       def instantiate_node(node_type,*args)
-        if node_type.respond_to? :new 
+        if node_type.respond_to? :new
           node_type.new(*args)
         else
           SyntaxNode.new(*args).extend(node_type)
         end
       end
-    
+
       def has_terminal?(terminal, regex, index)
         if regex
           rx = @regexps[terminal] ||= Regexp.new(terminal)
@@ -95,7 +99,7 @@ module Treetop
           input[index, terminal.size] == terminal
         end
       end
-    
+
       def terminal_parse_failure(expected_string)
         return nil if index < max_terminal_failure_index
         if index > max_terminal_failure_index
