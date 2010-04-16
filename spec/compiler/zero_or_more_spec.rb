@@ -6,7 +6,7 @@ module ZeroOrMoreSpec
 
   describe "zero or more of a terminal symbol followed by a node class declaration and a block" do
     testing_expression '"foo"* <ZeroOrMoreSpec::Foo> { def a_method; end }'
-  
+
     it "successfully parses epsilon, returning an instance declared node class and recording a terminal failure" do
       parse('') do |result|
         result.should_not be_nil
@@ -20,7 +20,7 @@ module ZeroOrMoreSpec
         failure.expected_string.should == 'foo'
       end
     end
-  
+
     it "successfully parses two of that terminal in a row, returning an instance of the declared node class and recording a failure representing the third attempt " do
       parse("foofoo") do |result|
         result.should_not be_nil
@@ -37,7 +37,7 @@ module ZeroOrMoreSpec
 
   describe "Zero or more of a sequence" do
     testing_expression '("foo" "bar")*'
-  
+
     it "resets the index appropriately following partially matcing input" do
       parse('foobarfoo', :consume_all_input => false) do |result|
         result.should_not be_nil

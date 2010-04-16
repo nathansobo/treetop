@@ -112,7 +112,16 @@ Any item in a rule may be followed by a '+' or a '*' character, signifying one-o
       end
     end
 
-The 'a'* will always eat up any 'a's that follow, and the subsequent 'a' will find none there, so the whole rule will fail. You might need to use lookahead to avoid matching too much.
+The 'a'* will always eat up any 'a's that follow, and the subsequent 'a' will find none there, so the whole rule will fail. You might need to use lookahead to avoid matching too much. Alternatively, you can use an occurrence range:
+
+    # toogreedy.treetop
+    grammar TooGreedy
+      rule two_to_four_as
+      	'a' 2..4
+      end
+    end
+
+In an occurrence range, you may omit either the minimum count or the maximum count, so that "0.. " works like "*" and "1.. " works like '+'.
 
 Negative Lookahead
 ------------------
@@ -141,24 +150,33 @@ Positive lookahead
 
 Sometimes you want an item to match, but only if the *following* text would match some pattern. You don't want to consume that following text, but if it's not there, you want this rule to fail. You can append a positive lookahead like this to a rule by appending the lookahead rule preceeded by an & character.
 
+Semantic predicates
+-------------------
 
+Warning: This is an advanced feature. You need to understand the way a packrat parser operates to use it correctly. The result of computing a rule containing a semantic predicate will be memoized, even if the same rule, applied later at the same location in the input, would work differently due to a semantic predicate returning a diffent value. If you don't understand the previous sentence yet still use this feature, you're on your own, test carefully!
 
-Features to cover in the talk
-=============================
+Sometimes, you need to run external Ruby code to decide whether this syntax rule should continue or should fail. You can do this using either positive or negative semantic predicates. These are Ruby code blocks (lambdas) which are called when the parser reaches that location. For this rule to succeed, the value must be true for a positive predicate (a block like &{ ... }), or false for a negative predicate (a block like !{ ... }).
 
-* Treetop files
-* Grammar definition
-* Rules
-* Loading a grammar
-* Compiling a grammar with the `tt` command
-* Accessing a parser for the grammar from Ruby
-* Parsing Expressions of all kinds
-? Left recursion and factorization
-  - Here I can talk about function application, discussing how the operator
-    could be an arbitrary expression
-* Inline node class eval blocks
-* Node class declarations
-* Labels
-* Use of super within within labels
-* Grammar composition with include
-* Use of super with grammar composition
+The block is called with one argument, the array containing the preceding syntax nodes in the current sequence. Within the block, you cannot use node names or labels for the preceding nodes, as the node for the current rule does not yet exist. You must refer to preceding nodes using their position in the sequence.
+
+    grammar Keywords
+      rule sequence_of_reserved_and_nonreserved_words
+      	( reserved / word )*
+      end
+
+      rule reserved
+        word &{ |s| symbol_reserved?(s[0].text_value) }
+      end
+
+      rule word
+        ([a-zA-Z]+ [ \t]+) 
+      end
+    end
+
+One case where it is always safe to use a semantic predicate is to invoke the Ruby debugger, but don't forget to return true so the rule succeeds! Assuming you have required the 'ruby-debug' module somewhere, it looks like this:
+
+      rule problems
+        word &{ |s| debugger; true }
+      end
+
+When the debugger stops here, you can inspect the contents of the SyntaxNode for "word" by looking at s[0], and the stack trace will show how you got there.

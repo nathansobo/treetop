@@ -575,7 +575,7 @@ module Treetop
         def declarations
           [head] + tail
         end
-    
+
         def tail
           super.elements.map { |elt| elt.declaration }
         end
@@ -955,11 +955,11 @@ module Treetop
         def alternatives
           [head] + tail
         end
-        
+
         def tail
           super.elements.map {|elt| elt.alternative}
         end
-        
+
         def inline_modules
           (alternatives.map {|alt| alt.inline_modules }).flatten
         end
@@ -1076,17 +1076,17 @@ module Treetop
         def sequence_elements
           [head] + tail
         end
-  
+
         def tail
           super.elements.map {|elt| elt.labeled_sequence_primary }
         end
-    
+
         def inline_modules
           (sequence_elements.map {|elt| elt.inline_modules}).flatten +
           [sequence_element_accessor_module] +
           node_class_declarations.inline_modules
         end
-    
+
         def inline_module_name
           node_class_declarations.inline_module_name
         end
@@ -1199,15 +1199,15 @@ module Treetop
         def compile(address, builder, parent_expression=nil)
           prefix.compile(address, builder, self)
         end
-    
+
         def prefixed_expression
           atomic
         end
-    
+
         def inline_modules
           atomic.inline_modules
         end
-    
+
         def inline_module_name
           nil
         end
@@ -1253,19 +1253,19 @@ module Treetop
         def compile(address, builder, parent_expression=nil)
           suffix.compile(address, builder, self)
         end
-    
+
         def optional_expression
           atomic
         end
-    
+
         def node_class_name
           node_class_declarations.node_class_name
         end
-    
+
         def inline_modules
           atomic.inline_modules + node_class_declarations.inline_modules
         end
-    
+
         def inline_module_name
           node_class_declarations.inline_module_name
         end
@@ -1285,15 +1285,15 @@ module Treetop
         def compile(address, builder, parent_expression=nil)
           atomic.compile(address, builder, self)
         end
-    
+
         def node_class_name
           node_class_declarations.node_class_name
         end
-    
+
         def inline_modules
           atomic.inline_modules + node_class_declarations.inline_modules
         end
-    
+
         def inline_module_name
           node_class_declarations.inline_module_name
         end
@@ -1422,11 +1422,11 @@ module Treetop
         def compile(lexical_address, builder)
           sequence_primary.compile(lexical_address, builder)
         end
-    
+
         def inline_modules
           sequence_primary.inline_modules
         end
-    
+
         def label_name
           if label.name
             label.name
@@ -1585,15 +1585,15 @@ module Treetop
         def compile(lexical_address, builder)
           prefix.compile(lexical_address, builder, self)
         end
-    
+
         def prefixed_expression
           elements[1]
         end
-    
+
         def inline_modules
           atomic.inline_modules
         end
-    
+
         def inline_module_name
           nil
         end
@@ -1635,15 +1635,15 @@ module Treetop
         def compile(lexical_address, builder)
           suffix.compile(lexical_address, builder, self)
         end
-    
+
         def node_class_name
           nil
         end
-    
+
         def inline_modules
           atomic.inline_modules
         end
-    
+
         def inline_module_name
           nil
         end
@@ -1808,15 +1808,15 @@ module Treetop
         def node_class_name
           node_class_expression.node_class_name
         end
-    
+
         def inline_modules
           trailing_inline_module.inline_modules
         end
-    
+
         def inline_module
           trailing_inline_module.inline_module
         end
-    
+
         def inline_module_name
           inline_module.module_name if inline_module
         end
@@ -1886,12 +1886,105 @@ module Treetop
           if r2
             r0 = r2
           else
-            @index = i0
-            r0 = nil
+            r3 = _nt_occurrence_range
+            if r3
+              r0 = r3
+            else
+              @index = i0
+              r0 = nil
+            end
           end
         end
 
         node_cache[:repetition_suffix][start_index] = r0
+
+        r0
+      end
+
+      module OccurrenceRange0
+        def min
+          elements[1]
+        end
+
+        def max
+          elements[3]
+        end
+      end
+
+      def _nt_occurrence_range
+        start_index = index
+        if node_cache[:occurrence_range].has_key?(index)
+          cached = node_cache[:occurrence_range][index]
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
+          return cached
+        end
+
+        i0, s0 = index, []
+        r2 = _nt_space
+        if r2
+          r1 = r2
+        else
+          r1 = instantiate_node(SyntaxNode,input, index...index)
+        end
+        s0 << r1
+        if r1
+          s3, i3 = [], index
+          loop do
+            if has_terminal?('\G[0-9]', true, index)
+              r4 = true
+              @index += 1
+            else
+              r4 = nil
+            end
+            if r4
+              s3 << r4
+            else
+              break
+            end
+          end
+          r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
+          s0 << r3
+          if r3
+            if has_terminal?('..', false, index)
+              r5 = instantiate_node(SyntaxNode,input, index...(index + 2))
+              @index += 2
+            else
+              terminal_parse_failure('..')
+              r5 = nil
+            end
+            s0 << r5
+            if r5
+              s6, i6 = [], index
+              loop do
+                if has_terminal?('\G[0-9]', true, index)
+                  r7 = true
+                  @index += 1
+                else
+                  r7 = nil
+                end
+                if r7
+                  s6 << r7
+                else
+                  break
+                end
+              end
+              r6 = instantiate_node(SyntaxNode,input, i6...index, s6)
+              s0 << r6
+            end
+          end
+        end
+        if s0.last
+          r0 = instantiate_node(OccurrenceRange,input, i0...index, s0)
+          r0.extend(OccurrenceRange0)
+        else
+          @index = i0
+          r0 = nil
+        end
+
+        node_cache[:occurrence_range][start_index] = r0
 
         r0
       end
@@ -2816,7 +2909,7 @@ module Treetop
         def inline_modules
           [inline_module]
         end
-              
+
         def inline_module_name
           inline_module.module_name
         end
@@ -2826,11 +2919,11 @@ module Treetop
         def inline_modules
           []
         end
-    
+
         def inline_module
-          nil 
+          nil
         end
-    
+
         def inline_module_name
           nil
         end

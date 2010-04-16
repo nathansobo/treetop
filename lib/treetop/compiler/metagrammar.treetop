@@ -8,11 +8,11 @@ module Treetop
           end
         }
       end
-      
+
       rule require_statement
         prefix:space? "require" [ \t]+ [^\n\r]+ [\n\r]
       end
-      
+
       rule module_declaration
         prefix:('module' space [A-Z] alphanumeric_char* space) module_contents:(module_declaration / grammar) suffix:(space 'end') {
           def compile
@@ -34,7 +34,7 @@ module Treetop
           def declarations
             [head] + tail
           end
-      
+
           def tail
             super.elements.map { |elt| elt.declaration }
           end
@@ -45,11 +45,11 @@ module Treetop
           end
         }
       end
-      
+
       rule declaration
         parsing_rule / include_declaration
       end
-      
+
       rule include_declaration
         'include' space [A-Z] (alphanumeric_char / '::')* {
           def compile(builder)
@@ -71,11 +71,11 @@ module Treetop
           def alternatives
             [head] + tail
           end
-          
+
           def tail
             super.elements.map {|elt| elt.alternative}
           end
-          
+
           def inline_modules
             (alternatives.map {|alt| alt.inline_modules }).flatten
           end
@@ -87,17 +87,17 @@ module Treetop
           def sequence_elements
             [head] + tail
           end
-    
+
           def tail
             super.elements.map {|elt| elt.labeled_sequence_primary }
           end
-      
+
           def inline_modules
             (sequence_elements.map {|elt| elt.inline_modules}).flatten +
             [sequence_element_accessor_module] +
             node_class_declarations.inline_modules
           end
-      
+
           def inline_module_name
             node_class_declarations.inline_module_name
           end
@@ -113,15 +113,15 @@ module Treetop
           def compile(address, builder, parent_expression=nil)
             prefix.compile(address, builder, self)
           end
-      
+
           def prefixed_expression
             atomic
           end
-      
+
           def inline_modules
             atomic.inline_modules
           end
-      
+
           def inline_module_name
             nil
           end
@@ -143,19 +143,19 @@ module Treetop
           def compile(address, builder, parent_expression=nil)
             suffix.compile(address, builder, self)
           end
-      
+
           def optional_expression
             atomic
           end
-      
+
           def node_class_name
             node_class_declarations.node_class_name
           end
-      
+
           def inline_modules
             atomic.inline_modules + node_class_declarations.inline_modules
           end
-      
+
           def inline_module_name
             node_class_declarations.inline_module_name
           end
@@ -165,15 +165,15 @@ module Treetop
           def compile(address, builder, parent_expression=nil)
             atomic.compile(address, builder, self)
           end
-      
+
           def node_class_name
             node_class_declarations.node_class_name
           end
-      
+
           def inline_modules
             atomic.inline_modules + node_class_declarations.inline_modules
           end
-      
+
           def inline_module_name
             node_class_declarations.inline_module_name
           end
@@ -185,11 +185,11 @@ module Treetop
           def compile(lexical_address, builder)
             sequence_primary.compile(lexical_address, builder)
           end
-      
+
           def inline_modules
             sequence_primary.inline_modules
           end
-      
+
           def label_name
             if label.name
               label.name
@@ -201,7 +201,7 @@ module Treetop
           end
         }
       end
-  
+
       rule label
         (alpha_char alphanumeric_char*) ':' {
           def name
@@ -221,15 +221,15 @@ module Treetop
           def compile(lexical_address, builder)
             prefix.compile(lexical_address, builder, self)
           end
-      
+
           def prefixed_expression
             elements[1]
           end
-      
+
           def inline_modules
             atomic.inline_modules
           end
-      
+
           def inline_module_name
             nil
           end
@@ -251,15 +251,15 @@ module Treetop
           def compile(lexical_address, builder)
             suffix.compile(lexical_address, builder, self)
           end
-      
+
           def node_class_name
             nil
           end
-      
+
           def inline_modules
             atomic.inline_modules
           end
-      
+
           def inline_module_name
             nil
           end
@@ -267,29 +267,29 @@ module Treetop
         /
         atomic
       end
-  
+
       rule suffix
         repetition_suffix / optional_suffix
       end
-  
+
       rule optional_suffix
         '?' <Optional>
       end
-      
+
       rule node_class_declarations
         node_class_expression trailing_inline_module {
           def node_class_name
             node_class_expression.node_class_name
           end
-      
+
           def inline_modules
             trailing_inline_module.inline_modules
           end
-      
+
           def inline_module
             trailing_inline_module.inline_module
           end
-      
+
           def inline_module_name
             inline_module.module_name if inline_module
           end
@@ -297,7 +297,11 @@ module Treetop
       end
 
       rule repetition_suffix
-        '+' <OneOrMore> / '*' <ZeroOrMore>
+        '+' <OneOrMore> / '*' <ZeroOrMore> / occurrence_range
+      end
+
+      rule occurrence_range
+	space? min:([0-9])* '..' max:([0-9])* <OccurrenceRange>
       end
 
       rule prefix
@@ -327,7 +331,7 @@ module Treetop
       rule terminal
         quoted_string / character_class / anything_symbol
       end
-      
+
       rule quoted_string
         (single_quoted_string / double_quoted_string) {
           def string
@@ -335,7 +339,7 @@ module Treetop
           end
         }
       end
-      
+
       rule double_quoted_string
         '"' string:(!'"' ("\\\\" / '\"' / .))* '"' <Terminal>
       end
@@ -375,7 +379,7 @@ module Treetop
           def inline_modules
             [inline_module]
           end
-                
+
           def inline_module_name
             inline_module.module_name
           end
@@ -385,11 +389,11 @@ module Treetop
           def inline_modules
             []
           end
-      
+
           def inline_module
-            nil 
+            nil
           end
-      
+
           def inline_module_name
             nil
           end
