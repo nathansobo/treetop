@@ -3,9 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>name</key>
-	<string>Comments</string>
+	<string>Misc</string>
+	<key>scope</key>
+	<string>source.treetop</string>
 	<key>settings</key>
 	<dict>
+		<key>decreaseIndentPattern</key>
+		<string>^\s*end\s*$</string>
+		<key>increaseIndentPattern</key>
+		<string>^\s*(grammar|rule)\s+\w+\s*$</string>
 		<key>shellVariables</key>
 		<array>
 			<dict>

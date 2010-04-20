@@ -55,6 +55,25 @@
 					<string>#comment</string>
 				</dict>
 				<dict>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>keyword.include.treetop</string>
+						</dict>
+						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>entity.name.include.treetop</string>
+						</dict>
+					</dict>
+					<key>match</key>
+					<string>(include)\s+(\w+)</string>
+					<key>name</key>
+					<string>meta.include.treetop</string>
+				</dict>
+				<dict>
 					<key>begin</key>
 					<string>\b(rule)\b (\w+)</string>
 					<key>beginCaptures</key>
