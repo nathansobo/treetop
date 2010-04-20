@@ -98,7 +98,7 @@ class SeqParBenchmark
         size, time = line.split(' ')
         performance_increases << (before[size].to_f - time.to_f) / before[size].to_f unless time == "0" || before[size] == "0"
       end
-      puts "Average performance increase: #{performance_increases.mean * 100}%"
+      puts "Average performance increase: #{(performance_increases.mean * 100 * 10).round / 10.0}%"
     end
   end
   
