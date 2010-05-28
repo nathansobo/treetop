@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'tmpdir'
 
 describe Compiler::GrammarCompiler do
   attr_reader :compiler, :source_path_with_treetop_extension, :source_path_with_tt_extension, :target_path, :alternate_target_path
@@ -6,12 +7,14 @@ describe Compiler::GrammarCompiler do
     @compiler = Compiler::GrammarCompiler.new
 
     dir = File.dirname(__FILE__)
+    @tmpdir = Dir.tmpdir
+
     @source_path_with_treetop_extension = "#{dir}/test_grammar.treetop"
     @source_path_with_do = "#{dir}/test_grammar_do.treetop"
     @source_path_with_tt_extension = "#{dir}/test_grammar.tt"
-    @target_path = "#{dir}/test_grammar.rb"
-    @target_path_with_do = "#{dir}/test_grammar_do.rb"
-    @alternate_target_path = "#{dir}/test_grammar_alt.rb"
+    @target_path = "#{@tmpdir}/test_grammar.rb"
+    @target_path_with_do = "#{@tmpdir}/test_grammar_do.rb"
+    @alternate_target_path = "#{@tmpdir}/test_grammar_alt.rb"
     delete_target_files
   end
 
@@ -23,8 +26,10 @@ describe Compiler::GrammarCompiler do
   end
 
   specify "compilation of a single file to a default file name" do
+    src_copy = "#{@tmpdir}/test_grammar.treetop"
+    File.open(source_path_with_treetop_extension) { |f| File.open(src_copy,'w'){|o|o.write(f.read)} }
     File.exists?(target_path).should be_false
-    compiler.compile(source_path_with_treetop_extension)
+    compiler.compile(src_copy)
     File.exists?(target_path).should be_true
     require target_path
     Test::GrammarParser.new.parse('foo').should_not be_nil
@@ -70,7 +75,9 @@ describe Compiler::GrammarCompiler do
   end
 
   specify "grammars with 'do' compile" do
-    compiler.compile(@source_path_with_do)
+    src_copy = "#{@tmpdir}/test_grammar_do.treetop"
+    File.open(@source_path_with_do) { |f| File.open(src_copy,'w'){|o|o.write(f.read)} }
+    compiler.compile(src_copy)
     require @target_path_with_do
     Test::GrammarParser.new.parse('foo').should_not be_nil
   end
