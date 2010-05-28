@@ -1,3 +1,9 @@
+Support
+=======
+
+Support for Treetop is provided through the mailing list you can join or browse here:
+http://groups.google.com/group/treetop-dev 
+
 Tutorial
 ========
 Languages can be split into two components, their *syntax* and their *semantics*. It's your understanding of English syntax that tells you the stream of words "Sleep furiously green ideas colorless" is not a valid sentence. Semantics is deeper. Even if we rearrange the above sentence to be "Colorless green ideas sleep furiously", which is syntactically correct, it remains nonsensical on a semantic level. With Treetop, you'll be dealing with languages that are much simpler than English, but these basic concepts apply. Your programs will need to address both the syntax and the semantics of the languages they interpret.
@@ -153,7 +159,7 @@ Sometimes you want an item to match, but only if the *following* text would matc
 Semantic predicates
 -------------------
 
-Warning: This is an advanced feature. You need to understand the way a packrat parser operates to use it correctly. The result of computing a rule containing a semantic predicate will be memoized, even if the same rule, applied later at the same location in the input, would work differently due to a semantic predicate returning a diffent value. If you don't understand the previous sentence yet still use this feature, you're on your own, test carefully!
+Warning: This is an advanced feature. You need to understand the way a packrat parser operates to use it correctly. The result of computing a rule containing a semantic predicate will be memoized, even if the same rule, applied later at the same location in the input, would work differently due to a semantic predicate returning a different value. If you don't understand the previous sentence yet still use this feature, you're on your own, so test carefully!
 
 Sometimes, you need to run external Ruby code to decide whether this syntax rule should continue or should fail. You can do this using either positive or negative semantic predicates. These are Ruby code blocks (lambdas) which are called when the parser reaches that location. For this rule to succeed, the value must be true for a positive predicate (a block like &{ ... }), or false for a negative predicate (a block like !{ ... }).
 
