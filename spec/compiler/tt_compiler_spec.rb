@@ -8,11 +8,13 @@ ENV['PATH'] = File.expand_path(File.dirname(__FILE__) + '../../../bin' +
 $LOAD_PATH.unshift(File.expand_path('../../../../lib', __FILE__))
 
 describe "The 'tt' comand line compiler" do
+  before(:each) do
+    @tmpdir = Dir.tmpdir
+  end
 
   context 'when processing a single grammar file' do
     before(:each) do
       # create a fresh but dumb grammar file for each example
-      @tmpdir = Dir.tmpdir
       @test_base = "dumb-#{rand(1000)}"
       @test_path = "#{@tmpdir}/#{@test_base}"
       @test_grammar = "#{@test_path}.tt"
