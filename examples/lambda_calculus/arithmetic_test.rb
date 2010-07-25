@@ -43,6 +43,10 @@ class ArithmeticParserTest < Test::Unit::TestCase
     assert_equal 11, parse('1 + 2 * 3 + 4').eval
   end
   
+  def test_left_to_right
+    assert_equal 2, parse('5 - 2 - 1').eval
+  end
+  
   def test_parentheses
     assert_equal 25, parse('(5 + x) * (10 - y)').eval('x' => 0, 'y' => 5)
   end

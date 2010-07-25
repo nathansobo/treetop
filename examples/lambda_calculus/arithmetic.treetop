@@ -4,7 +4,10 @@ grammar Arithmetic
   end
   
   rule comparative
-    operand_1:additive space operator:equality_op space operand_2:additive <BinaryOperation>
+    head:additive
+    tail:(
+      space operator:equality_op
+      space operand:additive)* <BinaryOperation>
   end
   
   rule equality_op
@@ -16,11 +19,10 @@ grammar Arithmetic
   end
   
   rule additive
-    operand_1:multitive
-    space operator:additive_op space
-    operand_2:additive <BinaryOperation>
-    /
-    multitive
+    head:multitive
+    tail:(
+      space operator:additive_op
+      space operand:multitive)* <BinaryOperation>
   end
   
   rule additive_op
@@ -38,11 +40,10 @@ grammar Arithmetic
   end
 
   rule multitive
-    operand_1:primary
-    space operator:multitive_op space
-    operand_2:multitive <BinaryOperation>
-    /
-    primary
+    head:primary
+    tail:(
+      space operator:multitive_op
+      space operand:primary)* <BinaryOperation>
   end
   
   rule multitive_op
