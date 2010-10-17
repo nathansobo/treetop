@@ -77,7 +77,7 @@ Parsers will greedily match an expression zero or more times if it is followed b
 * `'foo'*` matches the empty string, `"foo"`, `"foofoo"`, etc.
 
 ##One or More
-Parsers will greedily match an expression one or more times if it is followed by the star (`+`) symbol.
+Parsers will greedily match an expression one or more times if it is followed by the plus (`+`) symbol.
 
 * `'foo'+` does not match the empty string, but matches `"foo"`, `"foofoo"`, etc.
 

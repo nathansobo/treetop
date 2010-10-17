@@ -87,7 +87,7 @@ Nonterminal and ordered choice expressions do not instantiate new nodes, but rat
       }
     end
 
-The parenthesized choice above can result in a node matching either of the two choices. Than node will be extended with methods defined in the subsequent block. Note that a choice must always be parenthesized to be associated with a following block.
+The parenthesized choice above can result in a node matching either of the two choices. The node will be extended with methods defined in the subsequent block. Note that a choice must always be parenthesized to be associated with a following block.
 
 ###Extending A Propagated Node with a Declared Module
     # in .treetop file
