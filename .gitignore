@@ -8,3 +8,5 @@ benchmark/*.log
 *~
 .DS_Store
 pkg
+.bundle
+Gemfile.lock
