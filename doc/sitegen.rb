@@ -16,7 +16,7 @@ class Layout < Erector::Widget
 
     def generate_html
       File.open(absolute_path, 'w') do |file|
-        file.write(new.render)
+        file.write(new.to_html)
       end
     end
 

@@ -5,7 +5,7 @@ require 'fileutils'
 require 'bluecloth'
 
 class Layout < Erector::Widget
-  def render
+  def content
     html do
       head do
         link :rel => "stylesheet",
@@ -29,8 +29,8 @@ class Layout < Erector::Widget
           end
         end
         div :id => 'middle' do
-          div :id => 'content' do
-            content
+          div :id => 'main_content' do
+            main_content
           end
         end
         div :id => 'bottom' do
@@ -48,12 +48,12 @@ class Layout < Erector::Widget
     end
   end
 
-  def content
+  def main_content
   end
 end
 
 class Index < Layout
-  def content
+  def main_content
     bluecloth "index.markdown"
   end
 end
@@ -61,7 +61,7 @@ end
 class Documentation < Layout
   abstract
 
-  def content
+  def main_content
     div :id => 'secondary_navigation' do
       ul do
         li { link_to 'Syntax', SyntacticRecognition }
@@ -103,7 +103,7 @@ end
 
 
 class Contribute < Layout
-  def content
+  def main_content
     bluecloth "contributing_and_planned_features.markdown"
   end
 end
