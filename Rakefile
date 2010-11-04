@@ -26,3 +26,18 @@ end
 task :version do
   puts RUBY_VERSION
 end
+
+desc 'Generate website files'
+task :website_generate do
+  `cd doc; ruby ./site.rb`
+end
+
+desc 'Upload website files'
+task :website_upload do
+  rubyforge_config_file = "#{ENV['HOME']}/.rubyforge/user-config.yml"
+  rubyforge_config = YAML.load_file(rubyforge_config_file)
+  `rsync -aCv doc/site/ #{rubyforge_config['username']}@rubyforge.org:/var/www/gforge-projects/treetop/`
+end
+
+desc 'Generate and upload website files'
+task :website => [:website_generate, :website_upload]

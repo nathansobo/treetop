@@ -7,7 +7,6 @@ Visit <a href="http://github.com/nathansobo/treetop/tree/master">the Treetop rep
 
 I like to try Rubinius's policy regarding commit rights. If you submit one patch worth integrating, I'll give you commit rights. We'll see how this goes, but I think it's a good policy.
 
-
 ##Getting Started with the Code
 Treetop compiler is interesting in that it is implemented in itself. Its functionality revolves around `metagrammar.treetop`, which specifies the grammar for Treetop grammars. I took a hybrid approach with regard to definition of methods on syntax nodes in the metagrammar. Methods that are more syntactic in nature, like those that provide access to elements of the syntax tree, are often defined inline, directly in the grammar. More semantic methods are defined in custom node classes.
 
