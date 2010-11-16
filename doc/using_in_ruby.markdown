@@ -26,3 +26,74 @@ If a grammar by the name of `Foo` is defined, the compiled Ruby source will defi
     else
       puts 'failure'
     end
+
+##Parser Options
+A Treetop parser has several options you may set.
+Some of these are settable by methods on the parser, and some may be passed in to the `parse` method
+(most of these *should* be available either way, but that's not currently the case).
+
+    parser = ArithmeticParser.new
+    input = 'x = 2; y = x+3;'
+
+    parser.consume_all_input = false
+    result1 = parser.parse(input)
+    puts "consumed #{parser.index} characters"
+
+    # Continue the parse with the next character:
+    result2 = parser.parse(input, :index => parser.index)
+
+    # Parse, but match rule `variable` instead of the normal root rule:
+    parser.root = :variable
+    parser.parse(input)
+
+If you have a statement-oriented language, you can save memory by parsing just one statement at a time,
+and discarding the parse tree after each statement.
+
+
+##Learning From Failure
+If a parse fails, it returns nil. In this case, you can ask the parser for an explanation.
+The failure reasons include the terminal nodes which were tried at the furthermost point the parse reached.
+
+    parser = ArithmeticParser.new
+    result = parser.parse('4+=3')
+
+    if !result
+      puts parser.failure_reason
+      puts parser.failure_line
+      puts parser.failure_column
+    end
+
+    =>
+    Expected one of (, - at line 1, column 3 (byte 3) after +
+    1
+    3
+
+
+##Using Parse Results
+Please don't try to walk down the syntax tree yourself, and please don't use the tree as your own convenient data structure.
+It contains many more nodes than your application needs, often even more than one for every character of input.
+
+    parser = ArithmeticParser.new
+    p parser.parse('2+3')
+
+    =>
+    SyntaxNode+Additive1 offset=0, "2+3" (multitive):
+      SyntaxNode+Multitive1 offset=0, "2" (primary):
+        SyntaxNode+Number0 offset=0, "2":
+          SyntaxNode offset=0, ""
+          SyntaxNode offset=0, "2"
+          SyntaxNode offset=1, ""
+        SyntaxNode offset=1, ""
+      SyntaxNode offset=1, "+3":
+        SyntaxNode+Additive0 offset=1, "+3" (multitive):
+          SyntaxNode offset=1, "+"
+          SyntaxNode+Multitive1 offset=2, "3" (primary):
+            SyntaxNode+Number0 offset=2, "3":
+              SyntaxNode offset=2, ""
+              SyntaxNode offset=2, "3"
+              SyntaxNode offset=3, ""
+            SyntaxNode offset=3, ""
+
+Instead, add methods to the root rule which return the information you require in a sensible form.
+Each rule can call its sub-rules, and this method of walking the syntax tree is much preferable to
+attempting to walk it from the outside.

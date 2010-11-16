@@ -1,6 +1,6 @@
 <p class="intro_text">
-	
-Treetop is a language for describing languages. Combining the elegance of Ruby with cutting-edge <em>parsing expression grammars</em>, it helps you analyze syntax with revolutionarily ease.	
+
+Treetop is a language for describing languages. Combining the elegance of Ruby with cutting-edge <em>parsing expression grammars</em>, it helps you analyze syntax with revolutionary ease.
 
 </p>
 
@@ -11,49 +11,47 @@ Parsing expression grammars (PEGs) are simple to write and easy to maintain. The
 
     grammar Arithmetic
       rule additive
-        multitive '+' additive / multitive
+        multitive ( '+' multitive )*
       end
-      
+
       rule multitive
-        primary '*' multitive / primary
+        primary ( [*/%] primary )*
       end
-      
+
       rule primary
         '(' additive ')' / number
       end
-      
+
       rule number
-        [1-9] [0-9]*
+        '-'? [1-9] [0-9]*
       end
     end
-  
+
 
 #Syntax-Oriented Programming
 Rather than implementing semantic actions that construct parse trees, Treetop lets you define methods on trees that it constructs for you automatically. You can define these methods directly within the grammar...
 
     grammar Arithmetic
       rule additive
-        multitive '+' additive {
+        multitive a:( '+' multitive )* {
           def value
-            multitive.value + additive.value
+            a.elements.inject(multitive.value) { |sum, e|
+              sum+e.multitive.value
+            }
           end
         }
-        /
-        multitive
       end
-      
+
       # other rules below ...
     end
-    
+
 ...or associate rules with classes of nodes you wish your parsers to instantiate upon matching a rule.
 
     grammar Arithmetic
       rule additive
-        multitive '+' additive <AdditiveNode>
-        /
-        multitive
+        multitive ('+' multitive)* <AdditiveNode>
       end
-      
+
       # other rules below ...
     end
 
@@ -63,7 +61,7 @@ Because PEGs are closed under composition, Treetop grammars can be treated like 
 
     grammar RubyWithEmbeddedSQL
       include SQL
-      
+
       rule string
         quote sql_expression quote / super
       end

@@ -127,3 +127,8 @@ img#pivotal_logo {
   margin-left: auto;
   margin-right: auto;
 }
+
+tr td {
+  vertical-align: top;
+  padding: 0.3em;
+}

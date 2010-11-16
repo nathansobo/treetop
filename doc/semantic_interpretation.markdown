@@ -87,7 +87,7 @@ Nonterminal and ordered choice expressions do not instantiate new nodes, but rat
       }
     end
 
-The parenthesized choice above can result in a node matching either of the two choices. The node will be extended with methods defined in the subsequent block. Note that a choice must always be parenthesized to be associated with a following block.
+The parenthesized choice above can result in a node matching either of the two choices. The node will be extended with methods defined in the subsequent block. Note that a choice must always be parenthesized to be associated with a following block, otherwise the block will apply to just the last alternative.
 
 ###Extending A Propagated Node with a Declared Module
     # in .treetop file
@@ -184,6 +184,35 @@ The module containing automatically defined element accessor methods is an ances
     </td>
     <td>
       Available only on nonterminal nodes, returns the nodes parsed by the elements of the matched sequence.
+    </td>
+  <tr>
+    <td>
+      <code>input</code>
+    </td>
+    <td>
+       The entire input string, which is useful mainly in conjunction with <code>interval</code>
+    </td>
+  <tr>
+    <td>
+      <code>interval</code>
+    </td>
+    <td>
+       The Range of characters in <code>input</code> matched by this rule
+    </td>
+  <tr>
+    <td>
+      <code>empty?</code>
+    </td>
+    <td>
+       returns true if this rule matched no characters of input
+    </td>
+  <tr>
+    <td>
+      <code>inspect</code>
+    </td>
+    <td>
+       Handy-dandy method that returns an indented subtree dump of the syntax tree starting here.
+       This dump includes, for each node, the offset and a snippet of the text this rule matched, and the names of mixin modules and the accessor and extension methods.
     </td>
   </tr>
 </table>
