@@ -60,6 +60,14 @@ An empty string matches at any position and consumes no input. It's useful when 
 
 * `''`
 
+    rule alts
+      ( foo bar / baz '' )
+      {
+	def value
+	  elements.map{|e| e.text_value }
+	end
+      }
+
 ##Nonterminal Symbols
 Nonterminal symbols are unquoted references to other named rules. They are equivalent to an inline substitution of the named expression.
 
@@ -186,7 +194,7 @@ preceding rules (or as assigned by labels) are not available to access the sub-r
     end
     
     rule foo_rule
-      foo id &{|seq| seq[1].is_reserved } baz`
+      foo id &{|seq| seq[1].is_reserved } baz
     end
 
 Match "foo id baz" only if `id.is_reserved`. Note that `id` cannot be referenced by name from `foo_rule`,
