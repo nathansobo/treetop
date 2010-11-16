@@ -15,8 +15,9 @@ module Treetop
       def parse(input, options = {})
         prepare_to_parse(input)
         @index = options[:index] if options[:index]
-        result = send("_nt_#{root}")
-        return nil if (consume_all_input? && index != input.size)
+        result = send("_nt_#{options[:root] || root}")
+        should_consume_all = options.include?(:consume_all_input) ? options[:consume_all_input] : consume_all_input?
+        return nil if (should_consume_all && index != input.size)
         return SyntaxNode.new(input, index...(index + 1)) if result == true
         return result
       end

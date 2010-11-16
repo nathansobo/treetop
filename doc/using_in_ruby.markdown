@@ -16,7 +16,10 @@ In order to use Polyglot dynamic loading of `.treetop` or `.tt` files though, yo
 in order to use Polyglot auto loading with Treetop in Ruby.
 
 ##Instantiating and Using Parsers
-If a grammar by the name of `Foo` is defined, the compiled Ruby source will define a `FooParser` class. To parse input, create an instance and call its `parse` method with a string. The parser will return the syntax tree of the match or `nil` if there is a failure.
+If a grammar by the name of `Foo` is defined, the compiled Ruby source will define a `FooParser` class.
+To parse input, create an instance and call its `parse` method with a string.
+The parser will return the syntax tree of the match or `nil` if there is a failure.
+Note that by default, the parser will fail unless *all* input is consumed.
 
     Treetop.load "arithmetic"
     
@@ -29,11 +32,14 @@ If a grammar by the name of `Foo` is defined, the compiled Ruby source will defi
 
 ##Parser Options
 A Treetop parser has several options you may set.
-Some of these are settable by methods on the parser, and some may be passed in to the `parse` method
-(most of these *should* be available either way, but that's not currently the case).
+Some are settable permanently by methods on the parser, but all may be passed in as options to the `parse` method.
 
     parser = ArithmeticParser.new
     input = 'x = 2; y = x+3;'
+
+    # Temporarily override an option:
+    result1 = parser.parse(input, :consume_all_input => false)
+    puts "consumed #{parser.index} characters"
 
     parser.consume_all_input = false
     result1 = parser.parse(input)
@@ -43,8 +49,8 @@ Some of these are settable by methods on the parser, and some may be passed in t
     result2 = parser.parse(input, :index => parser.index)
 
     # Parse, but match rule `variable` instead of the normal root rule:
-    parser.root = :variable
-    parser.parse(input)
+    parser.parse(input, :root => :variable)
+    parser.root = :variable	# Permanent setting
 
 If you have a statement-oriented language, you can save memory by parsing just one statement at a time,
 and discarding the parse tree after each statement.
