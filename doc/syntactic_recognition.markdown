@@ -58,15 +58,16 @@ The anything symbol is represented by a dot (`.`) and matches any single charact
 ###Ellipsis
 An empty string matches at any position and consumes no input. It's useful when you wish to treat a single symbol as part of a sequence, for example when an alternate rule will be processed using shared code.
 
-* `''`
-
+<pre>
     rule alts
       ( foo bar / baz '' )
       {
-	def value
-	  elements.map{|e| e.text_value }
-	end
+        def value
+          elements.map{|e| e.text_value }
+        end
       }
+    end
+</pre>
 
 ##Nonterminal Symbols
 Nonterminal symbols are unquoted references to other named rules. They are equivalent to an inline substitution of the named expression.
