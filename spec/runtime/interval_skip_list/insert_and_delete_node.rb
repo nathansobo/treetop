@@ -1,18 +1,18 @@
 require File.expand_path("#{File.dirname(__FILE__)}/spec_helper")
 
-describe "it is non-empty", :shared => true do
+shared_examples_for "it is non-empty" do
   specify "#empty? returns false" do
     list.should_not be_empty
   end
 end
 
-describe "#nodes is an array of the three inserted nodes in key order", :shared => true do
+shared_examples_for "#nodes is an array of the three inserted nodes in key order" do
   specify "#nodes is an array of the three inserted nodes in key order" do
     list.nodes.should == inserted_nodes.sort_by(&:key)
   end
 end
 
-describe "it has nil forward pointers", :shared => true do
+shared_examples_for "it has nil forward pointers" do
   it "has nil forward pointers" do
     inserted_node.forward.each do |next_pointer|
       next_pointer.should be_nil
