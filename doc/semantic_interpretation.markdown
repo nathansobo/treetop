@@ -128,7 +128,7 @@ Subexpressions can be given an explicit label to have an element accessor method
     rule labels
       first_letter:[a-z] rest_letters:(', ' letter:[a-z])* {
         def letters
-          [first_letter] + rest_letters.map do |comma_and_letter|
+          [first_letter] + rest_letters.elements.map do |comma_and_letter|
             comma_and_letter.letter
           end
         end
