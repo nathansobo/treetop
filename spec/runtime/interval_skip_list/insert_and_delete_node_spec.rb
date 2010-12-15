@@ -1,4 +1,4 @@
-require File.expand_path("#{File.dirname(__FILE__)}/spec_helper")
+require 'runtime/interval_skip_list/spec_helper'
 
 shared_examples_for "it is non-empty" do
   specify "#empty? returns false" do
