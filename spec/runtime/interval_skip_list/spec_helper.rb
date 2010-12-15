@@ -4,11 +4,29 @@ class IntervalSkipList
   public :insert_node, :delete_node, :nodes, :head, :next_node_height
 end
 
-shared_examples_for "#next_node_height is deterministic" do
-  before do
+module NextNodeHeightIsDeterministicSharedContext
+  extend RSpec::Core::SharedContext
+
+  before :each do
+    next_node_height_is_deterministic
+  end
+
+  # we might call this explicitly in some filters? @todo refactor if we don't
+  def next_node_height_is_deterministic
     node_heights = expected_node_heights.dup
     stub(list).next_node_height { node_heights.shift }
   end
+end
+
+shared_examples_for "#next_node_height is deterministic" do
+  # this is kept here so as not to get fatal error on unmigrated tests
+  # but it is being phased out for the above SharedContext because
+  # shared examples apparently cannot have inheiritable before filters
+
+  # before do
+  #   node_heights = expected_node_heights.dup
+  #   stub(list).next_node_height { node_heights.shift }
+  # end
 end
 
 module IntervalSkipListSpecHelper
