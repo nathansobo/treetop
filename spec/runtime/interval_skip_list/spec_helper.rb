@@ -4,7 +4,7 @@ class IntervalSkipList
   public :insert_node, :delete_node, :nodes, :head, :next_node_height
 end
 
-describe "#next_node_height is deterministic", :shared => true do
+shared_examples_for "#next_node_height is deterministic" do
   before do
     node_heights = expected_node_heights.dup
     stub(list).next_node_height { node_heights.shift }
