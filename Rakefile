@@ -1,12 +1,12 @@
 require 'rubygems'
 require 'rake'
 require 'rake/gempackagetask'
-require 'spec/rake/spectask'
+require 'rspec/core/rake_task'
 
 task :default => :spec
-Spec::Rake::SpecTask.new do |t|
+RSpec::Core::RakeTask.new do |t|
   t.pattern = 'spec/**/*spec.rb'
-  t.libs << 'spec'
+  # t.libs << 'spec' # @todo not sure what this did in the original rspec 1.3
 end
 
 load "./treetop.gemspec"
