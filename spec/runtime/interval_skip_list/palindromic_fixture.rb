@@ -1,23 +1,39 @@
-shared_examples_for "the palindromic fixture" do
-  attr_reader :list, :node
+module PalindromicFixtureSharedContext
+  extend RSpec::Core::SharedContext
   include IntervalSkipListSpecHelper
 
-  before do
+  attr_reader :list, :node
+
+  def construct_interval_skip_list
     @list = IntervalSkipList.new
   end
 
-  it_should_behave_like "#next_node_height is deterministic"
   def expected_node_heights
     [3, 2, 1, 3, 1, 2, 3]
   end
 
-  before do
-    list.insert(1..3, :a)
-    list.insert(1..5, :b)
-    list.insert(1..7, :c)
-    list.insert(1..9, :d)
-    list.insert(1..11, :e)
-    list.insert(1..13, :f)
-    list.insert(5..13, :g)
+  def populate_interval_skip_list
+    @list.insert(1..3, :a)
+    @list.insert(1..5, :b)
+    @list.insert(1..7, :c)
+    @list.insert(1..9, :d)
+    @list.insert(1..11, :e)
+    @list.insert(1..13, :f)
+    @list.insert(5..13, :g)
   end
+
+  def make_it_determinisitic
+    extend NextNodeHeightIsDeterministicSharedContext # use the method without getting the filter
+    next_node_height_is_deterministic
+  end
+
+  before :each do
+    construct_interval_skip_list
+    make_it_determinisitic
+    populate_interval_skip_list
+  end
+end
+
+shared_examples_for "the palindromic fixture" do
+  # @todo needs cleanup!
 end
