@@ -23,10 +23,10 @@ shared_examples_for "#next_node_height is deterministic" do
   # but it is being phased out for the above SharedContext because
   # shared examples apparently cannot have inheiritable before filters
 
-  # before do
-  #   node_heights = expected_node_heights.dup
-  #   stub(list).next_node_height { node_heights.shift }
-  # end
+  before do
+    node_heights = expected_node_heights.dup
+    stub(list).next_node_height { node_heights.shift }
+  end
 end
 
 module IntervalSkipListSpecHelper
