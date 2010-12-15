@@ -7,7 +7,7 @@ group :development do
   gem "bluecloth"
   gem "erector", "~> 0.8"
   gem "i18n", "~> 0.5.0"
-  gem "rspec", "~> 1.3.0"
+  gem "rspec", "~> 2.3.0"
   gem "rr", "~> 0.10.2"
   gem "ruby-debug"
 end
