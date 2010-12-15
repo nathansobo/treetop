@@ -11,7 +11,7 @@ module NextNodeHeightIsDeterministicSharedContext
     next_node_height_is_deterministic
   end
 
-  # we might call this explicitly in some filters? @todo refactor if we don't
+  # @todo we call this in one place other than here. cleanup?
   def next_node_height_is_deterministic
     node_heights = expected_node_heights.dup
     stub(list).next_node_height { node_heights.shift }

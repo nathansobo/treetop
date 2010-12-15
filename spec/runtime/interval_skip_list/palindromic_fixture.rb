@@ -33,7 +33,3 @@ module PalindromicFixtureSharedContext
     populate_interval_skip_list
   end
 end
-
-shared_examples_for "the palindromic fixture" do
-  # @todo needs cleanup!
-end

@@ -5,7 +5,6 @@ class IntervalSkipList
 end
 
 describe IntervalSkipList, :palindromic => true do
-  it_should_behave_like "the palindromic fixture"
   include PalindromicFixtureSharedContext
 
   describe " when :c is deleted" do

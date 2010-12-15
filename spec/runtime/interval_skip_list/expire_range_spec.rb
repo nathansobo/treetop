@@ -1,7 +1,6 @@
 require 'runtime/interval_skip_list/spec_helper'
 
 describe IntervalSkipList, :palindromic => true do
-  it_should_behave_like "the palindromic fixture"
   include PalindromicFixtureSharedContext
 
   describe "#overlapping" do
