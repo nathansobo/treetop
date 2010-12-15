@@ -1,4 +1,4 @@
-describe "the palindromic fixture", :shared => true do
+shared_examples_for "the palindromic fixture" do
   attr_reader :list, :node
   include IntervalSkipListSpecHelper
 
