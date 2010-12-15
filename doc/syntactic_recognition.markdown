@@ -172,7 +172,7 @@ Here's the easiest way to handle C-style comments:
 Sometimes you must execute Ruby code during parsing in order to decide how to proceed.
 This is an advanced feature, and must be used with great care, because it can change the
 way a Treetop parser backtracks in a way that breaks the parsing algorithm. See the
-notes on below on how to use this feature safely.
+notes below on how to use this feature safely.
 
 The code block is the body of a Ruby lambda block, and should return true or false, to cause this
 parse rule to continue or fail (for positive sempreds), fail or continue (for negative sempreds).
