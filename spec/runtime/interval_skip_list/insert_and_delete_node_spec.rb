@@ -22,7 +22,7 @@ end
 
 describe IntervalSkipList do
   attr_reader :list
-  
+
   before do
     @list = IntervalSkipList.new
   end
@@ -55,14 +55,14 @@ describe IntervalSkipList do
     end
   end
 
-  describe " when 1 has been inserted" do
+  describe " when 1 has been inserted", :deterministic => true do
     attr_reader :inserted_node, :inserted_nodes
 
     def expected_node_heights
       [1]
     end
 
-    it_should_behave_like "#next_node_height is deterministic"
+    include NextNodeHeightIsDeterministicSharedContext
 
     before do
       @inserted_node = list.insert_node(1)
@@ -115,14 +115,14 @@ describe IntervalSkipList do
     end
   end
 
-  describe " when 1 and 3 have been inserted in order" do
+  describe " when 1 and 3 have been inserted in order", :deterministic => true do
     attr_reader :inserted_nodes
 
     def expected_node_heights
       [1, 2]
     end
 
-    it_should_behave_like "#next_node_height is deterministic"
+    include NextNodeHeightIsDeterministicSharedContext
 
     before do
       @inserted_nodes = []
@@ -212,14 +212,14 @@ describe IntervalSkipList do
     end
   end
 
-  describe " when 1, 3 and 7 have been inserted in order" do
+  describe " when 1, 3 and 7 have been inserted in order", :deterministic => true do
     attr_reader :inserted_nodes
 
     def expected_node_heights
       [1, 2, 1]
     end
 
-    it_should_behave_like "#next_node_height is deterministic"
+    include NextNodeHeightIsDeterministicSharedContext
 
     before do
       @inserted_nodes = []
@@ -309,14 +309,14 @@ describe IntervalSkipList do
     end
   end
 
-  describe " when 7, 1 and 3 have been inserted in order" do
+  describe " when 7, 1 and 3 have been inserted in order", :deterministic => true do
     attr_reader :inserted_nodes
 
     def expected_node_heights
       [1, 1, 2]
     end
 
-    it_should_behave_like "#next_node_height is deterministic"
+    include NextNodeHeightIsDeterministicSharedContext
 
     before do
       @inserted_nodes = []
