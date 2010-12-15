@@ -1,6 +1,6 @@
 require 'runtime/interval_skip_list/spec_helper'
 
-describe IntervalSkipList, " when #next_node_height returns 1, 3, 2, 3, 1 in order" do
+describe IntervalSkipList, " when #next_node_height returns 1, 3, 2, 3, 1 in order", :deterministic2 => true do
   include IntervalSkipListSpecHelper
   attr_reader :list, :node
 
