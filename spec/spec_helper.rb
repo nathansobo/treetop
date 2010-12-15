@@ -1,19 +1,15 @@
 require 'rubygems'
 require 'benchmark'
-require 'spec'
+require 'rspec'
 require 'polyglot'
 
 $LOAD_PATH.unshift File.expand_path('../../lib')
 require 'treetop'
 include Treetop
 
-Spec::Runner.configure do |config|
-  config.mock_with :rr
-end
-
 module Treetop
-  class TreetopExampleGroup < Spec::Example::ExampleGroup
-    class << self
+  module ExampleGroupInstanceMethods
+    module ClassMethods
       attr_accessor :parser_class_under_test
 
       def testing_expression(expression_under_test)
@@ -95,10 +91,13 @@ module Treetop
         yield
       end
     end
-
-    Spec::Example::ExampleGroupFactory.register(:compiler, self)
-    Spec::Example::ExampleGroupFactory.register(:runtime, self)
   end
+end
+
+RSpec.configure do |c|
+  c.mock_with :rr
+  c.extend Treetop::ExampleGroupInstanceMethods::ClassMethods
+  c.include Treetop::ExampleGroupInstanceMethods
 end
 
 class Symbol
