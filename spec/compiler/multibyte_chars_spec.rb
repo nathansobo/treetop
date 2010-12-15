@@ -4,21 +4,23 @@
 require 'spec_helper'
 
 module MultibyteCharsSpec
-  describe "an anything symbol" do
+  describe "an anything symbol", :multibyte => true do
     testing_expression '.'
     it "matches an UTF-8 character" do
       parse_multibyte("ø").should_not be_nil
     end
   end
-  
-  describe "A character class containing UTF-8 characters" do
+
+  describe "A character class containing UTF-8 characters", :multibyte => true  do
     testing_expression "[æøå]"
     it "recognizes the UTF-8 characters" do
       parse_multibyte("ø").should_not be_nil
     end
   end
-  
-  describe "a character class repetition containing UTF-8 characters mixed with other expressions" do
+
+  describe( "a character class repetition containing UTF-8 characters mixed with other expressions",
+    :multibyte => true
+  ) do
     testing_expression '[æøå]+ "a"'
     it "lazily instantiates a node for the character" do
       result = parse_multibyte('æøåa')
@@ -34,5 +36,4 @@ module MultibyteCharsSpec
       result.elements[1].text_value == "a"
     end
   end
-  
 end
