@@ -4,7 +4,7 @@ class IntervalSkipList
   public :insert_node, :delete_node, :head, :nodes
 end
 
-describe IntervalSkipList do
+describe IntervalSkipList, :palindromic => true do
   it_should_behave_like "the palindromic fixture"
 
   describe " when :c is deleted" do
