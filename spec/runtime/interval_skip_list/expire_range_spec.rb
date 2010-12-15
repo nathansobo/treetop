@@ -2,6 +2,7 @@ require 'runtime/interval_skip_list/spec_helper'
 
 describe IntervalSkipList, :palindromic => true do
   it_should_behave_like "the palindromic fixture"
+  include PalindromicFixtureSharedContext
 
   describe "#overlapping" do
     it "returns intervals :d, :e, :f, and :g for 7..9" do
@@ -137,7 +138,7 @@ describe IntervalSkipList, :palindromic => true do
   end
 
   describe "when 4..4 is expired with a length change of 2" do
-    before do     
+    before do
       list.expire(4..4, 2)
     end
 
