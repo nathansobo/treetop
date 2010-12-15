@@ -1,6 +1,4 @@
 require 'spec_helper'
-require 'ruby-debug'
-Debugger.start
 
 module OccurrenceRangeSpec
   class Foo < Treetop::Runtime::SyntaxNode
