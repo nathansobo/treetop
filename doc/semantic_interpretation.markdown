@@ -147,7 +147,7 @@ The module containing automatically defined element accessor methods is an ances
         end
         
         def rest_letters
-          super.map { |comma_and_letter| comma_and_letter.letter }
+          super.elements.map { |comma_and_letter| comma_and_letter.letter }
         end
       }
     end
