@@ -23,10 +23,10 @@ module Treetop
       end
 
       def testing_grammar(grammar_under_test)
-        grammar_node = parse_with_metagrammar(grammar_under_test.strip, :grammar)
+        grammar_node = parse_with_metagrammar(grammar_under_test.strip, :module_or_grammar)
         parser_code = grammar_node.compile
         class_eval(parser_code)
-        self.parser_class_under_test = const_get(grammar_node.parser_name.to_sym)
+        self.parser_class_under_test = class_eval(grammar_node.parser_name)
       end
 
       def parse_with_metagrammar(input, root)

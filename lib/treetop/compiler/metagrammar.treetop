@@ -2,7 +2,7 @@ module Treetop
   module Compiler
     grammar Metagrammar
       rule treetop_file
-        requires:(space? require_statement)* prefix:space? module_or_grammar:(module_declaration / grammar) suffix:space? {
+        requires:(space? require_statement)* prefix:space? module_or_grammar suffix:space? {
           def compile
             requires.text_value + prefix.text_value + module_or_grammar.compile + suffix.text_value
           end
@@ -13,11 +13,19 @@ module Treetop
         prefix:space? "require" [ \t]+ [^\n\r]+ [\n\r]
       end
 
+      rule module_or_grammar
+	module_declaration / grammar
+      end
+
       rule module_declaration
-        prefix:('module' space [A-Z] alphanumeric_char* space) module_contents:(module_declaration / grammar) suffix:(space 'end') {
+        prefix:('module' space name:([A-Z] alphanumeric_char* ('::' [A-Z] alphanumeric_char*)*) space) module_contents:(module_declaration / grammar) suffix:(space 'end') {
           def compile
             prefix.text_value + module_contents.compile + suffix.text_value
           end
+
+	  def parser_name
+	    prefix.name.text_value+'::'+module_contents.parser_name
+	  end
         }
       end
 

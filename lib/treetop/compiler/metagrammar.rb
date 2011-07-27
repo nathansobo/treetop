@@ -90,28 +90,16 @@ module Treetop
           end
           s0 << r6
           if r6
-            i8 = index
-            r9 = _nt_module_declaration
-            if r9
-              r8 = r9
-            else
-              r10 = _nt_grammar
-              if r10
-                r8 = r10
-              else
-                @index = i8
-                r8 = nil
-              end
-            end
+            r8 = _nt_module_or_grammar
             s0 << r8
             if r8
-              r12 = _nt_space
-              if r12
-                r11 = r12
+              r10 = _nt_space
+              if r10
+                r9 = r10
               else
-                r11 = instantiate_node(SyntaxNode,input, index...index)
+                r9 = instantiate_node(SyntaxNode,input, index...index)
               end
-              s0 << r11
+              s0 << r9
             end
           end
         end
@@ -233,24 +221,64 @@ module Treetop
         r0
       end
 
+      def _nt_module_or_grammar
+        start_index = index
+        if node_cache[:module_or_grammar].has_key?(index)
+          cached = node_cache[:module_or_grammar][index]
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
+          return cached
+        end
+
+        i0 = index
+        r1 = _nt_module_declaration
+        if r1
+          r0 = r1
+        else
+          r2 = _nt_grammar
+          if r2
+            r0 = r2
+          else
+            @index = i0
+            r0 = nil
+          end
+        end
+
+        node_cache[:module_or_grammar][start_index] = r0
+
+        r0
+      end
+
       module ModuleDeclaration0
+      end
+
+      module ModuleDeclaration1
+      end
+
+      module ModuleDeclaration2
         def space1
           elements[1]
         end
 
+        def name
+          elements[2]
+        end
+
         def space2
-          elements[4]
+          elements[3]
         end
       end
 
-      module ModuleDeclaration1
+      module ModuleDeclaration3
         def space
           elements[0]
         end
 
       end
 
-      module ModuleDeclaration2
+      module ModuleDeclaration4
         def prefix
           elements[0]
         end
@@ -264,10 +292,14 @@ module Treetop
         end
       end
 
-      module ModuleDeclaration3
+      module ModuleDeclaration5
         def compile
           prefix.text_value + module_contents.compile + suffix.text_value
         end
+
+	  def parser_name
+	    prefix.name.text_value+'::'+module_contents.parser_name
+	  end
       end
 
       def _nt_module_declaration
@@ -295,83 +327,142 @@ module Treetop
           r3 = _nt_space
           s1 << r3
           if r3
+            i4, s4 = index, []
             if has_terminal?('\G[A-Z]', true, index)
-              r4 = true
+              r5 = true
               @index += 1
             else
-              r4 = nil
+              r5 = nil
             end
-            s1 << r4
-            if r4
-              s5, i5 = [], index
+            s4 << r5
+            if r5
+              s6, i6 = [], index
               loop do
-                r6 = _nt_alphanumeric_char
-                if r6
-                  s5 << r6
+                r7 = _nt_alphanumeric_char
+                if r7
+                  s6 << r7
                 else
                   break
                 end
               end
-              r5 = instantiate_node(SyntaxNode,input, i5...index, s5)
-              s1 << r5
-              if r5
-                r7 = _nt_space
-                s1 << r7
+              r6 = instantiate_node(SyntaxNode,input, i6...index, s6)
+              s4 << r6
+              if r6
+                s8, i8 = [], index
+                loop do
+                  i9, s9 = index, []
+                  if has_terminal?('::', false, index)
+                    r10 = instantiate_node(SyntaxNode,input, index...(index + 2))
+                    @index += 2
+                  else
+                    terminal_parse_failure('::')
+                    r10 = nil
+                  end
+                  s9 << r10
+                  if r10
+                    if has_terminal?('\G[A-Z]', true, index)
+                      r11 = true
+                      @index += 1
+                    else
+                      r11 = nil
+                    end
+                    s9 << r11
+                    if r11
+                      s12, i12 = [], index
+                      loop do
+                        r13 = _nt_alphanumeric_char
+                        if r13
+                          s12 << r13
+                        else
+                          break
+                        end
+                      end
+                      r12 = instantiate_node(SyntaxNode,input, i12...index, s12)
+                      s9 << r12
+                    end
+                  end
+                  if s9.last
+                    r9 = instantiate_node(SyntaxNode,input, i9...index, s9)
+                    r9.extend(ModuleDeclaration0)
+                  else
+                    @index = i9
+                    r9 = nil
+                  end
+                  if r9
+                    s8 << r9
+                  else
+                    break
+                  end
+                end
+                r8 = instantiate_node(SyntaxNode,input, i8...index, s8)
+                s4 << r8
               end
+            end
+            if s4.last
+              r4 = instantiate_node(SyntaxNode,input, i4...index, s4)
+              r4.extend(ModuleDeclaration1)
+            else
+              @index = i4
+              r4 = nil
+            end
+            s1 << r4
+            if r4
+              r14 = _nt_space
+              s1 << r14
             end
           end
         end
         if s1.last
           r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
-          r1.extend(ModuleDeclaration0)
+          r1.extend(ModuleDeclaration2)
         else
           @index = i1
           r1 = nil
         end
         s0 << r1
         if r1
-          i8 = index
-          r9 = _nt_module_declaration
-          if r9
-            r8 = r9
+          i15 = index
+          r16 = _nt_module_declaration
+          if r16
+            r15 = r16
           else
-            r10 = _nt_grammar
-            if r10
-              r8 = r10
+            r17 = _nt_grammar
+            if r17
+              r15 = r17
             else
-              @index = i8
-              r8 = nil
+              @index = i15
+              r15 = nil
             end
           end
-          s0 << r8
-          if r8
-            i11, s11 = index, []
-            r12 = _nt_space
-            s11 << r12
-            if r12
+          s0 << r15
+          if r15
+            i18, s18 = index, []
+            r19 = _nt_space
+            s18 << r19
+            if r19
               if has_terminal?('end', false, index)
-                r13 = instantiate_node(SyntaxNode,input, index...(index + 3))
+                r20 = instantiate_node(SyntaxNode,input, index...(index + 3))
                 @index += 3
               else
                 terminal_parse_failure('end')
-                r13 = nil
+                r20 = nil
               end
-              s11 << r13
+              s18 << r20
             end
-            if s11.last
-              r11 = instantiate_node(SyntaxNode,input, i11...index, s11)
-              r11.extend(ModuleDeclaration1)
+            if s18.last
+              r18 = instantiate_node(SyntaxNode,input, i18...index, s18)
+              r18.extend(ModuleDeclaration3)
             else
-              @index = i11
-              r11 = nil
+              @index = i18
+              r18 = nil
             end
-            s0 << r11
+            s0 << r18
           end
         end
         if s0.last
           r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
-          r0.extend(ModuleDeclaration2)
-          r0.extend(ModuleDeclaration3)
+          r0.extend(ModuleDeclaration4)
+          r0.extend(ModuleDeclaration5)
         else
           @index = i0
           r0 = nil
