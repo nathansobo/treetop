@@ -3,6 +3,7 @@ source :rubygems
 gem "polyglot"
 
 group :development do
+  gem "jeweler"
   gem "activesupport"
   gem "i18n", "~> 0.5.0"
   gem "rr", "~> 0.10.2"

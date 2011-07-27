@@ -2,18 +2,33 @@ require 'rubygems'
 require 'bundler'
 Bundler.setup(:default, :development)
 require 'rake'
-require 'rubygems/package_task'
+require 'jeweler'
 require 'rspec/core/rake_task'
+require File.expand_path("../lib/treetop/version", __FILE__)
+
+Jeweler::Tasks.new do |gem|
+  gem.name = "treetop"
+  gem.version = Treetop::VERSION::STRING
+  gem.author = "Nathan Sobo"
+  gem.license = "MIT"
+  gem.email = "cliffordheath@gmail.com"
+  gem.homepage = "http://functionalform.blogspot.com"
+  gem.platform = Gem::Platform::RUBY
+  gem.summary = "A Ruby-based text parsing and interpretation DSL"
+  gem.files = ["LICENSE", "README.md", "Rakefile", "treetop.gemspec", "{spec,lib,bin,doc,examples}/**/*"].map{|p| Dir[p]}.flatten
+  gem.bindir = "bin"
+  gem.executables = ["tt"]
+  gem.require_path = "lib"
+  gem.autorequire = "treetop"
+  gem.has_rdoc = false
+  gem.add_dependency "polyglot", ">= 0.3.1"
+end
+Jeweler::RubygemsDotOrgTasks.new
 
 task :default => :spec
 RSpec::Core::RakeTask.new do |t|
   t.pattern = 'spec/**/*spec.rb'
   # t.libs << 'spec' # @todo not sure what this did in the original rspec 1.3
-end
-
-load "./treetop.gemspec"
-Gem::PackageTask.new($gemspec) do |pkg|
-  pkg.need_tar = true
 end
 
 task :spec => 'lib/treetop/compiler/metagrammar.treetop'
