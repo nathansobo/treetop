@@ -2,7 +2,7 @@ require 'rubygems'
 require 'bundler'
 Bundler.setup(:default, :development)
 require 'rake'
-require 'rake/gempackagetask'
+require 'rubygems/package_task'
 require 'rspec/core/rake_task'
 
 task :default => :spec
@@ -12,7 +12,7 @@ RSpec::Core::RakeTask.new do |t|
 end
 
 load "./treetop.gemspec"
-Rake::GemPackageTask.new($gemspec) do |pkg|
+Gem::PackageTask.new($gemspec) do |pkg|
   pkg.need_tar = true
 end
 

@@ -24,5 +24,5 @@ module Treetop
         grammar_name.text_value + 'Parser'
       end
     end
- end 
+  end 
 end
