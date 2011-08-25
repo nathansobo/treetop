@@ -69,7 +69,22 @@ module CharacterClassSpec
       parse(' 1', :index => 1).should be_nil
     end
   end
-  
+
+  describe "a character class with a POSIX bracket expression" do
+    testing_expression "[[:digit:]]"
+    it "matches a single character within the class" do
+      parse('1').should_not be_nil
+    end
+    it "does not match a single character outside the class" do
+      parse('a').should be_nil
+      parse('-').should be_nil
+    end
+    testing_expression "[[:digit:][:space:]]+"
+    it "matches a string with a mix of two character classes" do
+      parse('1 4 9').should_not be_nil
+    end
+  end
+
   describe "a character class followed by a node class declaration and a block" do
 
     testing_expression "[A-Z] <CharacterClassSpec::Foo>"
