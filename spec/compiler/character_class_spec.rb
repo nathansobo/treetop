@@ -85,6 +85,16 @@ module CharacterClassSpec
     end
   end
 
+  describe "a character class with a negated POSIX bracket expression" do
+    testing_expression "[[:^space:]]"
+    it "matches a character outside the negated class" do
+      parse('a').should_not be_nil
+    end
+    it "doesn't match a character within the negated class" do
+      parse(' ').should be_nil
+    end
+  end
+
   describe "a character class followed by a node class declaration and a block" do
 
     testing_expression "[A-Z] <CharacterClassSpec::Foo>"

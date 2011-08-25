@@ -365,7 +365,7 @@ module Treetop
       end
 
       rule bracket_expression
-         '[:' (
+         '[:' '^'? (
            'alnum' / 'alpha' / 'blank' / 'cntrl' / 'digit' / 'graph' / 'lower' /
            'print' / 'punct' / 'space' / 'upper' / 'xdigit' / 'word'
          ) ':]'
