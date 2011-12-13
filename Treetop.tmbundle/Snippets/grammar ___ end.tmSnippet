@@ -4,9 +4,9 @@
 <dict>
 	<key>content</key>
 	<string>grammar ${1:GrammarName}
-   rule ${2:rule_name}
-      $0
-   end
+  rule ${2:rule_name}
+    $0
+  end
 end</string>
 	<key>name</key>
 	<string>grammar ... end</string>
