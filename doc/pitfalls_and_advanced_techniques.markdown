@@ -14,10 +14,10 @@ Here are a few interesting problems I've encountered. I figure sharing them may 
 ##Matching a String
 
     rule string
-      '"' (!'"' . / '\"')* '"'
+      '"' ('\"' / !'"' .)* '"'
     end
 
-This expression says: Match a quote, then zero or more of any character but a quote or an escaped quote followed by a quote. Lookahead assertions are essential for these types of problems.
+This expression says: Match a quote, then zero or more of, an escaped quote or any character but a quote, followed by a quote. Lookahead assertions are essential for these types of problems.
 
 ##Matching Nested Structures With Non-Unique Delimeters
 Say I want to parse a diabolical wiki syntax in which the following interpretations apply.
