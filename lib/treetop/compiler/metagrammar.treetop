@@ -357,11 +357,18 @@ module Treetop
       end
 
       rule character_class
-        '[' characters:(!']' ('\\' . /!'\\' .))+ ']' <CharacterClass> {
+        '[' characters:(!']' ('\\' . / bracket_expression / !'\\' .))+ ']' <CharacterClass> {
           def characters
             super.text_value
           end
         }
+      end
+
+      rule bracket_expression
+         '[:' '^'? (
+           'alnum' / 'alpha' / 'blank' / 'cntrl' / 'digit' / 'graph' / 'lower' /
+           'print' / 'punct' / 'space' / 'upper' / 'xdigit' / 'word'
+         ) ':]'
       end
 
       rule anything_symbol

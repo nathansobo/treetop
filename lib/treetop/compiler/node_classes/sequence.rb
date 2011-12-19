@@ -50,7 +50,7 @@ module Treetop
         @sequence_elements = sequence_elements
       end
       
-      def compile(index, builder, rule)
+      def compile(idx, builder, rule)
         super
         builder.module_declaration(module_name) do
           elements_by_name = sequence_elements.inject({}){|h,e| (h[e.label_name.to_s] ||= []) << e; h}
