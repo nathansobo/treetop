@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'benchmark'
 require 'rspec'
+require 'rspec/core/shared_context'
 require 'polyglot'
 
 $LOAD_PATH.unshift File.expand_path('../../lib')
