@@ -9,10 +9,10 @@ require File.expand_path("../lib/treetop/version", __FILE__)
 Jeweler::Tasks.new do |gem|
   gem.name = "treetop"
   gem.version = Treetop::VERSION::STRING
-  gem.author = "Nathan Sobo"
+  gem.author = ["Nathan Sobo", "Clifford Heath"]
   gem.license = "MIT"
   gem.email = "cliffordheath@gmail.com"
-  gem.homepage = "http://functionalform.blogspot.com"
+  gem.homepage = "https://github.com/cjheath/treetop"
   gem.platform = Gem::Platform::RUBY
   gem.summary = "A Ruby-based text parsing and interpretation DSL"
   gem.files = ["LICENSE", "README.md", "Rakefile", "treetop.gemspec", "{spec,lib,bin,doc,examples}/**/*"].map{|p| Dir[p]}.flatten
