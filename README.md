@@ -30,17 +30,18 @@ Next, you start filling your grammar with rules. Each rule associates a name wit
 
 The first rule becomes the *root* of the grammar, causing its expression to be matched when a parser for the grammar is fed a string. The above grammar can now be used in a Ruby program. Notice how a string matching the first rule parses successfully, but a second nonmatching string does not.
 
-    # use_grammar.rb
-    require 'rubygems'
-    require 'treetop'
-    Treetop.load 'my_grammar'
-    # or just:
-    # require 'my_grammar'                     # This works because Polyglot hooks "require" to find and load Treetop files
+```ruby
+# use_grammar.rb
+require 'rubygems'
+require 'treetop'
+Treetop.load 'my_grammar'
+# or just:
+# require 'my_grammar'                     # This works because Polyglot hooks "require" to find and load Treetop files
     
-    parser = MyGrammarParser.new
-    puts parser.parse('hello chomsky')         # => Treetop::Runtime::SyntaxNode
-    puts parser.parse('silly generativists!')  # => nil
-
+parser = MyGrammarParser.new
+puts parser.parse('hello chomsky')         # => Treetop::Runtime::SyntaxNode
+puts parser.parse('silly generativists!')  # => nil
+```
 Users of *regular expressions* will find parsing expressions familiar. They share the same basic purpose, matching strings against patterns. However, parsing expressions can recognize a broader category of languages than their less expressive brethren. Before we get into demonstrating that, lets cover some basics. At first parsing expressions won't seem much different. Trust that they are.
 
 Terminal Symbols
@@ -57,12 +58,13 @@ Ordered choices are *composite expressions*, which allow for any of several sube
         'hello chomsky' / 'hello lambek'
       end
     end
-    
-    # fragment of use_grammar.rb
-    puts parser.parse('hello chomsky')         # => Treetop::Runtime::SyntaxNode
-    puts parser.parse('hello lambek')          # => Treetop::Runtime::SyntaxNode
-    puts parser.parse('silly generativists!')  # => nil
 
+```ruby    
+# fragment of use_grammar.rb
+puts parser.parse('hello chomsky')         # => Treetop::Runtime::SyntaxNode
+puts parser.parse('hello lambek')          # => Treetop::Runtime::SyntaxNode
+puts parser.parse('silly generativists!')  # => nil
+```
 Note that once a choice rule has matched the text using a particular alternative at a particular location in the input and hence has succeeded, that choice will never be reconsidered, even if the chosen alternative causes another rule to fail where a later alternative wouldn't have. It's always a later alternative, since the first to succeed is final - why keep looking when you've found what you wanted? This is a feature of PEG parsers that you need to understand if you're going to succeed in using Treetop. In order to memoize success and failures, such decisions cannot be reversed. Luckily Treetop provides a variety of clever ways you can tell it to avoid making the wrong decisions. But more on that later.
 
 Sequences
