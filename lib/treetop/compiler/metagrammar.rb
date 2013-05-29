@@ -1140,36 +1140,22 @@ module Treetop
       end
 
       module Sequence0
-        def space
+        def sequence_body
           elements[0]
         end
 
-        def labeled_sequence_primary
+        def node_class_declarations
           elements[1]
         end
       end
 
       module Sequence1
-        def head
-          elements[0]
-        end
-
-        def tail
-          elements[1]
-        end
-
-        def node_class_declarations
-          elements[2]
-        end
-      end
-
-      module Sequence2
         def sequence_elements
-          [head] + tail
+          [sequence_body.head] + tail
         end
 
         def tail
-          super.elements.map {|elt| elt.labeled_sequence_primary }
+          sequence_body.tail
         end
 
         def inline_modules
@@ -1195,7 +1181,95 @@ module Treetop
         end
 
         i0, s0 = index, []
-        r1 = _nt_labeled_sequence_primary
+        r1 = _nt_sequence_body
+        s0 << r1
+        if r1
+          r2 = _nt_node_class_declarations
+          s0 << r2
+        end
+        if s0.last
+          r0 = instantiate_node(Sequence,input, i0...index, s0)
+          r0.extend(Sequence0)
+          r0.extend(Sequence1)
+        else
+          @index = i0
+          r0 = nil
+        end
+
+        node_cache[:sequence][start_index] = r0
+
+        r0
+      end
+
+      def _nt_sequence_body
+        start_index = index
+        if node_cache[:sequence_body].has_key?(index)
+          cached = node_cache[:sequence_body][index]
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
+          return cached
+        end
+
+        i0 = index
+        r1 = _nt_variable_length_sequence_body
+        if r1
+          r0 = r1
+        else
+          r2 = _nt_labeled_expression_sequence_body
+          if r2
+            r0 = r2
+          else
+            @index = i0
+            r0 = nil
+          end
+        end
+
+        node_cache[:sequence_body][start_index] = r0
+
+        r0
+      end
+
+      module VariableLengthSequenceBody0
+        def space
+          elements[0]
+        end
+
+        def optionally_labeled_sequence_primary
+          elements[1]
+        end
+      end
+
+      module VariableLengthSequenceBody1
+        def head
+          elements[0]
+        end
+
+        def tail
+          elements[1]
+        end
+      end
+
+      module VariableLengthSequenceBody2
+        def tail
+          super.elements.map {|elt| elt.optionally_labeled_sequence_primary }
+        end
+      end
+
+      def _nt_variable_length_sequence_body
+        start_index = index
+        if node_cache[:variable_length_sequence_body].has_key?(index)
+          cached = node_cache[:variable_length_sequence_body][index]
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
+          return cached
+        end
+
+        i0, s0 = index, []
+        r1 = _nt_optionally_labeled_sequence_primary
         s0 << r1
         if r1
           s2, i2 = [], index
@@ -1204,12 +1278,12 @@ module Treetop
             r4 = _nt_space
             s3 << r4
             if r4
-              r5 = _nt_labeled_sequence_primary
+              r5 = _nt_optionally_labeled_sequence_primary
               s3 << r5
             end
             if s3.last
               r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
-              r3.extend(Sequence0)
+              r3.extend(VariableLengthSequenceBody0)
             else
               @index = i3
               r3 = nil
@@ -1227,21 +1301,46 @@ module Treetop
             r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
           end
           s0 << r2
-          if r2
-            r6 = _nt_node_class_declarations
-            s0 << r6
-          end
         end
         if s0.last
-          r0 = instantiate_node(Sequence,input, i0...index, s0)
-          r0.extend(Sequence1)
-          r0.extend(Sequence2)
+          r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
+          r0.extend(VariableLengthSequenceBody1)
+          r0.extend(VariableLengthSequenceBody2)
         else
           @index = i0
           r0 = nil
         end
 
-        node_cache[:sequence][start_index] = r0
+        node_cache[:variable_length_sequence_body][start_index] = r0
+
+        r0
+      end
+
+      module LabeledExpressionSequenceBody0
+        def head
+          self
+        end
+
+        def tail
+          []
+        end
+      end
+
+      def _nt_labeled_expression_sequence_body
+        start_index = index
+        if node_cache[:labeled_expression_sequence_body].has_key?(index)
+          cached = node_cache[:labeled_expression_sequence_body][index]
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
+          return cached
+        end
+
+        r0 = _nt_labeled_sequence_primary
+        r0.extend(LabeledExpressionSequenceBody0)
+
+        node_cache[:labeled_expression_sequence_body][start_index] = r0
 
         r0
       end
@@ -1499,8 +1598,38 @@ module Treetop
         r0
       end
 
+      def _nt_optionally_labeled_sequence_primary
+        start_index = index
+        if node_cache[:optionally_labeled_sequence_primary].has_key?(index)
+          cached = node_cache[:optionally_labeled_sequence_primary][index]
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
+          return cached
+        end
+
+        i0 = index
+        r1 = _nt_labeled_sequence_primary
+        if r1
+          r0 = r1
+        else
+          r2 = _nt_unlabeled_sequence_primary
+          if r2
+            r0 = r2
+          else
+            @index = i0
+            r0 = nil
+          end
+        end
+
+        node_cache[:optionally_labeled_sequence_primary][start_index] = r0
+
+        r0
+      end
+
       module LabeledSequencePrimary0
-        def label
+        def named_label
           elements[0]
         end
 
@@ -1519,13 +1648,7 @@ module Treetop
         end
 
         def label_name
-          if label.name
-            label.name
-          elsif sequence_primary.instance_of?(Nonterminal)
-            sequence_primary.text_value
-          else
-            nil
-          end
+          named_label.name
         end
       end
 
@@ -1541,7 +1664,7 @@ module Treetop
         end
 
         i0, s0 = index, []
-        r1 = _nt_label
+        r1 = _nt_named_label
         s0 << r1
         if r1
           r2 = _nt_sequence_primary
@@ -1561,26 +1684,64 @@ module Treetop
         r0
       end
 
-      module Label0
-        def alpha_char
+      module UnlabeledSequencePrimary0
+        def null_label
           elements[0]
         end
 
-      end
-
-      module Label1
-      end
-
-      module Label2
-        def name
-          elements[0].text_value
+        def sequence_primary
+          elements[1]
         end
       end
 
-      module Label3
-        def name
-          nil
+      module UnlabeledSequencePrimary1
+        def compile(lexical_address, builder)
+          sequence_primary.compile(lexical_address, builder)
         end
+
+        def inline_modules
+          sequence_primary.inline_modules
+        end
+
+        def label_name
+          if sequence_primary.instance_of?(Nonterminal)
+            sequence_primary.text_value
+          else
+            nil
+          end
+        end
+      end
+
+      def _nt_unlabeled_sequence_primary
+        start_index = index
+        if node_cache[:unlabeled_sequence_primary].has_key?(index)
+          cached = node_cache[:unlabeled_sequence_primary][index]
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
+          return cached
+        end
+
+        i0, s0 = index, []
+        r1 = _nt_null_label
+        s0 << r1
+        if r1
+          r2 = _nt_sequence_primary
+          s0 << r2
+        end
+        if s0.last
+          r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
+          r0.extend(UnlabeledSequencePrimary0)
+          r0.extend(UnlabeledSequencePrimary1)
+        else
+          @index = i0
+          r0 = nil
+        end
+
+        node_cache[:unlabeled_sequence_primary][start_index] = r0
+
+        r0
       end
 
       def _nt_label
@@ -1595,62 +1756,13 @@ module Treetop
         end
 
         i0 = index
-        i1, s1 = index, []
-        i2, s2 = index, []
-        r3 = _nt_alpha_char
-        s2 << r3
-        if r3
-          s4, i4 = [], index
-          loop do
-            r5 = _nt_alphanumeric_char
-            if r5
-              s4 << r5
-            else
-              break
-            end
-          end
-          r4 = instantiate_node(SyntaxNode,input, i4...index, s4)
-          s2 << r4
-        end
-        if s2.last
-          r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
-          r2.extend(Label0)
-        else
-          @index = i2
-          r2 = nil
-        end
-        s1 << r2
-        if r2
-          if has_terminal?(':', false, index)
-            r6 = instantiate_node(SyntaxNode,input, index...(index + 1))
-            @index += 1
-          else
-            terminal_parse_failure(':')
-            r6 = nil
-          end
-          s1 << r6
-        end
-        if s1.last
-          r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
-          r1.extend(Label1)
-          r1.extend(Label2)
-        else
-          @index = i1
-          r1 = nil
-        end
+        r1 = _nt_named_label
         if r1
           r0 = r1
         else
-          if has_terminal?('', false, index)
-            r7 = instantiate_node(SyntaxNode,input, index...(index + 0))
-            r7.extend(Label3)
-            @index += 0
-          else
-            terminal_parse_failure('')
-            r7 = nil
-          end
-          if r7
-            r0 = r7
+          r2 = _nt_null_label
+          if r2
+            r0 = r2
           else
             @index = i0
             r0 = nil
@@ -1658,6 +1770,113 @@ module Treetop
         end
 
         node_cache[:label][start_index] = r0
+
+        r0
+      end
+
+      module NamedLabel0
+        def alpha_char
+          elements[0]
+        end
+
+      end
+
+      module NamedLabel1
+      end
+
+      module NamedLabel2
+        def name
+          elements[0].text_value
+        end
+      end
+
+      def _nt_named_label
+        start_index = index
+        if node_cache[:named_label].has_key?(index)
+          cached = node_cache[:named_label][index]
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
+          return cached
+        end
+
+        i0, s0 = index, []
+        i1, s1 = index, []
+        r2 = _nt_alpha_char
+        s1 << r2
+        if r2
+          s3, i3 = [], index
+          loop do
+            r4 = _nt_alphanumeric_char
+            if r4
+              s3 << r4
+            else
+              break
+            end
+          end
+          r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
+          s1 << r3
+        end
+        if s1.last
+          r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
+          r1.extend(NamedLabel0)
+        else
+          @index = i1
+          r1 = nil
+        end
+        s0 << r1
+        if r1
+          if has_terminal?(':', false, index)
+            r5 = instantiate_node(SyntaxNode,input, index...(index + 1))
+            @index += 1
+          else
+            terminal_parse_failure(':')
+            r5 = nil
+          end
+          s0 << r5
+        end
+        if s0.last
+          r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
+          r0.extend(NamedLabel1)
+          r0.extend(NamedLabel2)
+        else
+          @index = i0
+          r0 = nil
+        end
+
+        node_cache[:named_label][start_index] = r0
+
+        r0
+      end
+
+      module NullLabel0
+        def name
+          nil
+        end
+      end
+
+      def _nt_null_label
+        start_index = index
+        if node_cache[:null_label].has_key?(index)
+          cached = node_cache[:null_label][index]
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
+          return cached
+        end
+
+        if has_terminal?('', false, index)
+          r0 = instantiate_node(SyntaxNode,input, index...(index + 0))
+          r0.extend(NullLabel0)
+          @index += 0
+        else
+          terminal_parse_failure('')
+          r0 = nil
+        end
+
+        node_cache[:null_label][start_index] = r0
 
         r0
       end

@@ -60,6 +60,20 @@ module SequenceSpec
     end
   end
 
+  describe "a labeled single element sequence followed by a node module declaration and a block" do
+    testing_expression 'foo:"foo"+ <SequenceSpec::ModFoo> { def a_method; end }'
+    it "upon successfully matching input, instantiates a syntax node and extends it with the declared module, element accessor methods, and the method from the inline module" do
+      parse('foofoofoo') do |result|
+        result.should_not be_nil
+        result.should respond_to(:mod_method)
+        result.should be_an_instance_of(Treetop::Runtime::SyntaxNode)
+        result.should be_a_kind_of(ModFoo)
+        result.should respond_to(:a_method)
+        result.foo.text_value.should == 'foofoofoo'
+      end
+    end
+  end
+
   describe "a sequence of non-terminals" do
     testing_grammar %{
       grammar TestGrammar

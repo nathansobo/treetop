@@ -91,13 +91,13 @@ module Treetop
       end
 
       rule sequence
-        head:labeled_sequence_primary tail:(space labeled_sequence_primary)+ node_class_declarations <Sequence> {
+        sequence_body node_class_declarations <Sequence> {
           def sequence_elements
-            [head] + tail
+            [sequence_body.head] + tail
           end
 
           def tail
-            super.elements.map {|elt| elt.labeled_sequence_primary }
+            sequence_body.tail
           end
 
           def inline_modules
@@ -108,6 +108,30 @@ module Treetop
 
           def inline_module_name
             node_class_declarations.inline_module_name
+          end
+        }
+      end
+
+      rule sequence_body
+        variable_length_sequence_body / labeled_expression_sequence_body
+      end
+
+      rule variable_length_sequence_body
+        head:optionally_labeled_sequence_primary tail:(space optionally_labeled_sequence_primary)+ {
+          def tail
+            super.elements.map {|elt| elt.optionally_labeled_sequence_primary }
+          end
+        }
+      end
+
+      rule labeled_expression_sequence_body
+        labeled_sequence_primary {
+          def head
+            self
+          end
+
+          def tail
+            []
           end
         }
       end
@@ -188,8 +212,12 @@ module Treetop
         }
       end
 
+      rule optionally_labeled_sequence_primary
+        labeled_sequence_primary / unlabeled_sequence_primary
+      end
+
       rule labeled_sequence_primary
-        label sequence_primary {
+        named_label sequence_primary {
           def compile(lexical_address, builder)
             sequence_primary.compile(lexical_address, builder)
           end
@@ -199,9 +227,23 @@ module Treetop
           end
 
           def label_name
-            if label.name
-              label.name
-            elsif sequence_primary.instance_of?(Nonterminal)
+            named_label.name
+          end
+        }
+      end
+
+      rule unlabeled_sequence_primary
+        null_label sequence_primary {
+          def compile(lexical_address, builder)
+            sequence_primary.compile(lexical_address, builder)
+          end
+
+          def inline_modules
+            sequence_primary.inline_modules
+          end
+
+          def label_name
+            if sequence_primary.instance_of?(Nonterminal)
               sequence_primary.text_value
             else
               nil
@@ -211,12 +253,18 @@ module Treetop
       end
 
       rule label
+        named_label / null_label
+      end
+
+      rule named_label
         (alpha_char alphanumeric_char*) ':' {
           def name
             elements[0].text_value
           end
         }
-        /
+      end
+
+      rule null_label
         '' {
           def name
             nil
