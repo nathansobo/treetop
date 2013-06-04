@@ -12,8 +12,12 @@ describe Compiler::GrammarCompiler do
     @source_path_with_treetop_extension = "#{dir}/test_grammar.treetop"
     @source_path_with_do = "#{dir}/test_grammar_do.treetop"
     @source_path_with_tt_extension = "#{dir}/test_grammar.tt"
+    @source_path_with_magic_coding = "#{dir}/test_grammar_magic_coding.treetop"
+    @source_path_with_magic_encoding = "#{dir}/test_grammar_magic_encoding.treetop"
     @target_path = "#{@tmpdir}/test_grammar.rb"
     @target_path_with_do = "#{@tmpdir}/test_grammar_do.rb"
+    @target_path_with_magic_coding = "#{@tmpdir}/test_grammar_magic_coding.rb"
+    @target_path_with_magic_encoding = "#{@tmpdir}/test_grammar_magic_encoding.rb"
     @alternate_target_path = "#{@tmpdir}/test_grammar_alt.rb"
     delete_target_files
   end
@@ -80,6 +84,24 @@ describe Compiler::GrammarCompiler do
     compiler.compile(src_copy)
     require @target_path_with_do
     Test::GrammarParser.new.parse('foo').should_not be_nil
+  end
+
+  specify "grammars with magic 'encoding' comments keep those comments at the top" do
+    src_copy = "#{@tmpdir}/test_grammar_magic_encoding.treetop"
+    File.open(@source_path_with_magic_encoding) do |f|
+      File.open(src_copy,'w'){|o|o.write(f.read)}
+    end
+    compiler.compile(src_copy)
+    File.open(@target_path_with_magic_encoding).readline.should == "# encoding: UTF-8\n"
+  end
+
+  specify "grammars with magic 'coding' comments keep those comments at the top" do
+    src_copy = "#{@tmpdir}/test_grammar_magic_coding.treetop"
+    File.open(@source_path_with_magic_coding) do |f|
+      File.open(src_copy,'w'){|o|o.write(f.read)}
+    end
+    compiler.compile(src_copy)
+    File.open(@target_path_with_magic_coding).readline.should == "# coding: UTF-8\n"
   end
 
   def delete_target_files
