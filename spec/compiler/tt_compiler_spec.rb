@@ -20,6 +20,7 @@ describe "The 'tt' comand line compiler" do
       @test_grammar = "#{@test_path}.tt"
       @test_ruby = "#{@test_path}.rb"
       File.open(@test_grammar, 'w+') do |f|
+        f.print("# Encoding: UTF-8\n")
         f.print("grammar Dumb\n")
         f.print("end\n")
       end unless File.exists?(@test_grammar)
@@ -96,8 +97,14 @@ describe "The 'tt' comand line compiler" do
         File.exists?(pf).should be_true
         File.zero?(pf).should_not be_true
 
-        # Modify the file and make sure it remains unchanged:
-        File.open(pf, "r+") { |f| f.write("# Changed...") }
+        # Check that the magic comment is preserved:
+        written = File.open(pf, "r") { |f| s = f.read }
+        written.should =~ /\A# Encoding: UTF-8/
+
+        # Modify the file's auto-generated comment and make sure it doesn't get overwritten:
+        written.sub!(/generated/, 'broken');
+        File.open(pf, "w") { |f| f.write(written) }
+        # File.open(pf, "r+") { |f| s = f.read; s.sub!(/generated/, 'broken'); f.rewind; f.write(s) }
         orig_file_hash = Digest::SHA1.hexdigest(File.read(pf))
 
         Kernel.open("|ruby -S tt -o #{pf} #{@test_path}") do |io|
