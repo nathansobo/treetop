@@ -22,19 +22,15 @@ class String
   # The following methods are lifted from Facets 2.0.2
   def tabto(n)
     if self =~ /^( *)\S/
-      indent(n - $1.length)
+      # Inlined due to collision with ActiveSupport 4.0: indent(n - $1.length)
+      m = n - $1.length
+      if m >= 0
+        gsub(/^/, ' ' * m)
+      else
+        gsub(/^ {0,#{-m}}/, "")
+      end
     else
       self
-    end
-  end
-
-  unless method_defined?(:indent)
-    def indent(n)
-      if n >= 0
-        gsub(/^/, ' ' * n)
-      else
-        gsub(/^ {0,#{-n}}/, "")
-      end
     end
   end
 
