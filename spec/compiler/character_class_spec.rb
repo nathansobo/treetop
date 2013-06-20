@@ -86,7 +86,7 @@ module CharacterClassSpec
   end
 
   describe "a character class with a negated POSIX bracket expression" do
-    testing_expression "[[:^space:]]"
+    testing_expression "[^[:space:]]"
     it "matches a character outside the negated class" do
       parse('a').should_not be_nil
     end
