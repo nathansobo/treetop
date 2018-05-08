@@ -47,6 +47,7 @@ Users of *regular expressions* will find parsing expressions familiar. They shar
 Terminal Symbols
 ----------------
 The expression in the grammar above is a terminal symbol. It will only match a string that matches it exactly. There are two other kinds of terminal symbols, which we'll revisit later. Terminals are called *atomic expressions* because they aren't composed of smaller expressions.
+Terminals are called atomic expressions because they aren't composed of smaller expressions. A terminal symbol may use either double or single quotes. If the closing quote is immediately followed by the modifier 'i', the string is matched without case-sensitivity, that is, the input.downcase matches the terminal.downcase
 
 Ordered Choices
 ---------------
